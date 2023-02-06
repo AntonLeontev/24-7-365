@@ -22,11 +22,7 @@ class HomeController extends Controller
         
         
         
-        $someWrongPlacedCode = 1 + 1 ;
-                   
-                   
-                   
-                   
+        $someWrongPlacedCode = 1 + 1 + 1 ;
     }
 
 
