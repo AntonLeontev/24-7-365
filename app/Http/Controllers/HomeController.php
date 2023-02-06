@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class HomeController extends Controller
 {
+       $fixit_please = 1;
+
     /**
      * Create a new controller instance.
      *
@@ -14,7 +14,14 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        
+                   $someWrongPlacedCode = 1 + 1 ;
     }
+
+
+
+    public wrongPlacedMethod(){
+                  }
 
     /**
      * Show the application dashboard.
