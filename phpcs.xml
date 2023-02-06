@@ -72,7 +72,7 @@
 	<!-- Устанавливает количество пустых строк между элементами класса (свойствами и методами например) -->
     <rule ref="SlevomatCodingStandard.Classes.ClassMemberSpacing">
 		<properties>
-			<property name="linesCountBetweenMembers" value="3" />
+			<property name="linesCountBetweenMembers" value="2" />
 		</properties>
 	</rule>	
 
@@ -160,14 +160,14 @@
 	</rule>
 
 	<!-- Требует разделитель "_" для больших чисел [ 10_000_000 ] -->
-    <rule ref="SlevomatCodingStandard.Numbers.RequireNumericLiteralSeparator">
+    <!-- <rule ref="SlevomatCodingStandard.Numbers.RequireNumericLiteralSeparator">
 		<properties>
 			<property name="enable" value="true" />
 			<property name="minDigitsBeforeDecimalPoint" value="3" />
 			<property name="minDigitsAfterDecimalPoint" value="3" />
 			<property name="ignoreOctalNumbers" value="true" />
 		</properties>
-	</rule>
+	</rule> -->
 
     <!-- Правило лишних точек с запятой -->
     <rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
