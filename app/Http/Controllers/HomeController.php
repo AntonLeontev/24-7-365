@@ -15,12 +15,36 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
         
-                   $someWrongPlacedCode = 1 + 1 ;
+                  
+        
+        
+        
+        
+        
+        
+        $someWrongPlacedCode = 1 + 1 ;
+                   
+                   
+                   
+                   
     }
 
 
 
     public wrongPlacedMethod(){
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
                   }
 
     /**
