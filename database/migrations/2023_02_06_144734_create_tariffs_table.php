@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 			$table->string('title');
 			$table->unsignedTinyInteger('annual_rate');
-			$table->unsignedSmallInteger('duration_month');
+			$table->unsignedSmallInteger('duration');
 			$table->unsignedBigInteger('min_amount');
 			$table->unsignedBigInteger('max_amount');
 			$table->unsignedTinyInteger('getting_profit');

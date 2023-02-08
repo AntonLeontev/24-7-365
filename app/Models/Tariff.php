@@ -20,7 +20,7 @@ class Tariff extends Model
 	protected $fillable = [
 		'title',
 		'annual_rate',
-		'duration_month',
+		'duration',
 		'min_amount',
 		'max_amount',
 		'getting_profit',

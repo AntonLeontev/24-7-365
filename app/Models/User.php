@@ -7,16 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use HasRoles;
 
 
     public const BANNED = 0;
@@ -24,7 +25,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     protected $fillable = [
-        'name',
         'email',
         'email_verified_at',
         'password',
@@ -49,18 +49,18 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
 
-	public function organization(): HasOne
-	{
-		return $this->hasOne(Organization::class);
-	}
+    public function organization(): HasOne
+    {
+        return $this->hasOne(Organization::class);
+    }
 
-	public function contracts(): HasMany
-	{
-		return $this->hasMany(Contract::class);
-	}
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(Contract::class);
+    }
 
-	public function account(): HasManyThrough
-	{
-		return $this->hasManyThrough(Account::class, Organization::class);
-	}
+    public function account(): HasManyThrough
+    {
+        return $this->hasManyThrough(Account::class, Organization::class);
+    }
 }

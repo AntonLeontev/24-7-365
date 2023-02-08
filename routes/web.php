@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::prefix('personal')
+	->middleware('auth')->group(function () {
+    Route::get('profile', [UserController::class, 'profile'])->name('users.profile');
+});
+
+Route::prefix('admin')
+	->middleware('auth')->group(function () {
+		Route::get('users/{user}', [UserController::class, 'show'])
+			->middleware('can:see other profiles')
+			->name('users.show');
+		Route::get('users', [UserController::class, 'index'])
+			->middleware('can:see other profiles')
+			->name('users.index');
+	}
+);
