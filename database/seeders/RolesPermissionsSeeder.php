@@ -18,17 +18,20 @@ class RolesPermissionsSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         
         Permission::create(['name' => 'see other profiles']);
-        Permission::create(['name' => 'edit other profiles']);
-        Permission::create(['name' => 'ban other profiles']);
+        Permission::create(['name' => 'assign roles']);
+        Permission::create(['name' => 'ban other users']);
+        Permission::create(['name' => 'see own profile']);
 
         
         $role = Role::create(['name' => 'Клиент']);
+        $role->givePermissionTo('see own profile');
 
 
         $role = Role::create(['name' => 'Админ']);
         $role->givePermissionTo('see other profiles');
-        $role->givePermissionTo('edit other profiles');
-        $role->givePermissionTo('ban other profiles');
+        $role->givePermissionTo('assign roles');
+        $role->givePermissionTo('ban other users');
+
 
         $role = Role::create(['name' => 'АСБК']);
 

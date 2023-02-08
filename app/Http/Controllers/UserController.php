@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateRoleRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -15,7 +17,7 @@ class UserController extends Controller
     {
         $users = $user->with('roles')
             ->whereNot('email', 'superuser@test.ru')
-            ->latest()
+            ->orderBy('created_at')
             ->paginate();
 
         return view('users.index', compact('users'));
@@ -23,6 +25,12 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return view('users.profile', compact('user'));
+        return view('users.profile', ['user' => $user->load('roles')]);
+    }
+
+    public function updateRole(User $user, UpdateRoleRequest $request)
+    {
+        $user->syncRoles($request->validated());
+        return response()->json();
     }
 }

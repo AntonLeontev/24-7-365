@@ -21,9 +21,9 @@ class TestUsersWithRolesSeeder extends Seeder
             ['email' => 'lawyer@test.ru', 'first_name' => 'Юрист', 'role' => 'Юрист'],
         ];
         
-		foreach ($users as $user) {
-			$this->create($user);
-		}
+        foreach ($users as $user) {
+            $this->create($user);
+        }
     }
 
     private function create(array $data)
@@ -33,7 +33,7 @@ class TestUsersWithRolesSeeder extends Seeder
             'password' => bcrypt('12345678'),
             'first_name' => $data['first_name']
         ]);
-		
+        
         $user->assignRole($data['role']);
     }
 }

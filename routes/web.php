@@ -21,17 +21,23 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::prefix('personal')
-	->middleware('auth')->group(function () {
-    Route::get('profile', [UserController::class, 'profile'])->name('users.profile');
-});
+    ->middleware('auth')->group(function () {
+        Route::get('profile', [UserController::class, 'profile'])
+        ->middleware('can:see own profile')
+        ->name('users.profile');
+    });
 
 Route::prefix('admin')
-	->middleware('auth')->group(function () {
+    ->middleware('auth')->group(function () {
+		Route::post('users/{user}/role', [UserController::class, 'updateRole'])
+			->middleware('can:assign roles')
+			->name('users.update-role');
+			
 		Route::get('users/{user}', [UserController::class, 'show'])
 			->middleware('can:see other profiles')
 			->name('users.show');
-		Route::get('users', [UserController::class, 'index'])
-			->middleware('can:see other profiles')
-			->name('users.index');
-	}
-);
+
+        Route::get('users', [UserController::class, 'index'])
+            ->middleware('can:see other profiles')
+            ->name('users.index');
+    });

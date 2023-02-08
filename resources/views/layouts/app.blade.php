@@ -31,11 +31,13 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
 						@auth
+						@can('see own profile')
 							@if (Route::has('users.profile'))
 								<li class="nav-item">
-                                    <a class="nav-link" href="{{ route('users.profile') }}">Профиль</a>
-                                </li>
+									<a class="nav-link" href="{{ route('users.profile') }}">Профиль</a>
+								</li>
 							@endif
+						@endcan
 							@can('see other profiles')
 								@if (Route::has('users.index'))
 									<li class="nav-item">
