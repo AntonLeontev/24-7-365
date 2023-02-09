@@ -14,7 +14,16 @@ import './submitForm';
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp({});
+const app = createApp({
+	mounted(){
+		
+	},
+	methods: {
+		toast(options){
+			this.$refs.toasts.fire(options);
+		},
+	}
+});
 
 import ExampleComponent from './components/ExampleComponent.vue';
 app.component('example-component', ExampleComponent);

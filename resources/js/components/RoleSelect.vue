@@ -28,9 +28,19 @@ export default {
   },
   methods: {
     async saveRole(event) {
-      let response = await submitForm(event);
-
-      console.log(response);
+      await submitForm(event, this.success, this.error);
+    },
+    success(data) {
+      this.$emit("toast", {
+        message: "Сохранено",
+      });
+    },
+    error(message) {
+      this.$emit("toast", {
+        message: message,
+        type: "error",
+        autohide: false,
+      });
     },
   },
   computed: {
