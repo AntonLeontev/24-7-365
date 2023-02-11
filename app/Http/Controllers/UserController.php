@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateRoleRequest;
+use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $users = $user->with('roles')
             ->whereNot('email', 'superuser@test.ru')
-            ->orderBy('created_at')
+            ->orderByDesc('created_at')
             ->paginate();
 
         return view('users.index', compact('users'));
@@ -32,5 +32,14 @@ class UserController extends Controller
     {
         $user->syncRoles($request->validated());
         return response()->json();
+    }
+
+    public function create(UserCreateRequest $request)
+    {
+        $user = User::create($request->except(['roles', '_token', 'password_confirmation']));
+
+        $user->assignRole($request->roles);
+
+        return back();
     }
 }

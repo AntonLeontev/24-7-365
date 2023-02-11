@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-	$tariffs = Tariff::all();
+    $tariffs = Tariff::all();
     return view('welcome', compact('tariffs'));
 })->name('home');
 
@@ -41,6 +41,10 @@ Route::prefix('admin')
         Route::post('users/{user}/role', [UserController::class, 'updateRole'])
             ->middleware('can:assign roles')
             ->name('users.update-role');
+
+        Route::post('users/create', [UserController::class, 'create'])
+            ->middleware('can:create users')
+            ->name('users.create');
             
         Route::get('users/{user}', [UserController::class, 'show'])
             ->middleware('can:see other profiles')
