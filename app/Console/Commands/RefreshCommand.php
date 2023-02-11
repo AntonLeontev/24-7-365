@@ -38,6 +38,7 @@ class RefreshCommand extends Command
         $this->call('db:seed', ['--class' => 'RolesPermissionsSeeder']);
         $this->call('db:seed', ['--class' => 'TestUsersWithRolesSeeder']);
         $this->call('db:seed', ['--class' => 'UsersSeeder']);
+        $this->call('db:seed', ['--class' => 'TariffsSeeder']);
 
         $this->call('cache:clear');
 

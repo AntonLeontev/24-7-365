@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\UserController;
+use App\Models\Tariff;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	$tariffs = Tariff::all();
+    return view('welcome', compact('tariffs'));
 })->name('home');
 
 Auth::routes(['verify' => true]);
