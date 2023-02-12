@@ -28,7 +28,29 @@ class StoreRequisiteProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'payment_account' => ['required', 'string', 'size:20'],
+            'correspondent_account' => ['required', 'string', 'size:20'],
+            'bik' => ['required', 'string', 'size:9'],
+            'bank' => ['required', 'string',  'max:250'],
         ];
     }
+
+
+
+    public function attributes()
+    {
+        return [
+            'payment_account' => 'Расчетный счёт',
+            'correspondent_account' => 'Корреспондентский счёт',
+            'bik' => 'БИК',
+            'bank' => 'Банк',
+        ];
+    }
+
+
+
+
+
+
+
 }

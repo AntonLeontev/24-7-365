@@ -36,13 +36,13 @@ Route::prefix('personal')
         Route::get('profile', [UserProfileController::class, 'profile'])
             ->middleware('can:see own profile')
             ->name('users.profile');
-        Route::post('save_profile', [UserProfileController::class, 'store_profile'])
+        Route::post('save_profile', [UserProfileController::class, 'storeProfile'])
         ->name('save_profile');
-        Route::post('save_profile_organization', [UserProfileController::class, 'store_profile_organization'])
+        Route::post('save_profile_organization', [UserProfileController::class, 'storeProfileOrganization'])
         ->name('save_profile_organization');
-        Route::post('save_profile_requisites', [UserProfileController::class, 'store_profile_requisites'])
+        Route::post('save_profile_requisites', [UserProfileController::class, 'storeProfileRequisites'])
         ->name('save_profile_requisites');
-        Route::post('save_profile_password', [UserProfileController::class, 'password_reset'])
+        Route::post('save_profile_password', [UserProfileController::class, 'passwordReset'])
         ->name('save_profile_password');
        
     });

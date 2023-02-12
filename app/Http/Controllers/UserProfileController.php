@@ -43,7 +43,7 @@ class UserProfileController extends Controller
         return view('users.profile', ['user' => $user])->with('organization',$organization)->with('requisites',$requisites);
     }
     
-    public function store_profile(StoreUserProfileRequest $request)
+    public function storeProfile(StoreUserProfileRequest $request)
     {
         $user = Auth::user();
         
@@ -59,7 +59,7 @@ class UserProfileController extends Controller
     }
     
     
-    public function store_profile_organization (StoreOrganizationProfileRequest $request)
+    public function storeProfileOrganization (StoreOrganizationProfileRequest $request)
     {
         $user = Auth::user();
         
@@ -86,7 +86,7 @@ class UserProfileController extends Controller
         
     }
     
-    public function store_profile_requisites(StoreRequisiteProfileRequest $request){
+    public function storeProfileRequisites(StoreRequisiteProfileRequest $request){
       
         
         $user = Auth::user();
@@ -121,7 +121,7 @@ class UserProfileController extends Controller
         
     }
     
-    public function password_reset(Request $request){
+    public function passwordReset(Request $request){
         
         //TODO e-mail notification about operation;
         
