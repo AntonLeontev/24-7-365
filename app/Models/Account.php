@@ -16,7 +16,8 @@ class Account extends Model
 
     public const PRIMARY = 1;
     public const SECONDARY = 2;
-
+   
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'id',

@@ -96,7 +96,7 @@
 
 
 <input type="hidden" id="profile-form-organization-url" name="handler_url" value = '{{ route("save_profile_organization", $user->id) }}'>
-
+<input type="hidden"  name="org_id" @isset($organization->id)  value='{{$organization->id}}' @endisset>
 
 <div class="mb-3">
   <label  class="form-label">Название организации</label>
