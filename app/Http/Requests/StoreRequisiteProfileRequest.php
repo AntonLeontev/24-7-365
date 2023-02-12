@@ -15,9 +15,14 @@ class StoreRequisiteProfileRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(Request $request)
     {
-        return auth()->check();
+        if($request->user == Auth::user()->id){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**

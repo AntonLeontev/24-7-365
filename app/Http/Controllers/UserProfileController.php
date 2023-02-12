@@ -61,6 +61,7 @@ class UserProfileController extends Controller
     
     public function storeProfileOrganization (StoreOrganizationProfileRequest $request)
     {
+        
         $user = Auth::user();
         
         $org_id = (isset($request->org_id)) ? $request->org_id : 0;
@@ -88,6 +89,7 @@ class UserProfileController extends Controller
     
     public function storeProfileRequisites(StoreRequisiteProfileRequest $request){
       
+       
         
         $user = Auth::user();
         @$organization = User::with('organization')->find($user->id)->organization;

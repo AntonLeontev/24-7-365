@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StoreOrganizationProfileRequest extends FormRequest
 {
@@ -11,9 +13,16 @@ class StoreOrganizationProfileRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(Request $request)
     {
-        return auth()->check();
+        
+        if($request->user == Auth::user()->id){
+            return true;
+        }
+        else{
+            return false;
+        }
+    
     }
 
     /**
