@@ -19,6 +19,7 @@ class Account extends Model
 
 
     protected $fillable = [
+        'id',
 		'organization_id',
         'payment_account',
         'correspondent_account',
