@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    
+    
+   
+    
+    
     public function profile()
     {
         return view('users.profile', ['user' => auth()->user()]);

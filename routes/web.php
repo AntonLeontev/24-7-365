@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,9 +31,18 @@ Route::middleware('guest')->group(function () {
 
 Route::prefix('personal')
     ->middleware('auth')->group(function () {
-        Route::get('profile', [UserController::class, 'profile'])
+        Route::get('profile', [UserProfileController::class, 'profile'])
             ->middleware('can:see own profile')
             ->name('users.profile');
+        Route::post('save_profile', [UserProfileController::class, 'store_profile'])
+        ->name('save_profile');
+        Route::post('save_profile_organization', [UserProfileController::class, 'store_profile_organization'])
+        ->name('save_profile_organization');
+        Route::post('save_profile_requisites', [UserProfileController::class, 'store_profile_requisites'])
+        ->name('save_profile_requisites');
+        Route::post('save_profile_password', [UserProfileController::class, 'password_reset'])
+        ->name('save_profile_password');
+       
     });
 
 Route::prefix('admin')
