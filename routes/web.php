@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
@@ -72,4 +73,9 @@ Route::prefix('admin')
         Route::get('users', [UserController::class, 'index'])
             ->middleware('can:see other profiles')
             ->name('users.index');
+
+		
+		Route::post('settings/update', [ApplicationSettingsController::class, 'update'])
+			->middleware('can:change settings')
+			->name('settings.update');
     });

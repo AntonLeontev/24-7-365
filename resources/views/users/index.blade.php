@@ -10,6 +10,17 @@
                     Create user
                 </button>
             </div>
+			@can('change settings')
+				<div class="col d-flex gap-2">
+					Месяц начала выплат
+					<payments-start 
+						action="{{ route('settings.update') }}" 
+						:settings="{{ json_encode(config('allowed-settings.payments_start')) }}"
+						actual="{{ settings()->payments_start }}" 
+						@toast="toast"
+					></payments-start>
+				</div>
+			@endcan
         </div>
 		<div class="row">
 			<div class="col">ФИО</div>
@@ -18,7 +29,9 @@
 			<div class="col">Сумма договоров</div>
 			<div class="col">Сумма выплат</div>
 			<div class="col">Статус</div>
-			<div class="col">Блокировка</div>
+			@can('block users')
+				<div class="col">Блокировка</div>
+			@endcan
 		</div>
         @foreach ($users as $user)
             <div class="row" href="{{ route('users.show', $user->id) }}">
@@ -54,13 +67,15 @@
 						<span class="text-danger">Заблокирован</span>
 					@endif
 				</div>
-				<div class="col">
-					@if ($user->status === $user::ACTIVE)
-						<a href="{{ route('users.block', $user->id) }}" class="btn">Заблокировать</a>
-					@else
-						<a href="{{ route('users.unblock', $user->id) }}" class="btn">Разблокировать</a>
-					@endif
-				</div>
+				@can('block users')
+					<div class="col">
+						@if ($user->status === $user::ACTIVE)
+							<a href="{{ route('users.block', $user->id) }}" class="btn">Заблокировать</a>
+						@else
+							<a href="{{ route('users.unblock', $user->id) }}" class="btn">Разблокировать</a>
+						@endif
+					</div>
+				@endcan
             </div>
         @endforeach
         {{ $users->links() }}
