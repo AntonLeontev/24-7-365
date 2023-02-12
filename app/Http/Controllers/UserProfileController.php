@@ -30,10 +30,13 @@ class UserProfileController extends Controller
       
         $user = auth()->user();
         $organization = User::with('organization')->find($user->id)->organization;
-        $requisites = Organization::with('accounts')->find($organization->id)->accounts->where('status',1);
-        
+       
+        $requisites = (isset($organization->id)) ? Organization::with('accounts')->find($organization->id)->accounts->where('status',1) : NULL;
+       
+
         //poka smotrim tolko odni rekviziti, realizacii s bolshim kolichestvom obsudim potom 
-        if(count($requisites)){
+        
+        if( $requisites!= NULL && count($requisites)){
             $requisites = $requisites[0];
         }
         
@@ -60,10 +63,13 @@ class UserProfileController extends Controller
     {
         $user = Auth::user();
         
+        $org_id = (isset($request->org_id)) ? $request->org_id : 0;
+        
         $organization = Organization::updateOrCreate([
-            'title' => $request->title,
-            'user_id'=>$user->id
+             'id'=>$org_id,
+             'user_id'=>$user->id
         ], [
+            'title' => $request->title,
             'type' => $request->type,
             'inn' => $request->inn,
             'ogrn' => $request->ogrn,
@@ -96,9 +102,11 @@ class UserProfileController extends Controller
         
         $requisites = Account::updateOrCreate([
             
-            'organization_id'=>$organization->id
+            'organization_id'=>$organization->id,
+            'id'=>$req_id
+            
         ], [
-            'id'=>$req_id,
+            
             'payment_account' => $request->payment_account,
             'correspondent_account' => $request->correspondent_account,
             'bik' => $request->bik,
