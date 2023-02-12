@@ -15,7 +15,7 @@ class UserController extends Controller
 
     public function index(User $user)
     {
-        $users = $user->with('roles')
+        $users = $user->with(['roles', 'organization', 'account'])
             ->whereNot('email', 'superuser@test.ru')
             ->orderByDesc('created_at')
             ->paginate();
@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return view('users.profile', ['user' => $user->load('roles')]);
+        return view('users.profile', ['user' => $user->load(['roles', 'organization'])]);
     }
 
     public function updateRole(User $user, UpdateRoleRequest $request)
@@ -39,6 +39,20 @@ class UserController extends Controller
         $user = User::create($request->except(['roles', '_token', 'password_confirmation']));
 
         $user->assignRole($request->roles);
+
+        return back();
+    }
+
+    public function blockUser(User $user)
+    {
+        $user->update(['status' => User::BANNED]);
+
+        return back();
+    }
+
+    public function unblockUser(User $user)
+    {
+        $user->update(['status' => User::ACTIVE]);
 
         return back();
     }

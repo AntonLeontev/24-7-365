@@ -11,6 +11,15 @@
                 </button>
             </div>
         </div>
+		<div class="row">
+			<div class="col">ФИО</div>
+			<div class="col">Роль</div>
+			<div class="col">Организация</div>
+			<div class="col">Сумма договоров</div>
+			<div class="col">Сумма выплат</div>
+			<div class="col">Статус</div>
+			<div class="col">Блокировка</div>
+		</div>
         @foreach ($users as $user)
             <div class="row" href="{{ route('users.show', $user->id) }}">
                 <div class="col">
@@ -18,7 +27,6 @@
                         {{ $user->first_name }} {{ $user->last_name }}
                     </a>
                 </div>
-                <div class="col">{{ $user->email }}</div>
                 <div class="col">
                     @if ($user->roles->count() === 0)
                         Роль не назначена
@@ -27,8 +35,32 @@
                             {{ $role->name }}
                         @endforeach
                     @endif
-
                 </div>
+				<div class="col">
+					@isset($user->organization)
+						{{ $user->organization?->title }}
+					@else
+						Нет
+					@endisset
+				</div>
+				<div class="col">
+
+				</div>
+				<div class="col"></div>
+				<div class="col">
+					@if ($user->status === $user::ACTIVE)
+						<span class="text-success">Активен</span>
+					@else
+						<span class="text-danger">Заблокирован</span>
+					@endif
+				</div>
+				<div class="col">
+					@if ($user->status === $user::ACTIVE)
+						<a href="{{ route('users.block', $user->id) }}" class="btn">Заблокировать</a>
+					@else
+						<a href="{{ route('users.unblock', $user->id) }}" class="btn">Разблокировать</a>
+					@endif
+				</div>
             </div>
         @endforeach
         {{ $users->links() }}

@@ -6,7 +6,6 @@ use App\Http\Controllers\UserProfileController;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Route;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,8 +26,10 @@ Auth::routes(['verify' => true]);
 
 Route::middleware('guest')->group(function () {
     Route::get('/auth/{driver}/redirect', [SocialsController::class, 'redirect'])
+        ->where('driver', 'yandex|vkontakte|google')
         ->name('auth.social');
-    Route::get('/auth/{driver}/callback', [SocialsController::class, 'callback']);
+    Route::get('/auth/{driver}/callback', [SocialsController::class, 'callback'])
+        ->where('driver', 'yandex|vkontakte|google');
 });
 
 Route::prefix('personal')
@@ -44,7 +45,6 @@ Route::prefix('personal')
         ->name('save_profile_requisites');
         Route::post('save_profile_password/{user}', [UserProfileController::class, 'passwordReset'])
         ->name('save_profile_password');
-       
     });
 
 Route::prefix('admin')
@@ -52,6 +52,14 @@ Route::prefix('admin')
         Route::post('users/{user}/role', [UserController::class, 'updateRole'])
             ->middleware('can:assign roles')
             ->name('users.update-role');
+
+        Route::get('users/{user}/block', [UserController::class, 'blockUser'])
+            ->middleware('can:block users')
+            ->name('users.block');
+
+        Route::get('users/{user}/unblock', [UserController::class, 'unblockUser'])
+            ->middleware('can:block users')
+            ->name('users.unblock');
 
         Route::post('users/create', [UserController::class, 'create'])
             ->middleware('can:create users')

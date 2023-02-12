@@ -22,6 +22,7 @@ class RolesPermissionsSeeder extends Seeder
         Permission::create(['name' => 'ban other users']);
         Permission::create(['name' => 'see own profile']);
         Permission::create(['name' => 'create users']);
+        Permission::create(['name' => 'block users']);
 
         
         $role = Role::create(['name' => 'Клиент']);
@@ -33,6 +34,7 @@ class RolesPermissionsSeeder extends Seeder
         $role->givePermissionTo('assign roles');
         $role->givePermissionTo('ban other users');
         $role->givePermissionTo('create users');
+        $role->givePermissionTo('block users');
 
 
         $role = Role::create(['name' => 'АСБК']);
