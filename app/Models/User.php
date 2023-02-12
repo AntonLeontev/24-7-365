@@ -20,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasRoles;
 
 
-    public const BANNED = 0;
+    public const BLOCKED = 0;
     public const ACTIVE = 1;
 
 

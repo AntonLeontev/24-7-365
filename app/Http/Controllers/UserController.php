@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserBlocked;
+use App\Events\UserUnblocked;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
@@ -45,7 +47,9 @@ class UserController extends Controller
 
     public function blockUser(User $user)
     {
-        $user->update(['status' => User::BANNED]);
+        $user->update(['status' => User::BLOCKED]);
+
+        event(new UserBlocked($user));
 
         return back();
     }
@@ -53,6 +57,8 @@ class UserController extends Controller
     public function unblockUser(User $user)
     {
         $user->update(['status' => User::ACTIVE]);
+
+        event(new UserUnblocked($user));
 
         return back();
     }

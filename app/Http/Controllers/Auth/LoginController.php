@@ -43,10 +43,9 @@ class LoginController extends Controller
 
             return $this->sendLockoutResponse($request);
         }
-
         
         if ($this->attemptLogin($request)) {
-            if (auth()->user()->status === User::BANNED) {
+            if (auth()->user()->status === User::BLOCKED) {
                 auth()->logout();
 				abort(403, 'Ваш аккаунт заблокирован');
             }

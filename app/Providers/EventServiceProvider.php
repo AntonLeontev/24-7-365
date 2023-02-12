@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\UserBlocked;
+use App\Events\UserUnblocked;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,6 +24,8 @@ class EventServiceProvider extends ServiceProvider
             \SocialiteProviders\VKontakte\VKontakteExtendSocialite::class . '@handle',
             \SocialiteProviders\Google\GoogleExtendSocialite::class . '@handle',
         ],
+		UserBlocked::class => [],
+		UserUnblocked::class => [],
     ];
 
 
