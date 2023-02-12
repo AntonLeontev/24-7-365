@@ -28,7 +28,7 @@ class StoreOrganizationProfileRequest extends FormRequest
             'type' => ['required', 'string', 'max:100'],
             'inn' => ['required', 'string', 'size:12'],
             'kpp' => ['required', 'string', 'size:12'],
-            'ogrn'=> ['required', 'string', 'size:13'],
+            'ogrn'=> ['required', 'string', 'min:12','max:15'],
             'director' => ['required', 'string', 'max:100'],
             'director_post' => ['required', 'string', 'max:100'],
             'accountant' => ['required', 'string', 'max:100'],

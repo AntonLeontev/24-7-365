@@ -111,7 +111,7 @@ $("#profile-organization-form").validate({
   ogrn: {
     required: true,
      digits: true,
-    maxlength: 13
+    maxlength: 15
   },  
     director: {
     required: true,

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('type', 100);
             $table->string('inn', 12);
             $table->string('kpp', 12);
-            $table->string('ogrn', 13);
+            $table->string('ogrn', 15);
             $table->string('director', 100);
             $table->string('director_post', 100);
             $table->string('accountant', 100);
