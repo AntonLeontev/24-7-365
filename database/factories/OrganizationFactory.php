@@ -18,10 +18,12 @@ class OrganizationFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::inRandomOrder()->first('id'),
-            'title' => $this->faker->company(),
+            // zdes' skorrektiroval, t.k. generiruytsa ne unikalnie znchenya
+            //'user_id' => User::inRandomOrder()->first('id'),
+            'user_id' =>$this->faker->unique()->numberBetween(1,20),
+            'title' => $this->faker->unique()->company(),
             'type' => 'ООО',
-            'inn' => (string) $this->faker->numberBetween(111111111111, 999999999999),
+            'inn' => (string) $this->faker->unique()->numberBetween(111111111111, 999999999999),
             'kpp' => (string) $this->faker->numberBetween(111111111111, 999999999999),
             'ogrn' => (string) $this->faker->numberBetween(1111111111111, 9999999999999),
             'director' => $this->faker->firstName('male'),
