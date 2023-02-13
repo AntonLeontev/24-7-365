@@ -40,7 +40,9 @@ class RefreshCommand extends Command
         $this->call('db:seed', ['--class' => 'UsersSeeder']);
         $this->call('db:seed', ['--class' => 'TariffsSeeder']);
         $this->call('db:seed', ['--class' => 'ApplicationSettingsSeeder']);
-
+        
+        $this->call('db:seed', ['--class' => 'ContractsSeeder']);
+        
         $this->call('cache:clear');
 
         return Command::SUCCESS;

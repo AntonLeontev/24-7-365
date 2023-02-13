@@ -23,7 +23,7 @@ class UserProfileController extends Controller
         //dlya bistrouy avtorizacii,
         Auth::loginUsingId(6);
         
-   
+    
     }
 
     public function profile(){

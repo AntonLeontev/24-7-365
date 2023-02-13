@@ -27,7 +27,43 @@
 
 </div>
 
+    @if ($message = Session::get('success'))
+                        <div class="container">
+                    	<div class="row">
+                    	
+                    	
+                    	 <div class="col align-self-center">
+                              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                  {{ $message }}.
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        </div>        
+                
+            @endif
 
+            @if ($errors->any())
+            
+                    <div class="container">
+                	<div class="row">
+                	       <div class="col align-self-center">
+                        		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                  <strong>Ошибка!</strong>
+                                  <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                             </div>
+                    
+                     </div>
+                        </div>
+            
+            @endif
 
 <div class="container">
 <div class="col mt-5"><h2>Данные пользователя</h2></div>

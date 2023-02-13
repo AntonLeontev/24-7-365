@@ -24,11 +24,12 @@
   
   @foreach ($contracts as $contract)
 			<tr>
-              <th scope="row">$contract->id</th>
-              <td>$contract->status</td>
-              <td>$contract->created_at</td>
-              <td>$contract->created_at</td>
-              <td>$contract->tariff_id</td>   
+              <th scope="row"></th>
+              <td>{{ $contract->status }}</td>
+              <td>{{ $contract->id }}</td>
+              <td>{{ $contract->created_at }}</td>
+              <td>{{ $contract->created_at }}</td>
+              <td>{{ $contract->tariff->title }}</td>   
             </tr>
 
  @endforeach
@@ -36,6 +37,7 @@
    
   </tbody>
 </table>
+ {{ $contracts->links() }}
  <p class="fst-italic">*Все операции по договорам происходят на внутренней странице договора. (при клике по строке с договором)</p>       
         
         

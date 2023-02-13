@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\ContractController;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,10 @@ Route::prefix('personal')
         ->name('save_profile_requisites');
         Route::post('save_profile_password/{user}', [UserProfileController::class, 'passwordReset'])
         ->name('save_profile_password');
+        
+        Route::get('contracts', [ContractController::class, 'index'])
+        ->middleware('can:see own profile')
+        ->name('users.contracts');
     });
 
 Route::prefix('admin')

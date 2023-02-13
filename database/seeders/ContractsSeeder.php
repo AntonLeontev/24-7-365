@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Organization;
+use App\Models\Contract;
 
 class ContractsSeeder extends Seeder
 {
@@ -14,6 +16,6 @@ class ContractsSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Contract::factory(20)->create();
     }
 }
