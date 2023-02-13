@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class StoreOrganizationProfileRequest extends FormRequest
 {
@@ -32,10 +33,11 @@ class StoreOrganizationProfileRequest extends FormRequest
      */
     public function rules()
     {
+       
         return [
             'title' => ['required', 'string', 'max:100'],
             'type' => ['required', 'string', 'max:100'],
-            'inn' => ['required', 'string', 'size:12'],
+            'inn' => ['required', 'string', 'size:12', Rule::unique('organizations','inn','user_id')->ignore(Auth::user()->id,'user_id')],
             'kpp' => ['required', 'string', 'size:12'],
             'ogrn'=> ['required', 'string', 'min:12','max:15'],
             'director' => ['required', 'string', 'max:100'],

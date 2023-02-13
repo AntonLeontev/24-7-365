@@ -32,7 +32,7 @@
 <div class="container">
 <div class="col mt-5"><h2>Данные пользователя</h2></div>
 <form id="profile-form">
-
+  @csrf
 <input type="hidden" id="profile-form-url" name="handler_url" value = '{{ route("save_profile", $user->id) }}'>
 
 
@@ -92,6 +92,7 @@
 
 <div class="container">
 <form id="profile-organization-form">
+  @csrf
 <div class="col mt-5"><h2>Данные по организации</h2></div>
 
 
@@ -170,6 +171,7 @@
 
 <div class="container">
 <form id="profile-requisites-form">
+  @csrf
 <input type="hidden" id="profile-form-requisites-url" name="handler_url" value = '{{ route("save_profile_requisites", $user->id) }}'>
 <input type="hidden"  name="req_id" @isset($requisites->id)  value='{{$requisites->id}}' @endisset>
 
