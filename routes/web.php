@@ -5,6 +5,7 @@ use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\PdfController;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,9 @@ Route::get('/', function () {
     $tariffs = Tariff::all();
     return view('welcome', compact('tariffs'));
 })->name('home');
+
+Route::view('pdf', 'pdf.invoice', ['sum' => 2599565.50]);
+Route::get('pdf/get', [PdfController::class, 'get'])->name('pdf.invoice');
 
 Auth::routes(['verify' => true]);
 
@@ -79,7 +83,6 @@ Route::prefix('admin')
             ->middleware('can:see other profiles')
             ->name('users.index');
 
-		
 		Route::post('settings/update', [ApplicationSettingsController::class, 'update'])
 			->middleware('can:change settings')
 			->name('settings.update');
