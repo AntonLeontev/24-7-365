@@ -44,7 +44,7 @@
           <div class="card-body">
             <h5 class="card-title">Количество месяцев {{$tariff->duration }}</h5>
             <p class="card-text">
-            Объем вклада: {{ ($tariff->max_amount == 0) ? 'без ограничений' : 'до '.$tariff->max_amount }}
+            Объем вклада: {{ ($tariff->max_amount->raw() == 0) ? 'без ограничений' : 'до '.$tariff->max_amount }}
             <br>
             Cрок размещения:: до {{$grouped_tariffs->max('duration')}} мес.
             </p>

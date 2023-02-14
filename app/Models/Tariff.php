@@ -33,8 +33,8 @@ class Tariff extends Model
     ];
 
 	protected $casts = [
-		//'min_amount' => AmountCast::class,
-		//'max_amount' => AmountCast::class,
+		'min_amount' => AmountCast::class,
+		'max_amount' => AmountCast::class,
 	];
 
     public function contracts(): HasMany
