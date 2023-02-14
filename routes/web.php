@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\ApplicationSettingsController;
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\ContractController;
-use App\Http\Controllers\PdfController;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Route;
 
@@ -19,13 +19,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// TODO перенести в контороллер
 Route::get('/', function () {
     $tariffs = Tariff::all();
     return view('welcome', compact('tariffs'));
 })->name('home');
 
-Route::view('pdf', 'pdf.invoice', ['sum' => 2599565.50]);
+//TODO Удалить лишние роуты
+Route::get('pdf', [PdfController::class, 'get']);
 Route::get('pdf/get', [PdfController::class, 'get'])->name('pdf.invoice');
 
 Auth::routes(['verify' => true]);
@@ -63,9 +64,6 @@ Route::prefix('personal')
         Route::get('add_contract', [ContractController::class, 'addContract'])
         ->middleware('can:see own profile')
         ->name('users.add_contract');
-        
-        
-       
     });
 
 Route::prefix('admin')
@@ -94,7 +92,15 @@ Route::prefix('admin')
             ->middleware('can:see other profiles')
             ->name('users.index');
 
-		Route::post('settings/update', [ApplicationSettingsController::class, 'update'])
-			->middleware('can:change settings')
-			->name('settings.update');
+        Route::post('settings/update', [ApplicationSettingsController::class, 'update'])
+            ->middleware('can:change settings')
+            ->name('settings.update');
+
+        // Route::post('settings/update', function(){return 'test';})
+        //     ->middleware('can:change settings')
+        //     ->name('settings.update');
+            
+        Route::get('settings', [ApplicationSettingsController::class, 'index'])
+            ->middleware('can:change settings')
+            ->name('settings.index');
     });

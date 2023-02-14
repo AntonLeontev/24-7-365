@@ -11,6 +11,18 @@ class ApplicationSettings extends Model
 
 
     protected $fillable = [
-        'payments_start'
+        'payments_start',
+		'organization_title',
+		'inn',
+		'kpp',
+		'ogrn',
+		'director',
+		'accountant',
+		'legal_address',
+		'actual_address',
+		'payment_account',
+		'correspondent_account',
+		'bik',
+		'bank',
     ];
 }
