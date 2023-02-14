@@ -17,6 +17,7 @@
       <th scope="col">Дата заключения</th>
       <th scope="col">Дата окончания</th>
       <th scope="col">Тариф</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -29,7 +30,8 @@
               <td>{{ $contract->id }}</td>
               <td>{{ $contract->created_at }}</td>
               <td>{{ $contract->created_at }}</td>
-              <td>{{ $contract->tariff->title }}</td>   
+              <td>{{ $contract->tariff->title }}</td> 
+                       <td><a href="{{ route("users.contract_show", $contract->id) }}"><button type="button" class="btn btn-success">подробнее</button></a></td>    
             </tr>
 
  @endforeach

@@ -55,6 +55,12 @@ Route::prefix('personal')
         Route::get('contracts', [ContractController::class, 'index'])
         ->middleware('can:see own profile')
         ->name('users.contracts');
+        
+        Route::get('contract_show/{contract_id}', [ContractController::class, 'show'])
+        ->middleware('can:see own profile')
+        ->name('users.contract_show');
+        
+       
     });
 
 Route::prefix('admin')
