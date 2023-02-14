@@ -60,6 +60,11 @@ Route::prefix('personal')
         ->middleware('can:see own profile')
         ->name('users.contract_show');
         
+        Route::get('add_contract', [ContractController::class, 'addContract'])
+        ->middleware('can:see own profile')
+        ->name('users.add_contract');
+        
+        
        
     });
 

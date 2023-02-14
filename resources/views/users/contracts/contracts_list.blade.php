@@ -6,7 +6,17 @@
     <div class="container">
         <div class="row">
         
+  
+        
         <h1>Активные договоры</h1>
+        
+        
+      <nav class="navbar bg-body-tertiary">
+          <form class="container-fluid justify-content-end">
+         <a href="{{ route("users.add_contract") }}"> <button type="button" class="btn btn-outline-primary">Добавить договор</button> </a>
+          </form>
+        </nav>
+        
         
         <table class="table">
   <thead>
@@ -40,7 +50,7 @@
   </tbody>
 </table>
  {{ $contracts->links() }}
- <p class="fst-italic">*Все операции по договорам происходят на внутренней странице договора. (при клике по строке с договором)</p>       
+ <p class="fst-italic">*Все операции по договорам происходят на внутренней странице договора. (при клике по кнопке "подробнее" в строке договора)</p>       
         
         
         </div>
