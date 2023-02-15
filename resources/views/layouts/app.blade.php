@@ -14,7 +14,7 @@
 </head>
 <body>
     <div id="app">
-
+        </div>
         <x-header />
 
         <main class="py-4">
@@ -22,6 +22,6 @@
         </main>
 
 		<toasts ref="toasts"></toasts>
-    </div>
+   
 </body>
 </html>
