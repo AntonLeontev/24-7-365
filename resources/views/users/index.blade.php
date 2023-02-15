@@ -10,17 +10,6 @@
                     Create user
                 </button>
             </div>
-			@can('change settings')
-				<div class="col d-flex gap-2">
-					Месяц начала выплат
-					<payments-start 
-						action="{{ route('settings.update') }}" 
-						:settings="{{ json_encode(config('allowed-settings.payments_start')) }}"
-						actual="{{ settings()->payments_start }}" 
-						@toast="toast"
-					></payments-start>
-				</div>
-			@endcan
         </div>
 		<div class="row">
 			<div class="col">ФИО</div>

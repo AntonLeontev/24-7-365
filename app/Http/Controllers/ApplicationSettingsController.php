@@ -7,12 +7,21 @@ use App\Models\ApplicationSettings;
 
 class ApplicationSettingsController extends Controller
 {
+    public function index(ApplicationSettings $settings)
+    {
+        return view('settings.index');
+    }
+
     public function update(UpdateApplicationSettingsRequest $request)
     {
         ApplicationSettings::find(1)->update($request->validated());
 
-		cache()->forget('settings');
+        cache()->forget('settings');
 
-        return response()->json();
+		if ($request->ajax()) {
+			return response()->json();
+		}
+
+		return to_route('settings.index');
     }
 }

@@ -25,7 +25,19 @@ class UpdateApplicationSettingsRequest extends FormRequest
     public function rules()
     {
         return [
-            'payments_start' => [Rule::in(config('allowed-settings.payments_start'))],
+            'payments_start' => ['sometimes', Rule::in(config('allowed-settings.payments_start'))],
+            'organization_title' => ['sometimes', 'string', 'max:100'],
+            'inn' => ['sometimes', 'required', 'digits:10,13'],
+            'kpp' => ['sometimes','required_with:organization_title', 'digits:9'],
+            'ogrn' => ['sometimes','required_with:organization_title', 'digits_between:12,15'],
+            'director' => ['sometimes','required_with:organization_title', 'string', 'max:100'],
+            'accountant' => ['sometimes','required_with:organization_title', 'string', 'max:100'],
+            'legal_address' => ['sometimes','required_with:organization_title', 'string', 'max:255'],
+            'actual_address' => ['sometimes','required_with:organization_title', 'string', 'max:255'],
+            'payment_account' => ['sometimes','required_with:organization_title', 'digits:20'],
+            'correspondent_account' => ['sometimes','required_with:organization_title', 'digits:20'],
+            'bik' => ['sometimes','required_with:organization_title', 'digits:9'],
+            'bank' => ['sometimes','required_with:organization_title', 'string', 'max:255'],
         ];
     }
 }

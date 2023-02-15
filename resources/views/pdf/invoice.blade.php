@@ -1,7 +1,6 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	{{-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> --}}
 	
 	<style type="text/css">
 	@font-face { 
@@ -52,23 +51,23 @@
 	<table class="requesites">
 		<tbody>
 			<tr>
-				<td colspan="2" style="border-bottom: none;">ЗАО "БАНК", г.Москва</td>
+				<td colspan="2" style="border-bottom: none;">{{ settings()->bank }}<br><br></td>
 				<td>БИК</td>
-				<td style="border-bottom: none;">000000000</td>
+				<td style="border-bottom: none;">{{ settings()->bik }}</td>
 			</tr>
 			<tr>
 				<td colspan="2" style="border-top: none; font-size: 10px;">Банк получателя</td>
 				<td>Сч. №</td>
-				<td style="border-top: none;">00000000000000000000</td>
+				<td style="border-top: none;">{{ settings()->payment_account }}</td>
 			</tr>
 			<tr>
-				<td width="25%">ИНН 0000000000</td>
-				<td width="30%">КПП 000000000</td>
+				<td width="25%">ИНН {{ settings()->inn }}</td>
+				<td width="30%">КПП {{ settings()->kpp }}</td>
 				<td width="10%" rowspan="3">Сч. №</td>
-				<td width="35%" rowspan="3">00000000000000000000</td>
+				<td width="35%" rowspan="3">{{ settings()->correspondent_account }}</td>
 			</tr>
 			<tr>
-				<td colspan="2" style="border-bottom: none;">ООО "Компания"</td>
+				<td colspan="2" style="border-bottom: none;">{{ settings()->organization_title }}<br><br></td>
 			</tr>
 			<tr>
 				<td colspan="2" style="border-top: none; font-size: 10px;">Получатель</td>
@@ -81,12 +80,17 @@
 	<table class="contract">
 		<tbody>
 			<tr>
-				<td width="15%">Поставщик:</td>
-				<th width="85%">ООО "Компания", ИНН 0000000000, КПП 000000000, 125009, Москва г, Тверская, дом № 9</th>
+				<td width="15%">Поставщик:<br>(Исполнитель)</td>
+				<th width="85%">{{ settings()->organization_title }}, ИНН {{ settings()->inn }}, КПП {{ settings()->kpp }}, {{ settings()->legal_address }}</th>
 			</tr>
 			<tr>
-				<td>Покупатель:</td>
-				<th>ООО "Покупатель", ИНН 0000000000, КПП 000000000, 119019, Москва г, Новый Арбат, дом № 10
+				<td>Покупатель:<br>(Заказчик)</td>
+				<th> ООО Пример
+				</th>
+			</tr>
+			<tr>
+				<td>Основание:</td>
+				<th> Какой-то текст
 				</th>
 			</tr>
 		</tbody>
@@ -109,14 +113,14 @@
 				<td align="left">Наименование услуги</td>
 				<td align="right">1</td>
 				<td align="left">шт</td>
-				<td align="right"></td>
-				<td align="right"></td>
+				<td align="right">{{ number_format($sum, 2, ',', ' ') }}</td>
+				<td align="right">{{ number_format($sum, 2, ',', ' ') }}</td>
 			</tr>
 		</tbody>
 		<tfoot>
 			<tr>
 				<th colspan="5">Итого:</th>
-				<th>р</th>
+				<th>{{ number_format($sum, 2, ',', ' ') }} р</th>
 			</tr>
 			<tr>
 				<th colspan="5">Без налога (НДС)</th>
@@ -124,13 +128,13 @@
 			</tr>
 			<tr>
 				<th colspan="5">Всего к оплате:</th>
-				<th>{{ $sum }} р</th>
+				<th>{{ number_format($sum, 2, ',', ' ') }} р</th>
 			</tr>
 		</tfoot>
 	</table>
 	
 	<div class="total">
-		<p>Всего наименований 1, на сумму {{ $sum }} руб.</p>
+		<p>Всего наименований 1, на сумму {{ number_format($sum, 2, ',', ' ') }} руб.</p>
 		<p><strong>{{ amount_to_string($sum) }}</strong></p>
 	</div>
 	
@@ -139,11 +143,11 @@
 			<tbody>
 				<tr>
 					<th width="30%">Руководитель</th>
-					<td width="70%">Путин В.В.</td>
+					<td width="70%">{{ settings()->director }}</td>
 				</tr>
 				<tr>
 					<th>Бухгалтер</th>
-					<td>Шольц О.Б.</td>
+					<td>{{ settings()->accountant }}</td>
 				</tr>
 			</tbody>
 		</table>

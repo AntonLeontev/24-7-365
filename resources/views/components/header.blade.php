@@ -26,6 +26,13 @@
                             </li>
                         @endif
                     @endcan
+					@can('change settings')
+                        @if (Route::has('settings.index'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('settings.index') }}">Настройки</a>
+                            </li>
+                        @endif
+                    @endcan
                 @endauth
             </ul>
 
