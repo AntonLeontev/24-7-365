@@ -72,11 +72,11 @@ Route::prefix('admin')
             ->middleware('can:assign roles')
             ->name('users.update-role');
 
-        Route::get('users/{user}/block', [UserController::class, 'blockUser'])
+        Route::post('users/{user}/block', [UserController::class, 'blockUser'])
             ->middleware('can:block users')
             ->name('users.block');
 
-        Route::get('users/{user}/unblock', [UserController::class, 'unblockUser'])
+        Route::post('users/{user}/unblock', [UserController::class, 'unblockUser'])
             ->middleware('can:block users')
             ->name('users.unblock');
 
@@ -96,10 +96,6 @@ Route::prefix('admin')
             ->middleware('can:change settings')
             ->name('settings.update');
 
-        // Route::post('settings/update', function(){return 'test';})
-        //     ->middleware('can:change settings')
-        //     ->name('settings.update');
-            
         Route::get('settings', [ApplicationSettingsController::class, 'index'])
             ->middleware('can:change settings')
             ->name('settings.index');

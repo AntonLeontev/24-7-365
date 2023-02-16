@@ -8,15 +8,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
-
+	@routes
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
-	<x-header />
-	
-	<main class="py-4">
-		@yield('content')
-	</main>
+	<div id="app">
+		<x-header />
+		
+		<main class="py-4">
+			@yield('content')
+		</main>
+		
+		<toasts ref="toasts"></toasts>
+	</div>
 </body>
 </html>

@@ -7,6 +7,7 @@ use App\Events\UserUnblocked;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -15,12 +16,16 @@ class UserController extends Controller
         return view('users.profile', ['user' => auth()->user()]);
     }
 
-    public function index(User $user)
+    public function index(User $user, Request $request)
     {
         $users = $user->with(['roles', 'organization', 'account'])
             ->whereNot('email', 'superuser@test.ru')
             ->orderByDesc('created_at')
             ->paginate();
+
+		if ($request->ajax()) {
+			return response()->json($users);
+		}
 
         return view('users.index', compact('users'));
     }

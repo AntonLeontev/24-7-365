@@ -1,74 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Пользователи')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createUser" type="button">
-                    Create user
-                </button>
-            </div>
-        </div>
-		<div class="row">
-			<div class="col">ФИО</div>
-			<div class="col">Роль</div>
-			<div class="col">Организация</div>
-			<div class="col">Сумма договоров</div>
-			<div class="col">Сумма выплат</div>
-			<div class="col">Статус</div>
-			@can('block users')
-				<div class="col">Блокировка</div>
-			@endcan
-		</div>
-        @foreach ($users as $user)
-            <div class="row" href="{{ route('users.show', $user->id) }}">
-                <div class="col">
-                    <a href="{{ route('users.show', $user->id) }}">
-                        {{ $user->first_name }} {{ $user->last_name }}
-                    </a>
-                </div>
-                <div class="col">
-                    @if ($user->roles->count() === 0)
-                        Роль не назначена
-                    @else
-                        @foreach ($user->roles as $role)
-                            {{ $role->name }}
-                        @endforeach
-                    @endif
-                </div>
-				<div class="col">
-					@isset($user->organization)
-						{{ $user->organization?->title }}
-					@else
-						Нет
-					@endisset
-				</div>
-				<div class="col">
-
-				</div>
-				<div class="col"></div>
-				<div class="col">
-					@if ($user->status === $user::ACTIVE)
-						<span class="text-success">Активен</span>
-					@else
-						<span class="text-danger">Заблокирован</span>
-					@endif
-				</div>
-				@can('block users')
-					<div class="col">
-						@if ($user->status === $user::ACTIVE)
-							<a href="{{ route('users.block', $user->id) }}" class="btn">Заблокировать</a>
-						@else
-							<a href="{{ route('users.unblock', $user->id) }}" class="btn">Разблокировать</a>
-						@endif
-					</div>
-				@endcan
-            </div>
-        @endforeach
-        {{ $users->links() }}
-    </div>
+    <users :users="{{ json_encode($users) }}" @toast="toast"></users>
 
 
     <!-- Modal -->
