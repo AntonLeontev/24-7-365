@@ -12,15 +12,13 @@
         </button>
       </div>
     </div>
-    <div class="row">
-      <div class="col">ФИО</div>
-      <div class="col">Роль</div>
-      <div class="col">Организация</div>
-      <div class="col">Сумма договоров</div>
-      <div class="col">Сумма выплат</div>
-      <div class="col">Статус</div>
-      <div class="col">Блокировка</div>
-    </div>
+
+    <table-header
+      @change-sort="changeSort"
+      :sort="this.sort"
+      :order="this.order"
+    ></table-header>
+
     <div v-for="user in users.data">
       <div class="row" :href="route('users.show', user.id)">
         <div class="col">
@@ -29,11 +27,10 @@
           </a>
         </div>
         <div class="col">
-          <span v-if="user.roles.length === 0">Роль не назначена</span>
-          <span v-else v-for="role in user.roles">{{ role.name }}</span>
+          <span>{{ user.role ?? "Роль не незначена" }}</span>
         </div>
-        <div class="col">
-          {{ user.organization?.title ?? "Без организации" }}
+        <div class="col text-break">
+          {{ user.organization ?? "Нет" }}
         </div>
         <div class="col"></div>
         <div class="col"></div>
@@ -72,9 +69,14 @@ export default {
   mounted() {
     this.update();
   },
+  computed: {},
   data() {
     return {
       users: {},
+      page: 1,
+      search: "",
+      sort: "",
+      order: "ASC",
     };
   },
   props: {},
@@ -82,14 +84,19 @@ export default {
     route(...vars) {
       return route(...vars);
     },
-    async update(url = route("users.index")) {
+    async update(url = this.url()) {
       await axios
         .get(url, {})
         .then((response) => {
           this.users = response.data;
         })
         .catch((data) => {
-          this.$emit("toast", { type: "error", message: data.message });
+          if (data.response.status === 401) {
+            location.reload();
+            return;
+          }
+
+          this.$emit("toast", { type: "error", message: data.message, autohide: false });
         });
     },
     async submit(event) {
@@ -108,8 +115,41 @@ export default {
           console.log(data);
         });
     },
-    changePage(url) {
-      this.update(url);
+    changePage(data) {
+      this.page = data.page;
+      this.update(data.href);
+    },
+    url() {
+      let url = new URL(route("users.index"));
+
+      if (this.page != 1) url.searchParams.append("page", this.page);
+
+      if (this.search !== "") url.searchParams.append("search", this.search);
+
+      if (this.sort !== "") {
+        url.searchParams.append("sort", this.sort);
+        url.searchParams.append("order", this.order);
+      }
+
+      return url.href;
+    },
+    changeSort(data) {
+      if (this.sort === data.title) {
+        this.changeOrder();
+      } else {
+        this.sort = data.title;
+        this.order = "ASC";
+      }
+
+      this.update();
+    },
+    changeOrder() {
+      if (this.order === "ASC") {
+        this.order = "DESC";
+        return;
+      }
+
+      this.order = "ASC";
     },
   },
 };

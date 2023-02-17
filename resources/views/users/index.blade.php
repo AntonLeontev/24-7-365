@@ -3,7 +3,7 @@
 @section('title', 'Пользователи')
 
 @section('content')
-    <users :users="{{ json_encode($users) }}" @toast="toast"></users>
+    <users @toast="toast"></users>
 
 
     <!-- Modal -->

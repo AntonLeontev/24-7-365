@@ -1,5 +1,5 @@
 <template>
-  <div class="toast-container bottom-0 end-0 p-3">
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <transition name="fade">
       <div
         class="toast show align-items-center"

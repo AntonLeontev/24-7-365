@@ -5,13 +5,14 @@
     v-if="paginator.last_page > 1"
   >
     <ul class="pagination">
-      <li class="page-item disabled" aria-disabled="true" v-if="paginator.prev_page_url">
+      <li class="page-item disabled" aria-disabled="true" v-if="!paginator.prev_page_url">
         <span class="page-link">Назад</span>
       </li>
       <li class="page-item" v-else>
         <a
           class="page-link"
           :href="paginator.prev_page_url"
+          :data-page="paginator.current_page - 1"
           rel="prev"
           @click.prevent="change"
           >Назад</a
@@ -21,6 +22,7 @@
         <a
           class="page-link"
           :href="paginator.next_page_url"
+          :data-page="paginator.current_page + 1"
           rel="next"
           @click.prevent="change"
           >Вперед</a
@@ -36,9 +38,7 @@
 <script>
 export default {
   name: "SimplePagination",
-  created() {
-    console.log(this.paginator);
-  },
+  created() {},
   data() {
     return {};
   },
@@ -50,7 +50,10 @@ export default {
       let target = event.target;
       if (target.tagName != "A") return;
 
-      this.$emit("change-page", target.getAttribute("href"));
+      this.$emit("change-page", {
+        href: target.getAttribute("href"),
+        page: target.dataset.page,
+      });
     },
   },
 };
