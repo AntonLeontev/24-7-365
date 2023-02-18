@@ -42,7 +42,6 @@ Route::middleware('guest')->group(function () {
 Route::prefix('personal')
     ->middleware('auth')->group(function () {
         Route::get('profile', [UserProfileController::class, 'profile'])
-            ->middleware('can:see own profile')
             ->name('users.profile');
         Route::post('save_profile/{user}', [UserProfileController::class, 'storeProfile'])
         ->name('save_profile');

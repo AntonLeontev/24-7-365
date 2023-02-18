@@ -15,6 +15,9 @@ return new class extends Migration
      */
     public function up()
     {
+        
+     
+        
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)
@@ -28,7 +31,11 @@ return new class extends Migration
 			$table->unsignedTinyInteger('status');
 			$table->softDeletes();
             $table->timestamps();
+            
+            
         });
+        
+          
     }
 
     /**

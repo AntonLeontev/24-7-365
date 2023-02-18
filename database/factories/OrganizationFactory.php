@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Organization>
  */
@@ -18,9 +19,7 @@ class OrganizationFactory extends Factory
     public function definition()
     {
         return [
-            // zdes' skorrektiroval, t.k. generiruytsa ne unikalnie znchenya
             //'user_id' => User::inRandomOrder()->first('id'),
-            'user_id' =>$this->faker->unique()->numberBetween(1,20),
             'title' => $this->faker->unique()->company(),
             'type' => '1',
             'inn' => (string) $this->faker->unique()->numberBetween(111111111111, 999999999999),

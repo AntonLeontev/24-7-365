@@ -4,22 +4,21 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class RefreshCommand extends Command
+class NewRefreshCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = '24:refresh';
+    protected $signature = '24:refresh2';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Refreshes application';
-
+    protected $description = 'Command description';
 
     /**
      * Execute the console command.
@@ -32,21 +31,21 @@ class RefreshCommand extends Command
             echo 'На проде нельзя!' . PHP_EOL;
             return Command::FAILURE;
         }
-
+        
+        $this->call('migrate:fresh');
         $this->call('migrate:fresh');
         $this->call('db:seed', ['--class' => 'SuperUserSeeder']);
         $this->call('db:seed', ['--class' => 'RolesPermissionsSeeder']);
         $this->call('db:seed', ['--class' => 'TestUsersWithRolesSeeder']);
-        $this->call('db:seed', ['--class' => 'UsersSeeder']);
+
         $this->call('db:seed', ['--class' => 'TariffsSeeder']);
         $this->call('db:seed', ['--class' => 'ApplicationSettingsSeeder']);
         
-        $this->call('db:seed', ['--class' => 'AccountsSeeder']);
-        $this->call('db:seed', ['--class' => 'ContractsSeeder']);
-        $this->call('db:seed', ['--class' => 'PaymentsSeeder']);
+        $this->call('db:seed', ['--class' => 'NewDbSeeder']);
         
+  
         $this->call('cache:clear');
-
+        
         return Command::SUCCESS;
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Contract;
 use App\Models\Tariff;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 
 class ContractController extends Controller
@@ -35,7 +36,22 @@ class ContractController extends Controller
     }
     
     
+    public function show(Request $request){
+        
+
+        
+        $contract = Contract::with('tariff')
+        ->where('id',$request->contract_id)
+        ->first();
     
+        
+        $payments = Payment::where('contract_id',$request->contract_id)
+        ->orderByDesc('created_at')
+        ->paginate();
+        
+        return view('users.contracts.contract', compact('contract','payments'));
+        
+    }
     
     public function addContract(){
         
