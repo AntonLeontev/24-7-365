@@ -33,15 +33,14 @@ class NewRefreshCommand extends Command
         }
         
         $this->call('migrate:fresh');
-        $this->call('migrate:fresh');
-        $this->call('db:seed', ['--class' => 'SuperUserSeeder']);
         $this->call('db:seed', ['--class' => 'RolesPermissionsSeeder']);
+        $this->call('db:seed', ['--class' => 'NewDbSeeder']);
+        $this->call('db:seed', ['--class' => 'SuperUserSeeder']);
         $this->call('db:seed', ['--class' => 'TestUsersWithRolesSeeder']);
 
         $this->call('db:seed', ['--class' => 'TariffsSeeder']);
         $this->call('db:seed', ['--class' => 'ApplicationSettingsSeeder']);
         
-        $this->call('db:seed', ['--class' => 'NewDbSeeder']);
         
   
         $this->call('cache:clear');

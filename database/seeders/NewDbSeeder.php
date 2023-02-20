@@ -24,28 +24,28 @@ class NewDbSeeder extends Seeder
         //$organization = Organization::factory()->count(3)->create();
         for($i=0;$i<10;$i++){
         
-        $user = User::factory()
-        ->create();
-        
-        $organization = Organization::factory()
-        ->for($user)
-        ->create();
-        
-        $account = Account::factory()
-        ->for($organization)
-        ->create();   
-        
-        $contract = Contract::factory()
-        ->count(rand(2,8))
-        ->for($user)
-        ->for($organization)
-        ->create();
-        
-        $payment = Payment::factory()
-        ->count(rand(3,11))
-        ->for($account)
-        ->for($contract[0])
-        ->create();
+			$user = User::factory()
+			->create();
+			
+			$organization = Organization::factory()
+			->for($user)
+			->create();
+			
+			$account = Account::factory()
+			->for($organization)
+			->create();   
+			
+			$contract = Contract::factory()
+			->count(rand(2,8))
+			->for($user)
+			->for($organization)
+			->create();
+			
+			$payment = Payment::factory()
+			->count(rand(3,11))
+			->for($account)
+			->for($contract[0])
+			->create();
         
         }
         
