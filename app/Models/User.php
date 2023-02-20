@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -48,8 +49,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_visit_at' => 'datetime',
     ];
 
-
-   
     
     public function organization(): HasOne
     {
@@ -61,8 +60,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Contract::class);
     }
 
-    public function account(): HasManyThrough
+    public function account(): HasOneThrough
     {
-        return $this->hasManyThrough(Account::class, Organization::class);
+        return $this->hasOneThrough(Account::class, Organization::class);
     }
 }

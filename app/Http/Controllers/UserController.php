@@ -7,6 +7,7 @@ use App\Events\UserUnblocked;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
+use App\ValueObjects\Amount;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,8 +30,9 @@ class UserController extends Controller
                 DB::raw('organizations.title AS organization'),
                 'role_id',
                 DB::raw('roles.name AS role'),
-                ])
-            ->with(['roles', 'account'])
+                DB::raw('(SELECT SUM(amount) from contracts where user_id = users.id) as contracts_sum')
+            ])
+            ->with(['account'])
             ->leftJoin('organizations', 'users.id', 'organizations.user_id')
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')
             ->leftJoin('roles', 'role_id', 'roles.id')
@@ -45,6 +47,14 @@ class UserController extends Controller
                 }
 
                 $query->orderByDesc($request->sort);
+            })
+            ->get()
+            ->transform(function ($item) {
+                if (!is_null($item->contracts_sum)) {
+					$item->contracts_sum = new Amount($item->contracts_sum);
+                }
+
+                return $item;
             })
             ->paginate()
             ->withQueryString();

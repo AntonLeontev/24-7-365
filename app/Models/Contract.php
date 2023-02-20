@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\AmountCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +26,10 @@ class Contract extends Model
         'amount',
         'status',
     ];
+
+	protected $casts = [
+		'amount' => AmountCast::class,
+	];
 
 
     public function user(): BelongsTo

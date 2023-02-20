@@ -22,7 +22,7 @@
       >Организация</column-title
     >
     <column-title
-      title="contract_sum"
+      title="contracts_sum"
       :sort="this.sort"
       :order="this.order"
       @change-sort="changeSort"

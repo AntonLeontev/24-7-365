@@ -46,18 +46,15 @@ final class Amount implements JsonSerializable
         return $this->value;
     }
 
-    public function jsonSerialize(): string
+    public function jsonSerialize(): array
     {
-        return json_encode(
-            [
+        return [
                 'raw' => $this->raw(),
                 'sign' => $this->currencySign(),
                 'currency' => $this->currency(),
                 'amount' => $this->amount(),
                 'formatted' => $this->__toString(),
-            ],
-            JSON_UNESCAPED_UNICODE
-        );
+            ];
     }
 
     public function __toString(): string

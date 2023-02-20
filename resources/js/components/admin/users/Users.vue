@@ -32,7 +32,7 @@
         <div class="col text-break">
           {{ user.organization ?? "Нет" }}
         </div>
-        <div class="col"></div>
+        <div class="col">{{ user.contracts_sum?.formatted ?? 0 }}</div>
         <div class="col"></div>
         <div class="col">
           <span class="text-success" v-if="user.status == 1">Активен</span>
