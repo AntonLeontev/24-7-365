@@ -11,6 +11,9 @@
           Create user
         </button>
       </div>
+      <div class="col">
+        <input type="text" v-model="search" @change="() => update()" />
+      </div>
     </div>
 
     <table-header

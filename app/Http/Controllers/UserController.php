@@ -30,28 +30,34 @@ class UserController extends Controller
                 DB::raw('organizations.title AS organization'),
                 'role_id',
                 DB::raw('roles.name AS role'),
-                DB::raw('(SELECT SUM(amount) from contracts where user_id = users.id) as contracts_sum')
+                DB::raw('(SELECT SUM(amount) FROM contracts WHERE user_id = users.id) AS contracts_sum')
             ])
-            ->with(['account'])
             ->leftJoin('organizations', 'users.id', 'organizations.user_id')
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')
             ->leftJoin('roles', 'role_id', 'roles.id')
             ->whereNot('email', 'superuser@test.ru')
-            ->when(!$request->has('sort'), function (Builder $query) {
+            ->when(!request()->has('sort'), function (Builder $query) {
                 $query->orderByDesc('users.created_at');
             })
-            ->when($request->has(['sort', 'order']), function (Builder $query) use ($request) {
-                if ($request->order === 'ASC') {
-                    $query->orderBy($request->sort);
+            ->when(request()->has(['sort', 'order']), function (Builder $query) {
+                if (request()->order === 'ASC') {
+                    $query->orderBy(request()->sort);
                     return;
                 }
 
-                $query->orderByDesc($request->sort);
+                $query->orderByDesc(request()->sort);
+            })
+            ->when(request()->has('search'), function (Builder $query) {
+                $query->where(function (Builder $query) {
+                    $query->where('first_name', 'like', '%' . request()->search . '%')
+                        ->orWhere('last_name', 'like', '%' . request()->search . '%')
+                        ->orWhere('organizations.title', 'like', '%' . request()->search . '%');
+                });
             })
             ->get()
             ->transform(function ($item) {
                 if (!is_null($item->contracts_sum)) {
-					$item->contracts_sum = new Amount($item->contracts_sum);
+                    $item->contracts_sum = new Amount($item->contracts_sum);
                 }
 
                 return $item;
@@ -59,7 +65,7 @@ class UserController extends Controller
             ->paginate()
             ->withQueryString();
 
-        if ($request->ajax()) {
+        if (request()->ajax()) {
             return response()->json($users);
         }
 
