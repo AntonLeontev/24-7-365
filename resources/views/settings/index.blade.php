@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('scripts')
+	@vite(['resources/js/settings.js'])
+@endsection
+
 @section('title', 'Настройки приложения')
 
 @section('content')

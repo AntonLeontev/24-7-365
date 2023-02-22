@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('scripts')
+	@vite(['resources/js/users.js'])
+@endsection
+
 @section('title', 'Пользователи')
 
 @section('content')

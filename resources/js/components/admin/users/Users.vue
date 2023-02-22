@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import TableHeader from "./TableHeader.vue";
+
 export default {
   name: "Users",
   created() {},
@@ -155,6 +157,7 @@ export default {
       this.order = "ASC";
     },
   },
+  components: { TableHeader },
 };
 </script>
 

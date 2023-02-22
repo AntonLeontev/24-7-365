@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import ColumnTitle from "./ColumnTitle.vue";
+
 export default {
   name: "TableHeader",
   created() {},
@@ -62,6 +64,7 @@ export default {
       this.$emit("change-sort", data);
     },
   },
+  components: { ColumnTitle },
 };
 </script>
 
