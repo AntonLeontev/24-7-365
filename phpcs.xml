@@ -115,9 +115,6 @@
 		</properties>
 	</rule>
 
-	<!-- Запрещает комментарии после кода в одной строке -->
-    <rule ref="SlevomatCodingStandard.Commenting.DisallowCommentAfterCode"/>
-
 	<!-- Удаляет пустые комментарии -->
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
 

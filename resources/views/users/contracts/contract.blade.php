@@ -39,7 +39,7 @@
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $payment->amount }}</td>
                             <td>{{ $payment->status === $payment::STATUS_PENDING ? 'Ожидается' : 'Выполнен' }}</td>
-                            <td>{{ $contract->created_at }}</td>
+                            <td>{{ $payment->created_at }}</td>
                         </tr>
                     @endforeach
                 </tbody>

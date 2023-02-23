@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ContractCanceled;
 use App\Events\ContractCreated;
+use App\Http\Requests\CancelContractRequest;
 use App\Http\Requests\StoreContractRequest;
 use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ContractController extends Controller
@@ -26,7 +27,7 @@ class ContractController extends Controller
         }
         
         $contracts = Contract::with('tariff')->where('organization_id', $organization->id)
-        ->where('status', '1')
+        ->whereIn('status', [Contract::ACTIVE, Contract::PENDING, Contract::CANCELED])
         ->where('deleted_at', null)
         ->orderByDesc('created_at')
         ->paginate();
@@ -40,8 +41,8 @@ class ContractController extends Controller
         $contract->load('tariff');
         
         $payments = Payment::where('contract_id', $contract->id)
-			->orderByDesc('created_at')
-			->paginate();
+            ->orderByDesc('created_at')
+            ->paginate();
         
         return view('users.contracts.contract', compact('contract', 'payments'));
     }
@@ -58,8 +59,17 @@ class ContractController extends Controller
     {
         $contract = Contract::create($request->except(['_token']));
 
-		event(new ContractCreated($contract));
+        event(new ContractCreated($contract));
 
         return to_route('users.contract_show', $contract->id);
+    }
+
+    public function cancel(Contract $contract, CancelContractRequest $request)
+    {
+        $contract->updateOrFail(['status' => $contract::CANCELED]);
+
+        event(new ContractCanceled($contract));
+
+        return to_route('users.contracts');
     }
 }

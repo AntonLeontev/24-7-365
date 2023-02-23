@@ -29,7 +29,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 			$table->unsignedBigInteger('amount');
-			$table->unsignedTinyInteger('status')->default(Contract::ACTIVE);
+			$table->unsignedTinyInteger('status')->default(Contract::PENDING);
 			$table->softDeletes();
             $table->timestamps();
         });
