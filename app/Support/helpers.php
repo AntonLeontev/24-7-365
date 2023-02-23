@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\ApplicationSettings;
+use App\Models\Tariff;
 use App\Support\AmountToString;
 use Spatie\Permission\Models\Role;
 
@@ -35,5 +36,12 @@ if (! function_exists('amount_to_string')) {
     function amount_to_string(float | int $number)
     {
         return mb_ucfirst(app(AmountToString::class)->do($number));
+    }
+}
+
+if (! function_exists('tariffs')) {
+    function tariffs()
+    {
+        return Tariff::where('status', Tariff::ACTIVE)->get()->groupBy('title');
     }
 }

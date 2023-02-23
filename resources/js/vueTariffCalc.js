@@ -8,14 +8,16 @@ import { createApp } from "vue";
 	annualRate: 1,
 	period:1,
 	tariffTitle: 'Выбирете Тариф',
+	tariffId: null,
 	}
   },
   methods: {
   
-	setCalcData: function(annualRate, period, title){
+	setCalcData: function(annualRate, period, title, tariffId){
 		this.annualRate = annualRate;
 		this.period = period;
 		this.tariffTitle = title;
+		this.tariffId = tariffId;
 	},
 	setAnnualRate: function(value){
 		this.annualRate = value;

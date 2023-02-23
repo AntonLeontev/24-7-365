@@ -56,13 +56,17 @@ Route::prefix('personal')
         ->middleware('can:see own profile')
         ->name('users.contracts');
         
-        Route::get('contract_show/{contract_id}', [ContractController::class, 'show'])
+        Route::get('contract_show/{contract}', [ContractController::class, 'show'])
         ->middleware('can:see own profile')
         ->name('users.contract_show');
         
-        Route::get('add_contract', [ContractController::class, 'addContract'])
+        Route::get('add_contract', [ContractController::class, 'create'])
         ->middleware('can:see own profile')
         ->name('users.add_contract');
+
+        Route::post('add_contract', [ContractController::class, 'store'])
+			->middleware('can:see own profile')
+			->name('contracts.store');
     });
 
 Route::prefix('admin')

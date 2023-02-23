@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\ContractCreated;
 use App\Events\UserBlocked;
 use App\Events\UserUnblocked;
+use App\Listeners\CreateIncomingPayment;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -26,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         ],
 		UserBlocked::class => [],
 		UserUnblocked::class => [],
+		ContractCreated::class => [
+			CreateIncomingPayment::class,
+		],
     ];
 
 

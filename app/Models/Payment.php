@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\AmountCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,9 @@ class Payment extends Model
     // Исходящий платеж
     public const TYPE_CREDIT = 2;
 
+	public const STATUS_PENDING = 0;
+	public const STATUS_PROCESSED = 1;
+
 
     protected $fillable = [
         'account_id',
@@ -27,6 +31,10 @@ class Payment extends Model
         'type',
         'status',
     ];
+
+	protected $casts = [
+		'amount' => AmountCast::class,
+	];
 
 
     public function account(): BelongsTo

@@ -39,7 +39,7 @@
               <td>{{ $contract->status }}</td>
               <td>{{ $contract->id }}</td>
               <td>{{ $contract->created_at }}</td>
-              <td>{{ $contract->created_at }}</td>
+              <td>{{ $contract->created_at->addMonths($contract->tariff->duration) }}</td>
               <td>{{ $contract->tariff->title }}</td> 
                        <td><a href="{{ route("users.contract_show", $contract->id) }}"><button type="button" class="btn btn-success">подробнее</button></a></td>    
             </tr>
