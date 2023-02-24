@@ -25,7 +25,7 @@ class StoreContractRequest extends FormRequest
     public function rules()
     {
         $tariff = Tariff::select(['min_amount', 'max_amount'])->find($this->tariff_id);
-        $minAmount = $tariff->min_amount->raw();
+        $minAmount = $tariff->min_amount->amount();
         $maxAmount = $tariff->max_amount->raw() === 0 ?
             PHP_INT_MAX :
             $tariff->max_amount->amount();
@@ -48,12 +48,12 @@ class StoreContractRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation()
+    protected function passedValidation(): void
     {
-        $this->merge([
+		$this->merge([
 			'amount' => (int) $this->amount * 100,
-            'user_id' => auth()->id(),
-            'organization_id' => auth()->user()->organization->id,
-        ]);
+			'user_id' => auth()->id(),
+			'organization_id' => auth()->user()->organization->id,
+		]);
     }
 }

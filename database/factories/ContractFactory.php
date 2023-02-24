@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Contract;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 use App\Models\Organization;
@@ -26,7 +27,7 @@ class ContractFactory extends Factory
             //'organization_id'=>,
             'tariff_id' => rand(1,14),
             'amount' => rand(50000000,80000000),
-            'status' => 1,
+            'status' => Contract::PENDING,
         ];
     }
 }

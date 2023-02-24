@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contract extends Model
@@ -64,28 +63,24 @@ class Contract extends Model
 
     public function income(): int
     {
-        $sum = $this->payments
-            ->where('type', Payment::TYPE_DEBET)
-            ->where('status', Payment::STATUS_PROCESSED)
-            ->reduce(function ($sum, $payment) {
-                if ($sum instanceof Payment) {
-                    $sum = $sum->amount->raw();
-                }
-                return $sum + $payment->amount->raw();
-            });
-        
-        return $sum ?? 0;
+        return $this->paymentsSum(Payment::TYPE_DEBET);
     }
 
     public function outgoing(): int
     {
+        return $this->paymentsSum(Payment::TYPE_CREDIT);
+    }
+
+    private function paymentsSum(int $type): int
+    {
         $sum = $this->payments
-            ->where('type', Payment::TYPE_CREDIT)
+            ->where('type', $type)
             ->where('status', Payment::STATUS_PROCESSED)
             ->reduce(function ($sum, $payment) {
                 if ($sum instanceof Payment) {
                     $sum = $sum->amount->raw();
                 }
+
                 return $sum + $payment->amount->raw();
             });
 
