@@ -43,9 +43,9 @@ class SmscodeController extends Controller
     protected function generateCode(){
        
    
-        $code = substr(str_shuffle("123456789"), 0, Smscode::CODE_LENGTH);
+        return substr(str_shuffle("123456789"), 0, Smscode::CODE_LENGTH);
       
-        return $code;
+         
     }
     
     
