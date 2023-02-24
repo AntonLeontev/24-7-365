@@ -6,6 +6,8 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\SmscodeController;
+
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +66,7 @@ Route::prefix('personal')
         ->middleware('can:see own profile')
         ->name('users.add_contract');
 
+
         Route::post('add_contract', [ContractController::class, 'store'])
             ->middleware('can:see own profile')
             ->name('contracts.store');
@@ -71,6 +74,16 @@ Route::prefix('personal')
         Route::get('contract/{contract}/cancel', [ContractController::class, 'cancel'])
             ->middleware('can:see own profile')
             ->name('contracts.cancel');
+
+        
+        Route::get('phone_confirmation', [SmscodeController::class,'phoneConfirmation'])
+        ->middleware('can:see own profile')
+        ->name('users.phone_confirmation');
+        
+        Route::get('create_smscode/{operation_type}', [SmscodeController::class,'createCode'])
+        ->middleware('can:see own profile')
+        ->name('users.create_smscode');
+
     });
 
 Route::prefix('admin')
