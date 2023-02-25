@@ -22,12 +22,12 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+						<th scope="col">Номер</th>
                         <th scope="col">Статус</th>
-                        <th scope="col">Номер</th>
                         <th scope="col">Дата заключения</th>
                         <th scope="col">Дата окончания</th>
                         <th scope="col">Тариф</th>
+                        <th scope="col">Сумма</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                     </tr>
@@ -37,7 +37,7 @@
 
                     @foreach ($contracts as $contract)
                         <tr>
-                            <th scope="row"></th>
+							<td>{{ $contract->id }}</td>
                             <td>
 								@if ($contract->status === $contract::ACTIVE)
 									Активный
@@ -51,10 +51,9 @@
 									Завершен
 								@endif
 							</td>
-                            <td>{{ $contract->id }}</td>
                             <td>
 								@if ($contract->status === $contract::ACTIVE)
-									{{ $contract->paid_at }}
+									{{ $contract->paid_at->translatedFormat('d M Y') }}
 								@elseif ($contract->status === $contract::PENDING)
 									Ожидает оплаты
 								@elseif ($contract->status === $contract::CANCELED)
@@ -63,9 +62,10 @@
 							</td>
                             <td>
 								@if ($contract->status === $contract::ACTIVE)
-									{{ $contract->paid_at->addMonths($contract->tariff->duration) }}
+									{{ $contract->paid_at->addMonths($contract->tariff->duration)->translatedFormat('d M Y') }}
 								@endif
-                            <td>{{ $contract->tariff->title }}</td>
+                            <td>{{ $contract->tariff->title }}/{{ $contract->tariff->duration }}мес</td>
+                            <td>{{ $contract->amount }}</td>
                             <td>
 								<a href="{{ route('users.contract_show', $contract->id) }}">
 									<button class="btn btn-success" type="button">подробнее</button>

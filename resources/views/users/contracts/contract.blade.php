@@ -15,7 +15,7 @@
             <nav class="navbar bg-dark mt-5 text-white">
                 <div class="container-fluid justify-content-start">
                     Договор # {{ $contract->id }}; Тариф {{ $contract->tariff->title }} со сроком
-                    {{ $contract->tariff->duration }}
+                    {{ $contract->tariff->duration }}; Сумма {{ $contract->amount }}
                 </div>
 
             </nav>
