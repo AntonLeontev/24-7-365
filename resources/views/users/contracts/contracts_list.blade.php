@@ -38,7 +38,19 @@
                     @foreach ($contracts as $contract)
                         <tr>
                             <th scope="row"></th>
-                            <td>{{ $contract->status }}</td>
+                            <td>
+								@if ($contract->status === $contract::ACTIVE)
+									Активный
+								@elseif($contract->status === $contract::PENDING)
+									Ожидает оплаты
+								@elseif($contract->status === $contract::CANCELED)
+									На расторжении
+								@elseif($contract->status === $contract::TERMINATED)
+									Отменен пользователем
+								@elseif($contract->status === $contract::FINISHED)
+									Завершен
+								@endif
+							</td>
                             <td>{{ $contract->id }}</td>
                             <td>
 								@if ($contract->status === $contract::ACTIVE)

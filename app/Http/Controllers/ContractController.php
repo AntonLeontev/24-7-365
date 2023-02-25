@@ -27,7 +27,7 @@ class ContractController extends Controller
         }
         
         $contracts = Contract::with('tariff')->where('organization_id', $organization->id)
-        ->whereIn('status', [Contract::ACTIVE, Contract::PENDING, Contract::CANCELED])
+        // ->whereIn('status', [Contract::ACTIVE, Contract::PENDING, Contract::CANCELED])
         ->where('deleted_at', null)
         ->orderByDesc('created_at')
         ->paginate();
@@ -40,8 +40,10 @@ class ContractController extends Controller
     {
         $contract->load('tariff');
         
-        $payments = Payment::where('contract_id', $contract->id)
-            ->orderByDesc('created_at')
+        $payments = Payment::query()
+			->where('contract_id', $contract->id)
+			->where('type', Payment::TYPE_CREDIT)
+            ->orderBy('planned_at')
             ->paginate();
         
         return view('users.contracts.contract', compact('contract', 'payments'));

@@ -13,10 +13,11 @@ class Tariff extends Model
     use HasFactory;
     use SoftDeletes;
 
-
+	//Выплата доходности
     public const MONTHLY = 1;
     public const AT_THE_END = 2;
 
+	//Статус																								
 	public const ACTIVE = 1; 
 	public const ARCHIVE = 0; 
 

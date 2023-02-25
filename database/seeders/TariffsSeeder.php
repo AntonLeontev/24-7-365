@@ -82,7 +82,7 @@ class TariffsSeeder extends Seeder
                 'duration' => 12,
                 'min_amount' => 5_000_000_00,
                 'max_amount' => 0,
-                'getting_profit' => Tariff::AT_THE_END,
+                'getting_profit' => Tariff::MONTHLY,
                 'getting_deposit' => Tariff::AT_THE_END
             ],
             [
@@ -91,7 +91,7 @@ class TariffsSeeder extends Seeder
                 'duration' => 24,
                 'min_amount' => 5_000_000_00,
                 'max_amount' => 0,
-                'getting_profit' => Tariff::AT_THE_END,
+                'getting_profit' => Tariff::MONTHLY,
                 'getting_deposit' => Tariff::AT_THE_END
             ],
             [
@@ -100,7 +100,7 @@ class TariffsSeeder extends Seeder
                 'duration' => 36,
                 'min_amount' => 5_000_000_00,
                 'max_amount' => 0,
-                'getting_profit' => Tariff::AT_THE_END,
+                'getting_profit' => Tariff::MONTHLY,
                 'getting_deposit' => Tariff::AT_THE_END
             ],
 

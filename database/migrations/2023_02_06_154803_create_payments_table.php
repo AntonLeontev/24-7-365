@@ -30,6 +30,8 @@ return new class extends Migration
             $table->unsignedBigInteger('amount');
             $table->unsignedTinyInteger('type');
 			$table->unsignedTinyInteger('status')->default(Payment::STATUS_PENDING);
+			$table->date('planned_at')->nullable();
+			$table->dateTime('paid_at')->nullable();
 			$table->softDeletes();
             $table->timestamps();
             

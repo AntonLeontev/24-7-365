@@ -2,25 +2,25 @@
 
 namespace App\Console\Commands;
 
-use App\Events\PaymentReceived;
+use App\Events\PaymentSent;
 use App\Models\Payment;
 use Illuminate\Console\Command;
 
-class PayIncomePayments extends Command
+class PayOutgoingPayments extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = '24:pay-in {contract?} {--take=}';
+    protected $signature = '24:pay-out {contract?} {--take=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Меняет статус всех неоплаченных платежей на PROCCESSED. Можно передать contract_id и будут оплачены только платежи этого контракта. Если передать опцию --take то будет оплачено столько платежей.';
+    protected $description = 'Имитирует оплату по банку всех исходящих платежей. Выставляет им статус PROCESSED и запускает событие оплаты. Можно передать contract_id и будут оплачены только платежи этого контракта. Если передать опцию --take то будет оплачено столько платежей.';
 
 
     /**
@@ -37,7 +37,7 @@ class PayIncomePayments extends Command
 
         $payments = Payment::query()
             ->whereStatus(Payment::STATUS_PENDING)
-            ->whereType(Payment::TYPE_DEBET)
+            ->whereType(Payment::TYPE_CREDIT)
             ->when($this->argument('contract'), function ($query) {
                 $query->where('contract_id', $this->argument('contract'));
             })
@@ -55,8 +55,9 @@ class PayIncomePayments extends Command
                 'paid_at' => now(),
             ]);
             
-            event(new PaymentReceived($payment));
+            event(new PaymentSent($payment));
         }
+
         return Command::SUCCESS;
     }
 }

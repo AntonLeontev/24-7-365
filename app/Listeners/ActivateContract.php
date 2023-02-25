@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\Contract;
+use App\Models\Payment;
 
 class ActivateContract
 {
@@ -24,6 +25,6 @@ class ActivateContract
     public function handle($event)
     {
         Contract::find($event->payment->contract->id)
-			->updateOrFail(['status' => Contract::ACTIVE, 'paid_at' => now()]);
+            ->updateOrFail(['status' => Contract::ACTIVE, 'paid_at' => now()]);
     }
 }

@@ -30,6 +30,7 @@
                         <th scope="col">Сумма</th>
                         <th scope="col">Статус</th>
                         <th scope="col">Дата</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,7 +40,20 @@
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $payment->amount }}</td>
                             <td>{{ $payment->status === $payment::STATUS_PENDING ? 'Ожидается' : 'Выполнен' }}</td>
-                            <td>{{ $payment->created_at }}</td>
+                            <td>
+								@if ($payment->status === $payment::STATUS_PENDING)
+									{{ $payment->planned_at->translatedFormat('d M Y') }}
+								@else
+									{{ $payment->paid_at->translatedFormat('d M Y') }}
+								@endif
+							</td>
+							<td>
+								@if ($payment->type === $payment::TYPE_CREDIT)
+									Исходящий
+								@else
+									Входящий
+								@endif
+							</td>
                         </tr>
                     @endforeach
                 </tbody>

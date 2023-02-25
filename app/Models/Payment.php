@@ -6,6 +6,7 @@ use App\Casts\AmountCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
@@ -22,7 +23,12 @@ class Payment extends Model
 
 	public const STATUS_PENDING = 0;
 	public const STATUS_PROCESSED = 1;
+	
 
+	protected $dates = [
+		'planned_at',
+		'paid_at',
+	];
 
     protected $fillable = [
         'account_id',
@@ -30,6 +36,8 @@ class Payment extends Model
         'amount',
         'type',
         'status',
+		'planned_at',
+		'paid_at'
     ];
 
 	protected $casts = [

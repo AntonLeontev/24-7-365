@@ -4,14 +4,18 @@ namespace App\Providers;
 
 use App\Events\ContractCanceled;
 use App\Events\ContractCreated;
+use App\Events\ContractFinished;
 use App\Events\ContractTerminated;
 use App\Events\PaymentReceived;
+use App\Events\PaymentSent;
 use App\Events\UserBlocked;
 use App\Events\UserUnblocked;
 use App\Listeners\ActivateContract;
 use App\Listeners\CancelContract;
+use App\Listeners\CheckContractStatus;
 use App\Listeners\CreateIncomingPayment;
 use App\Listeners\DeletePendingPayments;
+use App\Listeners\SchedulePayments;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -43,8 +47,13 @@ class EventServiceProvider extends ServiceProvider
 		ContractTerminated::class => [
 			DeletePendingPayments::class,
 		],
+		ContractFinished::class => [],
 		PaymentReceived::class => [
 			ActivateContract::class,
+			SchedulePayments::class,
+		],
+		PaymentSent::class => [
+			CheckContractStatus::class,
 		],
     ];
 
