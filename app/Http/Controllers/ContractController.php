@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ContractAmountIncreased;
 use App\Events\ContractCanceled;
 use App\Events\ContractCreated;
 use App\Http\Requests\CancelContractRequest;
+use App\Http\Requests\IncreaseContractAmountRequest;
 use App\Http\Requests\StoreContractRequest;
 use App\Models\Contract;
 use App\Models\Payment;
@@ -41,8 +43,8 @@ class ContractController extends Controller
         $contract->load('tariff');
         
         $payments = Payment::query()
-			->where('contract_id', $contract->id)
-			->where('type', Payment::TYPE_CREDIT)
+            ->where('contract_id', $contract->id)
+            ->where('type', Payment::TYPE_CREDIT)
             ->orderBy('planned_at')
             ->paginate();
         
@@ -73,5 +75,14 @@ class ContractController extends Controller
         event(new ContractCanceled($contract));
 
         return to_route('users.contracts');
+    }
+
+    public function increaseAmount(Contract $contract, IncreaseContractAmountRequest $request)
+    {
+        // $contract->updateOrFail(['amount' => $request->amount]);
+
+		event(new ContractAmountIncreased($contract));
+
+        return to_route('users.contract_show', $contract->id);
     }
 }

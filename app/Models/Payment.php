@@ -6,7 +6,6 @@ use App\Casts\AmountCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
@@ -15,20 +14,31 @@ class Payment extends Model
     use SoftDeletes;
 
 
-    // Входящий платеж
+    /**
+     * Входящий платеж
+     */
     public const TYPE_DEBET = 1;
 
-    // Исходящий платеж
+    /**
+     * Исходящий платеж
+     */
     public const TYPE_CREDIT = 2;
 
-	public const STATUS_PENDING = 0;
-	public const STATUS_PROCESSED = 1;
-	
+    /**
+     * Платеж ожидается
+     */
+    public const STATUS_PENDING = 0;
 
-	protected $dates = [
-		'planned_at',
-		'paid_at',
-	];
+    /**
+     * Платеж проведен банком
+     */
+    public const STATUS_PROCESSED = 1;
+    
+
+    protected $dates = [
+        'planned_at',
+        'paid_at',
+    ];
 
     protected $fillable = [
         'account_id',
@@ -36,13 +46,13 @@ class Payment extends Model
         'amount',
         'type',
         'status',
-		'planned_at',
-		'paid_at'
+        'planned_at',
+        'paid_at'
     ];
 
-	protected $casts = [
-		'amount' => AmountCast::class,
-	];
+    protected $casts = [
+        'amount' => AmountCast::class,
+    ];
 
 
     public function account(): BelongsTo
