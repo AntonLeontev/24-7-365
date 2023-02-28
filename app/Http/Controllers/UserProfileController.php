@@ -151,7 +151,7 @@ class UserProfileController extends Controller
         
         
         //$response = $dadata->findAffiliated("7736207543");
-        $data = DadataClientFacade::clean("address", "мск сухонская 11 89");
+        $data = DadataClientFacade::findById("party", "7707083893", 1);
         $user = Auth::user();
         
         return view('users.dadata_test', compact('data','user'));
