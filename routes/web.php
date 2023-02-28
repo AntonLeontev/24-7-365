@@ -83,6 +83,10 @@ Route::prefix('personal')
         Route::get('create_smscode/{operation_type}', [SmscodeController::class,'createCode'])
         ->middleware('can:see own profile')
         ->name('users.create_smscode');
+        
+        Route::get('dadata_test', [UserProfileController::class,'dadataTest'])
+        ->middleware('can:see own profile')
+        ->name('users.create_smscode');
 
     });
 

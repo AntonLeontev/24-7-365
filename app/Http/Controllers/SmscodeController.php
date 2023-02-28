@@ -36,7 +36,8 @@ class SmscodeController extends Controller
      
     // отправка запроса до апи с кодом  
      
-    return view('users.code_test', compact( 'code'));
+     return $code->code;
+    
     }
     
     

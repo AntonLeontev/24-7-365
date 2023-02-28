@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Organization;
 use App\Models\Account;
 use Illuminate\Support\Facades\Hash;
+use App\Facades\DadataClientFacade;
 
 class UserProfileController extends Controller
 {
@@ -145,6 +146,17 @@ class UserProfileController extends Controller
         
     }
     
+    
+    public function dadataTest(){
+        
+        
+        //$response = $dadata->findAffiliated("7736207543");
+        $data = DadataClientFacade::clean("address", "мск сухонская 11 89");
+        $user = Auth::user();
+        
+        return view('users.dadata_test', compact('data','user'));
+        
+    }
     
     
 }
