@@ -8,6 +8,7 @@ use App\Http\Controllers\SmscodeController;
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Middleware\CanSeeContract;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +74,7 @@ Route::prefix('personal')
         
         Route::get('contracts/{contract}/show', [ContractController::class, 'show'])
         ->middleware('can:see own profile')
+        ->middleware(CanSeeContract::class)
         ->name('users.contract_show');
         
         Route::get('add_contract', [ContractController::class, 'create'])
