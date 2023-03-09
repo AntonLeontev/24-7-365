@@ -28,6 +28,7 @@ class PaymentFactory extends Factory
             'type'=>2,
             'amount' => rand(2000000,80000000),
             'status' => 1,
+			'planned_at' => now(),
         ];
     }
 }

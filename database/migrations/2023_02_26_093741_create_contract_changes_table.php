@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\Account;
 use App\Models\Contract;
-use App\Models\Payment;
+use App\Models\Tariff;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,24 +15,23 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('contract_changes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Account::class)
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
             $table->foreignIdFor(Contract::class)
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->tinyInteger('type');
+            $table->foreignIdFor(Tariff::class)
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->unsignedBigInteger('amount');
-            $table->unsignedTinyInteger('type');
-			$table->unsignedTinyInteger('status')->default(Payment::STATUS_PENDING);
-			$table->date('planned_at')->nullable();
-			$table->date('paid_at')->nullable();
-			$table->softDeletes();
+            $table->tinyInteger('status');
+
+            $table->softDeletes();
             $table->timestamps();
+            $table->dateTime('starts_at')->nullable();
+			$table->unsignedSmallInteger('duration')->default(0);
         });
-        
-          
     }
 
     /**
@@ -43,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('contract_changes');
     }
 };

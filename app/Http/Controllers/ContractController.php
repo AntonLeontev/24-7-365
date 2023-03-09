@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CanceledUnconfirmedContractChange;
 use App\Events\ContractAmountIncreased;
 use App\Events\ContractCanceled;
 use App\Events\ContractCreated;
@@ -10,6 +11,7 @@ use App\Http\Requests\IncreaseContractAmountRequest;
 use App\Http\Requests\StoreContractRequest;
 use App\Models\Contract;
 use App\Models\Payment;
+use App\Models\Profitability;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,14 +43,20 @@ class ContractController extends Controller
     public function show(Contract $contract)
     {
         $contract->load('tariff');
+
+        $profitabilities = Profitability::query()
+            ->with('payment')
+            ->where('contract_id', $contract->id)
+            ->get();
         
         $payments = Payment::query()
             ->where('contract_id', $contract->id)
             ->where('type', Payment::TYPE_CREDIT)
-            ->orderBy('planned_at')
-            ->paginate();
-        
-        return view('users.contracts.contract', compact('contract', 'payments'));
+            ->get();
+
+        $operations = $profitabilities->mergeRecursive($payments)->sortBy('planned_at');
+
+        return view('users.contracts.contract', compact('contract', 'operations'));
     }
     
     public function create()
@@ -79,10 +87,15 @@ class ContractController extends Controller
 
     public function increaseAmount(Contract $contract, IncreaseContractAmountRequest $request)
     {
-        // $contract->updateOrFail(['amount' => $request->amount]);
-
-		event(new ContractAmountIncreased($contract));
+        event(new ContractAmountIncreased($contract, $request->amount));
 
         return to_route('users.contract_show', $contract->id);
+    }
+
+    public function cancelChange(Contract $contract)
+    {
+        event(new CanceledUnconfirmedContractChange($contract));
+
+        return back();
     }
 }

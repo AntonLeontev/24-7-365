@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\SmscodeController;
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\SmscodeController;
-
 use App\Models\Tariff;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,18 @@ Route::get('/', function () {
     $tariffs = Tariff::all();
     return view('welcome', compact('tariffs'));
 })->name('home');
+
+//TODO Delete
+Route::get('24-pay-in/{contract_id}', function ($id) {
+    Artisan::call("24:pay-in", ['contract' => $id, '--take' => 1]);
+
+    return back();
+})->name('pay-in');
+Route::get('24-period/{contract_id}', function ($id) {
+    Artisan::call("24:period", ['contract' => $id]);
+
+    return back();
+})->name('period');
 
 //TODO Удалить лишние роуты
 Route::get('pdf', [PdfController::class, 'get']);
@@ -58,7 +71,7 @@ Route::prefix('personal')
         ->middleware('can:see own profile')
         ->name('users.contracts');
         
-        Route::get('contract/{contract}/show', [ContractController::class, 'show'])
+        Route::get('contracts/{contract}/show', [ContractController::class, 'show'])
         ->middleware('can:see own profile')
         ->name('users.contract_show');
         
@@ -71,9 +84,21 @@ Route::prefix('personal')
             ->middleware('can:see own profile')
             ->name('contracts.store');
 
-        Route::get('contract/{contract}/cancel', [ContractController::class, 'cancel'])
+        Route::get('contracts/{contract}/cancel', [ContractController::class, 'cancel'])
             ->middleware('can:see own profile')
             ->name('contracts.cancel');
+
+        Route::post('contracts/{contract}/increase_amount', [ContractController::class, 'increaseAmount'])
+            ->middleware('can:see own profile')
+            ->name('contracts.increase_amount');
+
+        Route::get('contracts/{contract}/cancel_change', [ContractController::class, 'cancelChange'])
+            ->middleware('can:see own profile')
+            ->name('contracts.cancel_change');
+
+        Route::get('payments', [PaymentController::class, 'indexForUser'])
+            ->middleware('can:see own profile')
+            ->name('payments.for_user');
 
         
         Route::get('phone_confirmation', [SmscodeController::class,'phoneConfirmation'])
@@ -83,8 +108,7 @@ Route::prefix('personal')
         Route::get('create_smscode/{operation_type}', [SmscodeController::class,'createCode'])
         ->middleware('can:see own profile')
         ->name('users.create_smscode');
-        
-        Route::get('dadata_test', [UserProfileController::class,'dadataTest'])
+                Route::get('dadata_test', [UserProfileController::class,'dadataTest'])
         ->middleware('can:see own profile')
         ->name('users.create_smscode');
 

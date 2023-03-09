@@ -26,6 +26,11 @@ class SchedulePayments
      */
     public function handle(PaymentReceived $event)
     {
+        //TODO Создание платежей для изменения договора
+        if ($event->payment->contract->changes->count() > 1) {
+            return;
+        }
+        
         if ($event->payment->contract->tariff->getting_profit === Tariff::AT_THE_END) {
             $this->generateAtTheEndTariffPayments($event);
 
@@ -60,12 +65,15 @@ class SchedulePayments
                 continue;
             }
 
+            if ($month === $tariff->duration) {
+                //Выплата тела договора с доходностью в конце срока
+                $this->createPayment($event, $contract->amount->raw() + $profitPerMonth, $tariff->duration);
+                continue;
+            }
+
             // Формируем оставшиеся выплаты доходности
             $this->createPayment($event, $profitPerMonth, $month);
         }
-
-        //Выплата тела договора в конце срока
-        $this->createPayment($event, $contract->amount, $tariff->duration);
     }
 
     private function generateAtTheEndTariffPayments(PaymentReceived $event)
@@ -75,9 +83,8 @@ class SchedulePayments
 
         $profit = $contract->amount->raw() * $tariff->annual_rate / 100 / 12 * $tariff->duration;
     
-        $amount = $contract->amount->raw();
+        $amount = $contract->amount->raw() + $profit;
 
-        $this->createPayment($event, $profit, $tariff->duration);
         $this->createPayment($event, $amount, $tariff->duration);
     }
 

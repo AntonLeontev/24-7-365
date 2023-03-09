@@ -23,6 +23,11 @@
                                 <a class="nav-link" href="{{ route('users.contracts') }}">Договоры</a>
                             </li>
                         @endif
+						@if (Route::has('payments.for_user'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('payments.for_user') }}">График платежей</a>
+                            </li>
+                        @endif
                     @endcan
                     @can('see other profiles')
                         @if (Route::has('users.index'))

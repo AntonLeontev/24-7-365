@@ -23,8 +23,8 @@ class ContractFactory extends Factory
        
        
         return [
-            //'user_id' => User::factory(),
-            //'organization_id'=>,
+            // 'user_id' => User::factory(),
+            // 'organization_id' => 1,
             'tariff_id' => rand(1,14),
             'amount' => rand(50000000,80000000),
             'status' => Contract::PENDING,

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Casts\AmountCast;
+use Carbon\Carbon;
+use DomainException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -60,6 +62,31 @@ class Contract extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
+	public function changes(): HasMany
+	{
+		return $this->hasMany(ContractChange::class);
+	}
+
+	public function profitabilities(): HasMany
+	{
+		return $this->hasMany(Profitability::class);
+	}
+
+	public function periodEnd(): Carbon
+	{
+		if (is_null($this->paid_at)) {
+			throw new DomainException("Попытка определить конец периода у неоплаченного договора", 1);
+		}
+
+		$date = $this->paid_at;
+
+		while (now() >= $date) {
+			$date->addMonth();
+		}
+
+		return $date;
+	}
 
     public function income(): int
     {

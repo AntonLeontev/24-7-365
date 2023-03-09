@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\Organization;
 use App\Models\Contract;
+use App\Models\ContractChange;
+use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Database\Seeder;
 
 class ContractsSeeder extends Seeder
 {
@@ -16,6 +16,20 @@ class ContractsSeeder extends Seeder
      */
     public function run()
     {
-        Contract::factory(50)->create();
+        $contracts = Contract::factory(50)->create();
+
+        foreach ($contracts as $contract) {
+            ContractChange::factory()
+                ->state(new Sequence(
+                    [
+                        'contract_id' => $contract->id,
+                        'tariff_id' => $contract->tariff_id,
+                        'amount' => $contract->amount,
+                        'type' => ContractChange::TYPE_INITIAL,
+                        'status' => ContractChange::STATUS_PENDING,
+                    ]
+                ))
+                ->create();
+        }
     }
 }
