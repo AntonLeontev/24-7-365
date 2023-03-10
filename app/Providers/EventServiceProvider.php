@@ -13,6 +13,7 @@ use App\Events\PaymentReceived;
 use App\Events\PaymentSent;
 use App\Events\UserBlocked;
 use App\Events\UserUnblocked;
+use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\CreateAdditionalPayment;
@@ -80,7 +81,7 @@ class EventServiceProvider extends ServiceProvider
 		BillingPeriodEnded::class => [
 			IncreaseContractChangeDuration::class,
 			CreateProfitability::class,
-			//TODO Apply contract changes
+			ApplyContractChanges::class,
 		],
     ];
 

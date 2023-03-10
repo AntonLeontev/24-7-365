@@ -10,7 +10,6 @@
 
             <h1>Договор {{ $contract->id }}</h1>
 
-
 			<div class="row">
 				<div class="col">
 					@if ($contract->status === $contract::ACTIVE)
@@ -86,59 +85,70 @@
                 <div class="container-fluid justify-content-start">
                     Договор # {{ $contract->id }}; Тариф {{ $contract->tariff->title }} со сроком
                     {{ $contract->tariff->duration }}; Сумма {{ $contract->amount }}
+					Ставка в год: {{ $contract->tariff->annual_rate }}%
                 </div>
 
             </nav>
 
+			@if ($operations->count() > 0)
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">Дата</th>
+							<th scope="col">Начислено</th>
+							<th scope="col">Тело закупа</th>
+							<th scope="col">К выплате</th>
+						</tr>
+					</thead>
+					<tbody>
+
+
+						@foreach ($operations as $operation)
+							@if ($operation instanceof App\Models\Profitability)
+								<tr>
+									<td>{{ $operation->planned_at->translatedFormat('d F Y') }}</td>
+									<td>+{{ $operation->amount }}</td>
+									<td></td>
+									<td>
+										@if ($operation->payment->planned_at->equalTo($operation->planned_at))
+											{{ $operation->payment->amount }}
+											@if ($operation->payment->status === $operation->payment::STATUS_PROCESSED)
+												✓
+											@endif
+										@else
+											{{ $operation->payment->planned_at->translatedFormat('d F Y') }}
+										@endif
+									</td>
+								</tr>
+							@elseif ($operation instanceof App\Models\Payment)
+								<tr>
+									<td>{{ $operation->planned_at->translatedFormat('d F Y') }}</td>
+									<td></td>
+									<td></td>
+									<td>
+										{{ $operation->amount }}
+										@if ($operation->status === $operation::STATUS_PROCESSED)
+											✓
+										@endif
+									</td>
+								</tr>
+							@endif
+						@endforeach
+
+						
+					</tbody>
+				</table>
+				{{-- {{ $payments->links() }} --}}
+			@else
+				Пока нет начислений или выплат. 
+				@if ($contract->status === $contract::PENDING)
+					Для активации нужно внести оплату по договору
+				@endif
+			@endif
 
 
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Дата</th>
-                        <th scope="col">Начислено</th>
-                        <th scope="col">Тело закупа</th>
-                        <th scope="col">К выплате</th>
-                    </tr>
-                </thead>
-                <tbody>
 
-
-					@foreach ($operations as $operation)
-						@if ($operation instanceof App\Models\Profitability)
-							<tr>
-								<td>{{ $operation->planned_at->translatedFormat('d F Y') }}</td>
-								<td>+{{ $operation->amount }}</td>
-								<td></td>
-								<td>
-									@if ($operation->payment->planned_at->equalTo($operation->planned_at))
-										{{ $operation->payment->amount }}
-									@else
-										{{ $operation->payment->planned_at->translatedFormat('d F Y') }}
-									@endif
-								</td>
-							</tr>
-						@elseif ($operation instanceof App\Models\Payment)
-							<tr>
-								<td>{{ $operation->planned_at->translatedFormat('d F Y') }}</td>
-								<td></td>
-								<td></td>
-								<td>
-									{{ $operation->amount }}
-								</td>
-							</tr>
-						@endif
-					@endforeach
-
-                    
-                </tbody>
-            </table>
-            {{-- {{ $payments->links() }} --}}
-
-
-
-            <button class="btn btn-primary btn-lg" type="button">скачать договор pdf</button>
 
 
 

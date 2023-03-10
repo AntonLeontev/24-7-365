@@ -14,13 +14,12 @@ class DeletePendingPayments
 
         $paymentsIds = $contract->payments
             ->where('status', Payment::STATUS_PENDING)
+			->where('planned_at', '>', $contract->paid_at->addMonths($contract->duration()))
             ->when($event instanceof CanceledUnconfirmedContractChange, function (Collection $payments) {
-				return $payments->where('type', Payment::TYPE_DEBET);
-			})
+                return $payments->where('type', Payment::TYPE_DEBET);
+            })
             ->pluck('id');
 
-        foreach ($paymentsIds as $id) {
-            Payment::find($id)->delete();
-        }
+        Payment::whereIn('id', $paymentsIds)->delete();
     }
 }

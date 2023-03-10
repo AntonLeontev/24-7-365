@@ -113,4 +113,9 @@ class Contract extends Model
 
         return $sum ?? 0;
     }
+
+	public function duration(): int
+	{
+		return $this->changes()->sum('duration');
+	}
 }
