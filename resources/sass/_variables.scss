@@ -1,7 +1,32 @@
 // Body
-$body-bg: #f8fafc;
+$body-bg: #19191A;
+$body-color: #fff;
+
+//Colors
+$primary: #FCE301;
+$white: #fff; //Основной текст
+$light-grey: #737373; //Приглушенный текст и фон disabled кнопок
+$dark-grey: #202022; //Фон блоков на странице и текста на желтом фоне
+
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
+$font-family-sans-serif: 'Inter', sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1;
+
+//links
+$btn-link-color:              $primary;
+$btn-link-hover-color:        $primary;
+$btn-link-disabled-color:     $light-grey;
+
+//Buttons
+$btn-padding-y:               0.5rem;
+$btn-padding-x:               0.625rem;
+$btn-font-size:               1rem;
+$btn-line-height:             1.2;
+
+$btn-border-radius:           none;
+$btn-box-shadow: 0px 8px 16px rgba(255, 229, 0, 0.15);
+
+$btn-border-width: 2px;
+

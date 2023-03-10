@@ -59,6 +59,6 @@ final class Amount implements JsonSerializable
 
     public function __toString(): string
     {
-        return number_format($this->amount(), 0, '.', ' ') . $this->currencySign();
+        return number_format($this->amount(), 2, ',', ' ') . ' ' . $this->currencySign();
     }
 }

@@ -28,8 +28,6 @@
                         <th scope="col">Дата окончания</th>
                         <th scope="col">Тариф</th>
                         <th scope="col">Сумма</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,7 +35,7 @@
 
                     @foreach ($contracts as $contract)
                         <tr>
-							<td>{{ $contract->id }}</td>
+							<td><a href="{{ route('users.contract_show', $contract->id) }}" class="btn btn-link">№{{ $contract->id }}</a></td>
                             <td>
 								@if ($contract->status === $contract::ACTIVE)
 									Активный
@@ -66,12 +64,7 @@
 								@endif
                             <td>{{ $contract->tariff->title }}/{{ $contract->tariff->duration }}мес</td>
                             <td>{{ $contract->amount }}</td>
-                            <td>
-								<a href="{{ route('users.contract_show', $contract->id) }}">
-									<button class="btn btn-success" type="button">подробнее</button>
-								</a>
-                            </td>
-							<td><a href="{{ route('contracts.cancel', $contract->id) }}" class="btn btn-danger">Del</a></td>
+                            
                         </tr>
                     @endforeach
 
