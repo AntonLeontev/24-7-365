@@ -7,8 +7,7 @@
         <div class="row">
 
 
-
-            <h1>Активные договоры</h1>
+			<x-common.h1>Активные договоры</x-common.h1>
 
 
             <nav class="navbar bg-body-tertiary">

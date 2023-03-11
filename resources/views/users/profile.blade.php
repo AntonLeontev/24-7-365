@@ -5,26 +5,6 @@
 
 @section('content')
 <div class="container">
-	<div class="row">
-		<div class="col">Profile {{ $user->first_name }}</div>
-		<div class="col">
-			@can('assign roles')
-				<role-select 
-					action="{{ route('users.update-role', $user->id) }}" 
-					v-bind:roles="{{ roles() }}"
-					v-bind:user-roles={{ $user->roles->pluck('name') }}
-					@toast="toast"
-				>
-				</role-select>
-			@else
-				@foreach ($user->roles as $role)
-					{{ $role->name }}
-				@endforeach
-			@endcan
-		</div>
-		<div class="col"></div>
-	</div>
-
 </div>
 
     @if ($message = Session::get('success'))
@@ -66,7 +46,8 @@
             @endif
 
 <div class="container">
-<div class="col mt-5"><h2>Данные пользователя</h2></div>
+	<x-common.h1>Данные пользователя</x-common.h1>
+<div class="col mt-5"><h2></h2></div>
 <form id="profile-form">
   @csrf
 <input type="hidden" id="profile-form-url" name="handler_url" value = '{{ route("save_profile", $user->id) }}'>

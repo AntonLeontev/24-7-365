@@ -1,0 +1,55 @@
+.btn-primary {
+	&:hover {
+		background-color: $primary !important;
+		box-shadow: $btn-box-shadow;
+	}
+
+	&:disabled {
+		background-color: $light-grey !important;
+		border-color: $light-grey !important;
+		color: $dark-grey !important;
+	}
+}
+
+.btn-outline-primary {
+	&:hover {
+		background-color: rgba(252, 227, 1, 0.1) !important;
+		color: $primary !important;
+	}
+
+	&:disabled {
+		background-color: $dark-grey !important;
+		border-color: $light-grey !important;
+		color: $light-grey !important;
+	}
+
+	&:active {
+		background-color: rgba(252, 227, 1, 0.25) !important;
+		color: $primary !important;
+	}
+}
+
+.btn-close {
+	border-radius: 100% !important;
+	background-color: $primary !important;
+	background-size: auto !important;
+	flex-shrink: 0;
+
+	&:hover {
+		box-shadow: 0px 8px 15px rgba(252, 227, 1, 0.25) !important;
+	}
+}
+.modal {
+	&-content {
+		box-shadow: 0px 4px 32px rgba(255, 230, 0, 0.15);
+	}
+	
+	&-header {
+		padding: 30px 30px 0 30px !important;
+	}
+	
+	&-title {
+		font-size: 1.125rem;
+		font-weight: 700;
+	}
+}

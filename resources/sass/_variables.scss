@@ -30,3 +30,44 @@ $btn-box-shadow: 0px 8px 16px rgba(255, 229, 0, 0.15);
 
 $btn-border-width: 2px;
 
+$btn-close-width:            2.625rem;
+$btn-close-height:           $btn-close-width;
+$btn-close-padding-x:        0;
+$btn-close-padding-y:        $btn-close-padding-x;
+$btn-close-color:            $dark-grey;
+$btn-close-bg:               url("data:image/svg+xml,<svg width='22' height='22' viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M19.1713 21.8952L11 13.7239L2.82865 21.8952L0.104868 19.1714L8.27622 11.0001L0.104867 2.82873L2.82865 0.104943L11 8.27629L19.1713 0.104943L21.8951 2.82873L13.7238 11.0001L21.8951 19.1714L19.1713 21.8952Z' fill='#202022'/></svg>");
+$btn-close-opacity:          1;
+$btn-close-hover-opacity:    1;
+$btn-close-focus-opacity:    1;
+$btn-close-disabled-opacity: .25;
+
+//Modal
+$modal-inner-padding:         		1.875rem;
+$modal-title-line-height:     		1;
+
+$modal-content-color:               $white;
+$modal-content-bg:                  $dark-grey;
+$modal-content-border-color:        rgba(252, 227, 1, 0.5);
+$modal-content-border-width:        2px;
+$modal-content-border-radius:       none;
+
+$modal-content-box-shadow-xs:       0px 4px 32px rgba(255, 230, 0, 0.15);
+$modal-content-box-shadow-sm-up:    0px 4px 32px rgba(255, 230, 0, 0.15);
+
+$modal-header-border-color:         none;
+$modal-header-border-width:			0;
+$modal-header-padding-y:            1.875rem;
+$modal-header-padding-x:            0;
+
+$modal-sm:                          330px;
+$modal-md:                          451px;
+$modal-lg:                          689px;
+
+
+
+
+
+
+
+
+
