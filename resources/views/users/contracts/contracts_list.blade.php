@@ -9,6 +9,7 @@
 
 			<x-common.h1>Активные договоры</x-common.h1>
 
+			<x-common.form.input class="mt-3" placeholder="text" name='test' label='Не обязательно' />
 
             <nav class="navbar bg-body-tertiary">
                 <form class="container-fluid justify-content-end">

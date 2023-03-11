@@ -54,8 +54,10 @@
 
 
 <div class="mb-3">
-  <label  class="form-label">Имя</label>
-  <input type="text" class="form-control" name="first_name" placeholder="Имя" @isset($user->first_name) value="{{$user->first_name}}" @endisset>
+  <label  class="form-label">Имя
+
+	  <input type="text" class="form-control" name="first_name" placeholder="Имя" @isset($user->first_name) value="{{$user->first_name}}" @endisset>
+  </label>
 </div>
 <div class="mb-3">
   <label class="form-label">Отчество</label>
