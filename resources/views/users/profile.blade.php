@@ -56,8 +56,8 @@
 <div class="mb-3">
   <label  class="form-label">Имя
 
-	  <input type="text" class="form-control" name="first_name" placeholder="Имя" @isset($user->first_name) value="{{$user->first_name}}" @endisset>
-  </label>
+</label>
+<input type="text" class="form-control" name="first_name" placeholder="Имя" @isset($user->first_name) value="{{$user->first_name}}" @endisset>
 </div>
 <div class="mb-3">
   <label class="form-label">Отчество</label>
@@ -123,12 +123,11 @@
   <input type="text" class="form-control" name="title" placeholder="пример: ООО КомпанияН" @isset($organization->title) value="{{$organization->title}}" @endisset>
 </div>
 <div class="mb-3">
-  <label class="form-label">Организационная форма</label>
-  <select class="form-select" name="type" aria-label="Default select example">
-  <option selected> --- </option>
-  <option value="1" @if (isset($organization->type) && $organization->type==1)   selected  @endif >ООО</option>
-  <option value="2" @if (isset($organization->type) && $organization->type==2)   selected  @endif >ИП</option>
-</select>
+	<x-common.form.select class="mb-2 mt-2" label="Организационная форма" name="type">
+		<option selected disabled> --- </option>
+		<option value="1" @if (isset($organization->type) && $organization->type==1)   selected  @endif >ООО</option>
+		<option value="2" @if (isset($organization->type) && $organization->type==2)   selected  @endif >ИП</option>
+	</x-common.form.select>
 </div>
 <div class="mb-3">
   <label  class="form-label">ИНН</label>

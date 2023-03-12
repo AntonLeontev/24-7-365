@@ -6,10 +6,7 @@
 	justify-content: start;
 	align-items: center;
 	padding-left: 12px !important;
-	// background-image: url(../images/Fon1.png);
 	background-color: $primary;
-	background-position-x: right;
-	background-repeat: no-repeat;
 	
 	@include media-breakpoint-up(sm) {
 		padding-left: 30px !important;
@@ -37,6 +34,12 @@
 }
 
 .form-input {
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+.form-selection {
+	position: relative;
 	display: flex;
 	flex-direction: column-reverse;
 }

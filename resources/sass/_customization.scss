@@ -54,7 +54,34 @@
 	}
 }
 
-.form-control {
+.form-control, .form-select {
+	border-top: none !important;
+	border-left: none !important;
+	border-right: none !important;
+
+	&:hover {
+		border-color: $white;
+
+		&+.form-label {
+			color: $white;
+		}
+	}
+
+	&:focus {
+		border-color: $primary;
+
+		&+.form-label {
+			color: $white;
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		padding: 0.7188rem 0;
+		font-size: 1rem;
+	}
+}
+
+.choices {
 	border-top: none !important;
 	border-left: none !important;
 	border-right: none !important;
@@ -84,4 +111,3 @@
 	min-height: 0.75rem;
 	transition: color 0.15s ease-in-out;
 }
-

@@ -20,6 +20,7 @@
         "@popperjs/core": "^2.11.6",
         "@vitejs/plugin-vue": "^4.0.0",
         "bootstrap": "^5.2.3",
+        "choices.js": "^10.2.0",
         "vue": "^3.2.36",
         "vue-loader": "^17.0.1"
     }
