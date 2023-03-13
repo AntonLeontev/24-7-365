@@ -1,10 +1,11 @@
 @props([
 	'name',
 	'label' => '',
+	'disabled' => false,
 ])
 
 <div {{ $attributes->class(['form-selection'])->merge() }}>
-	<select class="form-select" name="{{ $name }}" aria-label="Default select example">
+	<select class="form-select" name="{{ $name }}" aria-label="Default select example" @disabled($disabled)>
 		{{ $slot }}
 	</select>
 	<label class="form-label">{{ $label }}</label>

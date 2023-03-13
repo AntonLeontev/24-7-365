@@ -1,13 +1,12 @@
-// Body
-$body-bg: #19191A;
-$body-color: #fff;
-
 //Colors
 $primary: #FCE301;
 $white: #fff; //Основной текст
 $light-grey: #737373; //Приглушенный текст и фон disabled кнопок
 $dark-grey: #202022; //Фон блоков на странице и текста на желтом фоне
 
+// Body
+$body-bg: #19191A;
+$body-color: $white;
 
 // Typography
 $font-family-sans-serif: 'Inter', sans-serif;
@@ -132,13 +131,49 @@ $form-select-padding-x-sm:        $input-padding-x-sm;
 $form-select-font-size-sm:        $input-font-size-sm;
 $form-select-border-radius-sm:    $input-border-radius-sm;
 
+//checkbox
+$form-check-input-width:                  0.75em;
+$form-check-min-height:                   $font-size-base * $line-height-base;
+$form-check-padding-start:                $form-check-input-width + .5em;
+$form-check-margin-bottom:                0;
+$form-check-label-color:                  $light-grey;
+$form-check-label-cursor:                 pointer;
+$form-check-transition:                   border-color .15s ease-in-out;
 
+$form-check-input-active-filter:          brightness(90%);
 
+$form-check-input-bg:                     $input-bg;
+$form-check-input-border:                 1px solid $white;
+$form-check-input-border-radius:          none;
+$form-check-radio-border-radius:          50%;
+$form-check-input-focus-border:           $input-focus-border-color;
 
+$form-check-input-checked-color:          $primary;
+$form-check-input-checked-bg-image:       url("data:image/svg+xml,<svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='12' height='12' fill='#FCE301'/><path d='M4.79755 9L2 6.15593L2.69939 5.44491L4.79755 7.57796L9.30061 3L10 3.71102L4.79755 9Z' fill='#202022'/></svg>");
 
+$form-check-input-disabled-opacity:        .5;
+$form-check-label-disabled-opacity:        .5;
 
+$form-check-inline-margin-end:    1rem;
 
+//range
+$form-range-track-width:          100%;
+$form-range-track-height:         .1875rem;
+$form-range-track-cursor:         pointer;
+$form-range-track-bg:             $light-grey;
+$form-range-track-border-radius:  none;
+$form-range-track-box-shadow:     none;
 
+$form-range-thumb-width:                   .875rem;
+$form-range-thumb-height:                  $form-range-thumb-width;
+$form-range-thumb-bg:                      $primary;
+$form-range-thumb-border:                  0;
+$form-range-thumb-border-radius:           100%;
+$form-range-thumb-box-shadow:              0px 0px 12px rgba(252, 227, 1, 0.5);
+$form-range-thumb-focus-box-shadow:        0 0 0 1px $body-bg, $input-focus-box-shadow;
+$form-range-thumb-active-bg:               $primary;
+$form-range-thumb-disabled-bg:             $light-grey;
+$form-range-thumb-transition:              background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 
 
 

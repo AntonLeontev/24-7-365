@@ -111,3 +111,16 @@
 	min-height: 0.75rem;
 	transition: color 0.15s ease-in-out;
 }
+
+.form-check:hover .form-check-label {
+	color: $white;
+}
+
+.form-check[disabled]:hover .form-check-label {
+	color: $light-grey;
+	cursor: default;
+}
+
+.form-check-label {
+	transition: color 0.15s ease-in-out;
+}
