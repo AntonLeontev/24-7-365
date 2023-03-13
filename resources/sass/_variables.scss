@@ -3,6 +3,9 @@ $primary: #FCE301;
 $white: #fff; //Основной текст
 $light-grey: #737373; //Приглушенный текст и фон disabled кнопок
 $dark-grey: #202022; //Фон блоков на странице и текста на желтом фоне
+$app-table-border-color: #3a3a3a;
+$secondary: $dark-grey;
+$light: $light-grey;
 
 // Body
 $body-bg: #19191A;
@@ -174,6 +177,26 @@ $form-range-thumb-focus-box-shadow:        0 0 0 1px $body-bg, $input-focus-box-
 $form-range-thumb-active-bg:               $primary;
 $form-range-thumb-disabled-bg:             $light-grey;
 $form-range-thumb-transition:              background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+// Card
+$card-spacer-y:                     1.875rem;
+$card-spacer-x:                     0.875rem;
+$card-title-spacer-y:               1.875rem * .5;
+$card-title-color:                  $white;
+$card-subtitle-color:               $white;
+$card-border-width:                 none;
+$card-border-color:                 none;
+$card-border-radius:                none;
+$card-box-shadow:                   null;
+$card-inner-border-radius:          subtract($card-border-radius, $card-border-width);
+$card-cap-bg:                       $dark-grey;
+// $card-cap-color:                    null;
+$card-height:                       null;
+$card-color:                        $white;
+$card-bg:                           $dark-grey;
+$card-img-overlay-padding:          1.875rem;
+$card-group-margin:                 0;
+
 
 
 
