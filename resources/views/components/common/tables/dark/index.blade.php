@@ -1,0 +1,8 @@
+<div class="table_dark">
+	<div class="table_dark__header">
+		{{ $header }}
+	</div>
+    <div class="table_dark__body">
+		{{ $slot }}
+    </div>
+</div>

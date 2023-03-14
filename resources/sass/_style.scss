@@ -44,7 +44,7 @@
 	flex-direction: column-reverse;
 }
 
-.app-table {
+.table_yellow {
 	display: flex;
 	flex-direction: row;
 	
@@ -52,7 +52,7 @@
 		flex-direction: column;
 	}
 		
-	&-header {
+	&__header {
 		display: flex;
 		flex-direction: column;
 		background-color: $primary;
@@ -112,7 +112,7 @@
 		}
 	}
 
-	&-body {
+	&__body {
 		display: flex;
 		flex-direction: row;
 		overflow-x: auto;
@@ -122,7 +122,7 @@
 		}
 	}
 
-	&-row {
+	&__row {
 		display: flex;
 		flex-direction: column;
 
@@ -154,6 +154,97 @@
 
 			&+* {
 				border-right: 2px solid $app-table-border-color;
+				border-bottom: 2px solid $app-table-border-color;
+			}
+		}
+	}
+}
+
+.table_dark {
+	display: flex;
+	flex-direction: row;
+	
+	@include media-breakpoint-up(lg) {
+		flex-direction: column;
+	}
+		
+	&__header {
+		display: flex;
+		flex-direction: column;
+		background-color: $body-bg;
+		color: $white;
+
+		@include media-breakpoint-up(lg) {
+			flex-direction: row;
+		}
+
+		&>* {
+			position: relative;
+			display: flex;
+			justify-content: start;
+			align-items: center;
+			flex-basis: 4.125rem;
+			flex-shrink: 0;
+			height: 54px;
+			padding: 0 .625rem;
+			text-transform: uppercase;
+			font-weight: 700;
+			text-align: left;
+		}
+	}
+
+	&__body {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+
+		@include media-breakpoint-up(lg) {
+			flex-direction: column;
+		}
+	}
+
+	&__row {
+		display: flex;
+		flex-direction: column;
+
+		&:first-child {
+			padding-left: 14px;
+
+			@include media-breakpoint-up(lg) {
+				padding-left: 0;
+			}
+		}
+
+		&:last-child {
+			padding-right: 14px;
+
+			@include media-breakpoint-up(lg) {
+				padding-right: 0;
+			}
+		}
+
+		@include media-breakpoint-up(lg) {
+			flex-direction: row;
+		}
+
+		&>* {
+			display: flex;
+			justify-content: start;
+			align-items: center;
+			flex-basis: 4.125rem;
+			height: 52px;
+			padding: 0 .625rem;
+			white-space: nowrap;
+
+			&:first-child {
+				border-bottom: 2px solid $app-table-border-color;
+
+				@include media-breakpoint-up(lg) {
+					border-bottom: 2px solid $app-table-border-color;
+				}
+			}
+
+			&+* {
 				border-bottom: 2px solid $app-table-border-color;
 			}
 		}

@@ -41,7 +41,7 @@
 						</div>
 					@else
 						<div class="card-body card-body_table">
-							<x-common.table>
+							<x-common.tables.dark>
 								<x-slot:header>
 									<div class="col">Номер договора</div>
 									<div class="col">Тариф</div>
@@ -50,9 +50,9 @@
 								</x-slot:header>
 
 								@foreach ($contracts as $contract)
-									<x-common.table.row>
+									<x-common.tables.dark.row>
 										<div class="col">
-											<a class="btn btn-link"
+											<a class="btn-link"
 												href="{{ route('users.contract_show', $contract->id) }}">№{{ $contract->id }}</a>
 										</div>
 										<div class="col">{{ $contract->tariff->title }}</div>
@@ -70,9 +70,9 @@
 												Завершен
 											@endif
 										</div>
-									</x-common.table.row>
+									</x-common.tables.dark.row>
 								@endforeach
-							</x-common.table>                        
+							</x-common.tables.dark>                        
 						</div>
 					@endempty
                 </div>
