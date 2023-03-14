@@ -34,11 +34,11 @@
 							<p>
 								На данный момент нет активных договоров. 
 							</p>
-								<p>
-									Но вы можете <a class="btn-link" href="{{ route('users.add_contract') }}">заключить новый</a>
-								</p> 
-							</div>
+							<p>
+								Но вы можете <a class="btn-link" href="{{ route('users.add_contract') }}">заключить новый</a>
+							</p> 
 						</div>
+					</div>
 					@else
 						<div class="card-body card-body_table">
 							<x-common.tables.dark>

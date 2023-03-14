@@ -1,4 +1,4 @@
-<div class="table_dark">
+<div {{ $attributes->class(['table_dark'])->merge() }}>
 	<div class="table_dark__header">
 		{{ $header }}
 	</div>

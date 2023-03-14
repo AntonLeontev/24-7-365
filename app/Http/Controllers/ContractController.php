@@ -13,6 +13,7 @@ use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Profitability;
 use App\Models\User;
+use App\ValueObjects\Amount;
 use Illuminate\Support\Facades\Auth;
 
 class ContractController extends Controller
@@ -56,7 +57,17 @@ class ContractController extends Controller
 
         $operations = $profitabilities->mergeRecursive($payments)->sortBy('planned_at');
 
-        return view('users.contracts.contract', compact('contract', 'operations'));
+        $totalProfitabilities = $contract->profitabilities->reduce(function ($carry, $item) {
+            return $carry + $item->amount->raw();
+        }, 0);
+        $totalProfitabilities = new Amount($totalProfitabilities);
+
+        $totalPayments = $payments->where('status', Payment::STATUS_PROCESSED)->reduce(function ($carry, $item) {
+            return $carry + $item->amount->raw();
+        }, 0);
+        $totalPayments = new Amount($totalPayments);
+
+        return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments'));
     }
     
     public function create()

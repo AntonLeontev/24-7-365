@@ -1,0 +1,17 @@
+$utilities: (
+	"width": (
+      property: width,
+	  responsive: true,
+      class: w,
+      values: (
+        25: 25%,
+		33: 33.3%,
+		48: 48%,
+        50: 50%,
+		66: 66.6%,
+        75: 75%,
+        100: 100%,
+        auto: auto
+      )
+    ),
+);    
