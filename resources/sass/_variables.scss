@@ -106,6 +106,7 @@ $form-label-font-style:                 null;
 $form-label-font-weight:                null;
 $form-label-color:                      $light-grey;
 
+
 //select
 $form-select-padding-y:             0.875rem;
 $form-select-padding-x:             0;
@@ -196,6 +197,21 @@ $card-color:                        $white;
 $card-bg:                           $dark-grey;
 $card-img-overlay-padding:          1.875rem;
 $card-group-margin:                 0;
+
+
+
+
+ $grid-breakpoints: (
+xs: 0,
+ss: 320px,
+sm: 480px,
+md: 768px,
+lg: 992px,
+xl: 1200px
+);
+
+
+
 
 
 
