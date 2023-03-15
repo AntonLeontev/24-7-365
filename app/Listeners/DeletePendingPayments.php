@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Events\CanceledUnconfirmedContractChange;
 use App\Models\Payment;
-use Illuminate\Database\Eloquent\Collection;
 
 class DeletePendingPayments
 {
@@ -14,9 +13,11 @@ class DeletePendingPayments
 
         $paymentsIds = $contract->payments
             ->where('status', Payment::STATUS_PENDING)
-			->where('planned_at', '>', $contract->paid_at->addMonths($contract->duration()))
-            ->when($event instanceof CanceledUnconfirmedContractChange, function (Collection $payments) {
-                return $payments->where('type', Payment::TYPE_DEBET);
+            ->when(! is_null($contract->paid_at), function ($query) use ($contract) {
+                $query->where('planned_at', '>', $contract->paid_at->addMonths($contract->duration()));
+            })
+            ->when($event instanceof CanceledUnconfirmedContractChange, function ($query) {
+                $query->where('type', Payment::TYPE_DEBET);
             })
             ->pluck('id');
 

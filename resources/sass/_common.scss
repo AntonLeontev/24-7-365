@@ -130,6 +130,7 @@
 	&__row {
 		display: flex;
 		flex-direction: column;
+		background-color: $body-bg;
 
 		@include media-breakpoint-up(lg) {
 			flex-direction: row;

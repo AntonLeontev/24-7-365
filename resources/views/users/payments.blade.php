@@ -4,81 +4,68 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
 
+            <x-common.h1 class="mb-4">График платежей</x-common.h1>
 
+			@foreach ($operations as $date => $month)
+			<div class="card mb-4">
+				<div class="card-header">
+					{{ now()->parse($date)->translatedFormat("F, Y год") }}
+				</div>
+				<div class="card-body">
+					<x-common.tables.yellow>
+						<x-slot:header>
+							<div class="col">Дата</div>
+							<div class="col">Начислено</div>
+							<div class="col">Тело закупа</div>
+							<div class="col">Договор</div>
+							<div class="col">К выплате</div>
+						</x-slot:header>
 
-            <x-common.h1>График платежей</x-common.h1>
-
-
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Дата</th>
-                        <th scope="col">Начислено</th>
-                        <th scope="col">Тело закупа</th>
-                        <th scope="col">К выплате</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-
-                    @foreach ($operations as $date => $month)
-						<tr>
-							<td colspan="5" style="background: yellow">
-								{{ now()->parse($date)->translatedFormat("F Y") }}
-							</td>
-						</tr>
 						@foreach ($month as $operation)
 							@if ($operation instanceof App\Models\Profitability)
-								<tr>
-									<td>{{ $operation->planned_at->translatedFormat('d F Y') }}</td>
-									<td>+{{ $operation->amount }}</td>
-									<td></td>
-									<td>
+								<x-common.tables.yellow.row>
+									<div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
+									<div class="col">+{{ $operation->amount }}</div>
+									<div class="col"></div>
+									<div class="col">
+										<a href="{{ route('users.contract_show', $operation->contract->id) }}" class="btn-link">
+											# {{ $operation->contract->id }}
+										</a>	
+									</div>
+									<div class="col">
 										@if ($operation->payment->planned_at === $operation->planned_at)
 											{{ $operation->payment->amount }}
 										@else
 											{{ $operation->payment->planned_at->translatedFormat('d F Y') }}
 										@endif
-									</td>
-								</tr>
+									</div>
+								</x-common.tables.yellow.row>
 							@elseif ($operation instanceof App\Models\Payment)
-								<tr>
-									<td>{{ $operation->planned_at->translatedFormat('d F Y') }}</td>
-									<td></td>
-									<td></td>
-									<td>
+								<x-common.tables.yellow.row>
+									<div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
+									<div class="col"></div>
+									<div class="col"></div>
+									<div class="col">
+										<a href="{{ route('users.contract_show', $operation->contract->id) }}" class="btn-link">
+											# {{ $operation->contract->id }}
+										</a>
+									</div>
+									<div class="col">
 										{{ $operation->amount }}
-									</td>
-								</tr>
+									</div>
+								</x-common.tables.yellow.row>
 							@endif
 						@endforeach
-                    @endforeach
+					</x-common.tables.yellow>
+				</div>
+			</div>
+			@endforeach
 
-
-                </tbody>
-            </table>
             {{-- {{ $payments->links() }} --}}
 
 
 
-            <button class="btn btn-primary btn-lg" type="button">скачать договор pdf</button>
-
-
-
-
-
-            <nav class="navbar bg-body-tertiary mt-5">
-                <form class="container-fluid justify-content-end">
-                    <a href="{{ route('users.add_contract') }}"> <button class="btn btn-outline-primary"
-                            type="button">Добавить договор</button> </a>
-                </form>
-            </nav>
-
-
-        </div>
     </div>
     
 @endsection

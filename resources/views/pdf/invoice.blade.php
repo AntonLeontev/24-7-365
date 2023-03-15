@@ -75,7 +75,7 @@
 		</tbody>
 	</table>
  
-	<h1>Счет на оплату № 10 от {{ now()->translatedFormat('d F Y') }}</h1>
+	<h1>Счет на оплату № {{ $payment->id }} от {{ $payment->created_at->translatedFormat('d F Y') }}</h1>
  
 	<table class="contract">
 		<tbody>
@@ -85,12 +85,13 @@
 			</tr>
 			<tr>
 				<td>Покупатель:<br>(Заказчик)</td>
-				<th> ООО Пример
+				<th> 
+					{{ $payment->account->organization->title }}, ИНН {{ $payment->account->organization->inn }}, КПП {{ $payment->account->organization->kpp }},
 				</th>
 			</tr>
 			<tr>
 				<td>Основание:</td>
-				<th> Какой-то текст
+				<th>Оплата по договору {{ $payment->contract_id }}
 				</th>
 			</tr>
 		</tbody>
@@ -113,29 +114,45 @@
 				<td align="left">Наименование услуги</td>
 				<td align="right">1</td>
 				<td align="left">шт</td>
-				<td align="right">{{ number_format($sum, 2, ',', ' ') }}</td>
-				<td align="right">{{ number_format($sum, 2, ',', ' ') }}</td>
+				<td align="right">{{ $payment->amount }}</td>
+				<td align="right">{{ $payment->amount }}</td>
 			</tr>
 		</tbody>
-		<tfoot>
+		{{-- <tfoot>
 			<tr>
-				<th colspan="5">Итого:</th>
-				<th>{{ number_format($sum, 2, ',', ' ') }} р</th>
+				<th colspan="4">Итого:</th>
+				<th colspan="2">{{ $payment->amount }}</th>
 			</tr>
 			<tr>
-				<th colspan="5">Без налога (НДС)</th>
-				<th>-</th>
+				<th colspan="4">Без налога (НДС)</th>
+				<th colspan="2">-</th>
 			</tr>
 			<tr>
-				<th colspan="5">Всего к оплате:</th>
-				<th>{{ number_format($sum, 2, ',', ' ') }} р</th>
+				<th colspan="4">Всего к оплате:</th>
+				<th colspan="2">{{ $payment->amount }}</th>
 			</tr>
-		</tfoot>
+		</tfoot> --}}
+	</table>
+	<table>
+		<tbody>
+			<tr>
+				<td style="width: 80%; text-align:right"><strong>Итого:</strong></td>
+				<td style="text-align:right"><strong>{{ $payment->amount }}</strong></td>
+			</tr>
+			<tr>
+				<td style="width: 80%; text-align:right"><strong>Без налога (НДС)</strong></td>
+				<td style="text-align:right"><strong>-</strong></td>
+			</tr>
+			<tr>
+				<td style="width: 80%; text-align:right"><strong>Всего к оплате:</strong></td>
+				<td style="text-align:right"><strong>{{ $payment->amount }}</strong></td>
+			</tr>
+		</tbody>
 	</table>
 	
 	<div class="total">
-		<p>Всего наименований 1, на сумму {{ number_format($sum, 2, ',', ' ') }} руб.</p>
-		<p><strong>{{ amount_to_string($sum) }}</strong></p>
+		<p>Всего наименований 1, на сумму {{ $payment->amount }}</p>
+		<p><strong>{{ amount_to_string($payment->amount->amount()) }}</strong></p>
 	</div>
 	
 	<div class="sign">

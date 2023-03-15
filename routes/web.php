@@ -42,8 +42,8 @@ Route::get('24-period/{contract_id}', function ($id) {
 })->name('period');
 
 //TODO Удалить лишние роуты
-Route::get('pdf', [PdfController::class, 'get']);
-Route::get('pdf/get', [PdfController::class, 'get'])->name('pdf.invoice');
+Route::get('invoices/{payment}/pdf', [PdfController::class, 'invoice'])->name('invoice.pdf');
+Route::get('invoices/{payment}/pdf/get', [PdfController::class, 'invoice']);
 
 Auth::routes(['verify' => true]);
 
@@ -60,26 +60,32 @@ Route::prefix('personal')
         Route::get('profile', [UserProfileController::class, 'profile'])
             ->name('users.profile');
         Route::post('save_profile/{user}', [UserProfileController::class, 'storeProfile'])
-        ->name('save_profile');
+            ->name('save_profile');
         Route::post('save_profile_organization/{user}', [UserProfileController::class, 'storeProfileOrganization'])
-        ->name('save_profile_organization');
+            ->name('save_profile_organization');
         Route::post('save_profile_requisites/{user}', [UserProfileController::class, 'storeProfileRequisites'])
-        ->name('save_profile_requisites');
+            ->name('save_profile_requisites');
         Route::post('save_profile_password/{user}', [UserProfileController::class, 'passwordReset'])
-        ->name('save_profile_password');
+            ->name('save_profile_password');
         
         Route::get('contracts', [ContractController::class, 'index'])
-        ->middleware('can:see own profile')
-        ->name('users.contracts');
+            ->middleware('can:see own profile')
+            ->name('users.contracts');
         
         Route::get('contracts/{contract}/show', [ContractController::class, 'show'])
-        ->middleware('can:see own profile')
-        ->middleware(CanSeeContract::class)
-        ->name('users.contract_show');
+            ->middleware('can:see own profile')
+            ->middleware(CanSeeContract::class)
+            ->name('users.contract_show');
+
+		//TODO Удалить этот роут перед прод
+		Route::get('contracts/pdf/get', [PdfController::class, 'contract']);
+        Route::get('contracts/pdf', [PdfController::class, 'contract'])
+            ->middleware('can:see own profile')
+            ->name('users.contract.pdf');
         
         Route::get('add_contract', [ContractController::class, 'create'])
-        ->middleware('can:see own profile')
-        ->name('users.add_contract');
+            ->middleware('can:see own profile')
+            ->name('users.add_contract');
 
 
         Route::post('add_contract', [ContractController::class, 'store'])
@@ -104,16 +110,15 @@ Route::prefix('personal')
 
         
         Route::get('phone_confirmation', [SmscodeController::class,'phoneConfirmation'])
-        ->middleware('can:see own profile')
-        ->name('users.phone_confirmation');
+            ->middleware('can:see own profile')
+            ->name('users.phone_confirmation');
         
         Route::get('create_smscode/{operation_type}', [SmscodeController::class,'createCode'])
-        ->middleware('can:see own profile')
-        ->name('users.create_smscode');
-                Route::get('dadata_test', [UserProfileController::class,'dadataTest'])
-        ->middleware('can:see own profile')
-        ->name('users.create_smscode');
-
+            ->middleware('can:see own profile')
+            ->name('users.create_smscode');
+        Route::get('dadata_test', [UserProfileController::class,'dadataTest'])
+            ->middleware('can:see own profile')
+            ->name('users.create_smscode');
     });
 
 Route::prefix('admin')

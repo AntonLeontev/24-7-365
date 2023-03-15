@@ -12,7 +12,7 @@ class PaymentController extends Controller
     {
         $contractsIds = auth()->user()->contracts->pluck('id')->toArray();
         $profitabilities = Profitability::query()
-            ->with('payment')
+            ->with(['payment', 'contract'])
             ->whereIn('contract_id', $contractsIds)
             ->get();
         
@@ -20,6 +20,7 @@ class PaymentController extends Controller
             ->whereIn('contract_id', $contractsIds)
             ->where('type', Payment::TYPE_CREDIT)
 			->orderBy('planned_at')
+			->with('contract')
             ->get();
 
         $operations = $profitabilities->merge($payments)
