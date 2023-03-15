@@ -21,78 +21,70 @@
 	    height: 40px;
 	    margin-top: 25px;
 	    color:$light-grey;
-	    
-	   
-			
-	    }
+	   }
   
         li.active,  li:hover{
-		    border-left:4px solid $primary;
+	    border-left:4px solid $primary;
+	    
+		      .svg-stroke svg{
+			     stroke:$primary !important;
+			    }
 		    
-			      .svg-stroke svg{
-				     stroke:$primary !important;
-				    }
-				    
-				    .svg-fill svg{
-				    fill:$primary !important;
-				    }
-			    
-				     a{
-				      color:$primary !important;
-				      }
+			    .svg-fill svg{
+			    fill:$primary !important;
+			    }
 		    
+			     a{
+			      color:$primary !important;
+			      }
+	    
 		    }
 
 }
 
 .sidebar-menu{
-padding-left: 0;
-min-width: 300px;
-background-color:$dark-grey;
-
-
-        a{
-	      color:$light-grey;
-	      }
-	      
-	      
-	    p{
-	      color:$light-grey;
-	      } 
- 
-		    .sidebar-bottom{
-		    margin-left: 14px;
-		    font-size:12px;
-		    font-weight:600; 
-		    
-		    }
-		    
-		    
-		    .socials-links{
-		    margin-left: 14px;
-		      svg{
-		       margin-left: 5px;
-		    margin-bottom: 20px; 
-		    }
-    
-    
-    }
-    
-    
-    
-    
-    
-
+	padding-left: 0;
+	min-width: 300px;
+	background-color:$dark-grey;
+	
+	
+		        a{
+			      color:$light-grey;
+			      }
+			      
+			      
+			    p{
+			      color:$light-grey;
+			      } 
+	 
+			    .sidebar-bottom{
+			    margin-left: 14px;
+			    font-size:12px;
+			    font-weight:600; 
+			    
+			    }
+			    
+			    
+			    .socials-links{
+			    margin-left: 14px;
+			      
+			      
+			      svg{
+			       margin-left: 5px;
+			       margin-bottom: 20px; 
+			      }
+	       
+                }
 }
 
 
 
 .mobile-menu{
 
-padding-left: 0;
-max-width: 300px;
-background-color:$dark-grey;
-
+	padding-left: 0;
+	max-width: 300px;
+	background-color:$dark-grey;
+	
 
 		
 			  .top-mobile-header{

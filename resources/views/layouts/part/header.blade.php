@@ -23,6 +23,8 @@
 	 <div class="col align-self-center top-greetings-left-margin top-greetings-main-left-col">
 	    @include('layouts.part.top_greetings')
 	 </div>
+	 
+	 
 	      <div class="col-auto align-center text-end top-greetings-main-right-col">
 	        <p class="top-greetings align-self-center">Нет новых уведомлений</p>
 	      <p class="top-greetings-2">Уведомления</p>
