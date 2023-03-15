@@ -17,10 +17,23 @@
 
 
 	<x-header />
-	@include('layouts.header')
+	@include('layouts.part.header')
 	
-	<main class="py-4">
-		@yield('content')
-	</main>
+	
+	<div class="container-fluid">
+    	<div class="row">
+    	
+    	    @include('layouts.part.sidebar_menu')
+    	
+    	    <main class="col mt-5">
+    		@yield('content')
+    		</main>
+    		
+    		
+    		
+    	</div>
+	</div>	
+		
+	
 </body>
 </html>

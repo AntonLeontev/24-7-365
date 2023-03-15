@@ -15,9 +15,13 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        View::composer('layouts.header', function($view) {
+        View::composer('layouts.part.header', function($view) {
             $view->with(['user' => Auth::user()]);
         });
+        
+            View::composer('layouts.part.top_greetings', function($view) {
+                $view->with(['user' => Auth::user()]);
+            });
     }
 
     /**

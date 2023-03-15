@@ -1,17 +1,19 @@
-@php
-//print_r($user);
-@endphp
 <header class="border-bottom top-header-bottom">
 <div class="container-fluid">
 	<div class="row align-items-center text-white top-header">
 	
 	 <div class="col-auto d-xl-none d-xxl-block">
+	 <a  data-bs-toggle="offcanvas" href="#mobile-menu" role="button" aria-controls="mobile-menu">
+  
+  
 	 <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="21" cy="21" r="21" fill="#202022"/>
 <rect x="10" y="10" width="22" height="3" fill="#FCE301"/>
 <rect x="10" y="28" width="22" height="3" fill="#FCE301"/>
 <rect x="10" y="19" width="18" height="3" fill="#FCE301"/>
 </svg>
+</a>
+
 	 </div>
 	
 	 <div class="col logo">
@@ -19,8 +21,7 @@
 	 </div>
 	    
 	 <div class="col align-self-center top-greetings-left-margin top-greetings-main-left-col">
-	      <p class="top-greetings align-self-center">Здравствуйте, {{$user->email}}</p>
-	      <p class="top-greetings-2">{{$user->first_name}}</p>
+	    @include('layouts.part.top_greetings')
 	 </div>
 	      <div class="col-auto align-center text-end top-greetings-main-right-col">
 	        <p class="top-greetings align-self-center">Нет новых уведомлений</p>
