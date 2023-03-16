@@ -18,205 +18,196 @@ $font-size-base: 1rem;
 $line-height-base: 1;
 
 //links
-$btn-link-color:              $primary;
-$btn-link-hover-color:        $primary;
-$btn-link-disabled-color:     $light-grey;
+$btn-link-color: $primary;
+$btn-link-hover-color: $primary;
+$btn-link-disabled-color: $light-grey;
 
 //Buttons
-$btn-padding-y:               0.5rem;
-$btn-padding-x:               0.625rem;
-$btn-font-size:               1rem;
-$btn-line-height:             1.2;
+$btn-padding-y: 0.5rem;
+$btn-padding-x: 0.625rem;
+$btn-font-size: 1rem;
+$btn-line-height: 1.2;
 
-$btn-border-radius:           none;
+$btn-border-radius: none;
 $btn-box-shadow: 0px 8px 16px rgba(255, 229, 0, 0.15);
 
 $btn-border-width: 2px;
 
-$btn-close-width:            2.625rem;
-$btn-close-height:           $btn-close-width;
-$btn-close-padding-x:        0;
-$btn-close-padding-y:        $btn-close-padding-x;
-$btn-close-color:            $dark-grey;
-$btn-close-bg:               url("data:image/svg+xml,<svg width='22' height='22' viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M19.1713 21.8952L11 13.7239L2.82865 21.8952L0.104868 19.1714L8.27622 11.0001L0.104867 2.82873L2.82865 0.104943L11 8.27629L19.1713 0.104943L21.8951 2.82873L13.7238 11.0001L21.8951 19.1714L19.1713 21.8952Z' fill='#202022'/></svg>");
-$btn-close-opacity:          1;
-$btn-close-hover-opacity:    1;
-$btn-close-focus-opacity:    1;
+$btn-close-width: 2.625rem;
+$btn-close-height: $btn-close-width;
+$btn-close-padding-x: 0;
+$btn-close-padding-y: $btn-close-padding-x;
+$btn-close-color: $dark-grey;
+$btn-close-bg: url("data:image/svg+xml,<svg width='22' height='22' viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M19.1713 21.8952L11 13.7239L2.82865 21.8952L0.104868 19.1714L8.27622 11.0001L0.104867 2.82873L2.82865 0.104943L11 8.27629L19.1713 0.104943L21.8951 2.82873L13.7238 11.0001L21.8951 19.1714L19.1713 21.8952Z' fill='#202022' /></svg>");
+$btn-close-opacity: 1;
+$btn-close-hover-opacity: 1;
+$btn-close-focus-opacity: 1;
 $btn-close-disabled-opacity: .25;
 
 //Modal
-$modal-inner-padding:         		1.875rem;
-$modal-title-line-height:     		1;
+$modal-inner-padding: 1.875rem;
+$modal-title-line-height: 1;
 
-$modal-content-color:               $white;
-$modal-content-bg:                  $dark-grey;
-$modal-content-border-color:        rgba(252, 227, 1, 0.5);
-$modal-content-border-width:        2px;
-$modal-content-border-radius:       none;
+$modal-content-color: $white;
+$modal-content-bg: $dark-grey;
+$modal-content-border-color: rgba(252, 227, 1, 0.5);
+$modal-content-border-width: 2px;
+$modal-content-border-radius: none;
 
-$modal-content-box-shadow-xs:       0px 4px 32px rgba(255, 230, 0, 0.15);
-$modal-content-box-shadow-sm-up:    0px 4px 32px rgba(255, 230, 0, 0.15);
+$modal-content-box-shadow-xs: 0px 4px 32px rgba(255, 230, 0, 0.15);
+$modal-content-box-shadow-sm-up: 0px 4px 32px rgba(255, 230, 0, 0.15);
 
-$modal-header-border-color:         none;
-$modal-header-border-width:			0;
-$modal-header-padding-y:            1.875rem;
-$modal-header-padding-x:            0;
+$modal-header-border-color: none;
+$modal-header-border-width: 0;
+$modal-header-padding-y: 1.875rem;
+$modal-header-padding-x: 0;
 
-$modal-sm:                          330px;
-$modal-md:                          451px;
-$modal-lg:                          689px;
+$modal-sm: 330px;
+$modal-md: 451px;
+$modal-lg: 689px;
 
 //input
-$input-height:							2.75rem;
-$input-padding-y:                       0.78125rem;
-$input-padding-x:                       0;
-$input-font-size:                       0.875rem;
-$input-font-weight:                     400;
-$input-line-height:                     1;
+$input-height: 2.75rem;
+$input-padding-y: 0.78125rem;
+$input-padding-x: 0;
+$input-font-size: 0.875rem;
+$input-font-weight: 400;
+$input-line-height: 1;
 
-$input-padding-y-sm:                    0.875rem;
-$input-padding-x-sm:                    0;
-$input-font-size-sm:                    0.875rem;
+$input-padding-y-sm: 0.875rem;
+$input-padding-x-sm: 0;
+$input-font-size-sm: 0.875rem;
 
-$input-bg:                              $dark-grey;
-$input-disabled-color:                  $light-grey;
-$input-disabled-bg:                     $dark-grey;
-$input-disabled-border-color:           $light-grey;
+$input-bg: $dark-grey;
+$input-disabled-color: $light-grey;
+$input-disabled-bg: $dark-grey;
+$input-disabled-border-color: $light-grey;
 
-$input-color:                           $white;
-$input-border-color:                    $light-grey;
-$input-border-width:                    2px;
-$input-box-shadow:                      none;
+$input-color: $white;
+$input-border-color: $light-grey;
+$input-border-width: 2px;
+$input-box-shadow: none;
 
-$input-border-radius:                   none;
-$input-border-radius-sm:                none;
-$input-border-radius-lg:                none;
+$input-border-radius: none;
+$input-border-radius-sm: none;
+$input-border-radius-lg: none;
 
-$input-focus-bg:                        $input-bg;
-$input-focus-border-color:              $primary;
-$input-focus-color:                     $input-color;
-$input-focus-box-shadow: 				none;
+$input-focus-bg: $input-bg;
+$input-focus-border-color: $primary;
+$input-focus-color: $input-color;
+$input-focus-box-shadow: none;
 
-$input-placeholder-color:               $light-grey;
-$input-plaintext-color:                 $input-color;
+$input-placeholder-color: $light-grey;
+$input-plaintext-color: $input-color;
 
 //label
-$form-label-margin-bottom:              .5rem;
-$form-label-font-size:                  0.75rem;
-$form-label-font-style:                 null;
-$form-label-font-weight:                null;
-$form-label-color:                      $light-grey;
+$form-label-margin-bottom: .5rem;
+$form-label-font-size: 0.75rem;
+$form-label-font-style: null;
+$form-label-font-weight: null;
+$form-label-color: $light-grey;
 
 
 //select
-$form-select-padding-y:             0.875rem;
-$form-select-padding-x:             0;
-$form-select-font-size:             0.875rem;
-$form-select-font-weight:           400;
-$form-select-line-height:           $input-line-height;
-$form-select-color:                 $input-color;
-$form-select-bg:                    $input-bg;
-$form-select-disabled-color:        null;
-$form-select-disabled-bg:           $input-disabled-bg;
+$form-select-padding-y: 0.875rem;
+$form-select-padding-x: 0;
+$form-select-font-size: 0.875rem;
+$form-select-font-weight: 400;
+$form-select-line-height: $input-line-height;
+$form-select-color: $input-color;
+$form-select-bg: $input-bg;
+$form-select-disabled-color: null;
+$form-select-disabled-bg: $input-disabled-bg;
 $form-select-disabled-border-color: $input-disabled-border-color;
-$form-select-bg-position:           right $form-select-padding-x center;
-$form-select-bg-size:               16px 12px; // In pixels because image dimensions
-$form-select-indicator-color:       $primary;
+$form-select-bg-position: right $form-select-padding-x center;
+$form-select-bg-size: 16px 12px; // In pixels because image dimensions
+$form-select-indicator-color: $primary;
 
-$form-select-border-width:        $input-border-width;
-$form-select-border-color:        $input-border-color;
-$form-select-border-radius:       $input-border-radius;
+$form-select-border-width: $input-border-width;
+$form-select-border-color: $input-border-color;
+$form-select-border-radius: $input-border-radius;
 
-$form-select-focus-border-color:  $input-focus-border-color;
-$form-select-focus-width:         none;
-$form-select-focus-box-shadow:    none;
+$form-select-focus-border-color: $input-focus-border-color;
+$form-select-focus-width: none;
+$form-select-focus-box-shadow: none;
 
-$form-select-padding-y-sm:        $input-padding-y-sm;
-$form-select-padding-x-sm:        $input-padding-x-sm;
-$form-select-font-size-sm:        $input-font-size-sm;
-$form-select-border-radius-sm:    $input-border-radius-sm;
+$form-select-padding-y-sm: $input-padding-y-sm;
+$form-select-padding-x-sm: $input-padding-x-sm;
+$form-select-font-size-sm: $input-font-size-sm;
+$form-select-border-radius-sm: $input-border-radius-sm;
 
 //checkbox
-$form-check-input-width:                  0.75em;
-$form-check-min-height:                   $font-size-base * $line-height-base;
-$form-check-padding-start:                $form-check-input-width + .5em;
-$form-check-margin-bottom:                0;
-$form-check-label-color:                  $light-grey;
-$form-check-label-cursor:                 pointer;
-$form-check-transition:                   border-color .15s ease-in-out;
+$form-check-input-width: 0.75em;
+$form-check-min-height: $font-size-base * $line-height-base;
+$form-check-padding-start: $form-check-input-width + .5em;
+$form-check-margin-bottom: 0;
+$form-check-label-color: $light-grey;
+$form-check-label-cursor: pointer;
+$form-check-transition: border-color .15s ease-in-out;
 
-$form-check-input-active-filter:          brightness(90%);
+$form-check-input-active-filter: brightness(90%);
 
-$form-check-input-bg:                     $input-bg;
-$form-check-input-border:                 1px solid $white;
-$form-check-input-border-radius:          none;
-$form-check-radio-border-radius:          50%;
-$form-check-input-focus-border:           $input-focus-border-color;
+$form-check-input-bg: $input-bg;
+$form-check-input-border: 1px solid $white;
+$form-check-input-border-radius: none;
+$form-check-radio-border-radius: 50%;
+$form-check-input-focus-border: $input-focus-border-color;
 
-$form-check-input-checked-color:          $primary;
-$form-check-input-checked-bg-image:       url("data:image/svg+xml,<svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='12' height='12' fill='#FCE301'/><path d='M4.79755 9L2 6.15593L2.69939 5.44491L4.79755 7.57796L9.30061 3L10 3.71102L4.79755 9Z' fill='#202022'/></svg>");
+$form-check-input-checked-color: $primary;
+$form-check-input-checked-bg-image: url("data:image/svg+xml,<svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='12' height='12' fill='#FCE301' /><path d='M4.79755 9L2 6.15593L2.69939 5.44491L4.79755 7.57796L9.30061 3L10 3.71102L4.79755 9Z' fill='#202022' /></svg>");
 
-$form-check-input-disabled-opacity:        .5;
-$form-check-label-disabled-opacity:        .5;
+$form-check-input-disabled-opacity: .5;
+$form-check-label-disabled-opacity: .5;
 
-$form-check-inline-margin-end:    1rem;
+$form-check-inline-margin-end: 1rem;
 
 //range
-$form-range-track-width:          100%;
-$form-range-track-height:         .1875rem;
-$form-range-track-cursor:         pointer;
-$form-range-track-bg:             $light-grey;
-$form-range-track-border-radius:  none;
-$form-range-track-box-shadow:     none;
+$form-range-track-width: 100%;
+$form-range-track-height: .1875rem;
+$form-range-track-cursor: pointer;
+$form-range-track-bg: $light-grey;
+$form-range-track-border-radius: none;
+$form-range-track-box-shadow: none;
 
-$form-range-thumb-width:                   .875rem;
-$form-range-thumb-height:                  $form-range-thumb-width;
-$form-range-thumb-bg:                      $primary;
-$form-range-thumb-border:                  0;
-$form-range-thumb-border-radius:           100%;
-$form-range-thumb-box-shadow:              0px 0px 12px rgba(252, 227, 1, 0.5);
-$form-range-thumb-focus-box-shadow:        0 0 0 1px $body-bg, $input-focus-box-shadow;
-$form-range-thumb-active-bg:               $primary;
-$form-range-thumb-disabled-bg:             $light-grey;
-$form-range-thumb-transition:              background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+$form-range-thumb-width: .875rem;
+$form-range-thumb-height: $form-range-thumb-width;
+$form-range-thumb-bg: $primary;
+$form-range-thumb-border: 0;
+$form-range-thumb-border-radius: 100%;
+$form-range-thumb-box-shadow: 0px 0px 12px rgba(252, 227, 1, 0.5);
+$form-range-thumb-focus-box-shadow: 0 0 0 1px $body-bg, $input-focus-box-shadow;
+$form-range-thumb-active-bg: $primary;
+$form-range-thumb-disabled-bg: $light-grey;
+$form-range-thumb-transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .5s ease-in-out;
 
 // Card
-$card-spacer-y:                     1.875rem;
-$card-spacer-x:                     0.875rem;
-$card-title-spacer-y:               1.875rem * .5;
-$card-title-color:                  $white;
-$card-subtitle-color:               $white;
-$card-border-width:                 none;
-$card-border-color:                 none;
-$card-border-radius:                none;
-$card-box-shadow:                   null;
-$card-inner-border-radius:          subtract($card-border-radius, $card-border-width);
-$card-cap-bg:                       $dark-grey;
-// $card-cap-color:                    null;
-$card-height:                       null;
-$card-color:                        $white;
-$card-bg:                           $dark-grey;
-$card-img-overlay-padding:          1.875rem;
-$card-group-margin:                 0;
+$card-spacer-y: 1.875rem;
+$card-spacer-x: 0.875rem;
+$card-title-spacer-y: 1.875rem * .5;
+$card-title-color: $white;
+$card-subtitle-color: $white;
+$card-border-width: none;
+$card-border-color: none;
+$card-border-radius: none;
+$card-box-shadow: null;
+$card-inner-border-radius: subtract($card-border-radius, $card-border-width);
+$card-cap-bg: $dark-grey;
+// $card-cap-color: null;
+$card-height: null;
+$card-color: $white;
+$card-bg: $dark-grey;
+$card-img-overlay-padding: 1.875rem;
+$card-group-margin: 0;
 
 
 
 
- $grid-breakpoints: (
-xs: 0,
-ss: 320px,
-sm: 480px,
-md: 768px,
-lg: 992px,
-xl: 1200px,
-xxl: 1500px
+$grid-breakpoints: (
+	xs: 0,
+	ss: 320px,
+	sm: 480px,
+	md: 768px,
+	lg: 992px,
+	xl: 1200px,
+	xxl: 1500px
 );
-
-
-
-
-
-
-
-
-
