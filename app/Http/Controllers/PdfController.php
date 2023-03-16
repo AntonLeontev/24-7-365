@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Tariff;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -17,13 +16,10 @@ class PdfController extends Controller
         return Pdf::loadView('pdf.invoice', compact('payment'))->download('invoice.pdf');
     }
 
-    public function contract(Contract $contract)
+    public function contract()
     {
         $tariffs = Tariff::where('status', Tariff::ACTIVE)->get()->groupBy('title');
-        if (request()->is('contracts/pdf/get')) {
-			return view('pdf.contract', compact('contract', 'tariffs'));
-		}
-		return Pdf::loadView('pdf.contract', compact('contract', 'tariffs'))->download('contract.pdf');
         
+		return Pdf::loadView('pdf.contract.index', compact('tariffs'))->download('contract.pdf');
     }
 }
