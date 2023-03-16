@@ -1,0 +1,1 @@
+<div style="display:inline-block"><img src="{{ Vite::asset('resources/images/logo.png') }}" alt=""></div>

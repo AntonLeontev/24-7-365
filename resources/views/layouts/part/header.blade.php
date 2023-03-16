@@ -1,6 +1,6 @@
 <header class="border-bottom top-header-bottom">
 <div class="container-fluid">
-	<div class="row align-items-center text-white top-header">
+	<div class="row align-items-center  top-header">
 	
 	 <div class="col-auto d-xl-none d-xxl-block">
 	 <a  data-bs-toggle="offcanvas" href="#mobile-menu" role="button" aria-controls="mobile-menu">
@@ -17,7 +17,8 @@
 	 </div>
 	
 	 <div class="col logo">
-	      <div style="display:inline-block"><img src="{{ Vite::asset('resources/images/logo.png') }}" alt=""></div>
+	 
+	       @include('layouts.part.logo')
 	 </div>
 	    
 	 <div class="col align-self-center top-greetings-left-margin top-greetings-main-left-col">

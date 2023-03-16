@@ -45,7 +45,7 @@
 .sidebar-menu{
 	padding-left: 0;
 	min-width: 300px;
-	background-color:$dark-grey;
+	background-color:$dark-grey !important;
 	
 	
 		        a{
@@ -57,7 +57,12 @@
 			      color:$light-grey;
 			      } 
 	 
-			    .sidebar-bottom{
+			
+}
+
+
+
+    .sidebar-bottom{
 			    margin-left: 14px;
 			    font-size:12px;
 			    font-weight:600; 
@@ -75,8 +80,7 @@
 			      }
 	       
                 }
-}
-
+                
 
 
 .mobile-menu{

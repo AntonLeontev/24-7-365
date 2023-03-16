@@ -1,0 +1,29 @@
+.footer {
+	display:none;
+	    border-top: 1px solid $light-grey;
+    margin-top: 100px;
+    padding-bottom: 30px;
+	
+			    a{
+			      color:$light-grey;
+			      }
+			      
+			      
+			    p{
+			      color:$light-grey;
+			      } 
+			      
+			      .socials-links {
+
+				    text-align: right;
+				    }
+			      
+			      
+}
+
+
+@include media-breakpoint-down(xl) {
+		.footer {
+		display:block !important;
+		}
+	}	

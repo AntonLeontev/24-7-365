@@ -34,6 +34,8 @@
     	</div>
 	</div>	
 		
+	 @include('layouts.part.footer')
+	
 	
 </body>
 </html>
