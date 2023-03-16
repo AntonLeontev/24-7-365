@@ -2,7 +2,7 @@
 <div class="container-fluid">
 	<div class="row align-items-center  top-header">
 	
-	 <div class="col-auto d-xl-none d-xxl-block">
+	 <div class="col-auto d-xl-none">
 	 <a  data-bs-toggle="offcanvas" href="#mobile-menu" role="button" aria-controls="mobile-menu">
   
   

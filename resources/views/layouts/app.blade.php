@@ -25,7 +25,7 @@
     	
     	    @include('layouts.part.sidebar_menu')
     	
-    	    <main class="col mt-5">
+    	    <main class="col mt-4 px-xxl-5">
     		@yield('content')
     		</main>
     		

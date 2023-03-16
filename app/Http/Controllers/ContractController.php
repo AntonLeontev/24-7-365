@@ -12,16 +12,15 @@ use App\Http\Requests\StoreContractRequest;
 use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Profitability;
-use App\Models\User;
+use App\Models\Tariff;
 use App\ValueObjects\Amount;
-use Illuminate\Support\Facades\Auth;
 
 class ContractController extends Controller
 {
     public function index()
     {
         
-        $organization = User::with('organization')->find(Auth::user()->id)->organization;
+        $organization = auth()->user()->organization;
         
        // $organization= NULL;
         
@@ -32,10 +31,10 @@ class ContractController extends Controller
         }
         
         $contracts = Contract::with('tariff')->where('organization_id', $organization->id)
-        // ->whereIn('status', [Contract::ACTIVE, Contract::PENDING, Contract::CANCELED])
-        ->where('deleted_at', null)
-        ->orderByDesc('created_at')
-        ->paginate();
+            ->whereIn('status', [Contract::ACTIVE, Contract::PENDING, Contract::CANCELED])
+            ->where('deleted_at', null)
+            ->orderByDesc('created_at')
+            ->paginate();
         
        
         return view('users.contracts.contracts_list', compact('contracts'));
@@ -67,7 +66,9 @@ class ContractController extends Controller
         }, 0);
         $totalPayments = new Amount($totalPayments);
 
-        return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments'));
+        $tariffs = Tariff::where('status', Tariff::ACTIVE)->get()->groupBy('title');
+
+        return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments', 'tariffs'));
     }
     
     public function create()
