@@ -240,7 +240,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div class="text-bg-dark vh-70 overflow-auto px-3 py-3">
+                    <div class="contract-text text-bg-dark vh-70 overflow-auto px-3 py-3">
                         @include('pdf.contract.text', compact('tariffs'))
                     </div>
                     <a class="btn btn-outline-primary w-100 d-lg-none mt-4" href="{{ route('users.contract.pdf') }}">

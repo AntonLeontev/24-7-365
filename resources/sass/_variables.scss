@@ -17,6 +17,31 @@ $font-family-sans-serif: 'Inter', sans-serif;
 $font-size-base: 1rem;
 $line-height-base: 1;
 
+$h1-font-size:                $font-size-base * 2.5;
+$h2-font-size:                $font-size-base * 2;
+$h3-font-size:                $font-size-base * 1.75;
+$h4-font-size:                $font-size-base * 1.5;
+$h5-font-size:                $font-size-base * 1.25;
+$h6-font-size:                $font-size-base;
+
+$font-sizes: (
+  1: $h1-font-size,
+  2: $h2-font-size,
+  3: $h3-font-size,
+  4: $h4-font-size,
+  5: $h5-font-size,
+  6: $h6-font-size,
+  7: $font-size-base * 0.875,  //14px
+  8: $font-size-base * 0.75,   //12px
+  9: $font-size-base * 0.625   //10px
+);
+
+$line-height-base:            1.5;
+$line-height-sm:              1.25;
+$line-height-lg:              2;
+
+
+
 //links
 $btn-link-color: $primary;
 $btn-link-hover-color: $primary;
@@ -200,8 +225,6 @@ $card-img-overlay-padding: 1.875rem;
 $card-group-margin: 0;
 
 
-
-
 $grid-breakpoints: (
 	xs: 0,
 	ss: 320px,
@@ -212,3 +235,22 @@ $grid-breakpoints: (
 	xl: 1200px,
 	xxl: 1500px
 );
+
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  11: 10px,
+  12: 20px,
+  121: 24px,
+  13: 30px,
+  14: 40px,
+  15: 50px,
+  16: 60px,
+  17: 70px,
+);
+

@@ -6,9 +6,9 @@
 ])
 
 <div class="form-check" @disabled($disabled)>
-	<label class="form-check-label">
-	  <input class="form-check-input" type="checkbox" name="{{ $name }}" @checked($checked) 
+	<label {{ $attributes->class(["form-check-label lh-base"])->merge() }}>
+	  <input class="form-check-input fs-5" type="checkbox" name="{{ $name }}" @checked($checked) 
 	  @disabled($disabled)>
-    {{ $label }}
+	{{ $slot }}
   </label>
 </div>
