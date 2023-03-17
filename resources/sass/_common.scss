@@ -3,6 +3,22 @@
   stroke: $light-grey;
 }
 
+body, body *, html {
+	scrollbar-color: $primary $dark;
+
+	&::-webkit-scrollbar {
+		width: 6px; /* в основном для вертикальных полос прокрутки */
+		height: 6px; /* в основном для горизонтальных полос прокрутки */
+	}
+	&::-webkit-scrollbar-thumb { /* плашка-бегунок */
+		background: $primary;
+	}
+	&::-webkit-scrollbar-track { /* фон */
+		background: $dark;
+	}
+}
+
+
 .heading {
 	position: relative;
 	width: 100%;
