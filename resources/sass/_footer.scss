@@ -17,13 +17,56 @@
 
 				    text-align: right;
 				    }
+				    
+				    
+			.footer-logo{
+				text-align:center;
+			}	    
+				    
+		@include media-breakpoint-down(xl) {
+		
+		display:block !important;
+		
+		  .col-auto, .col {
+				width:auto;
+			}
+		
+		
+	}	
+	
+	
+@include media-breakpoint-down(sm-md) {
+		
+			.col-auto, .col {
+				width:100% !important ;
+			}
+			
+			.footer-logo{
+				order:-1 !important;
+			}
+			
+			.socials-links{
+				text-align: center;
+			}
+			
+			.col-auto{
+				    text-align: center;
+                    margin-top: 20px;
+			}
+		
+	}	
+			    
+				    
+				    
 			      
 			      
 }
 
 
-@include media-breakpoint-down(xl) {
-		.footer {
-		display:block !important;
-		}
-	}	
+	
+
+
+
+
+
+	
