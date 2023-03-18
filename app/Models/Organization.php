@@ -19,15 +19,12 @@ class Organization extends Model
         'id',
         'user_id',
         'title',
-        'type',
         'inn',
         'kpp',
         'ogrn',
-        'director',
-        'director_post',
-        'accountant',
         'legal_address',
-        'actual_address',
+        'director',
+        'directors_post',
     ];
 
 

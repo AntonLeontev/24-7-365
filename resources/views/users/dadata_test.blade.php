@@ -5,14 +5,7 @@
 
 @section('content')
 
-@php
-
-
-print_r($data);
-
-
-@endphp
-
+@dd($data[0])
 
 
 <div class="container">
@@ -21,7 +14,7 @@ print_r($data);
 <div class="col mt-5"><h2>Данные по организации</h2></div>
 
 
-<input type="hidden" id="profile-form-organization-url" name="handler_url" value = '{{ route("save_profile_organization", $user->id) }}'>
+<input type="hidden" id="profile-form-organization-url" name="handler_url" value = '{{ route("users.profile.save", $user->id) }}'>
 <input type="hidden"  name="org_id" @isset($organization->id)  value='{{$organization->id}}' @endisset>
 
 <div class="mb-3">
@@ -97,7 +90,7 @@ print_r($data);
 <div class="container">
 <form id="profile-requisites-form">
   @csrf
-<input type="hidden" id="profile-form-requisites-url" name="handler_url" value = '{{ route("save_profile_requisites", $user->id) }}'>
+<input type="hidden" id="profile-form-requisites-url" name="handler_url" value = '{{ route("users.profile.save", $user->id) }}'>
 <input type="hidden"  name="req_id" @isset($requisites->id)  value='{{$requisites->id}}' @endisset>
 
 <div class="col mt-5"><h2>Реквизиты</h2></div>

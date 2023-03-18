@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Passwords\CanResetPassword as PasswordsCanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,12 +15,13 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
     use HasRoles;
+	use PasswordsCanResetPassword;
 
 
     public const BLOCKED = 0;
@@ -32,8 +35,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone',
         'phone_verified_at',
         'first_name',
-        'last_name',
-        'patronymic',
         'last_visit_at',
         'status',
     ];

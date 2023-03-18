@@ -3,9 +3,6 @@
 
 @section('title', $user->first_name)
 
-{{-- @section('scripts')
-	@vite(['resources/sass/profile.scss'])
-@endsection --}}
 
 @section('content')
     @if ($message = Session::get('success'))
@@ -46,30 +43,35 @@
     @endif
 
 	<x-common.h1 class="mb-13">Данные профиля</x-common.h1>
-	<form action="#">
+	<form action="{{ route('users.profile.save', auth()->id()) }}" method="POST">
 		<fieldset>
+			@csrf
 			<div class="profile">		
 				<div class="card profile__data">
 					<div class="card-header">Данные профиля</div>
 					<div class="card-body pb-0">
 						<x-common.form.input name="first_name" placeholder="ФИО или nickname" label="Не обязательно" value="{{ $user->first_name ?? '' }}" />
-						<x-common.form.input name="phone" placeholder="Номер телефона" label="Не обязательно" value="{{ $user->phone ?? '' }}" />
+						<x-common.form.input name="phone" placeholder="Номер телефона" label="Не обязательно" value="{{ $user->phone ? '+' . $user->phone : '' }}" />
 						<x-common.form.input name="email" placeholder="e-mail" label="e-mail" value="{{ $user->email }}" />
 					</div>
 				</div>
 				<div class="card profile__requecites">
 					<div class="card-header d-flex justify-content-between align-items-center">
 						Реквизиты
-						<button class="btn btn-link fs-8 fs-md-7" data-bs-toggle="modal" data-bs-target="#callBack">У меня нет ИП/ООО</button>
+						<button type="button" class="btn btn-link pb-0 fs-8 fs-md-7" data-bs-toggle="modal" data-bs-target="#callBack">У меня нет ИП/ООО</button>
 					</div>
 					<div class="card-body pb-0">
-						<x-common.form.input name="inn" placeholder="ИНН" label="Не обязательно" value="{{ $user->organization->inn ?? '' }}" />
-						<x-common.form.input name="kpp" placeholder="КПП" label="Не обязательно" value="{{ $user->organization->kpp ?? '' }}" />
-						<x-common.form.input name="title" placeholder="Наименование" label="Не обязательно" value="{{ $user->organization?->title ?? '' }}" />
-						<x-common.form.input name="bik" placeholder="БИК" label="" value="{{ $user->account?->bik ?? '' }}" />
-						<x-common.form.input name="bank" placeholder="Наименование банка" label="Не обязательно" value="{{ $user->account?->bank ?? '' }}" />
-						<x-common.form.input name="correspondent_account" placeholder="Корреспондентский счет" label="Не обязательно" value="{{ $user->account->correspondent_account ?? '' }}" />
-						<x-common.form.input name="payment_account" placeholder="Номер счета" label="Не обязательно" value="{{ $user->account->payment_account ?? '' }}" />
+						<x-common.form.input id="inn" name="inn" placeholder="ИНН" label="Не обязательно" value="{{ $user->organization->inn ?? '' }}" />
+						<x-common.form.input name="kpp" placeholder="КПП" label="Не обязательно" value="{{ $user->organization->kpp ?? '' }}" id="kpp" />
+						<x-common.form.input name="title" placeholder="Название организации" label="Не обязательно" value="{!! $user->organization?->title ?? '' !!}" id="title" />
+						<x-common.form.input id="bik" name="bik" placeholder="БИК" label="" value="{{ $user->account?->bik ?? '' }}" />
+						<x-common.form.input name="bank" placeholder="Наименование банка" label="Не обязательно" value="{!! $user->account?->bank ?? '' !!}" id="bank" />
+						<x-common.form.input name="correspondent_account" placeholder="Корреспондентский счет" label="Не обязательно" value="{{ $user->account->correspondent_account ?? '' }}" id="correspondent_account" />
+						<x-common.form.input name="payment_account" placeholder="Расчетный счет" label="Не обязательно" value="{{ $user->account->payment_account ?? '' }}" />
+						<input type="hidden" name="ogrn" id="ogrn" value="{{ $user->organization->ogrn ?? '' }}">
+						<input type="hidden" name="legal_address" id="address" value="{{ $user->organization->legal_address ?? '' }}">
+						<input type="hidden" name="director" id="director" value="{{ $user->organization->director ?? '' }}">
+						<input type="hidden" name="directors_post" id="directors_post" value="{{ $user->organization->directors_post ?? '' }}">
 					</div>
 				</div>
 				<div class="card profile__password">
@@ -104,7 +106,7 @@
         integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    {{-- @vite(['resources/js/userProfile.js']) --}}
+    @vite(['resources/js/userProfile.js'])
     <!--
     <blade ___scripts_2___/>
     -->

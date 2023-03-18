@@ -20,15 +20,13 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('title', 100);
-            $table->string('type', 100);
             $table->string('inn', 12);
-            $table->string('kpp', 12);
-            $table->string('ogrn', 15);
-            $table->string('director', 100);
-            $table->string('director_post', 100);
-            $table->string('accountant', 100);
-            $table->string('legal_address', 255);
-            $table->string('actual_address', 255);
+            $table->string('kpp', 9)->nullable();
+            $table->string('ogrn', 15)->nullable();
+            $table->string('director', 100)->nullable();
+            $table->string('directors_post', 100)->nullable();
+            $table->string('accountant', 100)->nullable();
+            $table->string('legal_address', 255)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

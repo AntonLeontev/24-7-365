@@ -10,6 +10,7 @@
     <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
+	@routes
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 	@yield('scripts')
 </head>

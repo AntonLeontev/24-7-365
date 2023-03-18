@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function profile()
-    {
-        return view('users.profile', ['user' => auth()->user()]);
-    }
-
     public function index(User $user, Request $request)
     {
         $users = $user->query()
@@ -36,16 +31,11 @@ class UserController extends Controller
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')
             ->leftJoin('roles', 'role_id', 'roles.id')
             ->whereNot('email', 'superuser@test.ru')
-            ->when(!request()->has('sort'), function (Builder $query) {
+            ->whenNot(request()->has('sort'), function (Builder $query) {
                 $query->orderByDesc('users.created_at');
             })
             ->when(request()->has(['sort', 'order']), function (Builder $query) {
-                if (request()->order === 'ASC') {
-                    $query->orderBy(request()->sort);
-                    return;
-                }
-
-                $query->orderByDesc(request()->sort);
+                    $query->orderBy(request()->sort, request()->order);
             })
             ->when(request()->has('search'), function (Builder $query) {
                 $query->where(function (Builder $query) {

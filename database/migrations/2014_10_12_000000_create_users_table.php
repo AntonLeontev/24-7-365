@@ -21,8 +21,6 @@ return new class extends Migration
             $table->string('phone', 12)->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('first_name', 100)->nullable();
-            $table->string('last_name', 100)->nullable();
-            $table->string('patronymic', 100)->nullable();
             $table->string('password');
             $table->timestamp('last_visit_at')->useCurrent();
 			$table->unsignedTinyInteger('status')->default(User::ACTIVE);

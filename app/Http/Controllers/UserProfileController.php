@@ -2,161 +2,65 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\StoreUserProfileRequest;
-use App\Http\Requests\StoreRequisiteProfileRequest;
-use App\Http\Requests\StoreOrganizationProfileRequest;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Models\Organization;
+use App\Http\Requests\ProfileSaveRequest;
 use App\Models\Account;
-use Illuminate\Support\Facades\Hash;
-use App\Facades\DadataClientFacade;
+use App\Models\Organization;
+use App\Models\User;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Auth;
 
 class UserProfileController extends Controller
 {
-    
-    
-    
-   
-    public function __construct(){
-        
-        //dlya bistrouy avtorizacii,
-        Auth::loginUsingId(6);
-        
-    
-    }
+    use ResetsPasswords;
 
-    public function profile(){
-      
+
+    public function profile()
+    {
         $user = auth()->user();
-        $organization = User::with('organization')->find($user->id)->organization;
-       
-        $requisites = (isset($organization->id)) ? Organization::with('accounts')->find($organization->id)->accounts->where('status',1) : NULL;
-       
-
-        //poka smotrim tolko odni rekviziti, realizacii s bolshim kolichestvom obsudim potom 
         
-        if( $requisites!= NULL && count($requisites)){
-            $requisites = $requisites[0];
-        }
-        
-        return view('users.profile', ['user' => $user])->with('organization',$organization)->with('requisites',$requisites);
+        return view('users.profile', compact('user'));
     }
     
-    public function storeProfile(StoreUserProfileRequest $request)
+    public function storeProfile(ProfileSaveRequest $request, User $user)
     {
         $user = Auth::user();
-        
        
-            $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
-            $user->patronymic=$request->patronymic;
-            $user->email= $request->email;
-            $user->phone= $request->phone;
-            $user->save();
-             
-        return response()->json(['success' => true, 'message'=>'Данные сохранены']);
-    }
-    
-    
-    public function storeProfileOrganization (StoreOrganizationProfileRequest $request)
-    {
-        
-        $user = Auth::user();
-        
-        $org_id = (isset($request->org_id)) ? $request->org_id : 0;
-        
-        $organization = Organization::updateOrCreate([
-             'id'=>$org_id,
-             'user_id'=>$user->id
-        ], [
-            'title' => $request->title,
-            'type' => $request->type,
-            'inn' => $request->inn,
-            'ogrn' => $request->ogrn,
-            'kpp' => $request->kpp,
-            'director' => $request->director,
-            'director_post' => $request->director_post,
-            'accountant'=>$request->accountant,
-            'legal_address'=>$request->legal_address,
-            'actual_address'=>$request->actual_address,
-            
-        ]);
-        
-        return response()->json(['success' => true, 'message'=>'Данные сохранены']);
-        
-    }
-    
-    public function storeProfileRequisites(StoreRequisiteProfileRequest $request){
-      
-       
-        
-        $user = Auth::user();
-        @$organization = User::with('organization')->find($user->id)->organization;
-        
-        
-        if($organization==NULL){
-            return response()->json(['error' => true, 'message'=>'Заполните данные организации вначале']);
-        }
-        
-        $req_id = (isset($request->req_id)) ? $request->req_id : 0;
-       
-        
-        $requisites = Account::updateOrCreate([
-            
-            'organization_id'=>$organization->id,
-            'id'=>$req_id
-            
-        ], [
-            
-            'payment_account' => $request->payment_account,
-            'correspondent_account' => $request->correspondent_account,
-            'bik' => $request->bik,
-            'bank' => $request->bank,
-            'status' =>1,
-
-            
-        ]);
-        
-        return response()->json(['success' => true, 'message'=>'Данные сохранены']);
-        
-        
-    }
-    
-    public function passwordReset(Request $request){
-        
-        //TODO e-mail notification about operation;
-        
-        $user = Auth::user();
-        
-        
-        if(!Hash::check($request->password,$user->password) ){
-            return response()->json(['error' => true, 'message'=>'Неверный пароль']);
-        }
-        
-        if($request->password1 != $request->password2 ){
-            return response()->json(['error' => true, 'message'=>'Пароли несовпадают']);
-        }
-        
-        $user->password = Hash::make($request->password1);
+        $user->first_name = $request->first_name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->save();
-        
-        return response()->json(['success' => true, 'message'=>'Пароль обновлен']);
-        
+
+        if ($request->inn) {
+            $id = Organization::updateOrCreate(
+                ['inn' => $request->inn],
+                [
+                    'user_id' => auth()->id(),
+                    'kpp' => $request->kpp,
+                    'title' => $request->title,
+                    'ogrn' => $request->ogrn,
+                    'legal_address' => $request->legal_address,
+                    'director' => $request->director,
+                    'directors_post' => $request->directors_post,
+                ]
+            )->id;
+    
+            Account::updateOrCreate(
+                ['organization_id' => $id],
+                [
+                    'bik' => $request->bik,
+                    'bank' => $request->bank,
+                    'payment_account' => $request->payment_account,
+                    'correspondent_account' => $request->correspondent_account,
+                ]
+            );
+        }
+
+        if (! empty($request->password)) {
+            $user->updateOrFail(['password' => bcrypt($request->password)]);
+        }
+
+        return back();
+             
+        // return response()->json(['success' => true, 'message' => 'Данные сохранены']);
     }
-    
-    
-    public function dadataTest(){
-        
-        
-        //$response = $dadata->findAffiliated("7736207543");
-        $data = DadataClientFacade::findById("party", "7707083893", 1);
-        $user = Auth::user();
-        
-        return view('users.dadata_test', compact('data','user'));
-        
-    }
-    
-    
 }

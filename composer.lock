@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d759c401755b73417f4d323a90030c40",
+    "content-hash": "af4de9435508e0e4a5b76dbe3a3d5596",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1035,57 +1035,6 @@
                 }
             ],
             "time": "2022-10-26T14:07:24+00:00"
-        },
-        {
-            "name": "hflabs/dadata",
-            "version": "22.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hflabs/dadata-php.git",
-                "reference": "cc85a59487d1391fa78369d0d3913da0f97b720b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hflabs/dadata-php/zipball/cc85a59487d1391fa78369d0d3913da0f97b720b",
-                "reference": "cc85a59487d1391fa78369d0d3913da0f97b720b",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "~6.0|^7.0",
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Dadata\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "HFLabs and contributors",
-                    "homepage": "https://github.com/hflabs/dadata-php/contributors"
-                }
-            ],
-            "description": "Data cleansing, enrichment and suggestions via Dadata API",
-            "homepage": "https://github.com/nalgeon/dadata-php",
-            "keywords": [
-                "DaData",
-                "api",
-                "php",
-                "suggestions"
-            ],
-            "support": {
-                "issues": "https://github.com/hflabs/dadata-php/issues",
-                "source": "https://github.com/hflabs/dadata-php/tree/22.3.0"
-            },
-            "time": "2022-03-23T10:50:26+00:00"
         },
         {
             "name": "laravel/framework",
@@ -2247,6 +2196,83 @@
                 }
             ],
             "time": "2023-02-05T13:07:32+00:00"
+        },
+        {
+            "name": "movemoveapp/laravel-dadata",
+            "version": "1.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/movemoveapp/laravel-dadata.git",
+                "reference": "090e5d9d6561d75fe605a183e3801df77b8b83eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/movemoveapp/laravel-dadata/zipball/090e5d9d6561d75fe605a183e3801df77b8b83eb",
+                "reference": "090e5d9d6561d75fe605a183e3801df77b8b83eb",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.0|^7.2",
+                "php": "^7.3|^8.0|^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.2.0",
+                "phpunit/phpunit": "^9.4.0"
+            },
+            "type": "laravel-package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MoveMoveIo\\DaData\\DaDataServiceProvider"
+                    ],
+                    "aliases": {
+                        "DaDataAddress": "MoveMoveIo\\DaData\\Facades\\DaDataAddress",
+                        "DaDataName": "MoveMoveIo\\DaData\\Facades\\DaDataName",
+                        "DaDataEmail": "MoveMoveIo\\DaData\\Facades\\DaDataEmail",
+                        "DaDataPhone": "MoveMoveIo\\DaData\\Facades\\DaDataPhone",
+                        "DaDataCompany": "MoveMoveIo\\DaData\\Facades\\DaDataCompany",
+                        "DaDataBank": "MoveMoveIo\\DaData\\Facades\\DaDataBank",
+                        "DaDataPassport": "MoveMoveIo\\DaData\\Facades\\DaDataPassport"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MoveMoveIo\\DaData\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Kovalev aka Pipisco",
+                    "email": "d.kovalev@movemove.io",
+                    "homepage": "https://movemove.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel SDK for working with the DaData.RU service API",
+            "keywords": [
+                "Bank",
+                "DaData",
+                "address",
+                "email",
+                "laravel",
+                "movemoveapp",
+                "name",
+                "passport",
+                "patronymic",
+                "pipisco",
+                "sdk",
+                "surname"
+            ],
+            "support": {
+                "issues": "https://github.com/movemoveapp/laravel-dadata/issues",
+                "source": "https://github.com/movemoveapp/laravel-dadata/tree/v1.0.10"
+            },
+            "time": "2022-04-26T13:20:20+00:00"
         },
         {
             "name": "nesbot/carbon",

@@ -1,0 +1,34 @@
+.autoComplete_wrapper {
+	position: relative;
+}
+
+.results-list {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 60px;
+	max-height: 192px;
+	padding: 0 4px 20px 4px;
+	background-color: $dark-grey;
+	list-style: none;
+	border-top: 2px solid $primary;
+	overflow: auto;
+}
+
+.results-item {
+	padding-top: 16px;
+	padding-bottom: 6px;
+	border-bottom: 2px solid $light-grey;
+	font-size: 1rem;
+	line-height: 1rem;
+	cursor: pointer;
+	transition: all .15s ease-in-out;
+
+	&:hover {
+		background-color: $light-grey;
+	}
+}
+
+.autoComplete_selected {
+	background-color: $light-grey;
+}

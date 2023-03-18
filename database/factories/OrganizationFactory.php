@@ -21,15 +21,12 @@ class OrganizationFactory extends Factory
         return [
             //'user_id' => User::inRandomOrder()->first('id'),
             'title' => $this->faker->unique()->company(),
-            'type' => '1',
             'inn' => (string) $this->faker->unique()->numberBetween(111111111111, 999999999999),
-            'kpp' => (string) $this->faker->numberBetween(111111111111, 999999999999),
+            'kpp' => (string) $this->faker->numberBetween(111111111, 999999999),
             'ogrn' => (string) $this->faker->numberBetween(1111111111111, 9999999999999),
-            'director' => $this->faker->firstName('male'),
-            'director_post' => 'Генеральный директор',
-            'accountant' => $this->faker->firstName('female'),
+            // 'director' => $this->faker->firstName('male'),
+            // 'director_post' => 'Генеральный директор',
             'legal_address' => $this->faker->address(),
-            'actual_address' => $this->faker->address(),
         ];
     }
 }

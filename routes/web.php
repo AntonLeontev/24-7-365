@@ -6,6 +6,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\SmscodeController;
 use App\Http\Controllers\SocialsController;
+use App\Http\Controllers\SuggestionsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CanSeeContract;
@@ -45,6 +46,11 @@ Route::get('24-period/{contract_id}', function ($id) {
 Route::get('invoices/{payment}/pdf', [PdfController::class, 'invoice'])->name('invoice.pdf');
 Route::get('invoices/{payment}/pdf/get', [PdfController::class, 'invoice']);
 
+Route::post('suggestions/company', [SuggestionsController::class,'company'])
+    ->name('suggestions.company');
+Route::post('suggestions/bank', [SuggestionsController::class,'bank'])
+    ->name('suggestions.bank');
+
 Auth::routes(['verify' => true]);
 
 Route::middleware('guest')->group(function () {
@@ -59,14 +65,9 @@ Route::prefix('personal')
     ->middleware('auth')->group(function () {
         Route::get('profile', [UserProfileController::class, 'profile'])
             ->name('users.profile');
-        Route::post('save_profile/{user}', [UserProfileController::class, 'storeProfile'])
-            ->name('save_profile');
-        Route::post('save_profile_organization/{user}', [UserProfileController::class, 'storeProfileOrganization'])
-            ->name('save_profile_organization');
-        Route::post('save_profile_requisites/{user}', [UserProfileController::class, 'storeProfileRequisites'])
-            ->name('save_profile_requisites');
-        Route::post('save_profile_password/{user}', [UserProfileController::class, 'passwordReset'])
-            ->name('save_profile_password');
+        Route::post('profile/{user}/save', [UserProfileController::class, 'storeProfile'])
+            ->middleware('phone')
+            ->name('users.profile.save');
         
         Route::get('contracts', [ContractController::class, 'index'])
             ->middleware('can:see own profile')
@@ -77,8 +78,8 @@ Route::prefix('personal')
             ->middleware(CanSeeContract::class)
             ->name('users.contract_show');
 
-		//TODO Удалить этот роут перед прод
-		Route::get('contracts/pdf/get', [PdfController::class, 'contract']);
+        //TODO Удалить этот роут перед прод
+        Route::get('contracts/pdf/get', [PdfController::class, 'contract']);
         Route::get('contracts/pdf', [PdfController::class, 'contract'])
             ->middleware('can:see own profile')
             ->name('users.contract.pdf');
@@ -114,9 +115,6 @@ Route::prefix('personal')
             ->name('users.phone_confirmation');
         
         Route::get('create_smscode/{operation_type}', [SmscodeController::class,'createCode'])
-            ->middleware('can:see own profile')
-            ->name('users.create_smscode');
-        Route::get('dadata_test', [UserProfileController::class,'dadataTest'])
             ->middleware('can:see own profile')
             ->name('users.create_smscode');
     });
