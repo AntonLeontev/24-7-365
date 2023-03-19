@@ -14,8 +14,18 @@ class UserProfileController extends Controller
     use ResetsPasswords;
 
 
+    public function __construct(){
+        
+        //dlya bistrouy avtorizacii,
+        Auth::loginUsingId(6);
+        
+        
+    }
+    
+    
     public function profile()
     {
+    
         $user = auth()->user();
         
         return view('users.profile', compact('user'));

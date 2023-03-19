@@ -23,7 +23,7 @@
 	    color:$light-grey;
 	   }
   
-        li.active,  li:hover{
+        li.active{
 	    border-left:4px solid $primary;
 	    
 		      .svg-stroke svg{
@@ -39,6 +39,24 @@
 			      }
 	    
 		    }
+		    
+		      li:hover{
+	    
+		      .svg-stroke svg{
+			     stroke:$white !important;
+			    }
+		    
+			    .svg-fill svg{
+			    fill:$white !important;
+			    }
+		    
+			     a{
+			      color:$white !important;
+			      }
+	    
+		    }
+		    
+		    
 
 }
 
