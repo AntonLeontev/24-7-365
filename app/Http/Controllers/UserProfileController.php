@@ -13,19 +13,9 @@ class UserProfileController extends Controller
 {
     use ResetsPasswords;
 
-
-    public function __construct(){
-        
-        //dlya bistrouy avtorizacii,
-        Auth::loginUsingId(6);
-        
-        
-    }
-    
-    
+	
     public function profile()
     {
-    
         $user = auth()->user();
         
         return view('users.profile', compact('user'));
@@ -70,8 +60,11 @@ class UserProfileController extends Controller
             $user->updateOrFail(['password' => bcrypt($request->password)]);
         }
 
+		if (request()->ajax()) {
+			return response()->json(['success' => true, 'message' => 'Данные сохранены']);
+		}
+
         return back();
              
-        // return response()->json(['success' => true, 'message' => 'Данные сохранены']);
     }
 }

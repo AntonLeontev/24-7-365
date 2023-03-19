@@ -43,7 +43,7 @@
     @endif
 
 	<x-common.h1 class="mb-13">Данные профиля</x-common.h1>
-	<form action="{{ route('users.profile.save', auth()->id()) }}" method="POST">
+	<form action="{{ route('users.profile.save', auth()->id()) }}" method="POST" id="profile-form">
 		<fieldset>
 			@csrf
 			<div class="profile">		
@@ -82,8 +82,23 @@
 					</div>
 				</div>
 			</div>
-			<button class="profile__button btn btn-primary d-lg-block w-100 w-lg-33 mx-auto my-13" type="submit">Сохранить</button>
+			<button @click.prevent="submit" class="profile__button btn btn-primary d-lg-block w-100 w-lg-33 mx-auto my-13" type="submit">Сохранить</button>
 		</fieldset>
+		<div class="notice" v-cloak v-show="notice">
+			<span v-text="notice"></span>
+			<button type="button" class="btn" aria-label="Закрыть" @click="hideNotice">
+				<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<g clip-path="url(#clip0_223_3922)">
+					<path d="M10.7503 12.0012L7 8.25091L3.24966 12.0012L1.99955 10.7511L5.74989 7.00079L1.99955 3.25045L3.24966 2.00034L7 5.75068L10.7503 2.00034L12.0005 3.25045L8.25011 7.00079L12.0005 10.7511L10.7503 12.0012Z" fill="#FCE301"/>
+					</g>
+					<defs>
+					<clipPath id="clip0_223_3922">
+					<rect width="14" height="14" fill="white"/>
+					</clipPath>
+					</defs>
+				</svg>
+			</button>
+		</div>
 	</form>
 
 	<x-common.modal modalTitle="У вас нет ИП/ООО?" id="callBack">

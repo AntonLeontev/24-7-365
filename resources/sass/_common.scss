@@ -3,6 +3,10 @@
   stroke: $light-grey;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 body, body *, html {
 	scrollbar-color: $primary $dark;
 

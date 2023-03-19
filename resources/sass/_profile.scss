@@ -132,5 +132,28 @@
 			}
 		}
 	}
+}
 
+.notice {
+	position: fixed;
+	top: 82px;
+	right: 10px;
+	padding: 14px;
+	background-color: $dark-grey;
+	width: 300px;
+	border: 2px solid $primary;
+
+	@include media-breakpoint-up(md) {
+		width: 350px;
+	}
+
+	@include media-breakpoint-up(xxl) {
+		right: 3rem;
+	}
+
+	& button {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
 }
