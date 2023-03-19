@@ -6,12 +6,14 @@ createApp({
     data() {
         return {
 			errors: {},
-			notice: '',
+			notice: false,
+			message: '',
 		};
     },
     methods: {
 		submit(event){
 			let form = event.target.closest("form");
+			this.preparePhone();
             let formData = new FormData(form);
 
             if (!_.isObjectLike(formData)) {
@@ -45,14 +47,19 @@ createApp({
                 });
 		},
 		notify (message, delay = null) {
-			this.notice = message;
+			this.message = message;
+			this.notice = true;
 
 			if (! _.isNull(delay)) {
 				setTimeout(() => this.hideNotice(), delay)
 			}
 		},
 		hideNotice () {
-			this.notice = "";
+			this.notice = false;
+		},
+		preparePhone () {
+			let phone = document.querySelector('[name="phone"]');
+			phone.value = '+7' + phone.value.replace(/\D/g, '').slice(1);
 		}
 	},
 	computed: {},
