@@ -32,8 +32,9 @@ class UserProfileController extends Controller
 
         if ($request->inn) {
             $id = Organization::updateOrCreate(
-                ['inn' => $request->inn],
+                ['user_id' => $user->id],
                 [
+                    'inn' => $request->inn,
                     'user_id' => auth()->id(),
                     'kpp' => $request->kpp,
                     'title' => $request->title,

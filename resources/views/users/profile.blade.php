@@ -63,9 +63,9 @@
 					<div class="card-body pb-0">
 						<x-common.form.input id="inn" name="inn" placeholder="ИНН" label="Не обязательно" value="{{ $user->organization->inn ?? '' }}" />
 						<x-common.form.input name="kpp" placeholder="КПП" label="Не обязательно" value="{{ $user->organization->kpp ?? '' }}" id="kpp" />
-						<x-common.form.input name="title" placeholder="Название организации" label="Не обязательно" value="{!! $user->organization?->title ?? '' !!}" id="title" />
+						<x-common.form.input name="title" placeholder="Название организации" label="Не обязательно" value="{{ $user->organization?->title ?? '' }}" id="title" />
 						<x-common.form.input id="bik" name="bik" placeholder="БИК" label="" value="{{ $user->account?->bik ?? '' }}" />
-						<x-common.form.input name="bank" placeholder="Наименование банка" label="Не обязательно" value="{!! $user->account?->bank ?? '' !!}" id="bank" />
+						<x-common.form.input name="bank" placeholder="Наименование банка" label="Не обязательно" value="{{ $user->account?->bank ?? '' }}" id="bank" />
 						<x-common.form.input name="correspondent_account" placeholder="Корреспондентский счет" label="Не обязательно" value="{{ $user->account->correspondent_account ?? '' }}" id="correspondent_account" />
 						<x-common.form.input name="payment_account" placeholder="Расчетный счет" label="Не обязательно" value="{{ $user->account->payment_account ?? '' }}" />
 						<input type="hidden" name="ogrn" id="ogrn" value="{{ $user->organization->ogrn ?? '' }}">

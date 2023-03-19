@@ -16,7 +16,7 @@ const inn = new autoComplete({
                 data.data.suggestions.forEach((elem) => {
                     result.push({
                         inn: elem.data.inn,
-                        title: elem.value,
+                        title: elem.value.replaceAll('"', ''),
                         kpp: elem.data.kpp ?? '',
                         ogrn: elem.data.ogrn,
                         director: elem.data.management?.name ?? '',
