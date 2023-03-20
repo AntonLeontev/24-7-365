@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
 class Smscode extends Model
 {
     use HasFactory;
     
-    protected  $table='smscodes';
+    protected $table='smscodes';
     /**
      * @var ["Int"] Opertaion Type with SMS
      */
@@ -29,6 +30,7 @@ class Smscode extends Model
      */
  
     public const STATUS_PENDING = 1;
+    public const STATUS_PROCCESSED = 2;
     
     /**
      * @var ["Int"] Seconds
@@ -37,23 +39,17 @@ class Smscode extends Model
     public const EXPIRATION_DATE = 60*10;
     
     
-    
     protected $fillable = [
         'code',
         'operation_type',
         'user_id',
-        'phone'
-   
+        'phone',
+		'status',
     ];
     
- 
     
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    
-    
-    
-    
 }

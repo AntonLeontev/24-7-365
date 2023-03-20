@@ -9,7 +9,9 @@
 		<div class="card-header d-flex justify-content-between">
 			Список договоров
 			<div class="d-none d-lg-flex gap-2">
-				<a class="btn btn-outline-primary" href="{{ route('payments.for_user') }}">График платежей</a>
+				@if($contracts->count() > 0)
+					<a class="btn btn-outline-primary" href="{{ route('payments.for_user') }}">График платежей</a>
+				@endif
 				<a class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
 					href="{{ route('users.add_contract') }}">
 					Заключить договор
@@ -21,7 +23,7 @@
 				</a>
 			</div>
 		</div>
-		@empty($contracts)
+		@if($contracts->count() === 0)
 		<div class="p-4 pb-5">
 			<div class="p-5 bg-body text-center text-light">
 				<p>

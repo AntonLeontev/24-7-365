@@ -5,22 +5,44 @@ import { createApp } from "vue";
 createApp({
     data() {
         return {
-			errors: {},
-			notice: false,
-			message: '',
-		};
+            errors: {},
+            notice: false,
+            message: "",
+            userData: {},
+            smsCodeModal: null,
+			spinner: false,
+
+			// TODO delete
+			smscode: null,
+        };
     },
     methods: {
-		submit(event){
-			let form = event.target.closest("form");
-			this.preparePhone();
-            let formData = new FormData(form);
+		async handleForm(event) {
+			this.spinner = true;
 
-            if (!_.isObjectLike(formData)) {
+			this.preparePhone();
+            if (this.phoneChanged()) {
+				try {
+					await this.validateInput()
+				} catch (error) {
+					this.spinner = false;
+					return;
+				}
+				
+                await this.askSmsCode();
+				this.spinner = false;
                 return;
             }
 
-            axios
+			await this.submit(event);
+			this.spinner = false;
+		},
+		async submit(event){
+			let form = this.$refs.profileForm;
+
+            let formData = new FormData(form);
+
+            await axios
                 .request({
                     url: form.action,
                     method: form.method,
@@ -35,15 +57,7 @@ createApp({
 					this.notify('Сохранено', 1500);
                 })
                 .catch((response) => {
-                    if (response.response?.data?.message) {
-						const errors = response.response.data.errors;
-						for (const key in errors) {
-							this.errors[key] = errors[key][0];
-                        }
-                        return;
-                    }
-
-                    console.log("Ошибка, которой нет в обработчике");
+					this.handleErrors(response, 'Ошибка сохранения. Попробуйте позже');
                 });
 		},
 		notify (message, delay = null) {
@@ -60,7 +74,101 @@ createApp({
 		preparePhone () {
 			let phone = document.querySelector('[name="phone"]');
 			phone.value = '+7' + phone.value.replace(/\D/g, '').slice(1);
+
+			if (phone.value.length !== 12) {
+				this.errors.phone = 'Должно быть 11 цифр'
+            }
+		},
+		phoneChanged () {
+			return document.querySelector('[name="phone"]').value !== this.userData.phone;
+		},
+		async askSmsCode () {
+			let form = this.$refs.profileForm;
+
+            let formData = new FormData(form);
+
+            await axios
+                .request({
+                    url: route("smscode.create", "phone_confirmation"),
+                    method: "POST",
+                    data: formData,
+                })
+                .then((response) => {
+                    this.smscode = response.data.code;
+                    this.smsCodeModal.show();
+                })
+                .catch((response) => {
+                    this.handleErrors(response);
+                });
+		},
+		async validateInput() {
+			let form = this.$refs.profileForm;
+
+            let formData = new FormData(form);
+
+            await axios
+                .request({
+                    url: route("users.profile.validate"),
+                    method: "POST",
+                    data: formData,
+                })
+                .catch((response) => {
+					this.handleErrors(response);
+                });
+		},
+		async checkCode() {
+			const form = this.$refs.checkCodeForm;
+
+			let formData = new FormData(form);
+
+            if (!_.isObjectLike(formData)) {
+                return;
+            }
+
+            await axios
+                .request({
+                    url: route("smscode.check", "phone_confirmation"),
+                    method: "POST",
+                    data: formData,
+                })
+                .then((response) => {
+                    if (!response.data.ok) {
+                        this.errors.code = response.data.message;
+                        return;
+                    }
+
+                    this.smsCodeModal.hide();
+                    this.userData.phone =
+                        document.querySelector('[name="phone"]').value;
+                    document.querySelector("#profile-save-button").click();
+                })
+                .catch((response) => {
+                    this.handleErrors(response);
+                });
+		},
+		handleErrors(response, message = null) {
+			if (response.response?.data?.exception) {
+                this.notify(message ?? response.response?.data?.message);
+                return;
+            }
+
+            if (response.response?.data?.message) {
+                const errors = response.response.data.errors;
+                for (const key in errors) {
+                    this.errors[key] = errors[key][0];
+                }
+                return;
+            }
 		}
+	},
+	mounted: function(){
+		this.userData['phone'] = this.$refs.profileForm.getAttribute("data-phone");
+		this.userData["bik"] = this.$refs.profileForm.getAttribute("data-bik");
+		this.userData["paymentAccount"] = this.$refs.profileForm.getAttribute(
+            "data-payment-account"
+        );
+
+		this.smsCodeModal = new bootstrap.Modal("#smscode", { keyboard: false });
 	},
 	computed: {},
 }).mount("#profile-form");
@@ -106,12 +214,9 @@ const inn = new autoComplete({
         noResults: true,
         element: (list, data) => {
             if (!data.results.length) {
-                // Create "No Results" message list element
                 const message = document.createElement("div");
                 message.setAttribute("class", "no_result");
-                // Add message text content
                 message.innerHTML = `<span>Нет результатов</span>`;
-                // Add message list element to the list
                 list.appendChild(message);
                 return;
             }
@@ -127,7 +232,7 @@ const inn = new autoComplete({
         selected: "autoComplete_selected",
     },
     debounce: 100,
-    threshold: 3,
+    threshold: 4,
 });
 
 inn.input.addEventListener("selection", function (event) {

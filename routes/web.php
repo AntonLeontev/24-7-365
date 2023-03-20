@@ -65,9 +65,12 @@ Route::prefix('personal')
     ->middleware('auth')->group(function () {
         Route::get('profile', [UserProfileController::class, 'profile'])
             ->name('users.profile');
-        Route::post('profile/{user}/save', [UserProfileController::class, 'storeProfile'])
+        Route::post('profile/save', [UserProfileController::class, 'storeProfile'])
             ->middleware('phone')
             ->name('users.profile.save');
+        Route::post('profile/validate', [UserProfileController::class, 'checkProfileInput'])
+            ->middleware('phone')
+            ->name('users.profile.validate');
         
         Route::get('contracts', [ContractController::class, 'index'])
             ->middleware('can:see own profile')
@@ -110,13 +113,16 @@ Route::prefix('personal')
             ->name('payments.for_user');
 
         
-        Route::get('phone_confirmation', [SmscodeController::class,'phoneConfirmation'])
-            ->middleware('can:see own profile')
-            ->name('users.phone_confirmation');
+        Route::post('smscode/check/{type}', [SmscodeController::class,'checkCode'])
+        	->where('type', 'phone_confirmation')
+            ->middleware(['can:see own profile', 'throttle:20'])
+            ->name('smscode.check');
         
-        Route::get('create_smscode/{operation_type}', [SmscodeController::class,'createCode'])
-            ->middleware('can:see own profile')
-            ->name('users.create_smscode');
+        Route::post('smscode/create/{type}', [SmscodeController::class,'createCode'])
+        // Добавить значения когда появятся. Разделять значения | (вертикальной чертой)
+            ->where('type', 'phone_confirmation')
+            ->middleware(['can:see own profile', 'throttle:2', 'phone'])
+            ->name('smscode.create');
     });
 
 Route::prefix('admin')

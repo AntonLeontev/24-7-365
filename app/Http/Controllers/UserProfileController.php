@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileSaveRequest;
 use App\Models\Account;
 use App\Models\Organization;
-use App\Models\User;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +12,7 @@ class UserProfileController extends Controller
 {
     use ResetsPasswords;
 
-	
+    
     public function profile()
     {
         $user = auth()->user();
@@ -21,7 +20,7 @@ class UserProfileController extends Controller
         return view('users.profile', compact('user'));
     }
     
-    public function storeProfile(ProfileSaveRequest $request, User $user)
+    public function storeProfile(ProfileSaveRequest $request)
     {
         $user = Auth::user();
        
@@ -60,11 +59,15 @@ class UserProfileController extends Controller
             $user->updateOrFail(['password' => bcrypt($request->password)]);
         }
 
-		if (request()->ajax()) {
-			return response()->json(['success' => true, 'message' => 'Данные сохранены']);
-		}
+        if (request()->ajax()) {
+            return response()->json(['ok' => true, 'message' => 'Данные сохранены']);
+        }
 
         return back();
-             
+    }
+
+    public function checkProfileInput(ProfileSaveRequest $request)
+    {
+        return response()->json(['ok' => true]);
     }
 }

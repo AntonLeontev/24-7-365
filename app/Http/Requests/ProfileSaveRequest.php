@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
@@ -15,7 +16,7 @@ class ProfileSaveRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->route('user')->id === auth()->id();
+        return auth()->check();
     }
 
     /**
@@ -49,7 +50,7 @@ class ProfileSaveRequest extends FormRequest
 
     public function messages()
     {
-        return [                                  // 'Придумайте новый пароль'
+        return [
             'first_name.max'                      => 'Максимум :max символов',
             'phone.size'                          => 'Должно быть :size цифр',
             'phone.unique'                        => 'Этот номер уже занят',

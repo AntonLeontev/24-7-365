@@ -8,11 +8,13 @@
 	'disabled' => false,
 	'max' => '255',
 	'min' => '',
+	'readonly' => false,
+	'tabindex' => false,
 	])
 
 <div {{ $attributes->class('form-input')->merge() }}>
 	<input type="{{ $type }}" class="form-control"  name="{{ $name }}" placeholder="{{ $placeholder }}" 
-	value="{{ $value }}" id="{{ $id }}" @disabled($disabled) autocorrect="off" autocomplete="off" autocapitalize="off"
+	value="{{ $value }}" id="{{ $id }}" @disabled($disabled) autocorrect="off" autocomplete="off" autocapitalize="off" @if($readonly) readonly @endif @if($tabindex) tabindex="{{ $tabindex }}" @endif
 	v-on:input="errors.{{ $name }} = null" :class="{'border-primary': errors.{{ $name }}}">
 	<label class="form-label" v-show="!errors.{{ $name }}">
 		@if (! empty($value))
