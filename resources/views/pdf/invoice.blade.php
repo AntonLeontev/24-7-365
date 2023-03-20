@@ -74,7 +74,7 @@
 			</tr>
 		</tbody>
 	</table>
- 
+	
 	<h1>Счет на оплату № {{ $payment->id }} от {{ $payment->created_at->translatedFormat('d F Y') }}</h1>
  
 	<table class="contract">
@@ -118,20 +118,6 @@
 				<td align="right">{{ $payment->amount }}</td>
 			</tr>
 		</tbody>
-		{{-- <tfoot>
-			<tr>
-				<th colspan="4">Итого:</th>
-				<th colspan="2">{{ $payment->amount }}</th>
-			</tr>
-			<tr>
-				<th colspan="4">Без налога (НДС)</th>
-				<th colspan="2">-</th>
-			</tr>
-			<tr>
-				<th colspan="4">Всего к оплате:</th>
-				<th colspan="2">{{ $payment->amount }}</th>
-			</tr>
-		</tfoot> --}}
 	</table>
 	<table>
 		<tbody>
@@ -168,6 +154,10 @@
 				</tr>
 			</tbody>
 		</table>
+	</div>
+
+	<div>
+		Обращаем ваше внимание, что назначение платежа вашего платежного поручения должно ТОЧНО СООТВЕТСТВОВАТЬ назначению платежа выставленного Вам счета. В противном случае, вынуждены будем вам вернуть ваш платеж. Расходы на возврат средств на ваш р/с (банковская комиссия / от 1 до 3%), в таком случае, будет произведен за ваш счет
 	</div>
 </body>
 </html>

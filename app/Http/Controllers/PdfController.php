@@ -10,9 +10,10 @@ class PdfController extends Controller
 {
     public function invoice(Payment $payment)
     {
+		//TODO delete
         if (request()->is('invoices/{\d}/pdf/get')) {
-            return view('pdf.invoice', compact('payment'));
-        }
+			return view('pdf.invoice', compact('payment'));
+		}
         return Pdf::loadView('pdf.invoice', compact('payment'))->download('invoice.pdf');
     }
 

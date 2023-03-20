@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-		$this->app->bind(SuggestionsContract::class, DadataService::class);
+        $this->app->bind(SuggestionsContract::class, DadataService::class);
     }
 
     /**
@@ -42,8 +42,10 @@ class AppServiceProvider extends ServiceProvider
             $rule = Password::min(8);
  
             return $this->app->isProduction()
-                    ? $rule->mixedCase()->uncompromised()
+                    ? $rule->mixedCase()
                     : $rule;
         });
+        
+		Carbon::setLocale('ru');
     }
 }
