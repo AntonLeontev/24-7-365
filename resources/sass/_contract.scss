@@ -23,7 +23,7 @@
 	list-style-type: none;
 
 	@include media-breakpoint-up(md) {
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(auto-fit,minmax(150px, 1fr));
 	}
 
 	@include media-breakpoint-up(xl) {
@@ -38,6 +38,9 @@
 
 	& li {
 		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: start;
 
 		&::before {
 			content: '';

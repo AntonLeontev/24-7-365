@@ -35,14 +35,25 @@
                 </div>
             </div>
             <ul class="contract-list w-xl-33">
-                <div>
-                    <li>Объем вклада без ограничений</li>
-                    <li>Срок размещения</li>
-                </div>
-                <div>
-                    <li>Тело вклада по истечении срока</li>
-                    <li>Доходность ежемесячно</li>
-                </div>
+				<li>
+					<span>
+						Объем вклада от <span class="text-nowrap">{{ $contract->tariff->min_amount }}</span>
+						@if ($contract->tariff->max_amount->raw() > 0)
+							до <span class="text-nowrap">{{ $contract->tariff->max_amount }}</span>
+						@endif
+					</span> 
+				</li>
+			
+				<li>
+					Тело вклада в конце срока
+				</li>
+				<li>
+					@if ($contract->tariff->getting_profit === $contract->tariff::MONTHLY)
+						Доходность ежемесячно
+					@else
+						Доходность в конце срока
+					@endif
+				</li>
             </ul>
             <a class="btn btn-link d-flex d-md-none justify-content-center align-items-center gap-2"
                 href="{{ url()->previous() }}">
