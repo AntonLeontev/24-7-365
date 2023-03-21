@@ -42,6 +42,8 @@ if (! function_exists('amount_to_string')) {
 if (! function_exists('tariffs')) {
     function tariffs()
     {
-        return Tariff::where('status', Tariff::ACTIVE)->get()->groupBy('title');
+		return cache()->rememberForever('tariffs', function () {
+			return Tariff::where('status', Tariff::ACTIVE)->get()->groupBy('title');
+		});
     }
 }

@@ -312,7 +312,7 @@
 <h4 class="contract__h4">Приложение № 1 к Оферте</h4>
 <h4 class="contract__h4">Условия поручения (далее – «Условия»)</h4>
 <p class="contract__p">1. Принципал в Личном кабинете выбирает один из следующих вариантов Условий поручения:</p>
-@foreach ($tariffs as $name => $group)
+@foreach (tariffs() as $name => $group)
     <h5 class="contract__h5">1.{{ $loop->iteration }}. Условия поручения №{{ $loop->iteration }}
         ({{ $name }}).</h5>
     <div class="contract__table-wrap">

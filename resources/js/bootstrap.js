@@ -9,12 +9,13 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-import Choices from 'choices.js';
-let selects = document.querySelectorAll(".form-select");
-selects.forEach((select) => {
-	new Choices(select, {
-        searchEnabled: false,
-        itemSelectText: "",
-    });
-})
+// TODO Перенести в файл с селектами
+// import Choices from 'choices.js';
+// let selects = document.querySelectorAll(".form-select");
+// selects.forEach((select) => {
+// 	new Choices(select, {
+//         searchEnabled: false,
+//         itemSelectText: "",
+//     });
+// })
 

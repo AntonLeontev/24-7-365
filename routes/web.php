@@ -108,6 +108,10 @@ Route::prefix('personal')
             ->middleware('can:see own profile')
             ->name('contracts.cancel');
 
+        Route::get('contracts/{contract}/change', [ContractController::class, 'change'])
+            ->middleware('can:see own profile')
+            ->name('contracts.change');
+
         Route::post('contracts/{contract}/increase_amount', [ContractController::class, 'increaseAmount'])
             ->middleware('can:see own profile')
             ->name('contracts.increase_amount');
@@ -127,7 +131,7 @@ Route::prefix('personal')
 
         
         Route::post('smscode/check/{type}', [SmscodeController::class,'checkCode'])
-        	->where('type', 'phone_confirmation')
+            ->where('type', 'phone_confirmation')
             ->middleware(['can:see own profile', 'throttle:20'])
             ->name('smscode.check');
         

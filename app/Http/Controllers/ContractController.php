@@ -66,9 +66,7 @@ class ContractController extends Controller
         }, 0);
         $totalPayments = new Amount($totalPayments);
 
-        $tariffs = Tariff::where('status', Tariff::ACTIVE)->get()->groupBy('title');
-
-        return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments', 'tariffs'));
+        return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments'));
     }
     
     public function create()
@@ -95,6 +93,11 @@ class ContractController extends Controller
         event(new ContractCanceled($contract));
 
         return to_route('users.contracts');
+    }
+
+    public function change(Contract $contract)
+    {
+		return view('users.contracts.change', compact('contract'));
     }
 
     public function increaseAmount(Contract $contract, IncreaseContractAmountRequest $request)

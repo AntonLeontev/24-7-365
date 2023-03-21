@@ -19,8 +19,6 @@ class PdfController extends Controller
 
     public function contract()
     {
-        $tariffs = Tariff::where('status', Tariff::ACTIVE)->get()->groupBy('title');
-        
-		return Pdf::loadView('pdf.contract.index', compact('tariffs'))->download('contract.pdf');
+		return Pdf::loadView('pdf.contract.index')->download('contract.pdf');
     }
 }

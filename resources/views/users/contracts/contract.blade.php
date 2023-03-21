@@ -69,15 +69,17 @@
 
     <div class="card mb-4">
         <div class="card-body d-flex justify-content-between flex-xl-nowrap flex-wrap gap-3">
-            <button class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 order-xl-1 gap-2"
-                data-bs-toggle="modal" data-bs-target="#increaseAmount" @disabled($contract->status !== $contract::ACTIVE)>
+            <a href="{{ route('contracts.change', $contract->id) }}"
+				class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 order-xl-1 gap-2"
+                @disabled($contract->status !== $contract::ACTIVE)
+			>
                 <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M8.72741 0.875L8.10692 1.51746L9.99438 3.42831H0.712203V4.32123H9.99438L8.10736 6.23253L8.72741 6.87454L11.6875 3.87477L8.72741 0.875ZM3.27391 7.12546L0.3125 10.1252L3.27391 13.125L3.89352 12.483L2.00694 10.5717H11.2887V9.67877H2.0065L3.89352 7.76747L3.27391 7.12546Z"
                         fill="#FCE301" stroke="#FCE301" stroke-width="0.3" />
                 </svg>
                 Изменение тарифа или суммы закупа
-            </button>
+            </a>
             <button class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 w-md-48 gap-2"
                 data-bs-toggle="modal" data-bs-target="#contractText">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -252,7 +254,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="contract-text text-bg-dark vh-70 overflow-auto px-3 py-3">
-                        @include('pdf.contract.text', compact('tariffs'))
+                        @include('pdf.contract.text')
                     </div>
                     <a class="btn btn-outline-primary w-100 d-lg-none mt-4" href="{{ route('users.contract.pdf') }}">
                         Скачать договор в PDF
