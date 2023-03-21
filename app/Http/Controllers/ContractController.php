@@ -7,12 +7,11 @@ use App\Events\ContractAmountIncreased;
 use App\Events\ContractCanceled;
 use App\Events\ContractCreated;
 use App\Http\Requests\CancelContractRequest;
-use App\Http\Requests\IncreaseContractAmountRequest;
+use App\Http\Requests\ContractUpdateRequest;
 use App\Http\Requests\StoreContractRequest;
 use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Profitability;
-use App\Models\Tariff;
 use App\ValueObjects\Amount;
 
 class ContractController extends Controller
@@ -95,14 +94,18 @@ class ContractController extends Controller
         return to_route('users.contracts');
     }
 
-    public function change(Contract $contract)
+    public function edit(Contract $contract)
     {
-		return view('users.contracts.change', compact('contract'));
+        return view('users.contracts.edit', compact('contract'));
     }
 
-    public function increaseAmount(Contract $contract, IncreaseContractAmountRequest $request)
+    public function update(Contract $contract, ContractUpdateRequest $request)
     {
-        event(new ContractAmountIncreased($contract, $request->amount));
+        if ($request->addedAmount > 0) {
+            event(new ContractAmountIncreased($contract, $request->addedAmount));
+
+            return response()->json(['ok' => true]);
+        }
 
         return to_route('users.contract_show', $contract->id);
     }

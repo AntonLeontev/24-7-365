@@ -108,13 +108,13 @@ Route::prefix('personal')
             ->middleware('can:see own profile')
             ->name('contracts.cancel');
 
-        Route::get('contracts/{contract}/change', [ContractController::class, 'change'])
+        Route::get('contracts/{contract}/edit', [ContractController::class, 'edit'])
             ->middleware('can:see own profile')
-            ->name('contracts.change');
+            ->name('contracts.edit');
 
-        Route::post('contracts/{contract}/increase_amount', [ContractController::class, 'increaseAmount'])
+        Route::post('contracts/{contract}/update', [ContractController::class, 'update'])
             ->middleware('can:see own profile')
-            ->name('contracts.increase_amount');
+            ->name('contracts.update');
 
         Route::get('contracts/{contract}/cancel_change', [ContractController::class, 'cancelChange'])
             ->middleware('can:see own profile')

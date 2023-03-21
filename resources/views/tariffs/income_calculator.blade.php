@@ -16,7 +16,6 @@
         integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    @vite(['resources/js/userProfile.js'])
     <!--
     <blade ___scripts_2___/>
     -->

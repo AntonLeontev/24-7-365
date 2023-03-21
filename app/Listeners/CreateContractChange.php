@@ -35,7 +35,7 @@ class CreateContractChange
 
         $amount = match (true) {
             $event instanceof ContractCreated => $contract->amount,
-            $event instanceof ContractAmountIncreased => $event->amount,
+            $event instanceof ContractAmountIncreased => $event->amount + $contract->amount->raw(),
             default => $contract->amount,
         };
 

@@ -42,8 +42,20 @@ if (! function_exists('amount_to_string')) {
 if (! function_exists('tariffs')) {
     function tariffs()
     {
-		return cache()->rememberForever('tariffs', function () {
-			return Tariff::where('status', Tariff::ACTIVE)->get()->groupBy('title');
-		});
+        return cache()->rememberForever('tariffs', function () {
+            return Tariff::where('status', Tariff::ACTIVE)->get()->groupBy('title');
+        });
+    }
+}
+
+if (! function_exists('more_profitable_tariffs')) {
+    function more_profitable_tariffs(int $annualRate)
+    {
+        return Tariff::query()
+            ->where('annual_rate', '>=', $annualRate)
+            ->where('status', Tariff::ACTIVE)
+            ->orderBy('annual_rate')
+            ->get()
+            ->groupBy('title');
     }
 }

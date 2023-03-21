@@ -69,7 +69,7 @@
 
     <div class="card mb-4">
         <div class="card-body d-flex justify-content-between flex-xl-nowrap flex-wrap gap-3">
-            <a href="{{ route('contracts.change', $contract->id) }}"
+            <a href="{{ route('contracts.edit', $contract->id) }}"
 				class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 order-xl-1 gap-2"
                 @disabled($contract->status !== $contract::ACTIVE)
 			>
@@ -205,16 +205,6 @@
             @endif
         </div>
     </div>
-    <x-common.modal id="increaseAmount" modalTitle="Увеличение суммы договора">
-        <form action="{{ route('contracts.increase_amount', $contract->id) }}" method="post">
-            @csrf
-            <input name="amount" type="number" value="{{ $contract->amount->amount() }}" step="1000" />
-            @error('amount')
-                {{ $message }}
-            @enderror
-            <button class="btn btn-outline-success" type="submit">Увеличить</button>
-        </form>
-    </x-common.modal>
     <x-common.modal id="cancelContract" modalTitle="Закрыть договор №{{ $contract->id }}">
         <div class="mb-5">
             @if ($contract->status === $contract::PENDING)
