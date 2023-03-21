@@ -1,0 +1,153 @@
+.tariff-card{
+	width:450px;
+	margin: 15px;
+    margin-top: 30px;
+	
+	.card-title{
+			border-bottom:2px solid $primary;
+			color:$primary;
+			text-align: left;
+			
+				h5{
+					margin-bottom: 24px;
+				}
+			
+			}
+	
+	
+	
+	table{
+		
+		
+			 tr {
+				border-bottom:2px solid $light-grey;
+				
+				    td{
+					vertical-align: bottom;
+					padding:0px;
+					padding-top:18px;
+				    }
+					td:first-child{
+				    text-align:left;
+				    }
+					td:last-child{
+				    text-align:right;
+				    
+			       }
+			 
+		        }
+	     
+	     }
+	
+
+	
+	ul{
+		list-style:none;
+		list-style: none;
+	    margin: 30px;
+	    padding: 24px;
+	    padding-top: 5px;
+	    background-color:$dark;
+	    
+		 li:before{
+		  clear:left;
+		  content:"";
+		  height:2px;
+		  width:16px;
+		  display:block;
+		  float:left;
+		  margin-left: -10px;
+		  margin-top: 6px;
+		  margin-right: 5px;
+
+		  //background-image:url('data:image/svg+xml;utf8,<svg width="16" height="2" viewBox="0 0 16 2" fill="none" xmlns="http://www.w3.org/2000/svg"><rect y="2" width="2" height="16" transform="rotate(-90 0 2)" fill="#FCE301"/></svg>');
+		  background-color: $primary;
+      
+	      }
+	      
+	      li{
+		  font-weight:500;
+		  font-size:14px;
+		  line-height:14px;
+		  margin-top:30px;
+	       }
+	       
+	      
+	
+	}
+	
+	
+	.scroller{
+		position:relative;
+		
+		.spot{
+			background-color:$primary;
+			width:14px;
+			height:14px;
+			border-radius:20px;
+			position: absolute;
+		    top: 26px;
+		    z-index: 2;
+		    left: -6px;
+		}
+		
+		.spot-bar{
+			height:3px;
+			background-color:$light-grey;
+		}
+		
+		.nav-link{
+			
+		}
+		
+		.active{
+				color:$white;
+			}
+		
+		table{
+			width:100%;
+			tr{
+				border:none;
+				td{
+					text-align:center;
+					font-size: 14px;
+                    line-height: 14px;
+                    color:$light-grey;
+				}
+				
+				td:first-child{
+				    text-align:left;
+				    }
+				td:last-child{
+			    text-align:right;
+			    
+		       }
+				
+			}
+			
+			tr:first-child{
+		 border-bottom:3px solid $light-grey;
+		 
+		       svg {
+					    vertical-align: bottom;
+					    position: relative;
+					    top: 5px;
+					}
+			}
+			
+		}
+		
+	}
+	
+	
+	
+	.btn {
+		
+	width: 100%;
+    margin-top: 30px;
+	}
+	
+	
+	
+	
+}

