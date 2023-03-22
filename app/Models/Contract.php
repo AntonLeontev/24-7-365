@@ -63,30 +63,24 @@ class Contract extends Model
         return $this->hasMany(Payment::class);
     }
 
-	public function changes(): HasMany
-	{
-		return $this->hasMany(ContractChange::class);
-	}
+    public function contractChanges(): HasMany
+    {
+        return $this->hasMany(ContractChange::class);
+    }
 
-	public function profitabilities(): HasMany
-	{
-		return $this->hasMany(Profitability::class);
-	}
+    public function profitabilities(): HasMany
+    {
+        return $this->hasMany(Profitability::class);
+    }
 
-	public function periodEnd(): Carbon
-	{
-		if (is_null($this->paid_at)) {
-			throw new DomainException("Попытка определить конец периода у неоплаченного договора", 1);
-		}
+    public function periodEnd(): Carbon
+    {
+        if (is_null($this->paid_at)) {
+            throw new DomainException("Попытка определить конец периода у неоплаченного договора", 1);
+        }
 
-		$date = $this->paid_at;
-
-		while (now() >= $date) {
-			$date->addMonth();
-		}
-
-		return $date;
-	}
+        return $this->paid_at->addMonths($this->duration() + 1);
+    }
 
     public function income(): int
     {
@@ -96,6 +90,17 @@ class Contract extends Model
     public function outgoing(): int
     {
         return $this->paymentsSum(Payment::TYPE_CREDIT);
+    }
+
+    public function duration(): int
+    {
+        return $this->contractChanges->sum('duration');
+    }
+
+    public function isChanging(): bool
+    {
+        return $this->contractChanges->last()->status === ContractChange::STATUS_PENDING ||
+            $this->contractChanges->last()->status === ContractChange::STATUS_WAITING_FOR_PERIOD_END;
     }
 
     private function paymentsSum(int $type): int
@@ -113,9 +118,4 @@ class Contract extends Model
 
         return $sum ?? 0;
     }
-
-	public function duration(): int
-	{
-		return $this->changes()->sum('duration');
-	}
 }

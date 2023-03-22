@@ -41,7 +41,7 @@ class ContractController extends Controller
 
     public function show(Contract $contract)
     {
-        $contract->load('tariff');
+        $contract->load(['tariff', 'contractChanges']);
 
         $profitabilities = Profitability::query()
             ->with('payment')

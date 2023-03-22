@@ -13,11 +13,13 @@ class DeletePendingPayments
 
         $paymentsIds = $contract->payments
             ->where('status', Payment::STATUS_PENDING)
-            ->when(! is_null($contract->paid_at), function ($query) use ($contract) {
-                $query->where('planned_at', '>', $contract->paid_at->addMonths($contract->duration()));
-            })
+			//TODO вынести в обсервер
+            // ->when(! is_null($contract->paid_at), function ($query) use ($contract) {
+            //     return $query
+			// 		->where('planned_at', '>', $contract->paid_at->addMonths($contract->duration()));
+            // })
             ->when($event instanceof CanceledUnconfirmedContractChange, function ($query) {
-                $query->where('type', Payment::TYPE_DEBET);
+                return $query->where('type', Payment::TYPE_DEBET);
             })
             ->pluck('id');
 

@@ -24,7 +24,7 @@ class UpdateContractChange
      */
     public function handle($event)
     {
-        $changes = $event->payment->contract->changes;
+        $changes = $event->payment->contract->contractChanges;
 
         if ($changes->count() === 1) {
             $changes->last()->updateOrFail([

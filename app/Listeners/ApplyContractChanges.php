@@ -24,7 +24,7 @@ class ApplyContractChanges
      */
     public function handle(BillingPeriodEnded $event)
     {
-        $changes = $event->contract->changes;
+        $changes = $event->contract->contractChanges;
 
         $count = $changes
             ->where('status', ContractChange::STATUS_WAITING_FOR_PERIOD_END)

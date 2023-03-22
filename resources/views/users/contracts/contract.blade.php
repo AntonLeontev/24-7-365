@@ -67,19 +67,46 @@
         </div>
     </div>
 
+	@if($contract->isChanging())
+		<div class="card">
+			<div class="p-4 pb-5">
+                    <div class="bg-body text-light p-5 text-center">
+						@if ($contract->contractChanges->last()->status === 2)
+							<p>
+								Запрошены изменения в договоре. Для подтверждения нужно <a class="btn-link" href="{{ route('invoice.pdf', $contract->payments->where('type', 1)->where('status', 0)->last()->id) }}">оплатить счет</a>
+							</p>
+							<p class="mb-0"><a class="btn-link" href="{{ route('contracts.cancel_change', $contract->id) }}">Отменить изменения</a></p>
+						@elseif($contract->contractChanges->last()->status === 3)
+							<p class="mb-0">Изменения будут применены {{ $contract->periodEnd()->format('d.m.Y') }}</p>
+						@endif
+                    </div>
+                </div>
+		</div>
+	@endif
+
     <div class="card mb-4">
         <div class="card-body d-flex justify-content-between flex-xl-nowrap flex-wrap gap-3">
-            <a href="{{ route('contracts.edit', $contract->id) }}"
-				class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 order-xl-1 gap-2"
-                @disabled($contract->status !== $contract::ACTIVE)
-			>
-                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M8.72741 0.875L8.10692 1.51746L9.99438 3.42831H0.712203V4.32123H9.99438L8.10736 6.23253L8.72741 6.87454L11.6875 3.87477L8.72741 0.875ZM3.27391 7.12546L0.3125 10.1252L3.27391 13.125L3.89352 12.483L2.00694 10.5717H11.2887V9.67877H2.0065L3.89352 7.76747L3.27391 7.12546Z"
-                        fill="#FCE301" stroke="#FCE301" stroke-width="0.3" />
-                </svg>
-                Изменение тарифа или суммы закупа
-            </a>
+			@if ($contract->status !== $contract::ACTIVE || $contract->isChanging())
+				<button class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 order-xl-1 gap-2" disabled>
+					<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M8.72741 0.875L8.10692 1.51746L9.99438 3.42831H0.712203V4.32123H9.99438L8.10736 6.23253L8.72741 6.87454L11.6875 3.87477L8.72741 0.875ZM3.27391 7.12546L0.3125 10.1252L3.27391 13.125L3.89352 12.483L2.00694 10.5717H11.2887V9.67877H2.0065L3.89352 7.76747L3.27391 7.12546Z"
+							fill="#FCE301" stroke="#FCE301" stroke-width="0.3" />
+					</svg>
+					Изменение тарифа или суммы закупа
+				</button>
+			@else
+				<a href="{{ route('contracts.edit', $contract->id) }}"
+					class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 order-xl-1 gap-2"
+				>
+					<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M8.72741 0.875L8.10692 1.51746L9.99438 3.42831H0.712203V4.32123H9.99438L8.10736 6.23253L8.72741 6.87454L11.6875 3.87477L8.72741 0.875ZM3.27391 7.12546L0.3125 10.1252L3.27391 13.125L3.89352 12.483L2.00694 10.5717H11.2887V9.67877H2.0065L3.89352 7.76747L3.27391 7.12546Z"
+							fill="#FCE301" stroke="#FCE301" stroke-width="0.3" />
+					</svg>
+					Изменение тарифа или суммы закупа
+				</a>
+			@endif
             <button class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 w-md-48 gap-2"
                 data-bs-toggle="modal" data-bs-target="#contractText">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
