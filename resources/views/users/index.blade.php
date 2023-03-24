@@ -26,11 +26,11 @@
                 <div class="modal-body d-flex flex-column gap-3 px-4">
 					@csrf
 					<div class="create-user-form">
-						<x-common.form.input class="name" label='ФИО или Nickname' name="first_name" />
-						<x-common.form.input class="email" label='email' name="email" type="email" />
+						<x-common.form.input class="name" label='ФИО или Nickname' name="first_name" required />
+						<x-common.form.input class="email" label='email' name="email" type="email" required />
 						<x-common.form.input class="phone" label='Телефон' name="phone" type="phone" />
-						<x-common.form.input class="pass" label='Пароль' name="password" type="password" />
-						<x-common.form.input class="conf" label='Подтверждение' name="password_confirmation" type="password" />
+						<x-common.form.input class="pass" label='Пароль' name="password" type="password" required />
+						<x-common.form.input class="conf" label='Подтверждение' name="password_confirmation" type="password" required />
 						<x-common.form.select class="role" name="roles[]">
 							<option disabled selected>Роль</option>
 							@foreach (roles() as $role)

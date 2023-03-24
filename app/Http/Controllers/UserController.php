@@ -46,8 +46,8 @@ class UserController extends Controller
             ->when(request()->has(['filter']), function ($collection, $value) {
                 if (request()->filter === 'with_contracts') {
                     return $collection->filter(function ($value) {
-						return $value->contracts_sum > 0;
-					});
+                        return $value->contracts_sum > 0;
+                    });
                 }
             })
             ->transform(function ($item) {
@@ -61,7 +61,7 @@ class UserController extends Controller
             ->withQueryString();
 
         if (request()->ajax()) {
-            return response()->json($users);
+            return response()->json($users)->header('Cache-Control', 'no-store, no-cache, must-revalidate');
         }
 
         return view('users.index');

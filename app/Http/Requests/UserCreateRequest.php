@@ -27,8 +27,7 @@ class UserCreateRequest extends FormRequest
         return [
             'email' => ['required', 'unique:users', 'email:rfc,dns'],
             'first_name' => ['required', 'string', 'min:1', 'max:50'],
-            'last_name' => ['nullable', 'string', 'max:50'],
-            'patronymic' => ['nullable', 'string', 'max:50'],
+            'phone' => ['nullable', 'string', 'max:50'],
             'roles' => ['required', 'array', 'size:1'],
             'roles.*' => ['exists:roles,name', 'not_in:Superuser,superuser'],
             'password' => ['required', 'confirmed', Password::defaults()],
@@ -39,8 +38,7 @@ class UserCreateRequest extends FormRequest
     {
         return [
             'first_name' => 'Имя',
-            'last_name' => 'Фамилия',
-            'patronymic' => 'Отчество',
+            'phone' => 'Телефон',
             'roles' => 'Роль',
             'roles.*' => 'Роль',
             'password' => 'Пароль',

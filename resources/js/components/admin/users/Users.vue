@@ -126,6 +126,7 @@ export default {
         searchEnabled: false,
         itemSelectText: "",
         shouldSort: false,
+        allowHTML: true,
       });
     });
   },
