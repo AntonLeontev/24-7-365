@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="table_dark__header">
     <column-title
       title="name"
       :sort="this.sort"
@@ -7,13 +7,7 @@
       @change-sort="changeSort"
       >ФИО</column-title
     >
-    <column-title
-      title="role"
-      :sort="this.sort"
-      :order="this.order"
-      @change-sort="changeSort"
-      >Роль</column-title
-    >
+
     <column-title
       title="organization"
       :sort="this.sort"
@@ -42,7 +36,6 @@
       @change-sort="changeSort"
       >Статус</column-title
     >
-    <column-title title="block">Блокировка</column-title>
   </div>
 </template>
 

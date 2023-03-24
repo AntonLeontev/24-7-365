@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('scripts')
 	@vite(['resources/js/users.js'])
@@ -7,33 +7,37 @@
 @section('title', 'Пользователи')
 
 @section('content')
-    <users @toast="toast"></users>
 
+	<div id="app">
+		<x-common.h1 class="mb-121">Список всех пользователей</x-common.h1>
+		<users @toast="toast"></users>
+	</div>
 
     <!-- Modal -->
     <div class="modal fade" id="createUser" aria-labelledby="exampleModalLabel" aria-hidden="true" tabindex="-1">
         <form 
-			class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable" 
+			class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" 
 			action="{{ route('users.create') }}" method="POST">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create User</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Создание пользователя</h1>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column gap-3 px-4">
 					@csrf
-                    <input type="email" name="email" placeholder="email" autocomplete="off">
-					<input type="text" name="last_name" placeholder="Фамилия">
-					<input type="text" name="first_name" placeholder="Имя*">
-					<input type="text" name="patronymic" placeholder="Отчество">
-					<select name="roles[]">
-						<option disabled selected>Роль</option>
-						@foreach (roles() as $role)
+					<div class="create-user-form">
+						<x-common.form.input class="name" label='ФИО или Nickname' name="first_name" />
+						<x-common.form.input class="email" label='email' name="email" type="email" />
+						<x-common.form.input class="phone" label='Телефон' name="phone" type="phone" />
+						<x-common.form.input class="pass" label='Пароль' name="password" type="password" />
+						<x-common.form.input class="conf" label='Подтверждение' name="password_confirmation" type="password" />
+						<x-common.form.select class="role" name="roles[]">
+							<option disabled selected>Роль</option>
+							@foreach (roles() as $role)
 							<option value="{{ $role }}">{{ $role }}</option>
-						@endforeach
-					</select>
-					<input type="password" name="password" placeholder="Пароль" autocomplete="off">
-					<input type="password" name="password_confirmation" placeholder="Подтверждение" autocomplete="off">
+							@endforeach
+						</x-common.form.select>
+					</div>
 					@if(! empty($errors->messages()))
 						@foreach ($errors->messages() as $message)
 							<div>{{ $message[0] }}</div>
@@ -41,8 +45,7 @@
 					@endif
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
-                    <button class="btn btn-primary" type="submit">Create</button>
+                    <button class="btn btn-primary w-100" type="submit">Создать</button>
                 </div>
             </div>
         </form>

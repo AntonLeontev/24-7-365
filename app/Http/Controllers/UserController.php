@@ -20,18 +20,17 @@ class UserController extends Controller
             ->select([
                 'users.id',
                 'users.first_name',
-                'users.last_name',
                 'users.status',
                 DB::raw('organizations.title AS organization'),
                 'role_id',
                 DB::raw('roles.name AS role'),
-                DB::raw('(SELECT SUM(amount) FROM contracts WHERE user_id = users.id) AS contracts_sum')
+                DB::raw('(SELECT SUM(amount) FROM contracts WHERE user_id = users.id AND (status = 1 OR status = 2)) AS contracts_sum')
             ])
             ->leftJoin('organizations', 'users.id', 'organizations.user_id')
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')
             ->leftJoin('roles', 'role_id', 'roles.id')
             ->whereNot('email', 'superuser@test.ru')
-            ->whenNot(request()->has('sort'), function (Builder $query) {
+            ->when(! request()->has('sort'), function (Builder $query) {
                 $query->orderByDesc('users.created_at');
             })
             ->when(request()->has(['sort', 'order']), function (Builder $query) {
@@ -40,11 +39,17 @@ class UserController extends Controller
             ->when(request()->has('search'), function (Builder $query) {
                 $query->where(function (Builder $query) {
                     $query->where('first_name', 'like', '%' . request()->search . '%')
-                        ->orWhere('last_name', 'like', '%' . request()->search . '%')
                         ->orWhere('organizations.title', 'like', '%' . request()->search . '%');
                 });
             })
             ->get()
+            ->when(request()->has(['filter']), function ($collection, $value) {
+                if (request()->filter === 'with_contracts') {
+                    return $collection->filter(function ($value) {
+						return $value->contracts_sum > 0;
+					});
+                }
+            })
             ->transform(function ($item) {
                 if (!is_null($item->contracts_sum)) {
                     $item->contracts_sum = new Amount($item->contracts_sum);

@@ -29,5 +29,11 @@ $utilities: (
       class: fs,
       values: $font-sizes
     ),
+	"cursor": (
+      property: cursor,
+      class: cursor,
+      responsive: false,
+      values: auto pointer grab,
+    ),
 
 );    

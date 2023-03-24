@@ -1,5 +1,5 @@
 <template>
-  <div class="col title" :data-title="title" @click="changeSort">
+  <div class="col title cursor-pointer" :data-title="title" @click="changeSort">
     <slot></slot>
     <svg
       v-show="title === sort"

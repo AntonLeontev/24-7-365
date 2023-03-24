@@ -120,7 +120,7 @@ Route::prefix('personal')
             ->middleware('can:see own profile')
             ->name('contracts.cancel_change');
 
-            Route::get('income_calculator', [IncomeCalculatorController::class, 'show'])
+        Route::get('income_calculator', [IncomeCalculatorController::class, 'show'])
             ->middleware('can:see own profile')
             ->name('income_calculator');
      
@@ -136,7 +136,7 @@ Route::prefix('personal')
             ->name('smscode.check');
         
         Route::post('smscode/create/{type}', [SmscodeController::class,'createCode'])
-        // Добавить значения когда появятся. Разделять значения | (вертикальной чертой)
+        // Добавить значения когда появятся. Разделять значения | (вертикальной чертой). Спроси меня, если нужно
             ->where('type', 'phone_confirmation')
             ->middleware(['can:see own profile', 'throttle:2', 'phone'])
             ->name('smscode.create');

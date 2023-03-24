@@ -1,0 +1,39 @@
+.create-user-form {
+	display: grid;
+	grid-template-columns: auto;
+	grid-template-rows: repeat(6, auto);
+	grid-template-areas: 'name' 'phone' 'email' 'pass' 'confirm' 'role';
+	column-gap: 28px;
+	row-gap: 20px;
+
+	@include media-breakpoint-up(md) {
+		grid-template-columns: auto auto;
+		grid-template-rows: repeat(4, auto);
+		grid-template-areas: 'name name' 'phone email' 'pass confirm' 'role role';
+	}
+
+	& .name {
+		grid-area: name;
+	}
+
+	& .phone {
+		grid-area: phone;
+	}
+
+	& .email {
+		grid-area: email;
+	}
+
+	& .pass {
+		grid-area: pass;
+	}
+
+	& .confirm {
+		grid-area: confirm;
+	}
+
+	& .role {
+		grid-area: role;
+	}
+}
+
