@@ -3,6 +3,7 @@
 @section('title', 'Главная')
 
 @section('content')
+<a href="{{ route('login') }}" class="btn btn-primary">Login</a>
 	<div class="container">
 		<div class="row">
 			<div class="col">Годовой %</div>

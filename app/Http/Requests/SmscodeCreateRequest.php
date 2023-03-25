@@ -27,4 +27,12 @@ class SmscodeCreateRequest extends FormRequest
             'phone' => ['required', 'digits:11'],
         ];
     }
+
+	public function messages(): array
+	{
+		return [
+			'phone.digits' => 'Должно быть :digits цифр',
+			'phone.required' => 'Обязательно',
+		];
+	}
 }

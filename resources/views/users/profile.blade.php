@@ -16,8 +16,8 @@
 		</div>
     @endif
     <div id="profile-form" class="mb-13">
-        <form data-phone="+{{ $user->phone ?? '' }}" data-payment-account="{{ $user->account->payment_account ?? '' }}"
-            data-bik="{{ $user->account->bik ?? '' }}" action="{{ route('users.profile.save', auth()->id()) }}" method="POST"
+        <form data-phone="{{ $user->phone ?? '' }}"
+            action="{{ route('users.profile.save', auth()->id()) }}" method="POST"
             ref="profileForm">
             @csrf
             <div class="profile">
@@ -127,6 +127,39 @@
             @endif
 
         </form>
+		<Transition>
+			<div class="notice" v-cloak v-show="notice">
+				<span v-text="message"></span>
+				<button class="btn" type="button" aria-label="Закрыть" @click="hideNotice">
+					<svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+						xmlns="http://www.w3.org/2000/svg">
+						<g clip-path="url(#clip0_223_3922)">
+							<path
+								d="M10.7503 12.0012L7 8.25091L3.24966 12.0012L1.99955 10.7511L5.74989 7.00079L1.99955 3.25045L3.24966 2.00034L7 5.75068L10.7503 2.00034L12.0005 3.25045L8.25011 7.00079L12.0005 10.7511L10.7503 12.0012Z"
+								fill="#FCE301" />
+						</g>
+						<defs>
+							<clipPath id="clip0_223_3922">
+								<rect width="14" height="14" fill="white" />
+							</clipPath>
+						</defs>
+					</svg>
+				</button>
+			</div>
+		</Transition>
+		<x-common.modal id="smscode" modalTitle="Введите код из сообщения">
+			<form action="{{ route('smscode.check', 'phone_confirmation') }}" ref="checkCodeForm">
+				<x-common.form.input class="mb-13" name='code' placeholder="Код из сообщения" />
+				<button class="btn btn-primary w-100 mb-2" @click.prevent="checkCode">
+					Отправить
+				</button>
+			</form>
+
+			<button class="btn btn-link w-100">Прислать еще раз</button>
+
+			{{-- //TODO Удалить --}}
+			<span v-show="smscode" v-text='smscode'></span>
+		</x-common.modal>
     </div>
 
 	@can('see other profiles')
@@ -185,28 +218,6 @@
 		</div>
 	@endcan
 
-
-	<Transition>
-		<div class="notice" v-cloak v-show="notice">
-			<span v-text="message"></span>
-			<button class="btn" type="button" aria-label="Закрыть" @click="hideNotice">
-				<svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-					xmlns="http://www.w3.org/2000/svg">
-					<g clip-path="url(#clip0_223_3922)">
-						<path
-							d="M10.7503 12.0012L7 8.25091L3.24966 12.0012L1.99955 10.7511L5.74989 7.00079L1.99955 3.25045L3.24966 2.00034L7 5.75068L10.7503 2.00034L12.0005 3.25045L8.25011 7.00079L12.0005 10.7511L10.7503 12.0012Z"
-							fill="#FCE301" />
-					</g>
-					<defs>
-						<clipPath id="clip0_223_3922">
-							<rect width="14" height="14" fill="white" />
-						</clipPath>
-					</defs>
-				</svg>
-			</button>
-		</div>
-	</Transition>
-
 	<x-common.modal id="callBack" modalTitle="У вас нет ИП/ООО?">
 		<p class="fs-8 fs-md-7 mb-13">Введите номер телефона, с вами свяжется работник банка и вам бесплатно помогут в
 			оформлении ИП или ООО</p>
@@ -219,19 +230,6 @@
 					class="text-reset" href="#">политикой конфиденциальности</a>.
 			</x-common.form.checkbox>
 		</form>
-	</x-common.modal>
-	<x-common.modal id="smscode" modalTitle="Введите код из сообщения">
-		<form action="{{ route('smscode.check', 'phone_confirmation') }}" ref="checkCodeForm">
-			<x-common.form.input class="mb-13" name='code' placeholder="Код из сообщения" />
-			<button class="btn btn-primary w-100 mb-2" @click.prevent="checkCode">
-				Отправить
-			</button>
-		</form>
-
-		<button class="btn btn-link w-100">Прислать еще раз</button>
-
-		{{-- //TODO Удалить --}}
-		<span v-show="smscode" v-text='smscode'></span>
 	</x-common.modal>
 
 	@can('block users')

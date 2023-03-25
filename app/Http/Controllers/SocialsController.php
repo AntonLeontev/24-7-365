@@ -18,6 +18,10 @@ class SocialsController extends Controller
 
         auth()->login($user, true);
 
-        return back();
+        return match (true) {
+            $user->hasRole('Клиент') => to_route('users.profile'),
+            $user->hasRole('Админ') => to_route('users.index'),
+			default => '/'
+        };
     }
 }

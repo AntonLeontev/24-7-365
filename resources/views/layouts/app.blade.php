@@ -16,9 +16,6 @@
 </head>
 <body>
 
-
-
-	<x-header />
 	@include('layouts.part.header')
 	
 	

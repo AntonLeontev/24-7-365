@@ -18,24 +18,24 @@ createApp({
         };
     },
     methods: {
-		toast(event){
-			this.notify('Ntcn')
-		},
 		async handleForm(event) {
 			this.spinner = true;
 
 			this.preparePhone();
             if (this.phoneChanged()) {
 				try {
-					await this.validateInput()
+					await this.validateInput();
+
+					if(_.every(_.values(this.errors), (item) => item === null)) {
+						await this.askSmsCode();
+					}
+					
+					this.spinner = false;
+					return;
 				} catch (error) {
 					this.spinner = false;
 					return;
 				}
-				
-                await this.askSmsCode();
-				this.spinner = false;
-                return;
             }
 
 			await this.submit(event);
@@ -77,6 +77,9 @@ createApp({
 		},
 		preparePhone () {
 			let phone = document.querySelector('[name="phone"]');
+
+			if (phone.value === '') return;
+
 			phone.value = '+7' + phone.value.replace(/\D/g, '').slice(1);
 
 			if (phone.value.length !== 12) {
@@ -84,7 +87,7 @@ createApp({
             }
 		},
 		phoneChanged () {
-			return document.querySelector('[name="phone"]').value !== this.userData.phone;
+			return document.querySelector('[name="phone"]').value.slice(1) !== this.userData.phone;
 		},
 		async askSmsCode () {
 			let form = this.$refs.profileForm;
@@ -143,7 +146,7 @@ createApp({
 
                     this.smsCodeModal.hide();
                     this.userData.phone =
-                        document.querySelector('[name="phone"]').value;
+                        document.querySelector('[name="phone"]').value.slice(1);
                     document.querySelector("#profile-save-button").click();
                 })
                 .catch((response) => {
