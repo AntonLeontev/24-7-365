@@ -18,6 +18,9 @@ createApp({
         };
     },
     methods: {
+		toast(event){
+			this.notify('Ntcn')
+		},
 		async handleForm(event) {
 			this.spinner = true;
 
@@ -164,10 +167,6 @@ createApp({
 	},
 	mounted: function(){
 		this.userData['phone'] = this.$refs.profileForm.getAttribute("data-phone");
-		this.userData["bik"] = this.$refs.profileForm.getAttribute("data-bik");
-		this.userData["paymentAccount"] = this.$refs.profileForm.getAttribute(
-            "data-payment-account"
-        );
 
 		this.smsCodeModal = new bootstrap.Modal("#smscode", { keyboard: false });
 	},

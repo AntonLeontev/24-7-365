@@ -31,6 +31,7 @@ class UpdateApplicationSettingsRequest extends FormRequest
             'kpp' => ['sometimes','required_with:organization_title', 'digits:9'],
             'ogrn' => ['sometimes','required_with:organization_title', 'digits_between:12,15'],
             'director' => ['sometimes','required_with:organization_title', 'string', 'max:100'],
+            'director_genitive' => ['sometimes','required_with:organization_title', 'string', 'max:100'],
             'accountant' => ['sometimes','required_with:organization_title', 'string', 'max:100'],
             'legal_address' => ['sometimes','required_with:organization_title', 'string', 'max:255'],
             'actual_address' => ['sometimes','required_with:organization_title', 'string', 'max:255'],
@@ -38,6 +39,8 @@ class UpdateApplicationSettingsRequest extends FormRequest
             'correspondent_account' => ['sometimes','required_with:organization_title', 'digits:20'],
             'bik' => ['sometimes','required_with:organization_title', 'digits:9'],
             'bank' => ['sometimes','required_with:organization_title', 'string', 'max:255'],
+            'phone' => ['sometimes','required_with:organization_title', 'string', 'max:100'],
+            'email' => ['sometimes','required_with:organization_title', 'string', 'max:100', 'email'],
         ];
     }
 }

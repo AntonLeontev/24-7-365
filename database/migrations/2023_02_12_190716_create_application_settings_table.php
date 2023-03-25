@@ -32,6 +32,8 @@ return new class extends Migration
             $table->string('correspondent_account', 20);
             $table->string('bik', 9);
             $table->string('bank', 255);
+            $table->string('phone', 100);
+            $table->string('email', 100);
             $table->timestamps();
         });
     }

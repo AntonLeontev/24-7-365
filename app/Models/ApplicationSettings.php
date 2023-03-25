@@ -17,6 +17,7 @@ class ApplicationSettings extends Model
 		'kpp',
 		'ogrn',
 		'director',
+		'director_genitive',
 		'accountant',
 		'legal_address',
 		'actual_address',
@@ -24,5 +25,7 @@ class ApplicationSettings extends Model
 		'correspondent_account',
 		'bik',
 		'bank',
+		'phone',
+		'email',
     ];
 }

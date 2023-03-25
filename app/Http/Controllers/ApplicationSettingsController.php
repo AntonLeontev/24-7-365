@@ -7,7 +7,7 @@ use App\Models\ApplicationSettings;
 
 class ApplicationSettingsController extends Controller
 {
-    public function index(ApplicationSettings $settings)
+    public function index()
     {
         return view('settings.index');
     }
@@ -19,7 +19,7 @@ class ApplicationSettingsController extends Controller
         cache()->forget('settings');
 
 		if ($request->ajax()) {
-			return response()->json();
+			return response()->json(['ok' => true]);
 		}
 
 		return to_route('settings.index');

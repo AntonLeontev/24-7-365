@@ -21,6 +21,7 @@ class ApplicationSettingsSeeder extends Seeder
             'kpp' => '770401001',
             'ogrn' => '123',
             'director' => 'Лозовой О. И.',
+            'director_genitive' => 'Лозового О. И.',
             'accountant' => 'Лозовой О. И.',
             'legal_address' => '119002, Москва г, Арбат ул, дом № 44, строение 3, к 66',
             'actual_address' => '119002, Москва г, Арбат ул, дом № 44, строение 3, к 66',
@@ -28,6 +29,8 @@ class ApplicationSettingsSeeder extends Seeder
             'correspondent_account' => '40701810600000003217',
             'bik' => '044525716',
             'bank' => 'ВТБ 24 (ПАО) Г. МОСКВА',
+            'email' => 'test@example.ru',
+            'phone' => '+7-912-000-00-00',
         ]);
     }
 }
