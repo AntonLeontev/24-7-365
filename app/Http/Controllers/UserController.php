@@ -75,7 +75,7 @@ class UserController extends Controller
     public function updateRole(User $user, UpdateRoleRequest $request)
     {
         $user->syncRoles($request->validated());
-        return response()->json();
+        return back();
     }
 
     public function create(UserCreateRequest $request)

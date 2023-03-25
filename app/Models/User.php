@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\ValueObjects\Amount;
 use Illuminate\Auth\Passwords\CanResetPassword as PasswordsCanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     use HasFactory;
     use Notifiable;
     use HasRoles;
-	use PasswordsCanResetPassword;
+    use PasswordsCanResetPassword;
 
 
     public const BLOCKED = 0;
@@ -50,7 +50,18 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'last_visit_at' => 'datetime',
     ];
 
-    
+
+    public function contractsAmount(): Amount
+    {
+        $amount = $this->contracts
+			->whereIn('status', [Contract::ACTIVE, Contract::CANCELED])
+			->reduce(function ($sum, $contract) {
+            return $sum += $contract->amount->raw();
+        }, 0);
+
+		return new Amount($amount);
+    }
+
     public function organization(): HasOne
     {
         return $this->hasOne(Organization::class);

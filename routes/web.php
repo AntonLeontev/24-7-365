@@ -85,7 +85,6 @@ Route::prefix('personal')
             ->name('users.contracts');
         
         Route::get('contracts/{contract}/show', [ContractController::class, 'show'])
-            ->middleware('can:see own profile')
             ->middleware(CanSeeContract::class)
             ->name('users.contract_show');
 

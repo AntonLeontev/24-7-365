@@ -16,7 +16,7 @@ class CanSeeContract
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->can('see other profiles')) {
+        if (auth()->user()->hasPermissionTo('see other profiles')) {
             return $next($request);
         }
 

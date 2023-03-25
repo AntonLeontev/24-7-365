@@ -1,4 +1,5 @@
 import autoComplete from "@tarekraafat/autocomplete.js";
+import Choices from "choices.js";
 import axios from "axios";
 import { createApp } from "vue";
 
@@ -314,4 +315,14 @@ bik.input.addEventListener("selection", function (event) {
     document.querySelector("#correspondent_account").value =
         feedback.selection.value.correspondent_account;
     document.querySelector("#bank").value = feedback.selection.value.title;
+});
+
+let selects = document.querySelectorAll(".form-select");
+selects.forEach((select) => {
+    new Choices(select, {
+        searchEnabled: false,
+        itemSelectText: "",
+        shouldSort: false,
+        allowHTML: true,
+    });
 });

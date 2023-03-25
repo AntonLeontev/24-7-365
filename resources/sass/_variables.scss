@@ -17,23 +17,23 @@ $font-family-sans-serif: 'Inter', sans-serif;
 $font-size-base: 1rem;
 $line-height-base: 1;
 
-$h1-font-size:                $font-size-base * 2.5;
-$h2-font-size:                $font-size-base * 2;
+$h1-font-size:                $font-size-base * 2.5;	
+$h2-font-size:                $font-size-base * 2;		
 $h3-font-size:                $font-size-base * 1.75;
-$h4-font-size:                $font-size-base * 1.5;
+$h4-font-size:                $font-size-base * 1.5; 	
 $h5-font-size:                $font-size-base * 1.25;
 $h6-font-size:                $font-size-base;
 
 $font-sizes: (
-  1: $h1-font-size,
-  2: $h2-font-size,
-  3: $h3-font-size,
-  4: $h4-font-size,
-  5: $h5-font-size,
-  6: $h6-font-size,
-  7: $font-size-base * 0.875,  //14px
-  8: $font-size-base * 0.75,   //12px
-  9: $font-size-base * 0.625   //10px
+  1: $h1-font-size,				//40px
+  2: $h2-font-size,				//32px
+  3: $h3-font-size,				//28px
+  4: $h4-font-size,				//24px
+  5: $h5-font-size,				//20px
+  6: $h6-font-size,			    //16px
+  7: $font-size-base * 0.875,  	//14px
+  8: $font-size-base * 0.75,   	//12px
+  9: $font-size-base * 0.625   	//10px
 );
 
 $line-height-base:            1.5;
