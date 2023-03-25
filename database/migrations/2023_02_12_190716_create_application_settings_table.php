@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('kpp', 12);
             $table->string('ogrn', 15);
             $table->string('director', 100);
+            $table->string('director_genitive', 100);
             $table->string('accountant', 100);
             $table->string('legal_address', 255);
             $table->string('actual_address', 255);
