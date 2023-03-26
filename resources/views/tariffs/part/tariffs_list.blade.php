@@ -1,9 +1,9 @@
 
-<div class="continer-fluid">
-<div class="row">
+<div class="container-fluid all-tariff-cards-wrap">
+<div class="row d-flex justify-content-start all-tariff-cards-wrap-row">
 
 @foreach (tariffs() as $tariffGroupTitle => $grouped_tariffs)
-                    
+<div class="col-lg-4 col-md-6 tariff-card-wrap"> 
                     <div class="card tariff-card">
   <div class="card-body ">
     
@@ -13,6 +13,7 @@
        @foreach ($grouped_tariffs as $key=>$tariff) 
       
      <div class="tab-pane fade {{ $key == 0 ? 'show active' : '' }}" id="nav-{{ md5($tariffGroupTitle) }}-{{ $tariff->duration }}" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+      {{--
       <table class="table">  
         <tr>
           <td>Количество месяцев</td>
@@ -37,9 +38,18 @@
           <td>{{ number_format((float)($tariff->annual_rate/12), 2, '.', ''); }}%</td>
         </tr>
         
-      </tbody>
-    </table>
     
+    </table>
+    --}}
+    
+    <tariff-card
+     :duration="'{{ $tariff->duration }}'"
+    :amountstr="'{{ $tariff->max_amount->raw() == 0 ? 'без ограничений' : 'до ' . $tariff->max_amount }}'"
+    v-model="calcinput"
+    :amount="calcinput"
+    :annualrate="'{{ $tariff->annual_rate }}'"
+    
+    ></tariff-card>
     <ul>
     <li>Объем вклада:{{ $tariff->max_amount->raw() == 0 ? 'без ограничений' : 'до ' . $tariff->max_amount }}</li>
     <li>Cрок размещения: до {{ $grouped_tariffs->max('duration') }} мес.</li>
@@ -84,6 +94,7 @@
     
   
   </div>
+</div>
 </div>
 @endforeach                    
  
