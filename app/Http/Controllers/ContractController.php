@@ -67,13 +67,15 @@ class ContractController extends Controller
 
         return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments'));
     }
+
+	public function agree()
+	{
+		return view('users.contracts.agree');
+	}
     
     public function create()
     {
-        //TODO Механизм реализации условий договоров ..
-        $termsOfContract = "Тестовые условия договора";
-        
-        return view('users.contracts.add_contract', compact('termsOfContract'));
+        return view('users.contracts.add_contract');
     }
     
     public function store(StoreContractRequest $request)
@@ -82,7 +84,9 @@ class ContractController extends Controller
 
         event(new ContractCreated($contract));
 
-        return to_route('users.contract_show', $contract->id);
+		$paymentId = $contract->payments->first()->id;
+
+        return response()->json(['ok' => true, 'paymentId' => $paymentId]);
     }
 
     public function cancel(Contract $contract, CancelContractRequest $request)

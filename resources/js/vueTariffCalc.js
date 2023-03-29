@@ -1,53 +1,20 @@
 import { createApp } from "vue";
+import AddContract from "./components/contracts/add/AddContract.vue";
 
-
- createApp({
-  data(){
-      return{
-    amount: 1000000,
-	annualRate: 1,
-	period:1,
-	tariffTitle: 'Выбирете Тариф',
-	tariffId: null,
-	}
-  },
-  methods: {
-  
-	setCalcData: function(annualRate, period, title, tariffId){
-		this.annualRate = annualRate;
-		this.period = period;
-		this.tariffTitle = title;
-		this.tariffId = tariffId;
-	},
-	setAnnualRate: function(value){
-		this.annualRate = value;
-	},
-  },
-  computed: {
-    profitabilityPerMounthRateProc(){
-     return Number((((this.annualRate/12))).toFixed(2)) 
-	},	
-    profitabilityPerMounth() {
-
-      return Number((this.amount * ((this.annualRate/12)/100)).toFixed(0))
+createApp({
+    data() {
+        return {
+            amount: null,
+            tariffId: null,
+            errors: {},
+            notice: false,
+            message: "",
+        };
     },
-	
-	
-	plusToAmountPerYear(){
-	  return Number((this.amount * ((this.annualRate)/100)).toFixed(0))
-	},
-	totalPerPeriod(){
-		return Number((this.amount+this.profitabilityPerMounth*this.period).toFixed(2));
-	},
-	totalPerYear(){
-		return Number((this.amount+this.plusToAmountPerYear).toFixed(2));
-	},
-	profitabilityPerPeriod(){
-	 return Number((this.totalPerPeriod / this.amount).toFixed(2))    	
-	},
-  }
-  
-  
-  
-}).mount('#tariffs')
-	
+    methods: {
+		
+    },
+    components: { AddContract },
+}).mount("#app");
+
+

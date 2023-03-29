@@ -44,7 +44,7 @@ class StoreContractRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'amount' => 'Размер вклада'
+            'amount' => 'Сумма закупа'
         ];
     }
 

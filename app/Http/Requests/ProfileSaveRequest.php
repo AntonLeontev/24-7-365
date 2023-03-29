@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
@@ -27,9 +26,9 @@ class ProfileSaveRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['string', 'nullable', 'max:100'],
-            'phone' => ['string', 'nullable', Rule::unique('users')->ignore(auth()->id()), 'size:11'],
-            'email' => ['required', 'email', Rule::unique('users')->ignore(auth()->user()), 'max:100'],
+            'first_name' => ['sometimes', 'string', 'nullable', 'max:100'],
+            'phone' => ['sometimes', 'string', 'nullable', Rule::unique('users')->ignore(auth()->id()), 'size:11'],
+            'email' => ['sometimes', 'required', 'email', Rule::unique('users')->ignore(auth()->user()), 'max:100'],
             'inn' => [
                 'numeric',
                 'nullable',
@@ -44,7 +43,7 @@ class ProfileSaveRequest extends FormRequest
             'bank' => ['string', 'nullable', 'max:100', 'required_with:inn'],
             'correspondent_account' => ['numeric', 'nullable', 'digits:20', 'required_with:inn'],
             'payment_account' => ['numeric', 'nullable', 'digits:20', 'required_with:inn'],
-            'password' => ['confirmed', Password::default(), 'nullable'],
+            'password' => ['sometimes', 'confirmed', Password::default(), 'nullable'],
         ];
     }
 

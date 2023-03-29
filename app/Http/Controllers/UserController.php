@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\UserBlocked;
 use App\Events\UserUnblocked;
+use App\Http\Requests\UpdatePhoneRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
@@ -77,6 +78,13 @@ class UserController extends Controller
         $user->syncRoles($request->validated());
         return back();
     }
+
+	public function updatePhone(UpdatePhoneRequest $request)
+	{
+		auth()->user()->updateOrFail($request->validated());
+
+		return response()->json(['ok' => true]);
+	}
 
     public function create(UserCreateRequest $request)
     {

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\IncomeCalculatorController;
+use App\Http\Controllers\NewContractController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\SmscodeController;
@@ -9,7 +11,6 @@ use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\SuggestionsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\IncomeCalculatorController;
 use App\Http\Middleware\CanSeeContract;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Artisan;
@@ -69,7 +70,7 @@ Route::middleware('guest')->group(function () {
 
 
 
-Route::prefix('personal')
+    Route::prefix('personal')
     ->middleware('auth')->group(function () {
         Route::get('profile', [UserProfileController::class, 'profile'])
             ->name('users.profile');
@@ -79,6 +80,9 @@ Route::prefix('personal')
         Route::post('profile/validate', [UserProfileController::class, 'checkProfileInput'])
             ->middleware('phone')
             ->name('users.profile.validate');
+        Route::post('user/update_phone', [UserController::class, 'updatePhone'])
+        	->middleware('phone')
+            ->name('users.updatePhone');
         
         Route::get('contracts', [ContractController::class, 'index'])
             ->middleware('can:see own profile')
@@ -88,13 +92,14 @@ Route::prefix('personal')
             ->middleware(CanSeeContract::class)
             ->name('users.contract_show');
 
-        //TODO Удалить этот роут перед прод
-        Route::get('contracts/pdf/get', [PdfController::class, 'contract']);
         Route::get('contracts/pdf', [PdfController::class, 'contract'])
             ->middleware('can:see own profile')
             ->name('users.contract.pdf');
         
-        Route::get('add_contract', [ContractController::class, 'create'])
+        Route::get('contracts/create/text', [ContractController::class, 'agree'])
+            ->middleware('can:see own profile')
+            ->name('contracts.agree');
+        Route::any('contracts/create', [ContractController::class, 'create'])
             ->middleware('can:see own profile')
             ->name('users.add_contract');
 
@@ -122,6 +127,9 @@ Route::prefix('personal')
         Route::get('income_calculator', [IncomeCalculatorController::class, 'show'])
             ->middleware('can:see own profile')
             ->name('income_calculator');
+
+        Route::post('organization/save', [NewContractController::class, 'saveRequesites'])
+            ->name('organization.save');
      
             
         Route::get('payments', [PaymentController::class, 'indexForUser'])
@@ -141,7 +149,7 @@ Route::prefix('personal')
             ->name('smscode.create');
     });
 
-Route::prefix('admin')
+    Route::prefix('admin')
     ->middleware('auth')->group(function () {
         Route::post('users/{user}/role', [UserController::class, 'updateRole'])
             ->middleware('can:assign roles')

@@ -125,6 +125,11 @@
 	transition: color 0.15s ease-in-out;
 }
 
+.form-check .form-check-input {
+	margin-left: -1em;
+	margin-top: 0.2em;
+}
+
 .card {
 	&-header {
 		font-size: 1.125rem;

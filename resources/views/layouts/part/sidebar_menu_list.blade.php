@@ -22,8 +22,8 @@
 				Калькулятор доходов
 			</a>
 		</li>
-		<li class="">
-			<a class="nav-link svg-stroke" href="#">
+		<li class="{{ Route::is('users.add_contract') || Route::is('contracts.agree') ? 'active' : '' }}">
+			<a class="nav-link svg-stroke" href="{{ route('contracts.agree') }}">
 				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path
 						d="M21 13.65V2.1C21 1.80826 20.8815 1.52847 20.6705 1.32218C20.4595 1.11589 20.1734 1 19.875 1H4.125C3.82663 1 3.54048 1.11589 3.32951 1.32218C3.11853 1.52847 3 1.80826 3 2.1V21.9C3 22.1917 3.11853 22.4715 3.32951 22.6778C3.54048 22.8841 3.82663 23 4.125 23H10.3125M8.0625 5.4H15.9375M8.0625 9.8H15.9375M8.0625 14.2H11.4375"
@@ -36,18 +36,18 @@
 				Заключение договора
 			</a>
 		</li>
+		<li class="{{ Route::is('users.contracts') ? 'active' : '' }}">
+			<a class="nav-link svg-fill" href="{{ route('users.contracts') }}">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M16 0H8C6.9 0 6 0.9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0ZM20 18H8V2H15V7H20V18ZM4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4ZM10 10V12H18V10H10ZM10 14V16H15V14H10Z" />
+				</svg>
+	
+	
+				Активные договоры
+			</a>
+		</li>
 		@if (auth()->user()->contracts->isNotEmpty())
-			<li class="{{ Route::is('users.contracts') ? 'active' : '' }}">
-				<a class="nav-link svg-fill" href="{{ route('users.contracts') }}">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path
-							d="M16 0H8C6.9 0 6 0.9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0ZM20 18H8V2H15V7H20V18ZM4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4ZM10 10V12H18V10H10ZM10 14V16H15V14H10Z" />
-					</svg>
-		
-		
-					Активные договора
-				</a>
-			</li>
 			<li class="{{ Route::is('payments.for_user') ? 'active' : '' }}">
 				<a class="nav-link svg-fill svg-stroke" href="{{ route('payments.for_user') }}">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

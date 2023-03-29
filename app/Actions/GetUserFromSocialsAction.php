@@ -15,8 +15,7 @@ class GetUserFromSocialsAction
             [
                 'email' => $socialiteUser->getEmail(),
                 'email_verified_at' => now(),
-                'first_name' => $socialiteUser->user['first_name'] ?? $socialiteUser->getName() .
-				' ' . $socialiteUser->user['last_name'] ?? '',
+                'first_name' => $socialiteUser->user['first_name'] ?? $socialiteUser->getName(),
                 'password' => bcrypt(str()->random(10))
             ]
         );
