@@ -1,9 +1,32 @@
 <template>
   <contract-amount
     :amount-saved="amountSaved"
-    @amountChanged="(amount) => (this.amount = amount)"
+    @amountChanged="(amount) => amountChanged(amount)"
   ></contract-amount>
-  <tariff-choise :tariffs="tariffs"> </tariff-choise>
+
+  <div class="card">
+    <div class="card-header">Выберите тариф</div>
+    <div class="card-body pe-0 pe-xl-13">
+      <div class="tariffs-wrap pb-2 pe-11 pe-sm-121 pe-md-13">
+        <template v-for="(group, groupName) in tariffs">
+          <Transition :duration="{ enter: 800, leave: 0 }">
+            <div class="tariff" v-show="isEnabled(group[0])">
+              <tariff-group
+                :title="groupName"
+                :tariffs="group"
+                :amount="amount"
+                :style="'contract'"
+                :selectedTariffId="tariffId"
+                @tariffSelected="
+                  (selectedTariffId) => handleTariffSelection(selectedTariffId)
+                "
+              />
+            </div>
+          </Transition>
+        </template>
+      </div>
+    </div>
+  </div>
 
   <div class="card">
     <div class="card-header">
@@ -217,11 +240,11 @@
 </template>
 
 <script>
-import TariffChoise from "./TariffChoise.vue";
 import ContractAmount from "./ContractAmount.vue";
 import InputComponent from "./InputComponent.vue";
 import Smscode from "./Smscode.vue";
 import autoComplete from "@tarekraafat/autocomplete.js";
+import TariffGroup from "../../calculator/TariffGroup.vue";
 
 export default {
   name: "AddContract",
@@ -243,12 +266,22 @@ export default {
   },
   props: {
     amountSaved: Number,
-    tariffIdSaved: String,
+    tariffIdSaved: {},
     tariffs: Object,
     user: Object,
   },
   methods: {
     async submit() {
+      if (this.amount < 500000) {
+        this.notify("Минимальная сумма 500 000 руб");
+        return;
+      }
+
+      if (_.isEmpty(this.tariffId)) {
+        this.notify("Не выбран тариф");
+        return;
+      }
+
       let form = this.$refs.profileForm;
       let formData = new FormData(form);
 
@@ -332,6 +365,22 @@ export default {
         return;
       }
     },
+    isEnabled(tariff) {
+      if (tariff.max_amount.raw === 0) {
+        return this.amount >= tariff.min_amount.amount;
+      }
+
+      return (
+        this.amount >= tariff.min_amount.amount && this.amount < tariff.max_amount.amount
+      );
+    },
+    handleTariffSelection(tariffId) {
+      this.tariffId = tariffId;
+    },
+    amountChanged(amount) {
+      this.amount = amount;
+      this.tariffId = null;
+    },
 
     notify(message, delay = null) {
       this.message = message;
@@ -345,7 +394,7 @@ export default {
       this.notice = false;
     },
   },
-  components: { ContractAmount, TariffChoise, InputComponent, Smscode },
+  components: { ContractAmount, InputComponent, Smscode, TariffGroup },
   mounted() {
     this.phoneModal = new bootstrap.Modal("#phoneModal", { keyboard: false });
     this.paymentModal = new bootstrap.Modal("#paymentModal", { keyboard: false });

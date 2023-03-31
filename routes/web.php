@@ -133,8 +133,7 @@ Route::middleware('guest')->group(function () {
             ->middleware('can:see own profile')
             ->name('contracts.cancel_change');
 
-        Route::get('income_calculator', [IncomeCalculatorController::class, 'show'])
-            ->middleware('can:see own profile')
+        Route::get('calculator', [IncomeCalculatorController::class, 'show'])
             ->name('income_calculator');
 
         Route::post('organization/save', [NewContractController::class, 'saveRequesites'])

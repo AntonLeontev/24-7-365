@@ -60,7 +60,13 @@ export default {
   methods: {
     input() {
       this.errors.amount = null;
+
       this.formatNumber();
+
+      if (this.amount < 500000) {
+        this.errors.amount = "Минимальная сумма 500 000 р";
+      }
+
       this.$emit("amountChanged", this.amount);
     },
     formatNumber() {

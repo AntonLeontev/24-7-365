@@ -31,7 +31,9 @@ import Slider from "@vueform/slider";
 
 export default {
   name: "TariffSlider",
-  created() {},
+  mounted() {
+    this.duration = this.value ?? this.min;
+  },
   data() {
     return {
       duration: this.tariffs[0].duration,
@@ -39,6 +41,7 @@ export default {
   },
   props: {
     tariffs: Object,
+    selectedTariffId: {},
   },
   methods: {},
   components: { Slider },
@@ -67,6 +70,13 @@ export default {
     },
     step() {
       return this.max / this.tariffs.length;
+    },
+    value() {
+      let tariff = _.find(this.tariffs, (tariff) => {
+        return tariff.id === this.selectedTariffId;
+      });
+
+      return tariff?.duration;
     },
   },
 };

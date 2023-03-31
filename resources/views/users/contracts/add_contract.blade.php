@@ -3,7 +3,7 @@
 @section('title', 'Добавить договор')
 
 @section('scripts')
-    @vite(['resources/js/vueTariffCalc.js'])
+    @vite(['resources/js/newContract.js'])
 @endsection
 
 @section('content')

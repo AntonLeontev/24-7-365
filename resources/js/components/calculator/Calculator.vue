@@ -43,7 +43,7 @@
       </div>
     </div>
   </div>
-  <div class="tariffs-wrap">
+  <div class="tariffs-wrap mb-13">
     <template v-for="(group, groupName) in tariffs">
       <Transition :duration="{ enter: 800, leave: 300 }">
         <div class="tariff" v-show="isEnabled(group[0])">

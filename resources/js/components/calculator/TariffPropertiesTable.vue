@@ -1,5 +1,8 @@
 <template>
-  <div class="d-flex flex-column gap-2">
+  <div
+    class="d-flex flex-column gap-2 py-121 pe-11"
+    :class="{ 'bg-secondary': style == 'contract', 'bg-body': style == 'calculator' }"
+  >
     <div class="property fs-8 fs-md-7">
       Объем вклада от
       <span class="text-nowrap"
@@ -34,6 +37,10 @@ export default {
   },
   props: {
     tariffs: Object,
+    style: {
+      type: String,
+      default: () => "calculator",
+    },
   },
   methods: {},
 };

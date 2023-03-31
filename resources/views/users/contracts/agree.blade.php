@@ -25,6 +25,7 @@
 			<form id="agree-form" class="d-flex flex-column gap-3" action="{{ route('users.add_contract') }}" method="post">
 				@csrf
 				<input type="hidden" name="tariff_id" value="{{ request()->tariff_id }}">
+				<input type="hidden" name="amount" value="{{ request()->amount }}">
 				<x-common.form.checkbox name="read" class="fs-7 fs-sm-6">Я прочёл договор и приложение к договору</x-common.form.checkbox>
 				<x-common.form.checkbox name="understood" class="fs-7 fs-sm-6">Я понял условия описанные в договоре</x-common.form.checkbox>
 				<x-common.form.checkbox name="agreed" class="fs-7 fs-sm-6">Я согласен с условиями договора</x-common.form.checkbox>

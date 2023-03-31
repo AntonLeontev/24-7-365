@@ -28,18 +28,14 @@
 		column-gap: 26px;
 	}
 
-	@include media-breakpoint-up(lg) {
+	@include media-breakpoint-up(xl) {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
 		grid-template-rows: auto;
 		column-gap: 30px;
 		row-gap: 30px;
 	}	
 
-	@include media-breakpoint-up(xl) {
-		grid-template-columns: 1fr 1fr 1fr;
-		grid-template-rows: auto;
-	}	
 
 	& .tariff {
 		min-width: 80%;

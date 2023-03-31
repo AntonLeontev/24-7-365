@@ -8,6 +8,15 @@ $secondary: $dark-grey;
 $light: $light-grey;
 $dark: #19191A;
 
+$theme-colors: (
+  "primary":    	$primary,
+  "secondary":  	$secondary,
+  "light":      	$light,
+  "dark":       	$dark,
+  "transparent":    transparent
+);
+
+
 // Body
 $body-bg: #19191A;
 $body-color: $white;
