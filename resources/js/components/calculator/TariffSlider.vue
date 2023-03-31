@@ -3,15 +3,20 @@
     <Slider
       :min="min"
       :max="max"
-      :step="step"
+      :step="-1"
       :tooltips="false"
-      :lazy="false"
+      :lazy="true"
       v-model="duration"
-      @update="$emit('tariffChange', duration)"
+      @update="change"
+      ref="slider"
     />
     <div class="d-flex justify-content-between mt-11 text-light">
       <div v-for="tariff in tariffs">
-        <span class="fs-7" :class="{ 'text-white': duration == tariff.duration }">
+        <span
+          class="duration fs-7"
+          :class="{ 'text-white': duration == tariff.duration }"
+          @click="duration = tariff.duration"
+        >
           {{ tariff.duration }} мес.
         </span>
       </div>
@@ -43,7 +48,25 @@ export default {
     tariffs: Object,
     selectedTariffId: {},
   },
-  methods: {},
+  methods: {
+    change() {
+      let duration = this.duration;
+
+      let value = _.reduce(
+        this.tariffs,
+        function (closest, tariff) {
+          if (Math.abs(closest - duration) <= Math.abs(tariff.duration - duration))
+            return closest;
+
+          return tariff.duration;
+        },
+        this.tariffs[0].duration
+      );
+
+      this.$emit("tariffChange", this.duration);
+      setTimeout(() => (this.duration = value), 100);
+    },
+  },
   components: { Slider },
   computed: {
     min() {
@@ -93,5 +116,9 @@ export default {
   &_passed {
     background-color: #fff;
   }
+}
+.duration {
+  transition: color 0.3s ease;
+  cursor: pointer;
 }
 </style>
