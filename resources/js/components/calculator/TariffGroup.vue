@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-100 px-11 px-md-13 py-13 d-flex flex-column justify-content-between border border-2"
+    class="tariff-group h-100 px-11 px-md-13 py-13 d-flex flex-column justify-content-between border border-2"
     :class="{
       'bg-secondary': style === 'calculator',
       'border-secondary': style === 'calculator' && !isSelected,
@@ -160,4 +160,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tariff-group {
+  transition: border-color 0.8s ease;
+}
+</style>

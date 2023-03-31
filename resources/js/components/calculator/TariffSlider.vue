@@ -63,7 +63,7 @@ export default {
         this.tariffs[0].duration
       );
 
-      this.$emit("tariffChange", this.duration);
+      this.$emit("tariffChange", value);
       setTimeout(() => (this.duration = value), 100);
     },
   },
@@ -112,6 +112,15 @@ export default {
   height: 7px;
   background-color: #737373;
   transform: translateY(-2px);
+  transition: background-color 0.3s ease;
+
+  &:first-child {
+    background-color: #fff;
+  }
+
+  &:last-child {
+    background-color: #737373;
+  }
 
   &_passed {
     background-color: #fff;
