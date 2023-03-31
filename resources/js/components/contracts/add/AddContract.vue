@@ -222,7 +222,6 @@ import ContractAmount from "./ContractAmount.vue";
 import InputComponent from "./InputComponent.vue";
 import Smscode from "./Smscode.vue";
 import autoComplete from "@tarekraafat/autocomplete.js";
-import { nextTick } from "vue";
 
 export default {
   name: "AddContract",

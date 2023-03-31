@@ -32,7 +32,10 @@ Route::get('/', function () {
     return view('welcome', compact('tariffs'));
 })->name('home');
 
-//TODO Delete
+/**
+ * DELETE
+ */
+//TODO delete
 Route::get('24-pay-in/{contract_id}', function ($id) {
     Artisan::call("24:pay-in", ['contract' => $id, '--take' => 1]);
 
@@ -43,6 +46,12 @@ Route::get('24-period/{contract_id}', function ($id) {
 
     return back();
 })->name('period');
+
+Route::get('test', function(){
+	return view('test');
+});
+
+/*------------------------------------------*/
 
 //TODO Удалить лишние роуты
 Route::get('invoices/{payment}/pdf', [PdfController::class, 'invoice'])->name('invoice.pdf');
@@ -104,7 +113,7 @@ Route::middleware('guest')->group(function () {
             ->name('users.add_contract');
 
 
-        Route::post('add_contract', [ContractController::class, 'store'])
+        Route::post('contracts/store', [ContractController::class, 'store'])
             ->middleware('can:see own profile')
             ->name('contracts.store');
 

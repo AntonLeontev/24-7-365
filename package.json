@@ -20,9 +20,9 @@
         "@popperjs/core": "^2.11.6",
         "@tarekraafat/autocomplete.js": "^10.2.7",
         "@vitejs/plugin-vue": "^4.0.0",
+        "@vueform/slider": "^2.1.7",
         "bootstrap": "^5.2.3",
         "choices.js": "^10.2.0",
-        "imask": "^6.4.3",
         "vue": "^3.2.36",
         "vue-loader": "^17.0.1"
     }
