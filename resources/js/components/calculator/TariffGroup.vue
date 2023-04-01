@@ -29,7 +29,7 @@
         />
         <tariff-calculation
           label="Доходность в месяц:"
-          :value="(selectedTariff.annual_rate / 12).toFixed(2)"
+          :value="profitPerMonthPersent"
           append="%"
         />
         <tariff-calculation
@@ -39,13 +39,13 @@
         />
         <tariff-calculation
           :label="'Доход за ' + selectedTariff.duration + ' мес.'"
-          :value="
-            (
-              ((amount * selectedTariff.annual_rate) / 100 / 12) *
-              selectedTariff.duration
-            ).toLocaleString()
-          "
+          :value="profitPerDuration"
           append=" ₽"
+        />
+        <tariff-calculation
+          :label="'ROI за ' + selectedTariff.duration + ' мес.'"
+          :value="roiPerDuration"
+          append=""
         />
       </div>
       <div class="mb-121 mb-13">
@@ -118,6 +118,13 @@ export default {
   },
   components: { TariffSlider, TariffCalculation, TariffPropertiesTable },
   computed: {
+    profitPerMonthPersent() {
+      let numberFormat = new Intl.NumberFormat("ru-RU", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      return numberFormat.format(this.selectedTariff.annual_rate / 12);
+    },
     profitPerMonth() {
       let numberFormat = new Intl.NumberFormat("ru-RU", {
         minimumFractionDigits: 2,
@@ -125,6 +132,28 @@ export default {
       });
       return numberFormat.format(
         (this.amount * this.selectedTariff.annual_rate) / 100 / 12
+      );
+    },
+    profitPerDuration() {
+      let numberFormat = new Intl.NumberFormat("ru-RU", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
+      return numberFormat.format(
+        ((this.amount * this.selectedTariff.annual_rate) / 100 / 12) *
+          this.selectedTariff.duration
+      );
+    },
+    roiPerDuration() {
+      let numberFormat = new Intl.NumberFormat("ru-RU", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
+      return numberFormat.format(
+        (((this.amount * this.selectedTariff.annual_rate) / 100 / 12) *
+          this.selectedTariff.duration +
+          this.amount) /
+          this.amount
       );
     },
     selectedTariff() {
