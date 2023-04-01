@@ -22,8 +22,7 @@
             <div class="contract-text text-bg-dark vh-70 overflow-auto px-3 py-3 mb-12">
                 @include('pdf.contract.text')
             </div>
-			<form id="agree-form" class="d-flex flex-column gap-3" action="{{ route('users.add_contract') }}" method="post">
-				@csrf
+			<form id="agree-form" class="d-flex flex-column gap-3" action="{{ route('users.add_contract') }}" method="get">
 				<input type="hidden" name="tariff_id" value="{{ request()->tariff_id }}">
 				<input type="hidden" name="amount" value="{{ request()->amount }}">
 				<x-common.form.checkbox name="read" class="fs-7 fs-sm-6">Я прочёл договор и приложение к договору</x-common.form.checkbox>
