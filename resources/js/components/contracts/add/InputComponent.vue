@@ -5,11 +5,11 @@
       class="form-control"
       :name="name"
       :placeholder="placeholder"
-      :value="value"
+      v-model="newValue"
       autocorrect="off"
       autocomplete="off"
       autocapitalize="off"
-      v-on:input="$emit('clearError', this.name)"
+      v-on:input="input"
       :class="{ 'border-primary': error }"
       :readonly="readonly"
       :tabindex="tabindex"
@@ -25,7 +25,9 @@ export default {
   name: "InputComponent",
   created() {},
   data() {
-    return {};
+    return {
+      newValue: this.value,
+    };
   },
   props: {
     name: String,
@@ -38,6 +40,9 @@ export default {
     error: String,
   },
   methods: {
+    input() {
+      this.$emit("clearError", this.name);
+    },
   },
 };
 </script>

@@ -277,7 +277,7 @@ export default {
         return;
       }
 
-      if (_.isEmpty(this.tariffId)) {
+      if (this.tariffId === "") {
         this.notify("Не выбран тариф");
         return;
       }

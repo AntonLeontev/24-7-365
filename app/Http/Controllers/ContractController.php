@@ -18,24 +18,8 @@ class ContractController extends Controller
 {
     public function index()
     {
+        $contracts = auth()->user()->contracts;
         
-        $organization = auth()->user()->organization;
-        
-       // $organization= NULL;
-        
-        if (is_null($organization)) {
-            return redirect()
-            ->route('users.profile')
-            ->withErrors('Укажите данные орагнизации, чтобы просматривать раздел Активные Договора');
-        }
-        
-        $contracts = Contract::with('tariff')->where('organization_id', $organization->id)
-            ->whereIn('status', [Contract::ACTIVE, Contract::PENDING, Contract::CANCELED])
-            ->where('deleted_at', null)
-            ->orderByDesc('created_at')
-            ->paginate();
-        
-       
         return view('users.contracts.contracts_list', compact('contracts'));
     }
 
