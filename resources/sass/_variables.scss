@@ -243,7 +243,8 @@ $grid-breakpoints: (
 	md: 768px,
 	lg: 992px,
 	xl: 1200px,
-	xxl: 1500px
+	xxl: 1500px,
+	xxxl: 2000px,
 );
 
 $spacer: 1rem;
@@ -263,6 +264,8 @@ $spacers: (
   15: 50px,
   16: 60px,
   17: 70px,
+  110: 100px,
+  120: 200px,
 );
 
 $position-values: (

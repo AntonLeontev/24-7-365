@@ -1,171 +1,124 @@
+.sidebar-menu-list {
+    a {
+        color: $light-grey;
+		transition: color 0.3s ease;
+    }
 
-.sidebar-menu-list{
+    svg {
+        margin-right: 10px;
+    }
 
-         a{
-	      color:$light-grey;
-	      }
-	      
-	      svg{
-	      margin-right: 10px;
-          }
+    .svg-stroke svg {
+        stroke: $light-grey;
+		transition: stroke 0.3s ease;
+    }
 
-	   .svg-stroke svg{
-		     stroke:$light-grey;
-		    }
-	    
-	    .svg-fill svg{
-	    fill:$light-grey;
-	    }
-	    
-	    li{
-	    height: 40px;
-	    margin-top: 25px;
-	    color:$light-grey;
-	   }
-  
-        li.active{
-	    border-left:4px solid $primary;
-	    
-		      .svg-stroke svg{
-			     stroke:$primary !important;
-			    }
-		    
-			    .svg-fill svg{
-			    fill:$primary !important;
-			    }
-		    
-			     a{
-			      color:$primary !important;
-			      }
-	    
-		    }
-		    
-		      li:hover{
-	    
-		      .svg-stroke svg{
-			     stroke:$white !important;
-			    }
-		    
-			    .svg-fill svg{
-			    fill:$white !important;
-			    }
-		    
-			     a{
-			      color:$white !important;
-			      }
-	    
-		    }
-		    
-		    
+    .svg-fill svg {
+        fill: $light-grey;
+		transition: fill 0.3s ease;
+    }
 
-}
+    li {
+        height: 40px;
+        margin-top: 20px;
+        color: $light-grey;
+        border-left: 4px solid transparent;
+    }
 
-.sidebar-menu{
-	padding-left: 0;
-	min-width: 300px;
-	background-color:$dark-grey !important;
-	
-	
-		        a{
-			      color:$light-grey;
-			      }
-			      
-			      
-			    p{
-			      color:$light-grey;
-			      } 
-	 
-			
-}
+    li.active {
+        border-left: 4px solid $primary;
 
+        .svg-stroke svg {
+            stroke: $primary !important;
+        }
 
+        .svg-fill svg {
+            fill: $primary !important;
+        }
 
-    .sidebar-bottom{
-			    margin-left: 14px;
-			    font-size:12px;
-			    font-weight:600; 
-			    
-			    }
-			    
-			    
-			    .socials-links{
-			    margin-left: 14px;
-			      
-			      
-			      svg{
-			       margin-left: 5px;
-			       margin-bottom: 20px; 
-			      }
-	       
-                }
-                
+        a {
+            color: $primary !important;
+        }
+    }
 
+    li:hover {
+        .svg-stroke svg {
+            stroke: $white !important;
+        }
 
-.mobile-menu{
+        .svg-fill svg {
+            fill: $white !important;
+        }
 
-	padding-left: 0;
-	max-width: 300px;
-	background-color:$dark-grey;
-	
+        a {
+            color: $white !important;
+        }
 
-		
-			  .top-mobile-header{
-				  height:74px;
-				  border-bottom:1px solid $light-grey !important;
-				  padding-top:19px;
-				  padding-left:27px;
-				  position:relative;
-				  
-				  
-				  .top-greetings, .top-greetings-2{
-				   
-				   font-size:14px !important; 
-				 
-				  }
-		      
-		       
-                   #mobile-menu-close{
-                    position: absolute;
-				    left: 270px;
-				    top: 5px;
+		&.active {
+			.svg-stroke svg {
+				stroke: $primary !important;
+			}
 
-                   }
-  
-  
-                }
-  }
-  
+			.svg-fill svg {
+				fill: $primary !important;
+			}
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-  @include media-breakpoint-down(xl) {
-		
-		div.sidebar-menu {
-		display:none !important;
+			a {
+				color: $primary !important;
+			}
 		}
-		
-
-
+    }
 }
-  
 
+.sidebar-menu {
+    padding-left: 0;
+    min-width: 300px;
+    background-color: $dark-grey !important;
 
+    a {
+        color: $light-grey;
+    }
 
+    p {
+        color: $light-grey;
+    }
 
+	.sidebar-header {
+		height: 75px;
+		border-bottom: 1px solid $light-grey;
+	}
+}
 
+.sidebar-bottom {
+    margin-left: 14px;
+    font-size: 12px;
+    font-weight: 600;
+}
 
+.socials-links {
+    margin-left: 14px;
 
+    svg {
+        margin-left: 5px;
+        margin-bottom: 20px;
+    }
+}
 
+.mobile-menu {
+    padding-left: 0;
+    max-width: 300px;
+    background-color: $dark-grey;
 
+    .top-mobile-header {
+		display: flex;
+		align-items: start;
+		justify-content: center;
+		flex-direction: column;
+        flex-basis: 75px;
+		flex-shrink: 0;
+		flex-grow: 0;
+        border-bottom: 1px solid $light-grey !important;
+        padding-left: 27px;
+        position: relative;
+    }
+}

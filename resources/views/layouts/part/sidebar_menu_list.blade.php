@@ -1,4 +1,4 @@
-<ul class="nav flex-column sidebar-menu-list mb-auto">
+<ul class="nav flex-column sidebar-menu-list">
 	@can('see own profile')
 		<li class="nav-item {{ Route::is('users.profile') ? 'active' : '' }}">
 			<a class="nav-link svg-stroke" href="{{ route('users.profile') }}" aria-current="page">

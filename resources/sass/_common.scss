@@ -29,6 +29,14 @@ select {
 	text-overflow: '';
 }
 
+.application {
+	@include media-breakpoint-up(xl) {
+		display: grid;
+		grid-template-columns: 300px auto;
+		grid-template-rows: auto;
+	}
+
+}
 
 .heading {
 	position: relative;

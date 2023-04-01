@@ -1,123 +1,67 @@
-.top-header{
-  height:74px;
-  }
-  
-  .logo{
-  max-width:300px !important;
-  background-color:$dark-grey;
-  height: 100%;
-  vertical-align:middle;
-  position:relative;
-  
-  
-	  img{
-	  
-	    max-height: 100%;
-	    max-width: 100%;
-	    width: auto;
-	    height: auto;
-	    position: absolute;
-	    top: 0;
-	    bottom: 0;
-	    left: 0;
-	    right: 0;
-	    margin: auto;
-	    margin-left:35px;
-	  }
-	  
-  
-  
-  
-  }
-  
-
-  
-  .top-header-bottom{
-  border-color:$light-grey !important;
-  }
-  
-  
-  .top-greetings-left-margin{
-  margin-left:105px;
-  }
-  
-  .top-greetings{
-	font-weight:400;
-	font-size:18px;
-	line-height:18px;
-	margin:0;
-  }
-  
-  .top-greetings-2{
-  color:$primary;
-  font-size:16px;
-  line-height:16px;
-  margin:0;
-  }
-  
-  
-  .top-notifications{
-  margin-right:35px;
-  background-color:$dark-grey;
-  border-radius: 20px;
-  width: 42px;
-  height: 42px;
-  
-		   svg{
-		  margin-top: 10px;
-		  }
-  
-  
-  }
-  
-  
-  
-  
-  @include media-breakpoint-down(xl) {
-
-.top-greetings-main-left-col{
-	display:none;
+.top-header {
+    height: 74px;
 }
 
-.top-greetings-main-right-col{
-	display:none;
+.logo {
+    max-width: 300px !important;
+    background-color: $dark-grey;
+    height: 100%;
+    vertical-align: middle;
+    position: relative;
+
+    img {
+        max-height: 100%;
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        margin-left: 35px;
+    }
 }
 
-
-  .logo{
-    margin:auto;
-   background-color:unset;
-  
-	  img{
-	  
-	    max-height: 100%;
-	    max-width: 100%;
-	    width: auto;
-	    height: auto;
-	    position: absolute;
-	    top: 0;
-	    bottom: 0;
-	    left: 0;
-	    right: 0;
-	    margin: auto;
-	   
-	  }
-	  
-  
-  
-  
-  }
-
-
-
-
+.top-header-bottom {
+    border-color: $light-grey !important;
 }
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+.top-notifications {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $dark-grey;
+    border-radius: 100%;
+    width: 42px;
+    height: 42px;
+}
+
+@include media-breakpoint-down(xl) {
+    .top-greetings-main-left-col {
+        display: none;
+    }
+
+    .top-greetings-main-right-col {
+        display: none;
+    }
+
+    .logo {
+        margin: auto;
+        background-color: unset;
+
+        img {
+            max-height: 100%;
+            max-width: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    }
+}

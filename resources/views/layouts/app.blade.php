@@ -15,26 +15,18 @@
 	@yield('scripts')
 </head>
 <body>
-
-	@include('layouts.part.header')
-	
-	
-	<div class="container-fluid">
-    	<div class="row">
-    	
-    	    @include('layouts.part.sidebar_menu')
-    	
-    	    <main class="col mt-4 px-xxl-5">
-    		@yield('content')
-    		</main>
-    		
-    		
-    		
-    	</div>
-	</div>	
-		
-	 @include('layouts.part.footer')
-	
-	
+	<div class="application">
+		@include('layouts.part.sidebar_menu')
+		<div class="container-fluid">
+			<div class="row">
+				@include('layouts.part.header')
+			
+				<main class="mt-4 px-xxl-110 px-xxxl-120">
+					@yield('content')
+				</main>
+			</div>
+		</div>	
+		@include('layouts.part.footer')
+	</div>
 </body>
 </html>
