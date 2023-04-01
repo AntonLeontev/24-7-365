@@ -39,24 +39,19 @@
                             </div>
                         </div>
 
-						<div class="row">
-                            <div class="col offset-md-4">
+						<div class="row mb-2">
+                            <div class="col-6 offset-md-4 d-flex justify-content-between">
                                 <a class="btn btn-primary" href="{{ route('auth.social', 'yandex') }}">
                                     Yandex
                                 </a>
+								<a class="btn btn-primary" href="{{ route('auth.social', 'vkontakte') }}">
+									Vkontakte
+								</a>
+								<a class="btn btn-primary" href="{{ route('auth.social', 'google') }}">
+									Google
+								</a>
                             </div>
 
-                            <div class="col">
-                                <a class="btn btn-primary" href="{{ route('auth.social', 'vkontakte') }}">
-                                    Vkontakte
-                                </a>
-                            </div>
-
-                            <div class="col">
-                                <a class="btn btn-primary" href="{{ route('auth.social', 'google') }}">
-                                    Google
-                                </a>
-                            </div>
 						</div>
 
                         <div class="row mb-3">

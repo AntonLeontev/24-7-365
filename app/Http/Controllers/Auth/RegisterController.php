@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -30,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/personal/calculator';
 
 
     /**
@@ -52,9 +51,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'first_name' => ['required', 'string', 'min:1', 'max:50'],
-            'last_name' => ['nullable', 'string', 'max:50'],
-            'patronymic' => ['nullable', 'string', 'max:50'],
+            'first_name' => ['required', 'string', 'min:1', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::default()],
         ]);
@@ -66,12 +63,10 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(array $data): User
     {
         $user = User::create([
             'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'patronymic' => $data['patronymic'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);

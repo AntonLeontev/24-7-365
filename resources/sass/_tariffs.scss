@@ -46,10 +46,14 @@
 		}
 
 		@include media-breakpoint-up(md) {
-			min-width: 50%;
+			min-width: 55%;
 		}
 
 		@include media-breakpoint-up(lg) {
+			min-width: 40%;
+		}
+
+		@include media-breakpoint-up(xl) {
 			min-width: auto;
 		}
 
