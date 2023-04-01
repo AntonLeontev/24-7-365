@@ -68,10 +68,10 @@ class ContractController extends Controller
         return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments'));
     }
 
-	public function agree()
-	{
-		return view('users.contracts.agree');
-	}
+    public function agree()
+    {
+        return view('users.contracts.agree');
+    }
     
     public function create()
     {
@@ -84,7 +84,7 @@ class ContractController extends Controller
 
         event(new ContractCreated($contract));
 
-		$paymentId = $contract->payments->first()->id;
+        $paymentId = $contract->payments->first()->id;
 
         return response()->json(['ok' => true, 'paymentId' => $paymentId]);
     }
@@ -100,6 +100,8 @@ class ContractController extends Controller
 
     public function edit(Contract $contract)
     {
+        $contract->load(['tariff']);
+        
         return view('users.contracts.edit', compact('contract'));
     }
 

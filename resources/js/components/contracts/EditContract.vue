@@ -1,19 +1,23 @@
 <template>
   <div class="card">
     <div class="card-header">Выберите тариф</div>
-    <div class="card-body">
-      <div v-for="(group, groupName) in tariffs">
-        {{ groupName }}
-        <template v-for="tariff in group">
-          <span
-            v-show="
-              newAmount >= tariff.min_amount.amount &&
-              newAmount <= tariff.max_amount.amount
-            "
-          >
-            {{ tariff.duration }}: {{ tariff.min_amount.amount }} -
-            {{ tariff.max_amount.amount }} |
-          </span>
+    <div class="card-body pe-0 pe-xl-13">
+      <div class="tariffs-wrap pb-2 pe-11 pe-sm-121 pe-md-13">
+        <template v-for="(group, groupName) in tariffs">
+          <Transition :duration="{ enter: 800, leave: 0 }">
+            <div class="tariff" v-show="isEnabled(group[0])">
+              <tariff-group
+                :title="groupName"
+                :tariffs="group"
+                :amount="newAmount"
+                :style="'contract'"
+                :selectedTariffId="tariffId"
+                @tariffSelected="
+                  (selectedTariffId) => handleTariffSelection(selectedTariffId)
+                "
+              />
+            </div>
+          </Transition>
         </template>
       </div>
     </div>
@@ -92,6 +96,8 @@
 </template>
 
 <script>
+import TariffGroup from "../calculator/TariffGroup.vue";
+
 export default {
   name: "EditContract",
   created() {},
@@ -101,6 +107,7 @@ export default {
       notice: false,
       errors: {},
       message: "",
+      tariffId: this.contract.tariff.id,
     };
   },
   props: {
@@ -147,6 +154,19 @@ export default {
         return;
       }
     },
+    handleTariffSelection(tariffId) {
+      this.tariffId = tariffId;
+    },
+    isEnabled(tariff) {
+      if (tariff.max_amount.raw === 0) {
+        return this.newAmount >= tariff.min_amount.amount;
+      }
+
+      return (
+        this.newAmount >= tariff.min_amount.amount &&
+        this.newAmount < tariff.max_amount.amount
+      );
+    },
     notify(message, delay = null) {
       this.message = message;
       this.notice = true;
@@ -164,6 +184,7 @@ export default {
       return this.contract.amount.amount + this.addAmount;
     },
   },
+  components: { TariffGroup },
 };
 </script>
 
