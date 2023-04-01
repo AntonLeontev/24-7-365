@@ -99,6 +99,10 @@ class Contract extends Model
 
     public function isChanging(): bool
     {
+		if ($this->status !== $this::ACTIVE) {
+			return false;
+		}
+		
         return $this->contractChanges->last()->status === ContractChange::STATUS_PENDING ||
             $this->contractChanges->last()->status === ContractChange::STATUS_WAITING_FOR_PERIOD_END;
     }

@@ -100,6 +100,16 @@
 	</div>
 	@endforeach
 
+	@if ($operations->isEmpty())
+		<div class="p-4 pb-5">
+			<div class="bg-body text-light p-5 text-center">
+				<p>
+					Пока нет начислений или выплат. Они появятся после оплаты любого договора
+				</p>
+			</div>
+		</div>
+	@endif
+
 	{{-- {{ $payments->links() }} --}}
 
 

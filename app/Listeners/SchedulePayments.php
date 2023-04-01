@@ -34,7 +34,7 @@ class SchedulePayments
         //TODO Создание платежей для изменения тарифа
 
         
-        if ($contract->changes->count() > 1) {
+        if ($contract->contractChanges->count() > 1) {
             if ($contract->tariff->getting_profit === Tariff::AT_THE_END) {
                 $this->updateAtTheEndTariffPayments($event);
 
@@ -45,7 +45,7 @@ class SchedulePayments
             return;
         }
 
-        if ($contract->changes->count() === 1) {
+        if ($contract->contractChanges->count() === 1) {
             if ($contract->tariff->getting_profit === Tariff::AT_THE_END) {
                 $this->generateAtTheEndTariffPayments($event);
 
