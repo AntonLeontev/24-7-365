@@ -21,7 +21,7 @@ class SocialsController extends Controller
         return match (true) {
             $user->hasRole('Клиент') => to_route('users.profile'),
             $user->hasRole('Админ') => to_route('users.index'),
-			default => '/'
+            default => to_route('users.index')
         };
     }
 }

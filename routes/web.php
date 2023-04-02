@@ -12,6 +12,7 @@ use App\Http\Controllers\SuggestionsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CanSeeContract;
+use App\Http\Middleware\CheckBlockedUser;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $tariffs = Tariff::all();
     return view('welcome', compact('tariffs'));
-})->name('home');
+})->withoutMiddleware(CheckBlockedUser::class)->name('home');
 
 /**
  * DELETE

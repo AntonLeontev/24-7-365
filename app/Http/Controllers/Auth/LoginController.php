@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -45,11 +44,6 @@ class LoginController extends Controller
         }
         
         if ($this->attemptLogin($request)) {
-            if (auth()->user()->status === User::BLOCKED) {
-                auth()->logout();
-				abort(403, 'Ваш аккаунт заблокирован');
-            }
-
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }
