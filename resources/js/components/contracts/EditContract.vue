@@ -1,26 +1,5 @@
 <template>
   <div class="card">
-    <div class="card-header">Выберите тариф</div>
-    <div class="card-body pe-0 pe-xl-13">
-      <div class="tariffs-wrap pb-2 pe-11 pe-sm-121 pe-md-13">
-        <template v-for="(group, groupName) in tariffs">
-          <Transition :duration="{ enter: 800, leave: 0 }">
-            <div class="tariff" v-show="isEnabled(group[0])">
-              <tariff-group
-                :title="groupName"
-                :tariffs="group"
-                :amount="newAmount"
-                :style="'contract'"
-                :selectedTariffId="tariffId"
-                @tariffSelected="
-                  (selectedTariffId) => handleTariffSelection(selectedTariffId)
-                "
-              />
-            </div>
-          </Transition>
-        </template>
-      </div>
-    </div>
     <div class="card-body pb-0">
       <div
         class="d-flex flex-column gap-111 px-111 py-121 py-md-13 border-top border-primary border-2 bg-dark"
@@ -35,6 +14,7 @@
       </div>
     </div>
   </div>
+
   <div class="card">
     <div class="card-header">Увеличить сумму закупа</div>
     <div class="card-body pt-0 d-flex flex-column flex-md-row gap-13">
@@ -59,6 +39,31 @@
       </div>
     </div>
   </div>
+
+  <div class="card">
+    <div class="card-header">Выберите тариф</div>
+    <div class="card-body pe-0 pe-xl-13">
+      <div class="tariffs-wrap pb-2 pe-11 pe-sm-121 pe-md-13">
+        <template v-for="(group, groupName) in tariffs">
+          <Transition :duration="{ enter: 800, leave: 0 }">
+            <div class="tariff" v-show="isEnabled(group[0])">
+              <tariff-group
+                :title="groupName"
+                :tariffs="group"
+                :amount="newAmount"
+                :style="'contract'"
+                :selectedTariffId="tariffId"
+                @tariffSelected="
+                  (selectedTariffId) => handleTariffSelection(selectedTariffId)
+                "
+              />
+            </div>
+          </Transition>
+        </template>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-body d-flex">
       <button class="btn btn-primary mx-auto w-100 w-lg-50" @click="updateContract">
