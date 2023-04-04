@@ -10,7 +10,7 @@
               <div class="form-input">
                 <input
                   class="form-control pe-3"
-                  type="search"
+                  type="text"
                   placeholder="Поиск"
                   v-model="search"
                   @change="() => update()"

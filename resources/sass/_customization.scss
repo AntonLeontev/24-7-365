@@ -107,8 +107,22 @@
 	}
 }
 
+.autoComplete_wrapper {
+	&:hover {
+		&+.form-label {
+			color: $white;
+		}
+	}
+
+	&:focus {
+		&+.form-label {
+			color: $white;
+		}
+	}
+}
+
 .form-label {
-	min-height: 0.75rem;
+	min-height: 1.25rem;
 	transition: color 0.15s ease-in-out;
 }
 

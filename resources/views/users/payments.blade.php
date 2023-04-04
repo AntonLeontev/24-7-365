@@ -33,7 +33,7 @@
 							<div class="col"></div>
 							<div class="col">
 								<a href="{{ route('users.contract_show', $operation->contract->id) }}" class="btn-link">
-									# {{ $operation->contract->id }}
+									№{{ $operation->contract->id }}
 								</a>	
 							</div>
 							<div class="col d-flex justify-content-center flex-nowrap gap-2">

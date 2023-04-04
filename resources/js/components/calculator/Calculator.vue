@@ -5,8 +5,9 @@
         <div class="card-header pb-0">Калькулятор</div>
         <div class="card-body pt-12">
           <div class="row">
-            <p class="text-light col-12 col-lg-6 fs-8 fs-md-6">
-              Введите желаемую сумму закупа и мы покажем ожидаемую прибыль по всем тарифам
+            <p class="text-light col-12 col-lg-6 fs-8 fs-md-6 mb-0">
+              Введите желаемую сумму закупа (не менее 500 тыс руб. / до 5 млн. руб / свыше
+              5 млн руб.) и мы покажем ожидаемую прибыль по всем тарифам
             </p>
             <div class="form-input col-12 col-lg-6">
               <input

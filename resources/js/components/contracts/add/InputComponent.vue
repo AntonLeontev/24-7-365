@@ -1,7 +1,7 @@
 <template>
   <div class="form-input">
     <input
-      type="text"
+      :type="type"
       class="form-control"
       :name="name"
       :placeholder="placeholder"
@@ -9,13 +9,14 @@
       autocorrect="off"
       autocomplete="off"
       autocapitalize="off"
-      v-on:input="input"
+      @input="input"
       :class="{ 'border-primary': error }"
       :readonly="readonly"
       :tabindex="tabindex"
       :id="id"
     />
-    <label class="form-label" v-show="!error">{{ placeholder }}</label>
+    <label class="form-label" v-show="!error && isFilled">{{ placeholder }}</label>
+    <label class="form-label" v-show="!error && !isFilled">{{ label }}</label>
     <label class="form-label text-primary" v-cloak v-show="error" v-text="error"></label>
   </div>
 </template>
@@ -26,22 +27,29 @@ export default {
   created() {},
   data() {
     return {
-      newValue: this.value,
+      newValue: this.value ?? "",
     };
   },
   props: {
     name: String,
     placeholder: String,
+    label: String,
     value: String,
     readonly: Boolean,
-    tabindex: String,
+    tabindex: {},
     class: String,
     id: String,
     error: String,
+    type: { default: "text" },
   },
   methods: {
     input() {
-      this.$emit("clearError", this.name);
+      this.$emit("clear-error", this.name);
+    },
+  },
+  computed: {
+    isFilled() {
+      return this.newValue.trim().length > 0;
     },
   },
 };

@@ -19,19 +19,24 @@
         <form data-phone="{{ $user->phone ?? '' }}"
             action="{{ route('users.profile.save', auth()->id()) }}" method="POST"
             ref="profileForm">
-            @csrf
             <div class="profile">
                 
                     <div class="card profile__data">
                         <div class="card-header">Данные профиля</div>
 						<fieldset @disabled(auth()->id() !== $user->id)>
 							<div class="card-body pb-0">
-								<x-common.form.input name="first_name" value="{{ $user->first_name ?? '' }}"
-									placeholder="ФИО или nickname" label="Не обязательно" />
-								<x-common.form.input name="phone" value="{{ $user->phone ? '+' . $user->phone : '' }}"
-									placeholder="Номер телефона" label="Не обязательно" />
-								<x-common.form.input name="email" value="{{ $user->email }}" placeholder="e-mail"
-									label="e-mail" />
+								<input-component name="first_name" value="{{ $user->first_name ?? '' }}"
+									placeholder="ФИО или nickname" label="Не обязательно" :error="errors.first_name" 
+									@clear-error="(name) => (errors[name] = null)">
+								</input-component>
+								<input-component name="phone" value="{{ $user->phone ? '+' . $user->phone : '' }}"
+									placeholder="Номер телефона" label="Не обязательно" :error="errors.phone" 
+									@clear-error="(name) => (errors[name] = null)">
+								</input-component>
+								<input-component name="email" value="{{ $user->email }}" placeholder="e-mail"
+									label="e-mail" :error="errors.email" 
+									@clear-error="(name) => (errors[name] = null)">
+								</input-component>
 							</div>
 						</fieldset>
                     </div>
@@ -47,22 +52,30 @@
                         </div>
 						<fieldset @disabled(auth()->id() !== $user->id)>
 							<div class="card-body">
-								<x-common.form.input id="inn" name="inn" value="{{ $user->organization->inn ?? '' }}"
-									placeholder="ИНН" label="Не обязательно" />
-								<x-common.form.input id="kpp" name="kpp" value="{{ $user->organization->kpp ?? '' }}"
-									tabindex="-1" placeholder="КПП" label="Не обязательно" readonly />
-								<x-common.form.input id="title" name="title"
+								<input-component id="inn" name=inn 	value="{{ $user->organization->inn ?? '' }}"
+									placeholder="ИНН" label="Не обязательно" :error="errors.inn">
+								</input-component>
+								<input-component id="kpp" name="kpp" value="{{ $user->organization->kpp ?? '' }}"
+									tabindex="-1" placeholder="КПП" label="Не обязательно" :error="errors.kpp" readonly >
+								</input-component>
+								<input-component id="title" name="title"
 									value="{{ $user->organization?->title ?? '' }}" tabindex="-1"
-									placeholder="Название организации" label="Не обязательно" readonly />
-								<x-common.form.input id="bik" name="bik" value="{{ $user->account?->bik ?? '' }}"
-									placeholder="БИК" />
-								<x-common.form.input id="bank" name="bank" value="{{ $user->account?->bank ?? '' }}"
-									tabindex="-1" placeholder="Наименование банка" label="Не обязательно" readonly />
-								<x-common.form.input id="correspondent_account" name="correspondent_account"
+									placeholder="Название организации" label="Не обязательно" :error="errors.title" readonly>
+								</input-component>
+								<input-component id="bik" name="bik" value="{{ $user->account?->bik ?? '' }}"
+									placeholder="БИК" :error="errors.bik">
+								</input-component>
+								<input-component id="bank" name="bank" value="{{ $user->account?->bank ?? '' }}"
+									tabindex="-1" placeholder="Наименование банка" label="Не обязательно" readonly  :error="errors.bank">
+								</input-component>
+								<input-component id="correspondent_account" name="correspondent_account"
 									value="{{ $user->account->correspondent_account ?? '' }}" tabindex="-1"
-									placeholder="Корреспондентский счет" label="Не обязательно" readonly />
-								<x-common.form.input name="payment_account" value="{{ $user->account->payment_account ?? '' }}"
-									placeholder="Расчетный счет" label="Не обязательно" />
+									placeholder="Корреспондентский счет" label="Не обязательно" :error="errors.correspondent_account" readonly>
+								</input-component>
+								<input-component name="payment_account" value="{{ $user->account->payment_account ?? '' }}"
+									placeholder="Расчетный счет" label="Не обязательно" :error="errors.payment_account" 
+									@clear-error="(name) => (errors[name] = null)">
+								</input-component>
 								<input id="ogrn" name="ogrn" type="hidden"
 									value="{{ $user->organization->ogrn ?? '' }}">
 								<input id="address" name="legal_address" type="hidden"
@@ -78,10 +91,14 @@
                     <div class="card profile__password">
                         <div class="card-header">Сменить пароль</div>
                         <div class="card-body">
-                            <x-common.form.input name="password" type="password" placeholder="Новый пароль"
-                                label="Придумайте новый пароль" />
-                            <x-common.form.input name="password_confirmation" type="password" placeholder="Повторите пароль"
-                                label="" />
+							<input-component name="password" type="password" placeholder="Новый пароль"
+                                label="Придумайте новый пароль" :error="errors.password" 
+								@clear-error="(name) => (errors[name] = null)">
+							</input-component>
+							<input-component name="password_confirmation" type="password" placeholder="Повторите пароль"
+                                label="" :error="errors.password_confirmation" 
+								@clear-error="(name) => (errors[name] = null)">
+							</input-component>
                         </div>
                     </div>
                 @else

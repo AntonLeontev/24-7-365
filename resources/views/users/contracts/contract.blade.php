@@ -168,8 +168,8 @@
                 <x-common.tables.yellow class="mb-4">
                     <x-slot:header>
                         <div class="col">Дата</div>
-                        <div class="col">Начислено</div>
                         <div class="col">Тело закупа</div>
+                        <div class="col">Начислено</div>
                         <div class="col">К выплате</div>
                     </x-slot:header>
 
@@ -177,8 +177,8 @@
                         @if ($operation instanceof App\Models\Profitability)
                             <x-common.tables.yellow.row>
                                 <div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
-                                <div class="col">+{{ $operation->amount }}</div>
                                 <div class="col">{{-- Тело закупа на дату выплаты --}}</div>
+                                <div class="col">+{{ $operation->amount }}</div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
                                     @if ($operation->payment->planned_at->equalTo($operation->planned_at))
                                         @if ($operation->payment->status === $operation->payment::STATUS_PROCESSED)
@@ -198,8 +198,8 @@
                         @elseif ($operation instanceof App\Models\Payment)
                             <x-common.tables.yellow.row>
                                 <div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
-                                <div class="col"></div>
                                 <div class="col">{{ $contract->amount }}</div>
+                                <div class="col"></div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
                                     @if ($operation->status === $operation::STATUS_PROCESSED)
                                         <svg width="17" height="12" viewBox="0 0 17 12" fill="none"

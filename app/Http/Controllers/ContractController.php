@@ -18,7 +18,7 @@ class ContractController extends Controller
 {
     public function index()
     {
-        $contracts = auth()->user()->contracts;
+        $contracts = auth()->user()->contracts->load('tariff');
         
         return view('users.contracts.contracts_list', compact('contracts'));
     }

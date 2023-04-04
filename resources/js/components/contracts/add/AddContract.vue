@@ -48,7 +48,7 @@
             placeholder="ИНН"
             id="inn"
             :error="this.errors.inn"
-            @clearError="(name) => (errors[name] = null)"
+            @clear-error="(name) => (errors[name] = null)"
           ></input-component>
         </div>
         <div class="col-12 col-sm-6 col-md-4 mb-121">
@@ -59,7 +59,7 @@
             id="kpp"
             tabindex="-1"
             :error="this.errors.kpp"
-            @clearError="(name) => (errors[name] = null)"
+            @clear-error="(name) => (errors[name] = null)"
             readonly
           ></input-component>
         </div>
@@ -71,7 +71,7 @@
             id="title"
             tabindex="-1"
             :error="this.errors.title"
-            @clearError="(name) => (errors[name] = null)"
+            @clear-error="(name) => (errors[name] = null)"
             readonly
           ></input-component>
         </div>
@@ -81,7 +81,7 @@
             placeholder="Расчетный счет"
             :value="user.account?.payment_account"
             :error="this.errors.payment_account"
-            @clearError="(name) => (errors[name] = null)"
+            @clear-error="(name) => (errors[name] = null)"
           ></input-component>
         </div>
         <div class="col-12 col-sm-6 mb-121">
@@ -91,7 +91,7 @@
             :value="user.account?.bik"
             id="bik"
             :error="this.errors.bik"
-            @clearError="(name) => (errors[name] = null)"
+            @clear-error="(name) => (errors[name] = null)"
           ></input-component>
         </div>
         <div class="col-12 col-sm-6 mb-121">
@@ -102,7 +102,7 @@
             tabindex="-1"
             id="bank"
             :error="this.errors.bank"
-            @clearError="(name) => (errors[name] = null)"
+            @clear-error="(name) => (errors[name] = null)"
             readonly
           ></input-component>
         </div>
@@ -113,7 +113,7 @@
             :value="user.account?.correspondent_account"
             id="correspondent_account"
             :error="this.errors.correspondent_account"
-            @clearError="(name) => (errors[name] = null)"
+            @clear-error="(name) => (errors[name] = null)"
             tabindex="-1"
             readonly
           ></input-component>
@@ -190,7 +190,7 @@
               name="phone"
               placeholder="Введите номер телефона"
               :error="this.errors.phone"
-              @clearError="(name) => (errors[name] = null)"
+              @clear-error="(name) => (errors[name] = null)"
             ></input-component>
           </div>
           <button class="btn btn-primary w-100 mb-2" @click.prevent="confirmPhone">
@@ -277,7 +277,7 @@ export default {
         return;
       }
 
-      if (this.tariffId === "") {
+      if (this.tariffId === "" || _.isNill(this.tariffId)) {
         this.notify("Не выбран тариф");
         return;
       }
@@ -473,8 +473,12 @@ export default {
       const feedback = event.detail;
       // Replace Input value with the selected value
       inn.input.value = feedback.selection.value[feedback.selection.key];
-      document.querySelector("#kpp").value = feedback.selection.value.kpp;
-      document.querySelector("#title").value = feedback.selection.value.title;
+      let kpp = document.querySelector("#kpp");
+      kpp.value = feedback.selection.value.kpp;
+      kpp.dispatchEvent(new Event("input", { bubbles: true }));
+      let title = document.querySelector("#title");
+      title.value = feedback.selection.value.title;
+      title.dispatchEvent(new Event("input", { bubbles: true }));
       document.querySelector("#ogrn").value = feedback.selection.value.ogrn;
       document.querySelector("#director").value = feedback.selection.value.director;
       document.querySelector("#directors_post").value =
@@ -546,9 +550,13 @@ export default {
     bik.input.addEventListener("selection", function (event) {
       const feedback = event.detail;
       bik.input.value = feedback.selection.value[feedback.selection.key];
-      document.querySelector("#correspondent_account").value =
-        feedback.selection.value.correspondent_account;
-      document.querySelector("#bank").value = feedback.selection.value.title;
+      let corAccount = document.querySelector("#correspondent_account");
+      corAccount.value = feedback.selection.value.correspondent_account;
+      corAccount.dispatchEvent(new Event("input", { bubbles: true }));
+
+      let bank = document.querySelector("#bank");
+      bank.value = feedback.selection.value.title;
+      bank.dispatchEvent(new Event("input", { bubbles: true }));
     });
   },
 };

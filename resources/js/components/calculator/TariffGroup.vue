@@ -15,6 +15,10 @@
       >
         Тариф <span class="text-uppercase">{{ title }}</span>
       </div>
+
+      <div class="mb-121 mb-13">
+        <tariff-properties-table :tariffs="tariffs" :style="style" />
+      </div>
       <div class="d-flex flex-column gap-3 mb-121 mb-md-13">
         <tariff-calculation
           label="Срок:"
@@ -47,9 +51,6 @@
           :value="roiPerDuration"
           append=""
         />
-      </div>
-      <div class="mb-121 mb-13">
-        <tariff-properties-table :tariffs="tariffs" :style="style" />
       </div>
     </div>
     <div>
