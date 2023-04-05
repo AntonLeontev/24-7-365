@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative">
+  <div v-if="tariffs.length > 1" class="position-relative">
     <Slider
       :min="min"
       :max="max"
@@ -21,12 +21,37 @@
         </span>
       </div>
     </div>
+
     <div class="position-absolute w-100 top-0 d-flex justify-content-between">
       <div
         v-for="tariff in tariffs"
         class="scale"
         :class="{ scale_passed: duration > tariff.duration }"
       ></div>
+    </div>
+  </div>
+  <div v-else>
+    <Slider
+      :min="0"
+      :max="max"
+      :step="-1"
+      :tooltips="false"
+      :lazy="true"
+      disabled
+      v-model="duration"
+      @update="change"
+      ref="slider"
+    />
+    <div class="d-flex justify-content-end mt-11 text-light">
+      <div v-for="tariff in tariffs">
+        <span
+          class="duration fs-7"
+          :class="{ 'text-white': duration == tariff.duration }"
+          @click="duration = tariff.duration"
+        >
+          {{ tariff.duration }} мес.
+        </span>
+      </div>
     </div>
   </div>
 </template>
