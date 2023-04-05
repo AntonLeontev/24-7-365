@@ -163,8 +163,8 @@
     @interface="(smscodeInterface) => ($options.smscodeInterface = smscodeInterface)"
     @errors="(response) => handleErrors(response)"
     @notify="(message, delay) => notify(message, delay)"
-    @phoneIsConfirmed="(phone) => phoneIsConfirmed(phone)"
-    @contractIsConfirmed="resubmit"
+    @phone-is-confirmed="(phone) => phoneIsConfirmed(phone)"
+    @contract-is-confirmed="resubmit"
   ></smscode>
 
   <div
@@ -243,8 +243,8 @@
 
 <script>
 import ContractAmount from "./ContractAmount.vue";
-import InputComponent from "./InputComponent.vue";
-import Smscode from "./Smscode.vue";
+import InputComponent from "../../common/InputComponent.vue";
+import Smscode from "../../common/Smscode.vue";
 import autoComplete from "@tarekraafat/autocomplete.js";
 import TariffGroup from "../../calculator/TariffGroup.vue";
 

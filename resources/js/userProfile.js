@@ -2,7 +2,8 @@ import autoComplete from "@tarekraafat/autocomplete.js";
 import Choices from "choices.js";
 import axios from "axios";
 import { createApp } from "vue";
-import InputComponent from "./components/contracts/add/InputComponent.vue"
+import InputComponent from "./components/common/InputComponent.vue"
+import Smscode from "./components/common/Smscode.vue";
 
 createApp({
     data() {
@@ -10,40 +11,40 @@ createApp({
             errors: {},
             notice: false,
             message: "",
-            userData: {},
-            smsCodeModal: null,
-			spinner: false,
-
-			// TODO delete
-			smscode: null,
+			oldPhone: null,
+			newPhone: null,
+            spinner: false,
         };
     },
     methods: {
-		async handleForm(event) {
-			this.spinner = true;
+        async handleForm(event) {
+            this.spinner = true;
+			this.newPhone =
+                this.convertPhone(document.querySelector('[name="phone"]').value);
 
-			this.preparePhone();
             if (this.phoneChanged()) {
-				try {
-					await this.validateInput();
+                try {
+                    await this.validateInput();
 
-					if(_.every(_.values(this.errors), (item) => item === null)) {
-						await this.askSmsCode();
-					}
-					
-					this.spinner = false;
-					return;
-				} catch (error) {
-					this.spinner = false;
-					return;
-				}
+                    if (
+                        _.every(_.values(this.errors), (item) => item === null)
+                    ) {
+                        this.$options.smscodeInterface.confirmPhone();
+                    }
+
+                    this.spinner = false;
+                    return;
+                } catch (error) {
+                    this.spinner = false;
+                    return;
+                }
             }
 
-			await this.submit(event);
-			this.spinner = false;
-		},
-		async submit(event){
-			let form = this.$refs.profileForm;
+            await this.submit(event);
+            this.spinner = false;
+        },
+        async submit(event) {
+            let form = this.$refs.profileForm;
 
             let formData = new FormData(form);
 
@@ -55,62 +56,40 @@ createApp({
                 })
                 .then((response) => {
                     if (response.error) {
-						this.notify(response.message);
+                        this.notify(response.message);
                         return;
                     }
 
-					this.notify('Сохранено', 1500);
+                    this.notify("Сохранено", 1500);
                 })
                 .catch((response) => {
-					this.handleErrors(response, 'Ошибка сохранения. Попробуйте позже');
+                    this.handleErrors(
+                        response,
+                        "Ошибка сохранения. Попробуйте позже"
+                    );
                 });
-		},
-		notify (message, delay = null) {
-			this.message = message;
-			this.notice = true;
+        },
+        notify(message, delay = null) {
+            this.message = message;
+            this.notice = true;
 
-			if (! _.isNull(delay)) {
-				setTimeout(() => this.hideNotice(), delay)
-			}
-		},
-		hideNotice () {
-			this.notice = false;
-		},
-		preparePhone () {
-			let phone = document.querySelector('[name="phone"]');
-
-			if (phone.value === '') return;
-
-			phone.value = '+7' + phone.value.replace(/\D/g, '').slice(1);
-
-			if (phone.value.length !== 12) {
-				this.errors.phone = 'Должно быть 11 цифр'
+            if (!_.isNull(delay)) {
+                setTimeout(() => this.hideNotice(), delay);
             }
+        },
+        hideNotice() {
+            this.notice = false;
+        },
+        phoneChanged() {
+            return (
+                this.convertPhone(this.newPhone) !== this.convertPhone(this.oldPhone)
+            );
+        },
+		convertPhone(phone) {
+			return "7" + phone.replace(/\D/g, "").slice(1);
 		},
-		phoneChanged () {
-			return document.querySelector('[name="phone"]').value.slice(1) !== this.userData.phone;
-		},
-		async askSmsCode () {
-			let form = this.$refs.profileForm;
-
-            let formData = new FormData(form);
-
-            await axios
-                .request({
-                    url: route("smscode.create", "phone_confirmation"),
-                    method: "POST",
-                    data: formData,
-                })
-                .then((response) => {
-                    this.smscode = response.data.code;
-                    this.smsCodeModal.show();
-                })
-                .catch((response) => {
-                    this.handleErrors(response);
-                });
-		},
-		async validateInput() {
-			let form = this.$refs.profileForm;
+        async validateInput() {
+            let form = this.$refs.profileForm;
 
             let formData = new FormData(form);
 
@@ -121,41 +100,16 @@ createApp({
                     data: formData,
                 })
                 .catch((response) => {
-					this.handleErrors(response);
-                });
-		},
-		async checkCode() {
-			const form = this.$refs.checkCodeForm;
-
-			let formData = new FormData(form);
-
-            if (!_.isObjectLike(formData)) {
-                return;
-            }
-
-            await axios
-                .request({
-                    url: route("smscode.check", "phone_confirmation"),
-                    method: "POST",
-                    data: formData,
-                })
-                .then((response) => {
-                    if (!response.data.ok) {
-                        this.errors.code = response.data.message;
-                        return;
-                    }
-
-                    this.smsCodeModal.hide();
-                    this.userData.phone =
-                        document.querySelector('[name="phone"]').value.slice(1);
-                    document.querySelector("#profile-save-button").click();
-                })
-                .catch((response) => {
                     this.handleErrors(response);
                 });
+        },
+		phoneIsConfirmed(phone) {
+			this.newPhone = this.convertPhone(phone);
+			this.oldPhone = this.convertPhone(phone);
+			this.handleForm();
 		},
-		handleErrors(response, message = null) {
-			if (response.response?.data?.exception) {
+        handleErrors(response, message = null) {
+            if (response.response?.data?.exception) {
                 this.notify(message ?? response.response?.data?.message);
                 return;
             }
@@ -167,17 +121,17 @@ createApp({
                 }
                 return;
             }
-		},
-		clearError(name) {
-			this.errors[name] = null;
-		}
-	},
-	mounted: function(){
-		this.userData['phone'] = this.$refs.profileForm.getAttribute("data-phone");
+        },
+        clearError(name) {
+            this.errors[name] = null;
+        },
+    },
+    mounted: function () {
+		this.oldPhone =
+			this.$refs.profileForm.getAttribute("data-phone");
 
-		this.smsCodeModal = new bootstrap.Modal("#smscode", { keyboard: false });
 
-		const inn = new autoComplete({
+        const inn = new autoComplete({
             selector: "#inn",
             placeHolder: "ИНН",
             data: {
@@ -246,13 +200,12 @@ createApp({
             const feedback = event.detail;
             // Replace Input value with the selected value
             inn.input.value = feedback.selection.value[feedback.selection.key];
-			let kpp = document.querySelector("#kpp");
+            let kpp = document.querySelector("#kpp");
             kpp.value = feedback.selection.value.kpp;
-			kpp.dispatchEvent(new Event('input', {bubbles:true}));
+            kpp.dispatchEvent(new Event("input", { bubbles: true }));
             let title = document.querySelector("#title");
-			title.value =
-                feedback.selection.value.title;
-			title.dispatchEvent(new Event("input", { bubbles: true }));
+            title.value = feedback.selection.value.title;
+            title.dispatchEvent(new Event("input", { bubbles: true }));
             document.querySelector("#ogrn").value =
                 feedback.selection.value.ogrn;
             document.querySelector("#director").value =
@@ -331,17 +284,17 @@ createApp({
         bik.input.addEventListener("selection", function (event) {
             const feedback = event.detail;
             bik.input.value = feedback.selection.value[feedback.selection.key];
-			let corAccount = document.querySelector("#correspondent_account");
+            let corAccount = document.querySelector("#correspondent_account");
             corAccount.value = feedback.selection.value.correspondent_account;
             corAccount.dispatchEvent(new Event("input", { bubbles: true }));
-			
-			let bank = document.querySelector("#bank");
-          	bank.value = feedback.selection.value.title;
+
+            let bank = document.querySelector("#bank");
+            bank.value = feedback.selection.value.title;
             bank.dispatchEvent(new Event("input", { bubbles: true }));
         });
-	},
-	computed: {},
-	components: {InputComponent},
+    },
+    computed: {},
+    components: { InputComponent, Smscode },
 }).mount("#profile-form");
 
 

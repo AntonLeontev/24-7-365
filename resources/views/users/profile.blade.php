@@ -3,6 +3,10 @@
 
 @section('title', $user->first_name)
 
+@section('scripts')
+	@vite(['resources/js/userProfile.js'])
+@endsection
+
 
 @section('content')
 
@@ -164,19 +168,14 @@
 				</button>
 			</div>
 		</Transition>
-		<x-common.modal id="smscode" modalTitle="Введите код из сообщения">
-			<form action="{{ route('smscode.check', 'phone_confirmation') }}" ref="checkCodeForm">
-				<x-common.form.input class="mb-13" name='code' placeholder="Код из сообщения" />
-				<button class="btn btn-primary w-100 mb-2" @click.prevent="checkCode">
-					Отправить
-				</button>
-			</form>
-
-			<button class="btn btn-link w-100">Прислать еще раз</button>
-
-			{{-- //TODO Удалить --}}
-			<span v-show="smscode" v-text='smscode'></span>
-		</x-common.modal>
+		<smscode
+			:phone="this.newPhone ?? ''"
+			:errors="errors"
+			@interface="(smscodeInterface) => ($options.smscodeInterface = smscodeInterface)"
+			@errors="(response) => handleErrors(response)"
+			@notify="(message, delay) => notify(message, delay)"
+			@phone-is-confirmed="(phone) => phoneIsConfirmed(phone)"
+		></smscode>
     </div>
 
 	@can('see other profiles')
@@ -290,6 +289,4 @@
 			</form>
 		</x-common.modal>
 	@endcan
-
-    @vite(['resources/js/userProfile.js'])
 @endsection

@@ -76,11 +76,11 @@ export default {
       await this.checkCode()
         .then(() => {
           if (this.type === "phone_confirmation") {
-            this.$emit("phoneIsConfirmed", this.phone);
+            this.$emit("phone-is-confirmed", this.phone);
           }
 
           if (this.type === "contract_creating") {
-            this.$emit("contractIsConfirmed", this.phone);
+            this.$emit("contract-is-confirmed", this.phone);
           }
 
           this.type = null;
