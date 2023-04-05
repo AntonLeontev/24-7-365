@@ -11,7 +11,6 @@ class Smscode extends Model
 {
     use HasFactory;
     
-    protected $table='smscodes';
     /**
      * @var ["Int"] Opertaion Type with SMS
      */
@@ -23,6 +22,7 @@ class Smscode extends Model
      */
     
     public const PHONE_CONFIRMATION = 1;
+    public const CONTRACT_CREATING = 2;
     
     
     /**

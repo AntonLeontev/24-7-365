@@ -18,12 +18,10 @@
           ></button>
         </div>
         <div class="modal-body">
-          <form
-            action="{{ route('smscode.check', 'phone_confirmation') }}"
-            ref="checkCodeForm"
-          >
+          <form ref="checkCodeForm">
             <div class="mb-13">
               <input-component
+                :value="input"
                 name="code"
                 placeholder="Код из сообщения"
                 :error="this.errors.code"
@@ -35,8 +33,15 @@
             </button>
           </form>
 
-          <button class="btn btn-link w-100" @click.prevent="askSmsCode">
+          <button
+            class="btn btn-link w-100"
+            @click.prevent="askSmsCode"
+            :disabled="timerCount > 0"
+          >
             Прислать еще раз
+            <span class="text-decoration-none" v-show="timerCount > 0"
+              >({{ timerCount }} сек.)</span
+            >
           </button>
 
           <!--  //TODO Удалить -->
@@ -57,6 +62,9 @@ export default {
   data() {
     return {
       smscode: null,
+      type: null,
+      input: "",
+      timerCount: 0,
     };
   },
   props: {
@@ -65,25 +73,47 @@ export default {
   },
   methods: {
     async handle() {
-      try {
-        await this.checkCode();
-        await this.savePhoneNumber();
-      } catch (error) {
-        return;
-      }
+      await this.checkCode()
+        .then(() => {
+          if (this.type === "phone_confirmation") {
+            this.$emit("phoneIsConfirmed", this.phone);
+          }
 
-      this.$emit("numberConfirmed", this.phone);
+          if (this.type === "contract_creating") {
+            this.$emit("contractIsConfirmed", this.phone);
+          }
+
+          this.type = null;
+        })
+        .catch((error) => {
+          this.$emit("errors", error);
+        });
+    },
+    async confirmPhone() {
+      this.type = "phone_confirmation";
+      this.input = "";
+      this.modal.show();
+      await this.askSmsCode();
+    },
+    async confirmContractCreation() {
+      this.type = "contract_creating";
+      this.input = "";
+      this.modal.show();
+      await this.askSmsCode();
     },
     async askSmsCode() {
+      if (this.timerCount > 0) return;
+
       let formData = new FormData();
 
       await nextTick();
       formData.append("phone", this.phone);
 
       axios
-        .post(route("smscode.create", "phone_confirmation"), formData)
+        .post(route("smscode.create", this.type), formData)
         .then((response) => {
           this.smscode = response.data.code;
+          this.timerCount = 35;
         })
         .catch((response) => {
           this.$emit("errors", response);
@@ -95,7 +125,7 @@ export default {
       let formData = new FormData(form);
 
       await axios
-        .post(route("smscode.check", "phone_confirmation"), formData)
+        .post(route("smscode.check", this.type), formData)
         .then((response) => {
           if (!response.data.ok) {
             this.errors.code = response.data.message;
@@ -109,25 +139,23 @@ export default {
           throw response;
         });
     },
-    async savePhoneNumber() {
-      let formData = new FormData();
-      formData.append("phone", this.phone);
-
-      axios
-        .post(route("users.updatePhone"), formData)
-        .then((response) => {
-          this.$emit("notify", "Номер сохранен", 1500);
-        })
-        .catch((response) => {
-          this.$emit("errors", response);
-          throw response;
-        });
-    },
     emitInterface() {
       this.$emit("interface", {
-        askSmsCode: () => this.askSmsCode(),
-        modal: this.modal,
+        confirmContractCreation: () => this.confirmContractCreation(),
+        confirmPhone: () => this.confirmPhone(),
       });
+    },
+  },
+  watch: {
+    timerCount: {
+      handler(value) {
+        if (value > 0) {
+          setTimeout(() => {
+            this.timerCount--;
+          }, 1000);
+        }
+      },
+      immediate: true,
     },
   },
   mounted() {

@@ -48,8 +48,8 @@ Route::get('24-period/{contract_id}', function ($id) {
     return back();
 })->name('period');
 
-Route::get('test', function(){
-	return view('test');
+Route::get('test', function () {
+    return view('test');
 });
 
 /*------------------------------------------*/
@@ -91,8 +91,11 @@ Route::middleware('guest')->group(function () {
             ->middleware('phone')
             ->name('users.profile.validate');
         Route::post('user/update_phone', [UserController::class, 'updatePhone'])
-        	->middleware('phone')
+            ->middleware('phone')
             ->name('users.updatePhone');
+        Route::post('user/validate_phone', [UserController::class, 'validatePhone'])
+            ->middleware('phone')
+            ->name('users.validatePhone');
         
         Route::get('contracts', [ContractController::class, 'index'])
             ->middleware('can:see own profile')
@@ -147,13 +150,12 @@ Route::middleware('guest')->group(function () {
 
         
         Route::post('smscode/check/{type}', [SmscodeController::class,'checkCode'])
-            ->where('type', 'phone_confirmation')
+            ->where('type', 'phone_confirmation|contract_creating')
             ->middleware(['can:see own profile', 'throttle:20'])
             ->name('smscode.check');
         
         Route::post('smscode/create/{type}', [SmscodeController::class,'createCode'])
-        // Добавить значения когда появятся. Разделять значения | (вертикальной чертой). Спроси меня, если нужно
-            ->where('type', 'phone_confirmation')
+            ->where('type', 'phone_confirmation|contract_creating')
             ->middleware(['can:see own profile', 'throttle:2', 'phone'])
             ->name('smscode.create');
     });

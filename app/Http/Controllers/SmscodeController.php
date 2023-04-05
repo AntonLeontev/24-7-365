@@ -58,6 +58,7 @@ class SmscodeController extends Controller
     {
         return match ($type) {
             'phone_confirmation' => Smscode::PHONE_CONFIRMATION,
+            'contract_creating' => Smscode::CONTRACT_CREATING,
         };
     }
 }

@@ -28,4 +28,11 @@ class UpdatePhoneRequest extends FormRequest
             'phone' => ['required', 'string', Rule::unique('users')->ignore(auth()->id()), 'size:11'],
         ];
     }
+
+	public function messages()
+	{
+		return [
+			'phone.unique' => 'Этот номер телефона пренадлежит другому пользователю'
+		];
+	}
 }

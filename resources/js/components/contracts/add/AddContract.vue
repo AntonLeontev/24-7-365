@@ -46,6 +46,7 @@
           <input-component
             name="inn"
             placeholder="ИНН"
+            :value="user.organization?.inn"
             id="inn"
             :error="this.errors.inn"
             @clear-error="(name) => (errors[name] = null)"
@@ -157,12 +158,13 @@
   </Transition>
 
   <smscode
-    :phone="this.newPhone ?? ''"
+    :phone="this.phone ?? ''"
     :errors="errors"
     @interface="(smscodeInterface) => ($options.smscodeInterface = smscodeInterface)"
     @errors="(response) => handleErrors(response)"
     @notify="(message, delay) => notify(message, delay)"
-    @numberConfirmed="(phoneNumber) => submitAfterPhoneSaved(phoneNumber)"
+    @phoneIsConfirmed="(phone) => phoneIsConfirmed(phone)"
+    @contractIsConfirmed="resubmit"
   ></smscode>
 
   <div
@@ -260,8 +262,8 @@ export default {
       phoneModal: null,
       paymentModal: null,
       phone: this.user.phone,
-      newPhone: null,
       paymentId: null,
+      actionIsConfirmed: false,
     };
   },
   props: {
@@ -277,7 +279,7 @@ export default {
         return;
       }
 
-      if (this.tariffId === "" || _.isNill(this.tariffId)) {
+      if (this.tariffId === "" || _.isNil(this.tariffId)) {
         this.notify("Не выбран тариф");
         return;
       }
@@ -293,7 +295,14 @@ export default {
             return;
           }
 
+          if (!this.actionIsConfirmed) {
+            this.$options.smscodeInterface.confirmContractCreation();
+            return;
+          }
+
           await this.createContract();
+
+          this.actionIsConfirmed = false;
 
           if (this.paymentId !== null) {
             this.paymentModal.show();
@@ -303,8 +312,13 @@ export default {
           this.handleErrors(response);
         });
     },
-    submitAfterPhoneSaved(phone) {
+    phoneIsConfirmed(phone) {
       this.phone = phone;
+      this.savePhoneNumber();
+      this.resubmit();
+    },
+    resubmit() {
+      this.actionIsConfirmed = true;
       this.submit();
     },
     async createContract() {
@@ -322,17 +336,16 @@ export default {
     },
     async confirmPhone() {
       try {
-        this.preparePhone();
+        await this.preparePhone();
       } catch (e) {
         this.errors.phone = e;
         return;
       }
 
-      this.newPhone = document.querySelector('[name="phone"]').value;
+      this.phone = document.querySelector('[name="phone"]').value;
 
       this.phoneModal.hide();
-      this.$options.smscodeInterface.modal.show();
-      this.$options.smscodeInterface.askSmsCode();
+      this.$options.smscodeInterface.confirmPhone();
     },
     invoiceDownload() {
       window.location.replace(route("invoice.pdf", this.paymentId));
@@ -340,16 +353,35 @@ export default {
     invoiceToEmail() {
       alert("To do");
     },
-    preparePhone() {
+    async preparePhone() {
       let phone = document.querySelector('[name="phone"]');
 
       if (phone.value === "") throw "Обязательно";
 
-      phone.value = "+7" + phone.value.replace(/\D/g, "").slice(1);
+      let value = "+7" + phone.value.replace(/\D/g, "").slice(1);
 
-      if (phone.value.length !== 12) {
+      if (value.length !== 12) {
         throw "Должно быть 11 цифр";
       }
+
+      await axios
+        .post(route("users.validatePhone"), { phone: value })
+        .catch((response) => {
+          throw response.response?.data?.message ?? "Ошибка номера телефона";
+        });
+    },
+    async savePhoneNumber() {
+      let formData = new FormData();
+      formData.append("phone", this.phone);
+
+      axios
+        .post(route("users.updatePhone"), formData)
+        .then((response) => {
+          this.notify("Номер сохранен", 1500);
+        })
+        .catch((response) => {
+          this.handleErrors(response);
+        });
     },
     handleErrors(response, message = null) {
       if (response.response?.data?.exception) {

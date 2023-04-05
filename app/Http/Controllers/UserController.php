@@ -79,12 +79,17 @@ class UserController extends Controller
         return back();
     }
 
-	public function updatePhone(UpdatePhoneRequest $request)
-	{
-		auth()->user()->updateOrFail($request->validated());
+    public function updatePhone(UpdatePhoneRequest $request)
+    {
+        auth()->user()->updateOrFail($request->validated());
 
-		return response()->json(['ok' => true]);
-	}
+        return response()->json(['ok' => true]);
+    }
+
+    public function validatePhone(UpdatePhoneRequest $request)
+    {
+        return response()->json(['ok' => true]);
+    }
 
     public function create(UserCreateRequest $request)
     {
