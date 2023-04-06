@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Contract;
+use App\ValueObjects\Amount;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,17 +16,16 @@ class ContractAmountIncreased
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
+
+	public Amount $amount;
+	
+
     public function __construct(
 		public Contract $contract,
-		public int $amount,
+		int $amount,
 	)
     {
-        //
+        $this->amount = new Amount($amount);
     }
 
     /**

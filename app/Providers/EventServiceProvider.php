@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Events\BillingPeriodEnded;
-use App\Events\ContractChangeCanceled;
 use App\Events\ContractAmountIncreased;
 use App\Events\ContractCanceled;
+use App\Events\ContractChangeCanceled;
 use App\Events\ContractCreated;
 use App\Events\ContractFinished;
 use App\Events\ContractTerminated;
@@ -16,8 +16,8 @@ use App\Events\UserUnblocked;
 use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
+use App\Listeners\ContractChangeCreator;
 use App\Listeners\CreateAdditionalPayment;
-use App\Listeners\CreateContractChange;
 use App\Listeners\CreateIncomingPayment;
 use App\Listeners\CreateProfitability;
 use App\Listeners\DeletePendingContractChanges;
@@ -49,7 +49,7 @@ class EventServiceProvider extends ServiceProvider
         UserBlocked::class => [],
         UserUnblocked::class => [],
         ContractCreated::class => [
-            CreateContractChange::class,
+            [ContractChangeCreator::class, 'createInitContractChange'],
             CreateIncomingPayment::class,
         ],
         ContractCanceled::class => [
@@ -59,35 +59,32 @@ class EventServiceProvider extends ServiceProvider
             DeletePendingPayments::class,
         ],
         ContractFinished::class => [
-			//
         ],
         ContractAmountIncreased::class => [
-            CreateContractChange::class,
-			CreateAdditionalPayment::class,
+            [ContractChangeCreator::class, 'createIncreaseAmountContractChange'],
+            CreateAdditionalPayment::class,
         ],
-		ContractChangeCanceled::class => [
-			DeletePendingPayments::class,
-			DeletePendingContractChanges::class,
-		],
+        ContractChangeCanceled::class => [
+            DeletePendingPayments::class,
+            DeletePendingContractChanges::class,
+        ],
         PaymentReceived::class => [
-			UpdateContractChange::class,
+            UpdateContractChange::class,
             UpdateContract::class,
-			DeletePendingPayments::class,
-            SchedulePayments::class, //TODO 
+            DeletePendingPayments::class,
+            SchedulePayments::class, //TODO
         ],
         PaymentSent::class => [
             CheckContractStatus::class,
         ],
-		BillingPeriodEnded::class => [
-			IncreaseContractChangeDuration::class,
-			CreateProfitability::class,
-			ApplyContractChanges::class,
-		],
+        BillingPeriodEnded::class => [
+            IncreaseContractChangeDuration::class,
+            CreateProfitability::class,
+            ApplyContractChanges::class,
+        ],
     ];
 
-	protected $subscribe = [
-		//
-	];
+    protected $subscribe = [];
 
 
     /**
