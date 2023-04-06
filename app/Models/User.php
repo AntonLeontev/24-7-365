@@ -25,10 +25,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     use PasswordsCanResetPassword;
 
 
-    public const BLOCKED = 0;
-    public const ACTIVE = 1;
-
-
     protected $fillable = [
         'email',
         'email_verified_at',
@@ -49,6 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'email_verified_at' => 'datetime',
         'phone_verified_at' => 'datetime',
         'last_visit_at' => 'datetime',
+		'is_blocked' => 'boolean',
     ];
 
 

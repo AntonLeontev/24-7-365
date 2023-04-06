@@ -102,7 +102,7 @@ class UserController extends Controller
 
     public function blockUser(User $user)
     {
-        $user->update(['status' => User::BLOCKED]);
+        $user->update(['is_blocked' => true]);
 
         event(new UserBlocked($user));
 
@@ -111,7 +111,7 @@ class UserController extends Controller
 
     public function unblockUser(User $user)
     {
-        $user->update(['status' => User::ACTIVE]);
+        $user->update(['is_blocked' => false]);
 
         event(new UserUnblocked($user));
 

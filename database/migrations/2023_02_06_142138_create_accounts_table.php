@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('correspondent_account', 20);
             $table->string('bik', 9);
             $table->string('bank', 255);
-            $table->tinyInteger('status')->default(Account::PRIMARY);
             $table->softDeletes();
             $table->timestamps();
         });

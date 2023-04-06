@@ -24,7 +24,6 @@ class AccountFactory extends Factory
             'correspondent_account' => (string) $this->faker->unique()->numberBetween(111111111111111111, 999999999999999999) . '00',
             'bik' => (string) $this->faker->unique()->numberBetween(111111111, 999999999),
             'bank' => $this->faker->unique()->company(),
-            'status' => 1,
         ];
     }
 }

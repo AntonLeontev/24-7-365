@@ -14,9 +14,6 @@ class Account extends Model
     use SoftDeletes;
 
 
-    public const PRIMARY = 1;
-    public const SECONDARY = 2;
-   
     protected $primaryKey = 'id';
 
     protected $fillable = [

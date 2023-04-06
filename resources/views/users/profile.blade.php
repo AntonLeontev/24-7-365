@@ -11,7 +11,7 @@
 @section('content')
 
     <x-common.h1 class="mb-13">Данные профиля</x-common.h1>
-    @unless ($user->status === $user::ACTIVE)
+    @if ($user->is_blocked)
         <div class="border border-primary border-2 p-13 d-flex flex-column justify-content-center align-items-center mb-13">
 			<span class="fs-4 text-uppercase">Пользователь был заблокирован {{ $user->updated_at->format('d.m.Y') }}</span> 
 			<button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#blockUser" type="button">
@@ -121,10 +121,10 @@
 									@endcan
 									@can('block users')
 										<button class="btn btn-link ps-0" data-bs-toggle="modal" data-bs-target="#blockUser" type="button">
-											@if ($user->status === $user::ACTIVE)
-												Заблокировать пользователя
-											@else
+											@if ($user->is_blocked)
 												Разблокировать пользователя
+											@else
+												Заблокировать пользователя
 											@endif
 										</button>
 									@endcan
@@ -238,15 +238,15 @@
 
 	@can('block users')
 	@php
-		$title = $user->status === $user::ACTIVE ? 
-			"Блокировка пользователя" : 
-			"Восстановление пользователя";
-		$text = $user->status === $user::ACTIVE ? 
-			"заблокировать" : 
-			"восстановить";
-		$action = $user->status === $user::ACTIVE ? 
-			route('users.block', $user->id) : 
-			route('users.unblock', $user->id);
+		$title = $user->is_blocked ? 
+			"Восстановление пользователя" :
+			"Блокировка пользователя"; 
+		$text = $user->is_blocked ? 
+			"восстановить" :
+			"заблокировать"; 
+		$action = $user->is_blocked ? 
+			route('users.unblock', $user->id) :
+			route('users.block', $user->id); 
 	@endphp
 		<x-common.modal id="blockUser" :modalTitle="$title">
 			<form action="{{ $action }}" method="post">

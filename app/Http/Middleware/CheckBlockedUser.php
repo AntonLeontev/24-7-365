@@ -21,7 +21,7 @@ class CheckBlockedUser
             return $next($request);
         }
 
-		if (auth()->user()->status === User::BLOCKED) {
+		if (auth()->user()->is_blocked) {
 			abort(403, 'Ваш аккаунт заблокирован');
 		}
 
