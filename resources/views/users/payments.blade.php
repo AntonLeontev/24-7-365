@@ -38,7 +38,7 @@
 							</div>
 							<div class="col d-flex justify-content-center flex-nowrap gap-2">
 								@if ($operation->payment->planned_at->equalTo($operation->planned_at))
-									@if ($operation->payment->status === $operation->payment::STATUS_PROCESSED)
+									@if ($operation->payment->status === 'processed')
 										<svg width="17" height="12" viewBox="0 0 17 12" fill="none"
 											xmlns="http://www.w3.org/2000/svg">
 											<path
@@ -53,7 +53,7 @@
 							</div>
 						</x-common.tables.yellow.row>
 					@elseif ($operation instanceof App\Models\Payment)
-						@unless ($operation->status === $operation::STATUS_PROCESSED)
+						@unless ($operation->status === 'processed')
 							<x-common.tables.yellow.row>
 								<div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
 								<div class="col"></div>
@@ -76,7 +76,7 @@
 				$paymentsSum = $monthOperations->where(function ($operation) {
 					return $operation instanceof App\Models\Payment;
 				})
-				->where('status', App\Models\Payment::STATUS_PROCESSED)
+				->where('status', 'processed')
 				->reduce(function ($carry, $item) {
 					return $carry + $item->amount->raw();
 				}, 0);

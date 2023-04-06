@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Enums\PaymentType;
 use App\Events\PaymentReceived;
 use App\Models\Payment;
 use App\Models\Profitability;
@@ -177,7 +178,7 @@ class SchedulePayments
             'account_id' => $event->payment->account_id,
             'contract_id' => $event->payment->contract_id,
             'amount' => $amount,
-            'type' => Payment::TYPE_CREDIT,
+            'type' => PaymentType::credit,
             'planned_at' => $event->payment->contract->paid_at->addMonths($addMonth),
         ]);
     }

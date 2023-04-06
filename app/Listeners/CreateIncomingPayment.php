@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use App\Models\Payment;
 
 class CreateIncomingPayment
@@ -27,8 +29,8 @@ class CreateIncomingPayment
             'account_id' => $event->contract->organization->accounts->first()->id,
 			'contract_id' => $event->contract->id,
 			'amount' => $event->contract->amount,
-			'type' => Payment::TYPE_DEBET,
-			'status' => Payment::STATUS_PENDING,
+			'type' => PaymentType::debet,
+			'status' => PaymentStatus::pending,
         ]);
     }
 }

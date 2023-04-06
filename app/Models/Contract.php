@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Casts\AmountCast;
 use App\Enums\ContractChangeStatus;
 use App\Enums\ContractStatus;
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use Carbon\Carbon;
 use DomainException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -80,12 +82,12 @@ class Contract extends Model
 
     public function income(): int
     {
-        return $this->paymentsSum(Payment::TYPE_DEBET);
+        return $this->paymentsSum(PaymentType::debet);
     }
 
     public function outgoing(): int
     {
-        return $this->paymentsSum(Payment::TYPE_CREDIT);
+        return $this->paymentsSum(PaymentType::credit);
     }
 
     public function duration(): int
@@ -103,11 +105,11 @@ class Contract extends Model
             $this->contractChanges->last()->status->value === ContractChangeStatus::waitingPeriodEnd->value;
     }
 
-    private function paymentsSum(int $type): int
+    private function paymentsSum(PaymentType $type): int
     {
         $sum = $this->payments
             ->where('type', $type)
-            ->where('status', Payment::STATUS_PROCESSED)
+            ->where('status', PaymentStatus::processed->value)
             ->reduce(function ($sum, $payment) {
                 if ($sum instanceof Payment) {
                     $sum = $sum->amount->raw();

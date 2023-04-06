@@ -181,7 +181,7 @@
                                 <div class="col">+{{ $operation->amount }}</div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
                                     @if ($operation->payment->planned_at->equalTo($operation->planned_at))
-                                        @if ($operation->payment->status === $operation->payment::STATUS_PROCESSED)
+                                        @if ($operation->payment->status === 'processed')
                                             <svg width="17" height="12" viewBox="0 0 17 12" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -201,7 +201,7 @@
                                 <div class="col">{{ $contract->amount }}</div>
                                 <div class="col"></div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
-                                    @if ($operation->status === $operation::STATUS_PROCESSED)
+                                    @if ($operation->status->value === 'processed')
                                         <svg width="17" height="12" viewBox="0 0 17 12" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path

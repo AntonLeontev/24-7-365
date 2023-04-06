@@ -2,7 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Models\ContractChange;
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use App\Models\Payment;
 
 class CreateAdditionalPayment
@@ -30,8 +31,8 @@ class CreateAdditionalPayment
             'account_id' => $contract->organization->accounts->first()->id,
             'contract_id' => $contract->id,
             'amount' => $event->amount,
-            'type' => Payment::TYPE_DEBET,
-            'status' => Payment::STATUS_PENDING,
+            'type' => PaymentType::debet,
+            'status' => PaymentStatus::pending,
         ]);
     }
 }

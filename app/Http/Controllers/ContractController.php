@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContractStatus;
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use App\Events\ContractAmountIncreased;
 use App\Events\ContractCanceled;
 use App\Events\ContractChangeCanceled;
@@ -35,8 +37,9 @@ class ContractController extends Controller
         
         $payments = Payment::query()
             ->where('contract_id', $contract->id)
-            ->where('type', Payment::TYPE_CREDIT)
+            ->where('type', PaymentType::credit)
             ->get();
+
 
         $operations = $profitabilities->mergeRecursive($payments)->sortBy('planned_at');
 
@@ -45,7 +48,7 @@ class ContractController extends Controller
         }, 0);
         $totalProfitabilities = new Amount($totalProfitabilities);
 
-        $totalPayments = $payments->where('status', Payment::STATUS_PROCESSED)->reduce(function ($carry, $item) {
+        $totalPayments = $payments->where('status', PaymentStatus::processed)->reduce(function ($carry, $item) {
             return $carry + $item->amount->raw();
         }, 0);
         $totalPayments = new Amount($totalPayments);

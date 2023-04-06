@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PaymentType;
 use App\Models\Payment;
 use App\Models\Profitability;
 use Carbon\Carbon;
@@ -18,7 +19,7 @@ class PaymentController extends Controller
         
         $payments = Payment::query()
             ->whereIn('contract_id', $contractsIds)
-            ->where('type', Payment::TYPE_CREDIT)
+            ->where('type', PaymentType::credit)
 			->orderBy('planned_at')
 			->with('contract')
             ->get();
@@ -31,7 +32,6 @@ class PaymentController extends Controller
                 return Carbon::parse($a) <=> Carbon::parse($b);
             });
 
-        // dd($operations);
 
         return view('users.payments', compact('operations'));
     }

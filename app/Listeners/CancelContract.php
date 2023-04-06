@@ -3,8 +3,9 @@
 namespace App\Listeners;
 
 use App\Enums\ContractStatus;
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use App\Events\ContractTerminated;
-use App\Models\Contract;
 use App\Models\Payment;
 
 class CancelContract
@@ -36,24 +37,24 @@ class CancelContract
             return;
         }
 
-        // Если оплачен, то выплачиваем тело, за минусом исходящих платежей        
-		$paymentsIds = $event->contract->payments
-			->where('type', Payment::TYPE_CREDIT)
-			->where('status', Payment::STATUS_PENDING)
-			->pluck('id')
-			->toArray();
+        // Если оплачен, то выплачиваем тело, за минусом исходящих платежей
+        $paymentsIds = $event->contract->payments
+            ->where('type', PaymentType::credit)
+            ->where('status', PaymentStatus::pending)
+            ->pluck('id')
+            ->toArray();
 
-		Payment::whereIn('id', $paymentsIds)->delete();
+        Payment::whereIn('id', $paymentsIds)->delete();
 
-		// TODO Через какой строк ставить выплату на возврат тела
-		Payment::create([
-			'account_id' => $event->contract->organization->accounts->first()->id,
-			'contract_id' => $event->contract->id,
-			'amount' => $event->contract->amount->raw() - $event->contract->outgoing(),
-			'type' => Payment::TYPE_CREDIT,
-			'planned_at' => now()->addDays(5),
-		]);
+        // TODO Через какой строк ставить выплату на возврат тела
+        Payment::create([
+            'account_id' => $event->contract->organization->accounts->first()->id,
+            'contract_id' => $event->contract->id,
+            'amount' => $event->contract->amount->raw() - $event->contract->outgoing(),
+            'type' => PaymentType::credit,
+            'planned_at' => now()->addDays(5),
+        ]);
 
-		//TODO Механизм определения выплат, если договор продлевался или менялся тариф
+        //TODO Механизм определения выплат, если договор продлевался или менялся тариф
     }
 }

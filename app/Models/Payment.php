@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Casts\AmountCast;
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,27 +15,6 @@ class Payment extends Model
 {
     use HasFactory;
     use SoftDeletes;
-
-
-    /**
-     * Входящий платеж
-     */
-    public const TYPE_DEBET = 1;
-
-    /**
-     * Исходящий платеж
-     */
-    public const TYPE_CREDIT = 2;
-
-    /**
-     * Платеж ожидается
-     */
-    public const STATUS_PENDING = 0;
-
-    /**
-     * Платеж проведен банком
-     */
-    public const STATUS_PROCESSED = 1;
     
 
     protected $dates = [
@@ -53,6 +34,8 @@ class Payment extends Model
 
     protected $casts = [
         'amount' => AmountCast::class,
+		'status' => PaymentStatus::class,
+		'type' => PaymentType::class,
     ];
 
 

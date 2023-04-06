@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use App\Events\PaymentReceived;
 use App\Models\Payment;
 use Illuminate\Console\Command;
@@ -36,8 +38,8 @@ class PayIncomePayments extends Command
         }
 
         $payments = Payment::query()
-            ->whereStatus(Payment::STATUS_PENDING)
-            ->whereType(Payment::TYPE_DEBET)
+            ->whereStatus(PaymentStatus::pending)
+            ->whereType(PaymentType::debet)
             ->when($this->argument('contract'), function ($query) {
                 $query->where('contract_id', $this->argument('contract'));
             })
@@ -51,7 +53,7 @@ class PayIncomePayments extends Command
         foreach ($payments as $id) {
             $payment = Payment::find($id);
             $payment->updateOrFail([
-                'status' => Payment::STATUS_PROCESSED,
+                'status' => PaymentStatus::processed,
                 'paid_at' => now(),
             ]);
             

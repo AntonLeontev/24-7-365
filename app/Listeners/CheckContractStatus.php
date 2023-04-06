@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Enums\ContractStatus;
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use App\Events\ContractFinished;
 use App\Events\ContractTerminated;
 use App\Models\Payment;
@@ -36,8 +38,8 @@ class CheckContractStatus
         }
 
         //Если последняя выплата, то завершить
-        $pendingCreditPaymentsCount = $contract->payments->where('type', Payment::TYPE_CREDIT)
-            ->where('status', Payment::STATUS_PENDING)
+        $pendingCreditPaymentsCount = $contract->payments->where('type', PaymentType::credit)
+            ->where('status', PaymentStatus::pending)
             ->count();
 
         if ($pendingCreditPaymentsCount === 0) {

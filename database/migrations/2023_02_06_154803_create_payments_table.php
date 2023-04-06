@@ -1,8 +1,8 @@
 <?php
 
+use App\Enums\PaymentStatus;
 use App\Models\Account;
 use App\Models\Contract;
-use App\Models\Payment;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,15 +25,13 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->unsignedBigInteger('amount');
-            $table->unsignedTinyInteger('type');
-			$table->unsignedTinyInteger('status')->default(Payment::STATUS_PENDING);
-			$table->date('planned_at')->nullable();
-			$table->date('paid_at')->nullable();
-			$table->softDeletes();
+            $table->string('type', 20);
+            $table->string('status', 20)->default(PaymentStatus::pending->value);
+            $table->date('planned_at')->nullable();
+            $table->date('paid_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
-        
-          
     }
 
     /**
