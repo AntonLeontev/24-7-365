@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ContractStatus;
 use App\ValueObjects\Amount;
 use Illuminate\Auth\Passwords\CanResetPassword as PasswordsCanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -54,12 +55,12 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function contractsAmount(): Amount
     {
         $amount = $this->contracts
-			->whereIn('status', [Contract::ACTIVE, Contract::CANCELED])
-			->reduce(function ($sum, $contract) {
-            return $sum += $contract->amount->raw();
-        }, 0);
+            ->whereIn('status', [ContractStatus::active->value, ContractStatus::canceled->value])
+            ->reduce(function ($sum, $contract) {
+                return $sum += $contract->amount->raw();
+            }, 0);
 
-		return new Amount($amount);
+        return new Amount($amount);
     }
 
     public function organization(): HasOne

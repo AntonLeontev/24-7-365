@@ -87,7 +87,7 @@
 	@if (auth()->id() === $contract->user_id)
 		<div class="card mb-4">
 			<div class="card-body d-flex justify-content-between flex-xl-nowrap flex-wrap gap-3">
-				@if ($contract->status !== $contract::ACTIVE || $contract->isChanging())
+				@if ($contract->status !== 'active' || $contract->isChanging())
 					<button class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 order-xl-1 gap-2" disabled>
 						<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path
@@ -225,7 +225,7 @@
                         <p>
                             Пока нет начислений или выплат.
                         </p>
-                        @if ($contract->status === $contract::PENDING)
+                        @if ($contract->status->value === 'init')
                             <p>
                                 Для активации нужно оплатить <a class="btn-link"
                                     href="{{ route('invoice.pdf', $contract->payments->first()->id) }}">счет</a>
@@ -238,7 +238,7 @@
     </div>
     <x-common.modal id="cancelContract" modalTitle="Закрыть договор №{{ $contract->id }}">
         <div class="mb-5">
-            @if ($contract->status === $contract::PENDING)
+            @if ($contract->status->value === 'init')
                 Неоплаченный договор будет удален
             @else
                 <p class="text-light">
@@ -250,7 +250,7 @@
         </div>
         <div class="d-flex flex-column flex-lg-row gap-3">
             <a class="btn btn-primary w-100" href="{{ route('contracts.cancel', $contract->id) }}">
-                @if ($contract->status === $contract::PENDING)
+                @if ($contract->status->value === 'init')
                     Удалить
                 @else
                     Расторгнуть

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContractStatus;
 use App\Events\CanceledUnconfirmedContractChange;
 use App\Events\ContractAmountIncreased;
 use App\Events\ContractCanceled;
@@ -75,7 +76,7 @@ class ContractController extends Controller
 
     public function cancel(Contract $contract, CancelContractRequest $request)
     {
-        $contract->updateOrFail(['status' => $contract::CANCELED]);
+        $contract->updateOrFail(['status' => ContractStatus::canceled->value]);
 
         event(new ContractCanceled($contract));
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\AmountCast;
+use App\Enums\ContractStatus;
 use Carbon\Carbon;
 use DomainException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,13 +16,6 @@ class Contract extends Model
 {
     use HasFactory;
     use SoftDeletes;
-
-
-    public const TERMINATED     = 0;// Прерван клиентом
-    public const ACTIVE         = 1;// В работе
-    public const CANCELED       = 2;// Клиент нажал отмену, но выплата еще не сделана
-    public const PENDING        = 3;// Ожидает оплаты от клиента
-    public const FINISHED       = 4;// Успешно выполнен
 
 
     protected $fillable = [
@@ -40,6 +34,7 @@ class Contract extends Model
     protected $casts = [
         'amount' => AmountCast::class,
         'paid_at' => 'date:d m Y',
+		'status' => ContractStatus::class,
     ];
 
 
@@ -99,7 +94,7 @@ class Contract extends Model
 
     public function isChanging(): bool
     {
-		if ($this->status !== $this::ACTIVE) {
+		if ($this->status !== ContractStatus::active->value) {
 			return false;
 		}
 		

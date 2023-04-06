@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ContractStatus;
 use App\Models\Contract;
 use App\Models\Organization;
 use App\Models\Tariff;
@@ -20,17 +21,20 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)
+            	->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Organization::class)
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Tariff::class)
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-			$table->unsignedBigInteger('amount');
-			$table->unsignedTinyInteger('status')->default(Contract::PENDING);
-			$table->softDeletes();
+            $table->unsignedBigInteger('amount');
+            $table->string('status', 30)->default(ContractStatus::init->value);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

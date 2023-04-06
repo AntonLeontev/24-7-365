@@ -52,19 +52,7 @@
 							</div>
 							<div class="col">{{ $contract->tariff->title }}</div>
 							<div class="col">{{ $contract->amount }}</div>
-							<div class="col">
-								@if ($contract->status === $contract::ACTIVE)
-									Активный
-								@elseif($contract->status === $contract::PENDING)
-									Ожидает оплаты
-								@elseif($contract->status === $contract::CANCELED)
-									На расторжении
-								@elseif($contract->status === $contract::TERMINATED)
-									Отменен пользователем
-								@elseif($contract->status === $contract::FINISHED)
-									Завершен
-								@endif
-							</div>
+							<div class="col">{{ $contract->status->getName() }}</div>
 						</x-common.tables.dark.row>
 					@endforeach
 				</x-common.tables.dark>                        

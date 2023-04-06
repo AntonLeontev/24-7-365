@@ -2,9 +2,9 @@
 
 namespace App\Listeners;
 
+use App\Enums\ContractStatus;
 use App\Events\ContractFinished;
 use App\Events\ContractTerminated;
-use App\Models\Contract;
 use App\Models\Payment;
 
 class CheckContractStatus
@@ -29,9 +29,9 @@ class CheckContractStatus
         $contract = $event->payment->contract;
 
         //Если договор Canceled то сделать Terminated
-        if ($contract->status === Contract::CANCELED) {
-            $contract->updateOrFail(['status' => Contract::TERMINATED]);
-			event(new ContractTerminated($contract));
+        if ($contract->status === ContractStatus::canceled->value) {
+            $contract->updateOrFail(['status' => ContractStatus::terminated->value]);
+            event(new ContractTerminated($contract));
             return;
         }
 
@@ -41,8 +41,8 @@ class CheckContractStatus
             ->count();
 
         if ($pendingCreditPaymentsCount === 0) {
-            $contract->updateOrFail(['status' => Contract::FINISHED]);
-			event(new ContractFinished($contract));
+            $contract->updateOrFail(['status' => ContractStatus::finished->value]);
+            event(new ContractFinished($contract));
             return;
         }
     }

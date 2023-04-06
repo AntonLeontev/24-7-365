@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Enums\ContractStatus;
 use App\Events\ContractTerminated;
 use App\Models\Contract;
 use App\Models\Payment;
@@ -29,7 +30,7 @@ class CancelContract
 
         // Если договор не был оплачен
         if ($event->contract->income() === 0) {
-            $event->contract->updateOrFail(['status' => Contract::TERMINATED]);
+            $event->contract->updateOrFail(['status' => ContractStatus::terminated->value]);
             // $event->contract->delete();
             event(new ContractTerminated($event->contract));
             return;

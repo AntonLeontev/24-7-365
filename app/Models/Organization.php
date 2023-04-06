@@ -13,8 +13,7 @@ class Organization extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $primaryKey = 'id';
-    
+	
     protected $fillable = [
         'id',
         'user_id',
