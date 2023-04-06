@@ -2,10 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Enums\ContractChangeStatus;
 use App\Events\BillingPeriodEnded;
-use App\Models\ContractChange;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class IncreaseContractChangeDuration
 {
@@ -16,7 +14,6 @@ class IncreaseContractChangeDuration
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -28,8 +25,8 @@ class IncreaseContractChangeDuration
     public function handle(BillingPeriodEnded $event)
     {
         $event->contract->contractChanges
-			->where('status', ContractChange::STATUS_ACTUAL)
-			->first()
-			->increment('duration');
+            ->where('status', ContractChangeStatus::actual->value)
+            ->first()
+            ->increment('duration');
     }
 }

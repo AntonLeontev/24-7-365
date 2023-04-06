@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\AmountCast;
+use App\Enums\ContractChangeStatus;
 use App\Enums\ContractStatus;
 use Carbon\Carbon;
 use DomainException;
@@ -34,7 +35,7 @@ class Contract extends Model
     protected $casts = [
         'amount' => AmountCast::class,
         'paid_at' => 'date:d m Y',
-		'status' => ContractStatus::class,
+        'status' => ContractStatus::class,
     ];
 
 
@@ -94,12 +95,12 @@ class Contract extends Model
 
     public function isChanging(): bool
     {
-		if ($this->status->value !== ContractStatus::active->value) {
-			return false;
-		}
-		
-        return $this->contractChanges->last()->status === ContractChange::STATUS_PENDING ||
-            $this->contractChanges->last()->status === ContractChange::STATUS_WAITING_FOR_PERIOD_END;
+        if ($this->status->value !== ContractStatus::active->value) {
+            return false;
+        }
+        
+        return $this->contractChanges->last()->status->value === ContractChangeStatus::pending->value ||
+            $this->contractChanges->last()->status->value === ContractChangeStatus::waitingPeriodEnd->value;
     }
 
     private function paymentsSum(int $type): int

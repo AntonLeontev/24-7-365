@@ -71,12 +71,12 @@
 		<div class="card">
 			<div class="p-4 pb-5">
                     <div class="bg-body text-light p-5 text-center">
-						@if ($contract->contractChanges->last()->status === 2)
+						@if ($contract->contractChanges->last()->status === 'pending')
 							<p>
 								Запрошены изменения в договоре. Для подтверждения нужно <a class="btn-link" href="{{ route('invoice.pdf', $contract->payments->where('type', 1)->where('status', 0)->last()->id) }}">оплатить счет</a>
 							</p>
 							<p class="mb-0"><a class="btn-link" href="{{ route('contracts.cancel_change', $contract->id) }}">Отменить изменения</a></p>
-						@elseif($contract->contractChanges->last()->status === 3)
+						@elseif($contract->contractChanges->last()->status === 'waitingPeriodEnd')
 							<p class="mb-0">Изменения будут применены {{ $contract->periodEnd()->format('d.m.Y') }}</p>
 						@endif
                     </div>

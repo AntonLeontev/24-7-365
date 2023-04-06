@@ -2,17 +2,15 @@
 
 namespace App\Listeners;
 
-use App\Models\ContractChange;
-
 class DeletePendingContractChanges
 {
     public function handle($event)
     {
         $changes = $event->contract->changes
-            ->where('status', ContractChange::STATUS_PENDING);
+            ->where('status', ContractChangeStatus::pending->value);
 
         foreach ($changes as $change) {
-			$change->delete();
-		}
+            $change->delete();
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\CanceledUnconfirmedContractChange;
+use App\Events\ContractChangeCanceled;
 use App\Models\Payment;
 
 class DeletePendingPayments
@@ -18,7 +18,7 @@ class DeletePendingPayments
             //     return $query
 			// 		->where('planned_at', '>', $contract->paid_at->addMonths($contract->duration()));
             // })
-            ->when($event instanceof CanceledUnconfirmedContractChange, function ($query) {
+            ->when($event instanceof ContractChangeCanceled, function ($query) {
                 return $query->where('type', Payment::TYPE_DEBET);
             })
             ->pluck('id');

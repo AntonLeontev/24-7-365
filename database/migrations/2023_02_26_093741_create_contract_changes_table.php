@@ -18,14 +18,16 @@ return new class extends Migration
         Schema::create('contract_changes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Contract::class)
+				->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->tinyInteger('type');
+            $table->string('type', 20);
             $table->foreignIdFor(Tariff::class)
+				->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->unsignedBigInteger('amount');
-            $table->tinyInteger('status');
+            $table->string('status', 20);
 
             $table->softDeletes();
             $table->timestamps();

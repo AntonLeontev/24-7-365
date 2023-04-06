@@ -2,8 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Models\ContractChange;
-use Illuminate\Database\Eloquent\Collection;
+use App\Enums\ContractChangeStatus;
 
 class UpdateContractChange
 {
@@ -28,14 +27,14 @@ class UpdateContractChange
 
         if ($changes->count() === 1) {
             $changes->last()->updateOrFail([
-                'status' => ContractChange::STATUS_ACTUAL,
+                'status' => ContractChangeStatus::actual->value,
                 'starts_at' => now(),
             ]);
             return;
         }
 
         $changes->last()->updateOrFail([
-            'status' => ContractChange::STATUS_WAITING_FOR_PERIOD_END,
+            'status' => ContractChangeStatus::waitingPeriodEnd->value,
         ]);
     }
 }

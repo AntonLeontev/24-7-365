@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Enums\ContractChangeStatus;
 use App\Events\BillingPeriodEnded;
-use App\Models\ContractChange;
 
 class ApplyContractChanges
 {
@@ -27,7 +27,7 @@ class ApplyContractChanges
         $changes = $event->contract->contractChanges;
 
         $count = $changes
-            ->where('status', ContractChange::STATUS_WAITING_FOR_PERIOD_END)
+            ->where('status', ContractChangeStatus::waitingPeriodEnd->value)
             ->count();
 
         if ($count === 0) {
@@ -35,15 +35,15 @@ class ApplyContractChanges
         }
 
         $prevContractChange = $changes
-            ->where('status', ContractChange::STATUS_ACTUAL)
+            ->where('status', ContractChangeStatus::actual->value)
             ->first();
         $newContractChange = $changes
-            ->where('status', ContractChange::STATUS_WAITING_FOR_PERIOD_END)
+            ->where('status', ContractChangeStatus::waitingPeriodEnd->value)
             ->first();
 
-        $prevContractChange->update(['status' => ContractChange::STATUS_PAST]);
+        $prevContractChange->update(['status' => ContractChangeStatus::past->value]);
         $newContractChange->update([
-            'status' => ContractChange::STATUS_ACTUAL,
+            'status' => ContractChangeStatus::actual->value,
             'starts_at' => now(),
         ]);
 

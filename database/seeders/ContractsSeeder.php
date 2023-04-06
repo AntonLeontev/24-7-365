@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ContractChangeStatus;
+use App\Enums\ContractChangeType;
 use App\Models\Contract;
 use App\Models\ContractChange;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -25,8 +27,8 @@ class ContractsSeeder extends Seeder
                         'contract_id' => $contract->id,
                         'tariff_id' => $contract->tariff_id,
                         'amount' => $contract->amount,
-                        'type' => ContractChange::TYPE_INITIAL,
-                        'status' => ContractChange::STATUS_PENDING,
+                        'type' => ContractChangeType::init->value,
+                        'status' => ContractChangeStatus::pending->value,
                     ]
                 ))
                 ->create();

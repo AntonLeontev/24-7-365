@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Enums\ContractChangeStatus;
+use App\Enums\ContractChangeType;
 use App\Events\ContractAmountIncreased;
 use App\Events\ContractCreated;
 use App\Models\ContractChange;
@@ -28,9 +30,9 @@ class CreateContractChange
         $contract = $event->contract;
         
         $type = match (true) {
-            $event instanceof ContractCreated => ContractChange::TYPE_INITIAL,
-            $event instanceof ContractAmountIncreased => ContractChange::TYPE_INCREASE_AMOUNT,
-            default => ContractChange::TYPE_INITIAL,
+            $event instanceof ContractCreated => ContractChangeType::init->value,
+            $event instanceof ContractAmountIncreased => ContractChangeType::increaseAmount->value,
+            default => ContractChangeType::init->value,
         };
 
         $amount = match (true) {
@@ -43,7 +45,7 @@ class CreateContractChange
             'contract_id' => $contract->id,
             'type' => $type,
             'tariff_id' => $contract->tariff->id,
-            'status' => ContractChange::STATUS_PENDING,
+            'status' => ContractChangeStatus::pending->value,
             'amount' => $amount,
             'starts_at' => null,
         ]);

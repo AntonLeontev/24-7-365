@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Events\BillingPeriodEnded;
-use App\Events\CanceledUnconfirmedContractChange;
+use App\Events\ContractChangeCanceled;
 use App\Events\ContractAmountIncreased;
 use App\Events\ContractCanceled;
 use App\Events\ContractCreated;
@@ -65,7 +65,7 @@ class EventServiceProvider extends ServiceProvider
             CreateContractChange::class,
 			CreateAdditionalPayment::class,
         ],
-		CanceledUnconfirmedContractChange::class => [
+		ContractChangeCanceled::class => [
 			DeletePendingPayments::class,
 			DeletePendingContractChanges::class,
 		],
@@ -84,6 +84,10 @@ class EventServiceProvider extends ServiceProvider
 			ApplyContractChanges::class,
 		],
     ];
+
+	protected $subscribe = [
+		//
+	];
 
 
     /**
