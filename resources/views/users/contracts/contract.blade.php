@@ -87,7 +87,7 @@
 	@if (auth()->id() === $contract->user_id)
 		<div class="card mb-4">
 			<div class="card-body d-flex justify-content-between flex-xl-nowrap flex-wrap gap-3">
-				@if ($contract->status !== 'active' || $contract->isChanging())
+				@if ($contract->status->value !== 'active' || $contract->isChanging())
 					<button class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 order-xl-1 gap-2" disabled>
 						<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path

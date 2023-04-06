@@ -94,7 +94,7 @@ class Contract extends Model
 
     public function isChanging(): bool
     {
-		if ($this->status !== ContractStatus::active->value) {
+		if ($this->status->value !== ContractStatus::active->value) {
 			return false;
 		}
 		

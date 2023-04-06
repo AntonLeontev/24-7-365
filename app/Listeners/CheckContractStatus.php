@@ -29,7 +29,7 @@ class CheckContractStatus
         $contract = $event->payment->contract;
 
         //Если договор Canceled то сделать Terminated
-        if ($contract->status === ContractStatus::canceled->value) {
+        if ($contract->status->value === ContractStatus::canceled->value) {
             $contract->updateOrFail(['status' => ContractStatus::terminated->value]);
             event(new ContractTerminated($contract));
             return;
