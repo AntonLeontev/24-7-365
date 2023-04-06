@@ -70,8 +70,12 @@ export default {
       this.$emit("amountChanged", this.amount);
     },
     formatNumber() {
+      let numberFormat = new Intl.NumberFormat("ru-RU", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
       this.amount = +this.$refs.amount.value.replace(/\D/g, "");
-      document.querySelector("#amount").value = this.amount.toLocaleString();
+      document.querySelector("#amount").value = numberFormat.format(this.amount);
     },
   },
 };

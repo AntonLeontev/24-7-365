@@ -13,13 +13,10 @@ class Tariff extends Model
     use HasFactory;
     use SoftDeletes;
 
-	//Выплата доходности
+
+    //Выплата доходности
     public const MONTHLY = 1;
     public const AT_THE_END = 2;
-
-	//Статус																								
-	public const ACTIVE = 1; 
-	public const ARCHIVE = 0; 
 
 
     protected $fillable = [
@@ -30,13 +27,15 @@ class Tariff extends Model
         'max_amount',
         'getting_profit',
         'getting_deposit',
-		'status'
+        'is_active',
     ];
 
-	protected $casts = [
-		'min_amount' => AmountCast::class,
-		'max_amount' => AmountCast::class,
-	];
+    protected $casts = [
+        'min_amount' => AmountCast::class,
+        'max_amount' => AmountCast::class,
+        'is_active' => 'boolean',
+    ];
+
 
     public function contracts(): HasMany
     {

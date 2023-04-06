@@ -33,7 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'phone_verified_at',
         'first_name',
         'last_visit_at',
-        'status',
+        'is_blocked',
     ];
 
     protected $hidden = [
@@ -45,7 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'email_verified_at' => 'datetime',
         'phone_verified_at' => 'datetime',
         'last_visit_at' => 'datetime',
-		'is_blocked' => 'boolean',
+        'is_blocked' => 'boolean',
     ];
 
 

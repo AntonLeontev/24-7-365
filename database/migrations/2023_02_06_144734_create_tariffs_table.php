@@ -23,7 +23,7 @@ return new class extends Migration
 			$table->unsignedBigInteger('max_amount')->default(0);
 			$table->unsignedTinyInteger('getting_profit');
 			$table->unsignedTinyInteger('getting_deposit');
-			$table->unsignedTinyInteger('status')->default(Tariff::ACTIVE);
+			$table->boolean('is_active')->default(1);
 			$table->softDeletes();
             $table->timestamps();
         });

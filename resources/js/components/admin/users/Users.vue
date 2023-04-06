@@ -97,8 +97,8 @@
               <div class="col">{{ user.contracts_sum?.formatted ?? 0 }}</div>
               <div class="col"></div>
               <div class="col">
-                <span class="text-success" v-if="user.status == 1">Активен</span>
-                <span class="text-danger" v-else>Заблокирован</span>
+                <span class="text-success" v-if="user.is_blocked">Заблокирован</span>
+                <span class="text-danger" v-else>Активен</span>
               </div>
             </div>
           </template>
