@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ContractStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
-use App\Events\ContractAmountIncreased;
+use App\Events\ContractAmountIncreasing;
 use App\Events\ContractCanceled;
 use App\Events\ContractChangeCanceled;
 use App\Events\ContractCreated;
@@ -96,7 +96,7 @@ class ContractController extends Controller
     public function update(Contract $contract, ContractUpdateRequest $request)
     {
         if ($request->addedAmount > 0) {
-            event(new ContractAmountIncreased($contract, $request->addedAmount));
+            event(new ContractAmountIncreasing($contract, $request->addedAmount));
 
             return response()->json(['ok' => true]);
         }

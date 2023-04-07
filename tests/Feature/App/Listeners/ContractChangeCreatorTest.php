@@ -4,7 +4,7 @@ namespace Tests\Feature\App\Listeners;
 
 use App\Enums\ContractChangeStatus;
 use App\Enums\ContractChangeType;
-use App\Events\ContractAmountIncreased;
+use App\Events\ContractAmountIncreasing;
 use App\Events\ContractCreated;
 use App\Listeners\ContractChangeCreator;
 use App\Models\Contract;
@@ -68,7 +68,7 @@ class ContractChangeCreatorTest extends TestCase
 		$creator = new ContractChangeCreator;
 		$addititionAmount = 10000_00;
 
-		$creator->createIncreaseAmountContractChange(new ContractAmountIncreased($this->contract, $addititionAmount));
+		$creator->createIncreaseAmountContractChange(new ContractAmountIncreasing($this->contract, $addititionAmount));
 
 		$this->assertDatabaseHas('contract_changes', [
 			'contract_id' => $this->contract->id,

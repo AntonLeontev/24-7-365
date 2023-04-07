@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Enums\ContractChangeStatus;
 use App\Enums\ContractChangeType;
-use App\Events\ContractAmountIncreased;
+use App\Events\ContractAmountIncreasing;
 use App\Events\ContractCreated;
 use App\Models\Contract;
 use App\Models\ContractChange;
@@ -20,7 +20,7 @@ class ContractChangeCreator
         $this->createContractChange($event->contract, $type, $amount);
     }
 
-    public function createIncreaseAmountContractChange(ContractAmountIncreased $event): void
+    public function createIncreaseAmountContractChange(ContractAmountIncreasing $event): void
     {
         $type = ContractChangeType::increaseAmount;
         $amount = $event->amount->raw() + $event->contract->amount->raw();

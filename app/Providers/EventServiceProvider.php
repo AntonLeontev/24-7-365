@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Events\BillingPeriodEnded;
-use App\Events\ContractAmountIncreased;
+use App\Events\ContractAmountIncreasing;
 use App\Events\ContractCanceled;
 use App\Events\ContractChangeCanceled;
 use App\Events\ContractCreated;
@@ -17,12 +17,11 @@ use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeCreator;
-use App\Listeners\CreateAdditionalPayment;
-use App\Listeners\CreateIncomingPayment;
 use App\Listeners\CreateProfitability;
 use App\Listeners\DeletePendingContractChanges;
 use App\Listeners\DeletePendingPayments;
 use App\Listeners\IncreaseContractChangeDuration;
+use App\Listeners\PaymentCreator;
 use App\Listeners\SchedulePayments;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
@@ -50,7 +49,7 @@ class EventServiceProvider extends ServiceProvider
         UserUnblocked::class => [],
         ContractCreated::class => [
             [ContractChangeCreator::class, 'createInitContractChange'],
-            CreateIncomingPayment::class,
+            [PaymentCreator::class, 'createInitialPayment'],
         ],
         ContractCanceled::class => [
             CancelContract::class,
@@ -60,9 +59,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ContractFinished::class => [
         ],
-        ContractAmountIncreased::class => [
+        ContractAmountIncreasing::class => [
             [ContractChangeCreator::class, 'createIncreaseAmountContractChange'],
-            CreateAdditionalPayment::class,
+            [PaymentCreator::class, 'createAdditionalPayment'],
         ],
         ContractChangeCanceled::class => [
             DeletePendingPayments::class,
