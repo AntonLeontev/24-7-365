@@ -5,6 +5,8 @@ use App\Models\Tariff;
 use App\Support\AmountToString;
 use Spatie\Permission\Models\Role;
 
+include_once 'enums.php';
+
 if (! function_exists('roles')) {
     function roles()
     {

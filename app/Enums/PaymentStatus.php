@@ -2,8 +2,14 @@
 
 namespace App\Enums;
 
+use App\Traits\GivesEnum;
+
 enum PaymentStatus: string
 {
+	use GivesEnum;
+
+
+
     /**
      * Платеж ожидается
      */

@@ -2,8 +2,14 @@
 
 namespace App\Enums;
 
+use App\Traits\GivesEnum;
+
 enum ContractStatus: string
 {
+	use GivesEnum;
+
+
+	
     /**
      * Прерван клиентом
      */
@@ -36,7 +42,7 @@ enum ContractStatus: string
 
 	public function getName(): string
 	{
-		return match($this) {
+		return match ($this) {
 			self::terminated => 'Прерван', 
 			self::active => 'В работе', 
 			self::canceled => 'Отменен', 
