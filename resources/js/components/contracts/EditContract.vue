@@ -66,11 +66,20 @@
 
   <div class="card">
     <div class="card-body d-flex">
-      <button class="btn btn-primary mx-auto w-100 w-lg-50" @click="updateContract">
+      <button
+        class="btn btn-primary mx-auto w-100 w-lg-50"
+        @click="updateContract"
+        :disabled="(tariffId === contract.tariff.id && addAmount === 0) || amountInvalid"
+      >
         Изменить договор
       </button>
     </div>
   </div>
+
+  <modal-invoice
+    :paymentId="paymentId"
+    @interface="(modal) => (modalInvoice = modal)"
+  ></modal-invoice>
 
   <Transition>
     <div class="notice" v-cloak v-show="notice">
@@ -102,17 +111,20 @@
 
 <script>
 import TariffGroup from "../calculator/TariffGroup.vue";
+import ModalInvoice from "../common/ModalInvoice.vue";
 
 export default {
   name: "EditContract",
   created() {},
   data() {
     return {
-      addAmount: null,
+      addAmount: 0,
       notice: false,
       errors: {},
       message: "",
       tariffId: this.contract.tariff.id,
+      paymentId: null,
+      modalInvoice: null,
     };
   },
   props: {
@@ -121,7 +133,8 @@ export default {
   },
   methods: {
     input(event) {
-      this.errors.addedAmount = null;
+      this.validateAmount(event);
+
       this.formatNumber(event);
     },
     formatNumber(event) {
@@ -129,17 +142,30 @@ export default {
 
       event.target.value = new Intl.NumberFormat("ru").format(this.addAmount);
     },
+    validateAmount(event) {
+      let amount = +event.target.value.replace(/\D/g, "");
+
+      if (amount < 1000 && amount !== 0) {
+        this.errors.addedAmount = "Сумма должна быть больше 1000";
+        return;
+      }
+
+      this.errors.addedAmount = null;
+    },
     updateContract() {
       axios
-        .request({
-          url: route("contracts.update", this.contract.id),
-          method: "POST",
-          data: { addedAmount: this.addAmount },
+        .post(route("contracts.update", this.contract.id), {
+          addedAmount: this.addAmount,
+          tariff_id: this.tariffId,
         })
         .then((response) => {
           if (response.data.ok) {
-            window.location.replace(route("users.contract_show", this.contract.id));
+            this.paymentId = response.data.payment_id;
+            this.modalInvoice.show();
+            return;
           }
+
+          this.notify(response.data.message ?? "Ошибка", 2000);
         })
         .catch((response) => {
           this.handleErrors(response);
@@ -188,8 +214,11 @@ export default {
     newAmount() {
       return this.contract.amount.amount + this.addAmount;
     },
+    amountInvalid() {
+      return this.addAmount < 1000 && this.addAmount !== 0;
+    },
   },
-  components: { TariffGroup },
+  components: { TariffGroup, ModalInvoice },
 };
 </script>
 

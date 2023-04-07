@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\ContractChangeStatus;
+use App\Enums\ContractChangeType;
 use App\Models\Contract;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,11 +23,11 @@ class ContractChangeFactory extends Factory
 
         return [
             'contract_id' => $contract->id,
-            'type' => random_int(0, 3),
+            'type' => $this->faker->randomElement(ContractChangeType::cases()),
             'tariff_id' => $contract->tariff_id,
-            'status' => random_int(1, 4),
+            'status' => $this->faker->randomElement(ContractChangeStatus::cases()),
             'amount' => $contract->amount,
-            'starts_at' => now(),
+            'starts_at' => null,
         ];
     }
 }

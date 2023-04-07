@@ -24,7 +24,8 @@ class ContractUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'addedAmount' => ['required', 'integer', 'min:1000'],
+            'addedAmount' => ['integer', 'min:1000', 'nullable'],
+            'tariff_id' => ['required', 'exists:tariffs,id'],
         ];
     }
 
@@ -32,10 +33,18 @@ class ContractUpdateRequest extends FormRequest
     {
         return [
             'addedAmount' => 'Сумма',
+            'tariff_id' => 'Тариф',
         ];
     }
 
     protected function prepareForValidation(): void
+    {
+        if ($this->addedAmount === 0) {
+			$this->merge(['addedAmount' => null]);
+		}
+    }
+
+    protected function passedValidation(): void
     {
         $amount = $this->addedAmount ?? 0;
         $this->merge(['addedAmount' => $amount * 100,]);

@@ -71,9 +71,9 @@
 		<div class="card">
 			<div class="p-4 pb-5">
                     <div class="bg-body text-light p-5 text-center">
-						@if ($contract->contractChanges->last()->status === 'pending')
+						@if ($contract->contractChanges->last()->status->value === 'pending')
 							<p>
-								Запрошены изменения в договоре. Для подтверждения нужно <a class="btn-link" href="{{ route('invoice.pdf', $contract->payments->where('type', 1)->where('status', 0)->last()->id) }}">оплатить счет</a>
+								Запрошены изменения в договоре. Для подтверждения нужно <a class="btn-link" href="{{ route('invoice.pdf', $contract->payments->where('type', payment_type('debet'))->where('status', payment_status('pending'))->last()->id) }}">оплатить счет</a>
 							</p>
 							<p class="mb-0"><a class="btn-link" href="{{ route('contracts.cancel_change', $contract->id) }}">Отменить изменения</a></p>
 						@elseif($contract->contractChanges->last()->status === 'waitingPeriodEnd')
@@ -87,7 +87,7 @@
 	@if (auth()->id() === $contract->user_id)
 		<div class="card mb-4">
 			<div class="card-body d-flex justify-content-between flex-xl-nowrap flex-wrap gap-3">
-				@if ($contract->status->value !== 'active' || $contract->isChanging())
+				@if ($contract->status !== contract_status('active') || $contract->isChanging())
 					<button class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 order-xl-1 gap-2" disabled>
 						<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path

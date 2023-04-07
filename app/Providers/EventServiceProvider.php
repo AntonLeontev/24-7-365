@@ -16,12 +16,11 @@ use App\Events\UserUnblocked;
 use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
-use App\Listeners\ContractChangeCreator;
+use App\Listeners\ContractChangeManager;
 use App\Listeners\CreateProfitability;
-use App\Listeners\DeletePendingContractChanges;
 use App\Listeners\DeletePendingPayments;
 use App\Listeners\IncreaseContractChangeDuration;
-use App\Listeners\PaymentCreator;
+use App\Listeners\PaymentManager;
 use App\Listeners\SchedulePayments;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
@@ -48,8 +47,8 @@ class EventServiceProvider extends ServiceProvider
         UserBlocked::class => [],
         UserUnblocked::class => [],
         ContractCreated::class => [
-            [ContractChangeCreator::class, 'createInitContractChange'],
-            [PaymentCreator::class, 'createInitialPayment'],
+            [ContractChangeManager::class, 'createInitContractChange'],
+            [PaymentManager::class, 'createInitialPayment'],
         ],
         ContractCanceled::class => [
             CancelContract::class,
@@ -60,12 +59,13 @@ class EventServiceProvider extends ServiceProvider
         ContractFinished::class => [
         ],
         ContractAmountIncreasing::class => [
-            [ContractChangeCreator::class, 'createIncreaseAmountContractChange'],
-            [PaymentCreator::class, 'createAdditionalPayment'],
+            [ContractChangeManager::class, 'createIncreaseAmountContractChange'],
+            [PaymentManager::class, 'createAdditionalPayment'],
         ],
         ContractChangeCanceled::class => [
-            DeletePendingPayments::class,
-            DeletePendingContractChanges::class,
+            // DeletePendingPayments::class,
+            [ContractChangeManager::class, 'deletePendingContractChanges'],
+            [PaymentManager::class, 'deleteDebetPendingPayments'],
         ],
         PaymentReceived::class => [
             UpdateContractChange::class,

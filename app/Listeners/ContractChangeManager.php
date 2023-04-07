@@ -5,12 +5,13 @@ namespace App\Listeners;
 use App\Enums\ContractChangeStatus;
 use App\Enums\ContractChangeType;
 use App\Events\ContractAmountIncreasing;
+use App\Events\ContractChangeCanceled;
 use App\Events\ContractCreated;
 use App\Models\Contract;
 use App\Models\ContractChange;
 use App\ValueObjects\Amount;
 
-class ContractChangeCreator
+class ContractChangeManager
 {
     public function createInitContractChange(ContractCreated $event): void
     {
@@ -26,6 +27,15 @@ class ContractChangeCreator
         $amount = $event->amount->raw() + $event->contract->amount->raw();
 
         $this->createContractChange($event->contract, $type, $amount);
+    }
+
+    public function deletePendingContractChanges(ContractChangeCanceled $event)
+    {
+        $changesIds = $event->contract->contractChanges
+            ->where('status', ContractChangeStatus::pending)
+			->pluck('id');
+
+		ContractChange::whereIn('id', $changesIds)->delete();
     }
 
     private function createContractChange(Contract $contract, ContractChangeType $type, Amount | int $amount): void

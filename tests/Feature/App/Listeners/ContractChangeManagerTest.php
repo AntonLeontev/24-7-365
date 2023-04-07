@@ -5,13 +5,14 @@ namespace Tests\Feature\App\Listeners;
 use App\Enums\ContractChangeStatus;
 use App\Enums\ContractChangeType;
 use App\Events\ContractAmountIncreasing;
+use App\Events\ContractChangeCanceled;
 use App\Events\ContractCreated;
-use App\Listeners\ContractChangeCreator;
+use App\Listeners\ContractChangeManager;
 use App\Models\Contract;
 use App\Models\Organization;
 use App\Models\Tariff;
 use App\Models\User;
-use App\ValueObjects\Amount;
+use Database\Factories\ContractChangeFactory;
 use Database\Factories\ContractFactory;
 use Database\Factories\OrganizationFactory;
 use Database\Factories\UserFactory;
@@ -19,7 +20,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ContractChangeCreatorTest extends TestCase
+class ContractChangeManagerTest extends TestCase
 {
 	use RefreshDatabase;
 
@@ -49,9 +50,9 @@ class ContractChangeCreatorTest extends TestCase
 
     public function test_creating_init_contract_change()
     {
-		$creator = new ContractChangeCreator;
+		$manager = new ContractChangeManager;
 
-		$creator->createInitContractChange(new ContractCreated($this->contract));
+		$manager->createInitContractChange(new ContractCreated($this->contract));
 
 		$this->assertDatabaseHas('contract_changes', [
 			'contract_id' => $this->contract->id,
@@ -65,10 +66,10 @@ class ContractChangeCreatorTest extends TestCase
 
 	public function test_creating_increase_amount_contract_change()
     {
-		$creator = new ContractChangeCreator;
+		$manager = new ContractChangeManager;
 		$addititionAmount = 10000_00;
 
-		$creator->createIncreaseAmountContractChange(new ContractAmountIncreasing($this->contract, $addititionAmount));
+		$manager->createIncreaseAmountContractChange(new ContractAmountIncreasing($this->contract, $addititionAmount));
 
 		$this->assertDatabaseHas('contract_changes', [
 			'contract_id' => $this->contract->id,
@@ -79,4 +80,22 @@ class ContractChangeCreatorTest extends TestCase
             'starts_at' => null,
 		]);
     }
+
+	public function test_deleting_pending_contract_changes()
+	{
+		ContractChangeFactory::new()->count(2)->create([
+			 'contract_id' => $this->contract->id,
+            'type' => ContractChangeType::mixed,
+            'tariff_id' => $this->contract->tariff_id,
+            'status' => ContractChangeStatus::pending,
+            'amount' => $this->contract->amount,
+            'starts_at' => null,
+		]);
+
+		$manager = new ContractChangeManager;
+
+		$manager->deletePendingContractChanges(new ContractChangeCanceled($this->contract));
+
+		$this->assertTrue($this->contract->refresh()->contractChanges->where('status', ContractChangeStatus::pending)->isEmpty());
+	}
 }

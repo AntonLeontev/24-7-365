@@ -16,6 +16,7 @@ use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Profitability;
 use App\ValueObjects\Amount;
+use DomainException;
 
 class ContractController extends Controller
 {
@@ -95,13 +96,29 @@ class ContractController extends Controller
 
     public function update(Contract $contract, ContractUpdateRequest $request)
     {
+        if ($contract->isChanging()) {
+            return response()->json(['ok' => false, 'message' => 'Договор в процессе изменений. Новые изменения применить нельзя']);
+        }
+
+        if ($request->addedAmount > 0 && $contract->tariff_id !== $request->tariff_id) {
+            //TODO
+            return response()->json(['ok' => false, 'message' => 'not ready mixed']);
+        }
+
         if ($request->addedAmount > 0) {
             event(new ContractAmountIncreasing($contract, $request->addedAmount));
 
-            return response()->json(['ok' => true]);
+            $payment = $contract->payments->where('type', PaymentType::debet)->last();
+
+            return response()->json(['ok' => true, 'payment_id' => $payment->id]);
         }
 
-        return to_route('users.contract_show', $contract->id);
+        if ($contract->id !== $request->contract_id) {
+            //TODO
+            return response()->json(['ok' => false, 'message' => 'not ready contract change']);
+        }
+
+        throw new DomainException('Неизвестное изменение');
     }
 
     public function cancelChange(Contract $contract)
