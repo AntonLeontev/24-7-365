@@ -12,27 +12,15 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ContractAmountIncreasing
+class ContractTariffChanging
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
 
-	public Amount $amount;
-	
-
-    public function __construct(
-		public Contract $contract,
-		int $amount,
-	)
+    public function __construct(public Contract $contract, public int $newTariffId)
     {
-        $this->amount = new Amount($amount);
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
     public function broadcastOn()
     {
         return new PrivateChannel('channel-name');

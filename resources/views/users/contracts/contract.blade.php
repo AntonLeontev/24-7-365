@@ -176,11 +176,11 @@
                     @foreach ($operations as $operation)
                         @if ($operation instanceof App\Models\Profitability)
                             <x-common.tables.yellow.row>
-                                <div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
+                                <div class="col">{{ $operation->accrued_at->translatedFormat('d F Y') }}</div>
                                 <div class="col">{{-- Тело закупа на дату выплаты --}}</div>
                                 <div class="col">+{{ $operation->amount }}</div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
-                                    @if ($operation->payment->planned_at->equalTo($operation->planned_at))
+                                    @if ($operation->payment->planned_at->equalTo($operation->accrued_at))
                                         @if ($operation->payment->status === 'processed')
                                             <svg width="17" height="12" viewBox="0 0 17 12" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">

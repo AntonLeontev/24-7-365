@@ -4,10 +4,10 @@ namespace Tests\Feature\App\Listeners;
 
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
-use App\Events\ContractAmountIncreasing;
+use App\Events\ContractChangingWithIncreasingAmount;
 use App\Events\ContractChangeCanceled;
 use App\Events\ContractCreated;
-use App\Listeners\PaymentManager;
+use App\Listeners\DebetPaymentManager;
 use App\Models\Contract;
 use App\Models\Organization;
 use App\Models\Tariff;
@@ -54,7 +54,7 @@ class PaymentManagerTest extends TestCase
 	
 	public function test_creating_initial_payment()
     {
-        $manager = new PaymentManager;
+        $manager = new DebetPaymentManager;
 
 		$manager->createInitialPayment(new ContractCreated($this->contract));
 
@@ -69,10 +69,12 @@ class PaymentManagerTest extends TestCase
 
 	public function test_createing_additional_payment()
 	{
-		$manager = new PaymentManager;
+		$manager = new DebetPaymentManager;
 		$amount = 1000023;
 
-		$manager->createAdditionalPayment(new ContractAmountIncreasing($this->contract, $amount));
+		$manager->createAdditionalPayment(
+			new ContractChangingWithIncreasingAmount($this->contract, $amount, $this->contract->tariff_id)
+		);
 
 		$this->assertDatabaseHas('payments', [
 			'account_id' => $this->contract->organization->accounts->first()->id,
@@ -92,7 +94,7 @@ class PaymentManagerTest extends TestCase
             'status' => PaymentStatus::pending,
 		]);
 
-		$manager = new PaymentManager;
+		$manager = new DebetPaymentManager;
 
 		$manager->deleteDebetPendingPayments(new ContractChangeCanceled($this->contract));
 
@@ -112,7 +114,7 @@ class PaymentManagerTest extends TestCase
             'status' => PaymentStatus::pending,
 		]);
 
-		$manager = new PaymentManager;
+		$manager = new DebetPaymentManager;
 
 		$manager->deleteDebetPendingPayments(new ContractChangeCanceled($this->contract));
 
@@ -139,7 +141,7 @@ class PaymentManagerTest extends TestCase
 				->where('type', PaymentType::debet)
 				->count();
 
-		$manager = new PaymentManager;
+		$manager = new DebetPaymentManager;
 
 		$manager->deleteDebetPendingPayments(new ContractChangeCanceled($this->contract));
 

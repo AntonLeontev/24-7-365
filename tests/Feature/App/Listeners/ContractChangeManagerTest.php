@@ -4,7 +4,7 @@ namespace Tests\Feature\App\Listeners;
 
 use App\Enums\ContractChangeStatus;
 use App\Enums\ContractChangeType;
-use App\Events\ContractAmountIncreasing;
+use App\Events\ContractChangingWithIncreasingAmount;
 use App\Events\ContractChangeCanceled;
 use App\Events\ContractCreated;
 use App\Listeners\ContractChangeManager;
@@ -68,13 +68,16 @@ class ContractChangeManagerTest extends TestCase
     {
 		$manager = new ContractChangeManager;
 		$addititionAmount = 10000_00;
+		$newTariffId = Tariff::inRandomOrder()->first()->id;
 
-		$manager->createIncreaseAmountContractChange(new ContractAmountIncreasing($this->contract, $addititionAmount));
+		$manager->createIncreaseAmountContractChange(
+			new ContractChangingWithIncreasingAmount($this->contract, $addititionAmount, $newTariffId)
+		);
 
 		$this->assertDatabaseHas('contract_changes', [
 			'contract_id' => $this->contract->id,
-            'type' => ContractChangeType::increaseAmount,
-            'tariff_id' => $this->contract->tariff->id,
+            'type' => ContractChangeType::change,
+            'tariff_id' => $newTariffId,
             'status' => ContractChangeStatus::pending,
             'amount' => $this->contract->amount->raw() + $addititionAmount,
             'starts_at' => null,
@@ -84,8 +87,8 @@ class ContractChangeManagerTest extends TestCase
 	public function test_deleting_pending_contract_changes()
 	{
 		ContractChangeFactory::new()->count(2)->create([
-			 'contract_id' => $this->contract->id,
-            'type' => ContractChangeType::mixed,
+			'contract_id' => $this->contract->id,
+            'type' => ContractChangeType::change,
             'tariff_id' => $this->contract->tariff_id,
             'status' => ContractChangeStatus::pending,
             'amount' => $this->contract->amount,

@@ -3,11 +3,12 @@
 namespace App\Providers;
 
 use App\Events\BillingPeriodEnded;
-use App\Events\ContractAmountIncreasing;
 use App\Events\ContractCanceled;
 use App\Events\ContractChangeCanceled;
+use App\Events\ContractChangingWithIncreasingAmount;
 use App\Events\ContractCreated;
 use App\Events\ContractFinished;
+use App\Events\ContractTariffChanging;
 use App\Events\ContractTerminated;
 use App\Events\PaymentReceived;
 use App\Events\PaymentSent;
@@ -18,9 +19,10 @@ use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeManager;
 use App\Listeners\CreateProfitability;
+use App\Listeners\CreditPaymentsManager;
 use App\Listeners\DeletePendingPayments;
 use App\Listeners\IncreaseContractChangeDuration;
-use App\Listeners\PaymentManager;
+use App\Listeners\DebetPaymentManager;
 use App\Listeners\SchedulePayments;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
@@ -48,7 +50,7 @@ class EventServiceProvider extends ServiceProvider
         UserUnblocked::class => [],
         ContractCreated::class => [
             [ContractChangeManager::class, 'createInitContractChange'],
-            [PaymentManager::class, 'createInitialPayment'],
+            [DebetPaymentManager::class, 'createInitialPayment'],
         ],
         ContractCanceled::class => [
             CancelContract::class,
@@ -58,14 +60,19 @@ class EventServiceProvider extends ServiceProvider
         ],
         ContractFinished::class => [
         ],
-        ContractAmountIncreasing::class => [
+        ContractTariffChanging::class => [
+            [ContractChangeManager::class, 'createNewTariffContractChange'],
+            //TODO Исходящие выплаты
+			[CreditPaymentsManager::class, 'handle'],
+        ],
+        ContractChangingWithIncreasingAmount::class => [
             [ContractChangeManager::class, 'createIncreaseAmountContractChange'],
-            [PaymentManager::class, 'createAdditionalPayment'],
+            [DebetPaymentManager::class, 'createAdditionalPayment'],
         ],
         ContractChangeCanceled::class => [
             // DeletePendingPayments::class,
             [ContractChangeManager::class, 'deletePendingContractChanges'],
-            [PaymentManager::class, 'deleteDebetPendingPayments'],
+            [DebetPaymentManager::class, 'deleteDebetPendingPayments'],
         ],
         PaymentReceived::class => [
             UpdateContractChange::class,

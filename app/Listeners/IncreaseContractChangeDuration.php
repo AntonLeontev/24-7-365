@@ -25,7 +25,7 @@ class IncreaseContractChangeDuration
     public function handle(BillingPeriodEnded $event)
     {
         $event->contract->contractChanges
-            ->where('status', ContractChangeStatus::actual->value)
+            ->where('status', ContractChangeStatus::actual)
             ->first()
             ->increment('duration');
     }

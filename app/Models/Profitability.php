@@ -12,29 +12,29 @@ class Profitability extends Model
     use HasFactory;
 
 
-	protected $fillable = [
-		'contract_id',
-		'payment_id',
-		'amount',
-		'planned_at'
-	];
+    protected $fillable = [
+        'contract_id',
+        'payment_id',
+        'amount',
+        'accrued_at'
+    ];
 
-	protected $casts = [
-		'amount' => AmountCast::class,
-	];
+    protected $casts = [
+        'amount' => AmountCast::class,
+    ];
 
-	protected $dates = [
-		'planned_at',
-	];
+    protected $dates = [
+        'accrued_at',
+    ];
 
 
-	public function contract(): BelongsTo
-	{
-		return $this->belongsTo(Contract::class);
-	}
+    public function contract(): BelongsTo
+    {
+        return $this->belongsTo(Contract::class);
+    }
 
-	public function payment(): BelongsTo
-	{
-		return $this->belongsTo(Payment::class);
-	}
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class);
+    }
 }

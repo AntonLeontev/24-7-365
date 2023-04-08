@@ -4,21 +4,21 @@ namespace App\Listeners;
 
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
-use App\Events\ContractAmountIncreasing;
+use App\Events\ContractChangingWithIncreasingAmount;
 use App\Events\ContractChangeCanceled;
 use App\Events\ContractCreated;
 use App\Models\Contract;
 use App\Models\Payment;
 use App\ValueObjects\Amount;
 
-class PaymentManager
+class DebetPaymentManager
 {
     public function createInitialPayment(ContractCreated $event)
     {
         $this->createPayment($event->contract, $event->contract->amount);
     }
 
-    public function createAdditionalPayment(ContractAmountIncreasing $event)
+    public function createAdditionalPayment(ContractChangingWithIncreasingAmount $event)
     {
         $this->createPayment($event->contract, $event->amount);
     }

@@ -26,7 +26,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->unsignedInteger('amount');
-			$table->date('planned_at')->nullable();
+            $table->date('accrued_at')->nullable();
             $table->timestamps();
         });
     }

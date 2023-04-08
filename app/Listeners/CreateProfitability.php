@@ -5,7 +5,6 @@ namespace App\Listeners;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Events\BillingPeriodEnded;
-use App\Models\Payment;
 use App\Models\Profitability;
 
 class CreateProfitability
@@ -27,7 +26,7 @@ class CreateProfitability
      */
     public function handle(BillingPeriodEnded $event)
     {
-        $duration = $event->contract->contractChanges->sum('duration');
+        $duration = $event->contract->duration();
         $plannedAt = $event->contract->paid_at->addMonths($duration)->format('Y-m-d');
         $monthProfit = $event->contract->amount->raw() * $event->contract->tariff->annual_rate  / 100 / 12;
 
@@ -41,7 +40,7 @@ class CreateProfitability
             'contract_id' => $event->contract->id,
             'payment_id' => $payment->id,
             'amount' => $monthProfit,
-            'planned_at' => $plannedAt,
+            'accrued_at' => $plannedAt,
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\HasGreaterOrEqualProfit;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContractUpdateRequest extends FormRequest
@@ -25,7 +26,7 @@ class ContractUpdateRequest extends FormRequest
     {
         return [
             'addedAmount' => ['integer', 'min:1000', 'nullable'],
-            'tariff_id' => ['required', 'exists:tariffs,id'],
+            'tariff_id' => ['required', 'exists:tariffs,id', new HasGreaterOrEqualProfit],
         ];
     }
 

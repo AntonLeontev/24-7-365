@@ -10,19 +10,9 @@ enum ContractChangeType: string
     case init = 'init';
 
     /**
-     * Увеличение суммы договора
+     * Увеличение суммы договора или смена тарифа
      */
-    case increaseAmount = 'increaseAmount';
-
-    /**
-     * Изменение тарифа
-     */
-    case changeTariff = 'changeTariff';
-
-    /**
-     * Изменение тарифа и суммы одновременно
-     */
-    case mixed = 'mixed';
+    case change = 'change';
 
     /**
      * Автопродление

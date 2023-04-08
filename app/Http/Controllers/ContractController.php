@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Enums\ContractStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
-use App\Events\ContractAmountIncreasing;
 use App\Events\ContractCanceled;
 use App\Events\ContractChangeCanceled;
+use App\Events\ContractChangingWithIncreasingAmount;
 use App\Events\ContractCreated;
+use App\Events\ContractTariffChanging;
 use App\Http\Requests\CancelContractRequest;
 use App\Http\Requests\ContractUpdateRequest;
 use App\Http\Requests\StoreContractRequest;
@@ -97,16 +98,15 @@ class ContractController extends Controller
     public function update(Contract $contract, ContractUpdateRequest $request)
     {
         if ($contract->isChanging()) {
-            return response()->json(['ok' => false, 'message' => 'Договор в процессе изменений. Новые изменения применить нельзя']);
+            return response()->json(['ok' => false, 'message' => 'Договор в процессе изменений. Новые изменения применить нельзя'], 412);
         }
 
-        if ($request->addedAmount > 0 && $contract->tariff_id !== $request->tariff_id) {
-            //TODO
-            return response()->json(['ok' => false, 'message' => 'not ready mixed']);
+        if ($contract->duration() + 1 === $contract->tariff->duration) {
+            return response()->json(['ok' => false, 'message' => 'Договор на последнем периоде. Изменения не будут применены'], 412);
         }
 
         if ($request->addedAmount > 0) {
-            event(new ContractAmountIncreasing($contract, $request->addedAmount));
+            event(new ContractChangingWithIncreasingAmount($contract, $request->addedAmount, $request->tariff_id));
 
             $payment = $contract->payments->where('type', PaymentType::debet)->last();
 
@@ -114,8 +114,9 @@ class ContractController extends Controller
         }
 
         if ($contract->id !== $request->contract_id) {
-            //TODO
-            return response()->json(['ok' => false, 'message' => 'not ready contract change']);
+            event(new ContractTariffChanging($contract, $request->tariff_id));
+
+            return response()->json(['ok' => true]);
         }
 
         throw new DomainException('Неизвестное изменение');

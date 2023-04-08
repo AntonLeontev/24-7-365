@@ -27,7 +27,7 @@ class UpdateContract
         $contract = $event->payment->contract;
 
         if ($contract->contractChanges->count() === 1) {
-            $contract->updateOrFail(['status' => ContractStatus::active->value, 'paid_at' => now()]);
+            $contract->updateOrFail(['status' => ContractStatus::active, 'paid_at' => now()]);
             return;
         }
 
