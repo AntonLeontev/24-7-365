@@ -160,8 +160,13 @@ export default {
         })
         .then((response) => {
           if (response.data.ok) {
-            this.paymentId = response.data.payment_id;
-            this.modalInvoice.show();
+            if (response.data.payment_id) {
+              this.paymentId = response.data.payment_id;
+              this.modalInvoice.show();
+              return;
+            }
+
+            this.notify("Тариф изменен успешно", 3000);
             return;
           }
 

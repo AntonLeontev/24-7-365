@@ -1,11 +1,12 @@
 <?php
 
-namespace Tests\Feature\App\Listeners;
+namespace Tests\Feature\App\Events\ContractTariffChanging;
 
 use App\Enums\ContractChangeStatus;
 use App\Enums\ContractChangeType;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
+use App\Events\ContractTariffChanging;
 use App\Http\Controllers\ContractController;
 use App\Models\Contract;
 use App\Models\Organization;
@@ -65,37 +66,13 @@ class UpdateContractInTheEndProfitTest extends TestCase
 		ProfitabilityFactory::new()->count(random_int(1, 5))->create(['payment_id' => $payment->id]);
 	}
 
-    public function test_is_ok()
-	{
-		$this->withoutExceptionHandling();
-
-		$newTariff = Tariff::where('title', 'Platinum 1')->get()->last();
-		
-		$response = $this->post(
-			action([ContractController::class, 'update'], $this->contract->id),
-			[
-				'addingAmount' => '',
-				'tariff_id' => $newTariff->id,
-			]
-		);
-
-		$response->assertOk();
-		$response->assertExactJson(['ok' => true]);
-	}
-
 	public function test_creating_contract_change()
 	{
 		$this->withoutExceptionHandling();
 
 		$newTariff = Tariff::where('title', 'Platinum 1')->get()->last();
 		
-		$response = $this->post(
-			action([ContractController::class, 'update'], $this->contract->id),
-			[
-				'addingAmount' => '',
-				'tariff_id' => $newTariff->id,
-			]
-		);
+		event(new ContractTariffChanging($this->contract, $newTariff->id));
 
 		$this->assertDatabaseHas('contract_changes', [
 			'contract_id' => $this->contract->id,
@@ -123,7 +100,7 @@ class UpdateContractInTheEndProfitTest extends TestCase
 
 		$payment = Payment::where('contract_id', $this->contract->id)->where('type', PaymentType::credit)->get()->last();
 
-		$paymentIds = $this->contract->profitabilities->pluck('payment_id')->unique();
+		$paymentIds = $this->contract->refresh()->profitabilities->pluck('payment_id')->unique();
 
 		$this->assertCount(1, $paymentIds);
 		$this->assertSame($payment->id, $paymentIds->first());
