@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Events\ContractChangeCanceled;
+use App\Events\PaymentReceived;
 use App\Models\Payment;
 
 class DeletePendingPayments
@@ -22,6 +23,9 @@ class DeletePendingPayments
             // })
             ->when($event instanceof ContractChangeCanceled, function ($query) {
                 return $query->where('type', PaymentType::debet);
+            })
+            ->when($event instanceof PaymentReceived, function ($query) {
+                return $query->where('type', PaymentType::credit);
             })
             ->pluck('id');
 

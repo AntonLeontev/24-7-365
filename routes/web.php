@@ -54,9 +54,7 @@ Route::get('test', function () {
 
 /*------------------------------------------*/
 
-//TODO Удалить лишние роуты
 Route::get('invoices/{payment}/pdf', [PdfController::class, 'invoice'])->name('invoice.pdf');
-Route::get('invoices/{payment}/pdf/get', [PdfController::class, 'invoice']);
 
 Route::post('suggestions/company', [SuggestionsController::class,'company'])
     ->name('suggestions.company');

@@ -76,7 +76,7 @@
 								Запрошены изменения в договоре. Для подтверждения нужно <a class="btn-link" href="{{ route('invoice.pdf', $contract->payments->where('type', payment_type('debet'))->where('status', payment_status('pending'))->last()->id) }}">оплатить счет</a>
 							</p>
 							<p class="mb-0"><a class="btn-link" href="{{ route('contracts.cancel_change', $contract->id) }}">Отменить изменения</a></p>
-						@elseif($contract->contractChanges->last()->status === 'waitingPeriodEnd')
+						@elseif($contract->contractChanges->last()->status->value === 'waitingPeriodEnd')
 							<p class="mb-0">Изменения будут применены {{ $contract->periodEnd()->format('d.m.Y') }}</p>
 						@endif
                     </div>

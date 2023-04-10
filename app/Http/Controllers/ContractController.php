@@ -98,11 +98,11 @@ class ContractController extends Controller
     public function update(Contract $contract, ContractUpdateRequest $request)
     {
         if ($contract->isChanging()) {
-            return response()->json(['ok' => false, 'message' => 'Договор в процессе изменений. Новые изменения применить нельзя'], 412);
+            return response()->json(['ok' => false, 'message' => 'Договор в процессе изменений. Новые изменения применить нельзя']);
         }
 
         if ($contract->duration() + 1 === $contract->tariff->duration) {
-            return response()->json(['ok' => false, 'message' => 'Договор на последнем периоде. Изменения не будут применены'], 412);
+            return response()->json(['ok' => false, 'message' => 'Договор на последнем периоде. Изменения не будут применены']);
         }
 
         if ($request->addedAmount > 0) {
