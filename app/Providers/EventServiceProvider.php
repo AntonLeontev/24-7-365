@@ -19,8 +19,8 @@ use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeManager;
 use App\Listeners\CreateProfitability;
-use App\Listeners\CreditPaymentsManager;
-use App\Listeners\DeletePendingPayments;
+use App\Listeners\GenerateCreditPayments;
+use App\Listeners\DeletePendingCreditPayments;
 use App\Listeners\IncreaseContractChangeDuration;
 use App\Listeners\DebetPaymentManager;
 use App\Listeners\SchedulePayments;
@@ -56,14 +56,14 @@ class EventServiceProvider extends ServiceProvider
             CancelContract::class,
         ],
         ContractTerminated::class => [
-            DeletePendingPayments::class,
+            DeletePendingCreditPayments::class,
         ],
         ContractFinished::class => [
         ],
         ContractTariffChanging::class => [
             [ContractChangeManager::class, 'createNewTariffContractChange'],
             //TODO Исходящие выплаты
-			[CreditPaymentsManager::class, 'handle'],
+			[GenerateCreditPayments::class, 'handle'],
         ],
         ContractChangingWithIncreasingAmount::class => [
             [ContractChangeManager::class, 'createIncreaseAmountContractChange'],
@@ -77,7 +77,7 @@ class EventServiceProvider extends ServiceProvider
         PaymentReceived::class => [
             UpdateContractChange::class,
             UpdateContract::class,
-            DeletePendingPayments::class,
+            DeletePendingCreditPayments::class,
             SchedulePayments::class, //TODO
         ],
         PaymentSent::class => [

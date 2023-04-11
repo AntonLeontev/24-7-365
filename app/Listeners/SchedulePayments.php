@@ -7,6 +7,7 @@ use App\Events\PaymentReceived;
 use App\Models\Payment;
 use App\Models\Profitability;
 use App\Models\Tariff;
+use App\Support\CreditPaymentsManager;
 use App\ValueObjects\Amount;
 use DomainException;
 
@@ -17,7 +18,7 @@ class SchedulePayments
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public CreditPaymentsManager $manager)
     {
     }
 

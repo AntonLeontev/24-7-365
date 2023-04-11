@@ -7,7 +7,6 @@ use App\Enums\ContractChangeType;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Events\ContractTariffChanging;
-use App\Http\Controllers\ContractController;
 use App\Models\Contract;
 use App\Models\Organization;
 use App\Models\Payment;
