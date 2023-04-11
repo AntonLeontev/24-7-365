@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Enums\ContractStatus;
-use App\Models\Contract;
+use App\Events\PaymentReceived;
 
 class UpdateContract
 {
@@ -22,11 +22,11 @@ class UpdateContract
      * @param  object  $event
      * @return void
      */
-    public function handle($event)
+    public function handle(PaymentReceived $event)
     {
         $contract = $event->payment->contract;
 
-        if ($contract->contractChanges->count() === 1) {
+        if ($contract->status === ContractStatus::init) {
             $contract->updateOrFail(['status' => ContractStatus::active, 'paid_at' => now()]);
             return;
         }

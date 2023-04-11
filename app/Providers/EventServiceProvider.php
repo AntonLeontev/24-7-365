@@ -19,11 +19,10 @@ use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeManager;
 use App\Listeners\CreateProfitability;
-use App\Listeners\GenerateCreditPayments;
-use App\Listeners\DeletePendingCreditPayments;
-use App\Listeners\IncreaseContractChangeDuration;
 use App\Listeners\DebetPaymentManager;
-use App\Listeners\SchedulePayments;
+use App\Listeners\DeletePendingCreditPayments;
+use App\Listeners\GenerateCreditPayments;
+use App\Listeners\IncreaseContractChangeDuration;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
 use Illuminate\Auth\Events\Registered;
@@ -62,8 +61,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ContractTariffChanging::class => [
             [ContractChangeManager::class, 'createNewTariffContractChange'],
+            DeletePendingCreditPayments::class,
             //TODO Исходящие выплаты
-			[GenerateCreditPayments::class, 'handle'],
+            [GenerateCreditPayments::class, 'handle'],
         ],
         ContractChangingWithIncreasingAmount::class => [
             [ContractChangeManager::class, 'createIncreaseAmountContractChange'],
@@ -78,7 +78,8 @@ class EventServiceProvider extends ServiceProvider
             UpdateContractChange::class,
             UpdateContract::class,
             DeletePendingCreditPayments::class,
-            SchedulePayments::class, //TODO
+            // SchedulePayments::class, //TODO
+            [GenerateCreditPayments::class, 'handle'],
         ],
         PaymentSent::class => [
             CheckContractStatus::class,

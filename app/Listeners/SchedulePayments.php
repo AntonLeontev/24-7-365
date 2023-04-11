@@ -7,7 +7,8 @@ use App\Events\PaymentReceived;
 use App\Models\Payment;
 use App\Models\Profitability;
 use App\Models\Tariff;
-use App\Support\CreditPaymentsManager;
+use App\Support\CreateCreditPaymentsManager;
+use App\Support\UpdateCreditPaymentsManager;
 use App\ValueObjects\Amount;
 use DomainException;
 
@@ -18,9 +19,11 @@ class SchedulePayments
      *
      * @return void
      */
-    public function __construct(public CreditPaymentsManager $manager)
-    {
-    }
+    public function __construct(
+		public UpdateCreditPaymentsManager $updateManager,
+		public CreateCreditPaymentsManager $createManager
+	)
+    {}
 
     /**
      * Handle the event.
@@ -73,27 +76,21 @@ class SchedulePayments
         //Формируем выплаты на период договора
         foreach (range(1, $tariff->duration) as $month) {
             if (! $firstPaymentScheduled) {
-                // Накапливаем сумму для первой выплаты доходности
                 if ($month < settings()->payments_start) {
                     $paymentAmount += $profitPerMonth;
                     continue;
                 }
                 
-                // Формируем первую выплату доходности с месяца, который указан в настройках
-                $this->createPayment($event, $paymentAmount, $month);
-
                 $firstPaymentScheduled = true;
-                continue;
             }
 
             if ($month === $tariff->duration) {
-                //Выплата тела договора с доходностью в конце срока
-                $this->createPayment($event, $contract->amount->raw() + $profitPerMonth, $tariff->duration);
-                continue;
+				$paymentAmount += $contract->amount->raw();
             }
 
-            // Формируем оставшиеся выплаты доходности
-            $this->createPayment($event, $profitPerMonth, $month);
+            $this->createPayment($event, $paymentAmount, $month);
+
+			$paymentAmount = $profitPerMonth;
         }
     }
 

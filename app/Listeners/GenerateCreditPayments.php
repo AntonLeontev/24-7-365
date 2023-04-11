@@ -2,39 +2,74 @@
 
 namespace App\Listeners;
 
+use App\Enums\ContractStatus;
 use App\Events\ContractTariffChanging;
+use App\Events\PaymentReceived;
 use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Profitability;
 use App\Models\Tariff;
-use App\Support\CreditPaymentsManager;
+use App\Support\CreateCreditPaymentsManager;
+use App\Support\UpdateCreditPaymentsManager;
 
 class GenerateCreditPayments
 {
-    public function __construct(public CreditPaymentsManager $manager)
-    {
+    private Contract $contract;
+
+
+    public function __construct(
+        public UpdateCreditPaymentsManager $updateManager,
+        public CreateCreditPaymentsManager $createManager
+    ) {
     }
 
-    public function handle(ContractTariffChanging $event)
+    public function handle(PaymentReceived | ContractTariffChanging $event)
     {
-        $contract = $event->contract->refresh();
-		$newTariff = Tariff::find($event->newTariffId);
+        $this->contract = $event->contract ?? $event->payment->contract;
+        $this->contract->refresh();
+        
+        if ($this->contract->contractChanges->count() === 1) {
+            $this->create($this->contract);
+            return;
+        }
+        
+        $this->update($this->contract);
+    }
 
-        $this->manager->deletePendingPayments($contract);
+    public function create(Contract $contract): void
+    {
+        if ($contract->tariff->getting_profit === Tariff::MONTHLY) {
+            $this->createManager->createPaymentsForMonthlyTariff($contract);
+        }
+
+        if ($contract->tariff->getting_profit === Tariff::AT_THE_END) {
+            $this->createManager->createPaymentsForAtTheEndTariff($contract);
+        }
+    }
+
+    public function update(Contract $contract): void
+    {
+        $newTariff = Tariff::find($contract->contractChanges->last()->tariff_id);
+
+        if ($newTariff->id === $contract->tariff->id) {
+            //TODO Когда только сумма меняется
+        }
+
+        // $this->updateManager->deletePendingPayments($contract);
         
         if ($contract->tariff->getting_profit === Tariff::MONTHLY) {
             if ($newTariff->getting_profit === Tariff::MONTHLY) {
-                $profitPayment = $this->manager->fromMonthlyToMonthlyTariff($contract);
+                $profitPayment = $this->updateManager->fromMonthlyToMonthlyTariff($contract);
             }
 
             if ($newTariff->getting_profit === Tariff::AT_THE_END) {
-                $profitPayment = $this->manager->fromMonthlyToAtTheEndTariff($contract);
+                $profitPayment = $this->updateManager->fromMonthlyToAtTheEndTariff($contract);
             }
         }
 
         // Если старый тариф с выплатой в конце, то прошедший срок идет в зачет новому тарифу
         if ($contract->tariff->getting_profit === Tariff::AT_THE_END) {
-            $profitPayment = $this->manager->fromAtTheEndToAtTheEndTariff($contract);
+            $profitPayment = $this->updateManager->fromAtTheEndToAtTheEndTariff($contract);
     
             #TODO Доначислить доходность по новому тарифу (Это делаем в конце периода)
             // $profitAmout = $contract->duration->raw() * ($newTariff->annual_rate - $contract->tariff->annual_rate) / 12 / 100;

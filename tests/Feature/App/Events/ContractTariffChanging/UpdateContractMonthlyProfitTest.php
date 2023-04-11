@@ -1,5 +1,6 @@
 <?php
-namespace Tests\Feature\App\Controllers;
+
+namespace Tests\Feature\App\Events\ContractTariffChanging;
 
 
 use App\Enums\ContractChangeStatus;
@@ -89,8 +90,6 @@ class UpdateContractMonthlyProfitTest extends TestCase
 		// 1 плат: старая + новая доходность 
 		// 7 платежей новая доходность 
 		// платеж тело + новая доходность
-
-		// dd($this->contract->refresh()->payments->where('type', PaymentType::credit)->take(3));
 
 		$payments = Payment::whereNull('deleted_at')->get();
 		$this->assertCount(10, $payments);
@@ -313,8 +312,108 @@ class UpdateContractMonthlyProfitTest extends TestCase
 		}
 	}
 
-	public function test_changing_to_at_the_end_profit_tariff()
+	public function test_changing_to_at_the_end_profit_tariff_on_first_period()
 	{
+		$this->withoutExceptionHandling();
+
+		$newTariff = Tariff::where('title', 'Platinum 1')->get()->last();
 		
+		event(new ContractTariffChanging($this->contract, $newTariff->id));
+
+		$this->assertDatabaseHas('contract_changes', [
+			'contract_id' => $this->contract->id,
+			'type' => ContractChangeType::change,
+			'tariff_id' => $newTariff->id,
+			'status' => ContractChangeStatus::waitingPeriodEnd,
+			'amount' => $this->contract->amount->raw(),
+			'starts_at' => null,
+			'duration' => 0,
+			'deleted_at' => null,
+		]);
+
+		$monthlyProfit = $this->contract->tariff->annual_rate / 12 / 100 * $this->contract->amount->raw();
+		$newMonthlyProfit = $newTariff->annual_rate / 12 / 100 * $this->contract->amount->raw();
+
+		$payments = $this->contract->refresh()->payments;
+		$this->assertCount(3, $payments);
+
+		$this->assertDatabaseHas('payments', [
+			'account_id' => $this->contract->organization->accounts->first()->id,
+			'contract_id' => $this->contract->id,
+			'amount' => $monthlyProfit,
+			'type' => PaymentType::credit,
+			'status' => PaymentStatus::pending,
+			'planned_at' => $this->contract->paid_at->addMonths(settings()->payments_start)->format('Y-m-d'),
+			'deleted_at' => null,
+		]);
+		$payments = Payment::where('amount', $monthlyProfit * ($this->contract->duration() + 1))->get();
+		$this->assertCount(1, $payments);
+
+
+		$this->assertDatabaseHas('payments', [
+			'account_id' => $this->contract->organization->accounts->first()->id,
+			'contract_id' => $this->contract->id,
+			'amount' => $newMonthlyProfit * $newTariff->duration + $this->contract->amount->raw(),
+			'type' => PaymentType::credit,
+			'status' => PaymentStatus::pending,
+			'planned_at' => $this->contract->paid_at->addMonths($newTariff->duration + $this->contract->duration() + 1)->format('Y-m-d'),
+			'deleted_at' => null,
+		]);
+
+		$payments = Payment::where('amount', $newMonthlyProfit * $newTariff->duration + $this->contract->amount->raw())->get();
+		$this->assertCount(1, $payments);
+	}
+
+	public function test_changing_to_at_the_end_profit_tariff_on_second_period() {
+		$this->withoutExceptionHandling();
+
+		event(new BillingPeriodEnded($this->contract->refresh()));
+
+		$newTariff = Tariff::where('title', 'Platinum 1')->get()->last();
+		
+		event(new ContractTariffChanging($this->contract->refresh(), $newTariff->id));
+
+		$this->assertDatabaseHas('contract_changes', [
+			'contract_id' => $this->contract->id,
+			'type' => ContractChangeType::change,
+			'tariff_id' => $newTariff->id,
+			'status' => ContractChangeStatus::waitingPeriodEnd,
+			'amount' => $this->contract->amount->raw(),
+			'starts_at' => null,
+			'duration' => 0,
+			'deleted_at' => null,
+		]);
+
+		$monthlyProfit = $this->contract->tariff->annual_rate / 12 / 100 * $this->contract->amount->raw();
+		$newMonthlyProfit = $newTariff->annual_rate / 12 / 100 * $this->contract->amount->raw();
+
+		$payments = $this->contract->refresh()->payments;
+		$this->assertCount(3, $payments);
+
+		$this->assertDatabaseHas('payments', [
+			'account_id' => $this->contract->organization->accounts->first()->id,
+			'contract_id' => $this->contract->id,
+			'amount' => $monthlyProfit * 2,
+			'type' => PaymentType::credit,
+			'status' => PaymentStatus::pending,
+			'planned_at' => $this->contract->paid_at->addMonths(settings()->payments_start)->format('Y-m-d'),
+			'deleted_at' => null,
+		]);
+		$payments = Payment::where('amount', $monthlyProfit * ($this->contract->duration() + 1))->get();
+		$this->assertCount(1, $payments);
+
+
+		$this->assertDatabaseHas('payments', [
+			'account_id' => $this->contract->organization->accounts->first()->id,
+			'contract_id' => $this->contract->id,
+			'amount' => $newMonthlyProfit * $newTariff->duration + $this->contract->amount->raw(),
+			'type' => PaymentType::credit,
+			'status' => PaymentStatus::pending,
+			'planned_at' => $this->contract->paid_at->addMonths($newTariff->duration + $this->contract->duration() + 1)->format('Y-m-d'),
+			'deleted_at' => null,
+		]);
+
+		$payments = Payment::where('amount', $newMonthlyProfit * $newTariff->duration + $this->contract->amount->raw())->get();
+		$this->assertCount(1, $payments);
 	}
 }

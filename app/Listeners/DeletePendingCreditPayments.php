@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Support\CreditPaymentsManager;
+use App\Support\UpdateCreditPaymentsManager;
 
 class DeletePendingCreditPayments
 {
-    public function __construct(public CreditPaymentsManager $manager)
+    public function __construct(public UpdateCreditPaymentsManager $manager)
     {
     }
 

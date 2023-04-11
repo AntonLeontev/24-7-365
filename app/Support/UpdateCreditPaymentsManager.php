@@ -8,7 +8,7 @@ use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Tariff;
 
-class CreditPaymentsManager
+class UpdateCreditPaymentsManager
 {
     /**
      * Удаляет исходящие платежи после текущего отчетного периода
@@ -102,7 +102,7 @@ class CreditPaymentsManager
             Payment::create([
                 'account_id' => $contract->organization->accounts->first()->id,
                 'contract_id' => $contract->id,
-                'amount' => $oldProfitPerMonth * ($newTariff->duration + 1),
+                'amount' => $oldProfitPerMonth * ($contract->duration() + 1),
                 'type' => PaymentType::credit,
                 'status' => PaymentStatus::pending,
                 'planned_at' => $contract->paid_at->addMonths(settings()->payments_start),
@@ -126,14 +126,15 @@ class CreditPaymentsManager
     public function fromAtTheEndToAtTheEndTariff(Contract $contract): Payment
     {
         $newTariff = Tariff::find($contract->contractChanges->last()->tariff_id);
+        $newAmount = $contract->contractChanges->last()->amount;
 
-        $profit = $contract->amount->raw() * $newTariff->annual_rate / 100 * $newTariff->duration / 12;
-        $amount = $contract->amount->raw() + $profit;
+        $oldProfit = $contract->amount->raw() * $newTariff->annual_rate / 100 / 12 * ($contract->duration() + 1);
+        $newProfit = $newAmount->raw() * $newTariff->annual_rate / 100 / 12 * ($newTariff->duration - $contract->duration() - 1);
         
         return Payment::create([
             'account_id' => $contract->organization->accounts->first()->id,
             'contract_id' => $contract->id,
-            'amount' => $amount,
+            'amount' => $newAmount->raw() + $oldProfit + $newProfit,
             'type' => PaymentType::credit,
             'status' => PaymentStatus::pending,
             'planned_at' => $contract->paid_at->addMonths($newTariff->duration),

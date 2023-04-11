@@ -4,15 +4,18 @@ namespace Tests\Feature\App\Events\ContractTariffChanging;
 
 use App\Enums\ContractChangeStatus;
 use App\Enums\ContractChangeType;
+use App\Enums\ContractStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Events\ContractTariffChanging;
 use App\Models\Contract;
+use App\Models\ContractChange;
 use App\Models\Organization;
 use App\Models\Payment;
 use App\Models\Tariff;
 use App\Models\User;
 use Database\Factories\AccountFactory;
+use Database\Factories\ContractChangeFactory;
 use Database\Factories\ContractFactory;
 use Database\Factories\OrganizationFactory;
 use Database\Factories\ProfitabilityFactory;
@@ -49,7 +52,17 @@ class UpdateContractInTheEndProfitTest extends TestCase
 			'user_id' => $this->user->id,
 			'organization_id' => $this->organization->id,
 			'tariff_id' => Tariff::where('title', 'Platinum 1')->first()->id,
+			'amount' => 65000000,
 			'paid_at' => now(),
+			'status' => ContractStatus::active,
+		]);
+
+		ContractChangeFactory::new()->create([
+			'contract_id' => $this->contract->id,
+			'type' => ContractChangeType::init,
+			'status' => ContractChangeStatus::pending,
+			'tariff_id' => $this->contract->tariff->id,
+			'amount' => $this->contract->amount,
 		]);
 
 		$payment = Payment::create([
@@ -65,7 +78,7 @@ class UpdateContractInTheEndProfitTest extends TestCase
 		ProfitabilityFactory::new()->count(random_int(1, 5))->create(['payment_id' => $payment->id]);
 	}
 
-	public function test_creating_contract_change()
+	public function test_at_the_end_to_at_the_end_tariff_change()
 	{
 		$this->withoutExceptionHandling();
 
