@@ -52,7 +52,8 @@ class CancelContract
             'contract_id' => $event->contract->id,
             'amount' => $event->contract->amount->raw() - $event->contract->outgoing(),
             'type' => PaymentType::credit,
-            'planned_at' => now()->addDays(5),
+            'planned_at' => now()->addMonths(2),
+            'description' => "Выплата тела договора №{$event->contract->id} от {$event->contract->paid_at->format('d.m.Y')}"
         ]);
 
         //TODO Механизм определения выплат, если договор продлевался или менялся тариф

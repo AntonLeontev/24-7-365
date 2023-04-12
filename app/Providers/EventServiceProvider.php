@@ -70,7 +70,6 @@ class EventServiceProvider extends ServiceProvider
             [DebetPaymentManager::class, 'createAdditionalPayment'],
         ],
         ContractChangeCanceled::class => [
-            // DeletePendingPayments::class,
             [ContractChangeManager::class, 'deletePendingContractChanges'],
             [DebetPaymentManager::class, 'deleteDebetPendingPayments'],
         ],
@@ -78,7 +77,6 @@ class EventServiceProvider extends ServiceProvider
             UpdateContractChange::class,
             UpdateContract::class,
             DeletePendingCreditPayments::class,
-            // SchedulePayments::class, //TODO
             [GenerateCreditPayments::class, 'handle'],
         ],
         PaymentSent::class => [

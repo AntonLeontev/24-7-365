@@ -49,6 +49,7 @@ class UpdateCreditPaymentsManager
                 'amount' => $firstPaymentAmount,
                 'type' => PaymentType::credit,
                 'planned_at' => $contract->paid_at->addMonths(settings()->payments_start),
+                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths(settings()->payments_start)->format('d.m.Y')}",
             ]);
         }
 
@@ -64,6 +65,7 @@ class UpdateCreditPaymentsManager
                     'amount' => $newProfitPerMonth + $newAmount->raw(),
                     'type' => PaymentType::credit,
                     'planned_at' => $contract->paid_at->addMonths($contract->duration() + 1 + $month),
+                    'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($month - 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($month)->format('d.m.Y')}",
                 ]);
                 continue;
             }
@@ -75,6 +77,7 @@ class UpdateCreditPaymentsManager
                 'amount' => $newProfitPerMonth,
                 'type' => PaymentType::credit,
                 'planned_at' => $contract->paid_at->addMonths($contract->duration() + 1 + $month),
+                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($month - 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($month)->format('d.m.Y')}",
             ]);
         }
 
@@ -106,6 +109,7 @@ class UpdateCreditPaymentsManager
                 'type' => PaymentType::credit,
                 'status' => PaymentStatus::pending,
                 'planned_at' => $contract->paid_at->addMonths(settings()->payments_start),
+                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths($contract->duration() + 1)->format('d.m.Y')}",
             ]);
         }
 
@@ -116,6 +120,7 @@ class UpdateCreditPaymentsManager
             'type' => PaymentType::credit,
             'status' => PaymentStatus::pending,
             'planned_at' => $contract->paid_at->addMonths($contract->duration() + 1 + $newTariff->duration),
+            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($contract->duration() + 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($newTariff->duration)->format('d.m.Y')}",
         ]);
     }
 
@@ -139,6 +144,7 @@ class UpdateCreditPaymentsManager
             'type' => PaymentType::credit,
             'status' => PaymentStatus::pending,
             'planned_at' => $contract->paid_at->addMonths($newTariff->duration),
+            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths($newTariff->duration)->format('d.m.Y')}",
         ]);
     }
 
@@ -160,6 +166,7 @@ class UpdateCreditPaymentsManager
                 'amount' => $firstPaymentAmount,
                 'type' => PaymentType::credit,
                 'planned_at' => $contract->paid_at->addMonths(settings()->payments_start),
+                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths(settings()->payments_start)->format('d.m.Y')}",
             ]);
         }
 
@@ -174,6 +181,7 @@ class UpdateCreditPaymentsManager
                     'amount' => $newProfitPerMonth + $newAmount->raw(),
                     'type' => PaymentType::credit,
                     'planned_at' => $contract->paid_at->addMonths($month),
+                    'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($month - 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($month)->format('d.m.Y')}",
                 ]);
                 continue;
             }
@@ -185,6 +193,7 @@ class UpdateCreditPaymentsManager
                 'amount' => $newProfitPerMonth,
                 'type' => PaymentType::credit,
                 'planned_at' => $contract->paid_at->addMonths($month),
+                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($month - 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($month)->format('d.m.Y')}",
             ]);
         }
 
@@ -210,6 +219,7 @@ class UpdateCreditPaymentsManager
             'type' => PaymentType::credit,
             'status' => PaymentStatus::pending,
             'planned_at' => $contract->paid_at->addMonths($contract->tariff->duration),
+            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths($contract->tariff->duration)->format('d.m.Y')}",
         ]);
     }
 }

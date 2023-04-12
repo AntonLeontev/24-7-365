@@ -86,12 +86,12 @@
 			<tr>
 				<td>Покупатель:<br>(Заказчик)</td>
 				<th> 
-					{{ $payment->account->organization->title }}, ИНН {{ $payment->account->organization->inn }}, КПП {{ $payment->account->organization->kpp }},
+					{{ $payment->account->organization->title }}, ИНН {{ $payment->account->organization->inn }}, КПП {{ $payment->account->organization->kpp }}, {{ $payment->account->organization->legal_address }}
 				</th>
 			</tr>
 			<tr>
 				<td>Основание:</td>
-				<th>Оплата по договору {{ $payment->contract_id }}
+				<th>{{ $payment->description }}
 				</th>
 			</tr>
 		</tbody>

@@ -29,7 +29,8 @@ class Payment extends Model
         'type',
         'status',
         'planned_at',
-        'paid_at'
+        'paid_at',
+		'description',
     ];
 
     protected $casts = [

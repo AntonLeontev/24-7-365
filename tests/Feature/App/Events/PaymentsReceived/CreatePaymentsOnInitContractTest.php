@@ -73,7 +73,7 @@ class CreatePaymentsOnInitContractTest extends TestCase
 			'tariff_id' => $this->contract->tariff->id,
 			'amount' => $this->contract->amount->raw(),
 			'status' => ContractChangeStatus::actual,
-            'starts_at' => now()->format('Y-m-d H:i:s'),
+            'starts_at' => now()->format('Y-m-d'),
 		]);
 
 		$this->assertDatabaseHas('contracts', [
@@ -134,7 +134,7 @@ class CreatePaymentsOnInitContractTest extends TestCase
 			'tariff_id' => $this->contract->tariff->id,
 			'amount' => $this->contract->amount->raw(),
 			'status' => ContractChangeStatus::actual,
-            'starts_at' => now()->format('Y-m-d H:i:s'),
+            'starts_at' => now()->format('Y-m-d'),
 		]);
 
 		$this->assertDatabaseHas('contracts', [

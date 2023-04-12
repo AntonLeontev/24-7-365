@@ -5,7 +5,6 @@ namespace App\Support;
 use App\Enums\PaymentType;
 use App\Models\Contract;
 use App\Models\Payment;
-use App\ValueObjects\Amount;
 
 class CreateCreditPaymentsManager
 {
@@ -26,10 +25,13 @@ class CreateCreditPaymentsManager
                 }
                 
                 $firstPaymentScheduled = true;
+                $description = "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths(settings()->payments_start)->format('d.m.Y')}";
             }
 
             if ($month === $tariff->duration) {
                 $paymentAmount += $contract->amount->raw();
+                
+                $description = "Выплата тела договора и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($month - 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($month)->format('d.m.Y')}";
             }
 
             Payment::create([
@@ -38,9 +40,11 @@ class CreateCreditPaymentsManager
                 'amount' => $paymentAmount,
                 'type' => PaymentType::credit,
                 'planned_at' => $contract->paid_at->addMonths($month),
+                'description' => $description,
             ]);
 
             $paymentAmount = $profitPerMonth;
+            $description = "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($month - 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($month)->format('d.m.Y')}";
         }
     }
 
@@ -56,6 +60,7 @@ class CreateCreditPaymentsManager
             'amount' => $contract->amount->raw() + $profit,
             'type' => PaymentType::credit,
             'planned_at' => $contract->paid_at->addMonths($tariff->duration),
+            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths($tariff->duration)->format('d.m.Y')}",
         ]);
     }
 }
