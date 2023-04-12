@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Enums\ContractStatus;
 use App\Events\ContractTariffChanging;
 use App\Events\PaymentReceived;
 use App\Models\Contract;
@@ -52,11 +51,20 @@ class GenerateCreditPayments
         $newTariff = Tariff::find($contract->contractChanges->last()->tariff_id);
 
         if ($newTariff->id === $contract->tariff->id) {
-            //TODO Когда только сумма меняется
+            if ($contract->tariff->getting_profit === Tariff::MONTHLY) {
+                $profitPayment = $this->updateManager->increaseAmountOnMonthlyTariff($contract);
+            }
+
+            if ($contract->tariff->getting_profit === Tariff::AT_THE_END) {
+                $profitPayment = $this->updateManager->increaseAmountEndToEndTariff($contract);
+            }
+
+            if (! is_null($profitPayment)) {
+                $this->bindNewPaymentToProfitability($contract, $profitPayment);
+            }
+            return;
         }
 
-        // $this->updateManager->deletePendingPayments($contract);
-        
         if ($contract->tariff->getting_profit === Tariff::MONTHLY) {
             if ($newTariff->getting_profit === Tariff::MONTHLY) {
                 $profitPayment = $this->updateManager->fromMonthlyToMonthlyTariff($contract);

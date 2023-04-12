@@ -61,7 +61,7 @@ class UpdateCreditPaymentsManager
                 Payment::create([
                     'account_id' => $contract->organization->accounts->first()->id,
                     'contract_id' => $contract->id,
-                    'amount' => $newProfitPerMonth + $contract->amount->raw(),
+                    'amount' => $newProfitPerMonth + $newAmount->raw(),
                     'type' => PaymentType::credit,
                     'planned_at' => $contract->paid_at->addMonths($contract->duration() + 1 + $month),
                 ]);
@@ -112,7 +112,7 @@ class UpdateCreditPaymentsManager
         return Payment::create([
             'account_id' => $contract->organization->accounts->first()->id,
             'contract_id' => $contract->id,
-            'amount' => (int) ($newProfitPerMonth * $newTariff->duration + $contract->amount->raw()),
+            'amount' => (int) ($newProfitPerMonth * $newTariff->duration + $newAmount->raw()),
             'type' => PaymentType::credit,
             'status' => PaymentStatus::pending,
             'planned_at' => $contract->paid_at->addMonths($contract->duration() + 1 + $newTariff->duration),
@@ -127,7 +127,8 @@ class UpdateCreditPaymentsManager
     {
         $newTariff = Tariff::find($contract->contractChanges->last()->tariff_id);
         $newAmount = $contract->contractChanges->last()->amount;
-
+        
+        //Доходность за прошедшие месяцы считается по новому тарифу, но по старой сумме
         $oldProfit = $contract->amount->raw() * $newTariff->annual_rate / 100 / 12 * ($contract->duration() + 1);
         $newProfit = $newAmount->raw() * $newTariff->annual_rate / 100 / 12 * ($newTariff->duration - $contract->duration() - 1);
         
@@ -138,6 +139,77 @@ class UpdateCreditPaymentsManager
             'type' => PaymentType::credit,
             'status' => PaymentStatus::pending,
             'planned_at' => $contract->paid_at->addMonths($newTariff->duration),
+        ]);
+    }
+
+    public function increaseAmountOnMonthlyTariff(Contract $contract): ?Payment
+    {
+        $newAmount = $contract->contractChanges->last()->amount;
+
+        $oldProfitPerMonth = $contract->amount->raw() * $contract->tariff->annual_rate / 100 / 12;
+        $newProfitPerMonth = $newAmount->raw() * $contract->tariff->annual_rate / 100 / 12;
+
+        # Create new credit payment
+        if ($contract->duration() + 1 < settings()->payments_start) {
+            $firstPaymentAmount = ($contract->duration() + 1) * $oldProfitPerMonth +
+                (settings()->payments_start - $contract->duration() - 1) * $newProfitPerMonth;
+
+            $firstPayment = Payment::create([
+                'account_id' => $contract->organization->accounts->first()->id,
+                'contract_id' => $contract->id,
+                'amount' => $firstPaymentAmount,
+                'type' => PaymentType::credit,
+                'planned_at' => $contract->paid_at->addMonths(settings()->payments_start),
+            ]);
+        }
+
+        $start = settings()->payments_start > $contract->duration() + 1 ? settings()->payments_start + 1 : $contract->duration() + 2;
+
+        foreach (range($start, $contract->tariff->duration) as $month) {
+            // Last payment with body
+            if ($month === $contract->tariff->duration) {
+                Payment::create([
+                    'account_id' => $contract->organization->accounts->first()->id,
+                    'contract_id' => $contract->id,
+                    'amount' => $newProfitPerMonth + $newAmount->raw(),
+                    'type' => PaymentType::credit,
+                    'planned_at' => $contract->paid_at->addMonths($month),
+                ]);
+                continue;
+            }
+
+            // Regular payments
+            Payment::create([
+                'account_id' => $contract->organization->accounts->first()->id,
+                'contract_id' => $contract->id,
+                'amount' => $newProfitPerMonth,
+                'type' => PaymentType::credit,
+                'planned_at' => $contract->paid_at->addMonths($month),
+            ]);
+        }
+
+        if ($contract->duration() + 1 < settings()->payments_start) {
+            return $firstPayment;
+        }
+
+        return null;
+    }
+
+    public function increaseAmountEndToEndTariff(Contract $contract)
+    {
+        $newAmount = $contract->contractChanges->last()->amount;
+        
+        //Доходность за прошедшие месяцы считается по новому тарифу, но по старой сумме
+        $oldProfit = $contract->amount->raw() * $contract->tariff->annual_rate / 100 / 12 * ($contract->duration() + 1);
+        $newProfit = $newAmount->raw() * $contract->tariff->annual_rate / 100 / 12 * ($contract->tariff->duration - $contract->duration() - 1);
+        
+        return Payment::create([
+            'account_id' => $contract->organization->accounts->first()->id,
+            'contract_id' => $contract->id,
+            'amount' => $newAmount->raw() + $oldProfit + $newProfit,
+            'type' => PaymentType::credit,
+            'status' => PaymentStatus::pending,
+            'planned_at' => $contract->paid_at->addMonths($contract->tariff->duration),
         ]);
     }
 }
