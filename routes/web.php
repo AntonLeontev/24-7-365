@@ -31,7 +31,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $tariffs = Tariff::all();
     return view('welcome', compact('tariffs'));
-})->withoutMiddleware(CheckBlockedUser::class)->name('home');
+})->withoutMiddleware(CheckBlockedUser::class)
+	->middleware('guest')
+	->name('home');
 
 /**
  * DELETE
@@ -42,6 +44,7 @@ Route::get('24-pay-in/{contract_id}', function ($id) {
 
     return back();
 })->name('pay-in');
+
 Route::get('24-period/{contract_id}', function ($id) {
     Artisan::call("24:period", ['contract' => $id]);
 
