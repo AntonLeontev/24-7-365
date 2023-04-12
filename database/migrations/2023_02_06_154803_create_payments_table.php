@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('status', 20)->default(PaymentStatus::pending->value);
             $table->date('planned_at')->nullable();
             $table->date('paid_at')->nullable();
+			$table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

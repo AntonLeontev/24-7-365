@@ -177,7 +177,7 @@
                         @if ($operation instanceof App\Models\Profitability)
                             <x-common.tables.yellow.row>
                                 <div class="col">{{ $operation->accrued_at->translatedFormat('d F Y') }}</div>
-                                <div class="col">{{-- Тело закупа на дату выплаты --}}</div>
+                                <div class="col">{{ $contract->amountOnDate($operation->accrued_at) }}</div>
                                 <div class="col">+{{ $operation->amount }}</div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
                                     @if ($operation->payment->planned_at->equalTo($operation->accrued_at))
@@ -198,7 +198,7 @@
                         @elseif ($operation instanceof App\Models\Payment)
                             <x-common.tables.yellow.row>
                                 <div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
-                                <div class="col">{{ $contract->amount }}</div>
+                                <div class="col">{{ $contract->amountOnDate($operation->planned_at) }}</div>
                                 <div class="col"></div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
                                     @if ($operation->status->value === 'processed')

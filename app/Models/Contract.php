@@ -7,6 +7,7 @@ use App\Enums\ContractChangeStatus;
 use App\Enums\ContractStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
+use App\ValueObjects\Amount;
 use Carbon\Carbon;
 use DomainException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -101,8 +102,26 @@ class Contract extends Model
             return false;
         }
         
-        return $this->contractChanges->last()->status->value === ContractChangeStatus::pending->value ||
-            $this->contractChanges->last()->status->value === ContractChangeStatus::waitingPeriodEnd->value;
+        return $this->contractChanges->last()->status === ContractChangeStatus::pending ||
+            $this->contractChanges->last()->status === ContractChangeStatus::waitingPeriodEnd;
+    }
+
+    public function amountOnDate(Carbon $date): Amount
+    {
+        foreach ($this->contractChanges->reverse() as $change) {
+            if (is_null($change->starts_at)) {
+                continue;
+            }
+
+            if (
+                $change->starts_at->greaterThan($date) &&
+                $change->starts_at->addMonths($change->duration)->lessThan($date)
+            ) {
+                return $change->amount;
+            }
+        }
+
+        return $this->amount;
     }
 
     private function paymentsSum(PaymentType $type): int

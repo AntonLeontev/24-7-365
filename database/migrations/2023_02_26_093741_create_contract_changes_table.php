@@ -31,7 +31,7 @@ return new class extends Migration
 
             $table->softDeletes();
             $table->timestamps();
-            $table->dateTime('starts_at')->nullable();
+            $table->date('starts_at')->nullable();
 			$table->unsignedSmallInteger('duration')->default(0);
         });
     }
