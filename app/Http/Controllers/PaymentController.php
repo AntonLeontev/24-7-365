@@ -20,13 +20,17 @@ class PaymentController extends Controller
         $payments = Payment::query()
             ->whereIn('contract_id', $contractsIds)
             ->where('type', PaymentType::credit)
-			->orderBy('planned_at')
-			->with('contract')
+            ->orderBy('planned_at')
+            ->with('contract')
             ->get();
 
         $operations = $profitabilities->merge($payments)
             ->groupBy(function ($operation) {
-                return $operation->planned_at->format('Y-m');
+                if (isset($operation->planned_at)) {
+					return $operation->planned_at->format('Y-m');
+                }
+
+                return $operation->accrued_at->format('Y-m');
             })
             ->sortKeysUsing(function ($a, $b) {
                 return Carbon::parse($a) <=> Carbon::parse($b);

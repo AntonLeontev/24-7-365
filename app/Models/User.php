@@ -52,7 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function contractsAmount(): Amount
     {
         $amount = $this->contracts
-            ->whereIn('status', [ContractStatus::active->value, ContractStatus::canceled->value])
+            ->whereIn('status', [ContractStatus::active, ContractStatus::canceled])
             ->reduce(function ($sum, $contract) {
                 return $sum += $contract->amount->raw();
             }, 0);

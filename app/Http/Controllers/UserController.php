@@ -25,7 +25,7 @@ class UserController extends Controller
                 DB::raw('organizations.title AS organization'),
                 'role_id',
                 DB::raw('roles.name AS role'),
-                DB::raw('(SELECT SUM(amount) FROM contracts WHERE user_id = users.id AND (status = 1 OR status = 2)) AS contracts_sum')
+                DB::raw('(SELECT SUM(amount) FROM contracts WHERE user_id = users.id AND (status = "active" OR status = "canceled")) AS contracts_sum')
             ])
             ->leftJoin('organizations', 'users.id', 'organizations.user_id')
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')
