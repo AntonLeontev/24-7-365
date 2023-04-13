@@ -10,21 +10,9 @@ use App\Models\Profitability;
 class CreateProfitability
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
+     * Создает доходность за прошедший период
      */
-    public function __construct()
-    {
-    }
-
-    /**
-     * Handle the event.
-     *
-     * @param  object  $event
-     * @return void
-     */
-    public function handle(BillingPeriodEnded $event)
+    public function handle(BillingPeriodEnded $event): void
     {
         $duration = $event->contract->duration();
         $plannedAt = $event->contract->paid_at->addMonths($duration)->format('Y-m-d');

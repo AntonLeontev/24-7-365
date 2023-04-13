@@ -32,8 +32,8 @@ Route::get('/', function () {
     $tariffs = Tariff::all();
     return view('welcome', compact('tariffs'));
 })->withoutMiddleware(CheckBlockedUser::class)
-	->middleware('guest')
-	->name('home');
+    ->middleware('guest')
+    ->name('home');
 
 /**
  * DELETE
@@ -44,6 +44,12 @@ Route::get('24-pay-in/{contract_id}', function ($id) {
 
     return back();
 })->name('pay-in');
+
+Route::get('24-pay-out/{contract_id}', function ($id) {
+    Artisan::call("24:pay-out", ['contract' => $id, '--take' => 1]);
+
+    return back();
+})->name('pay-out');
 
 Route::get('24-period/{contract_id}', function ($id) {
     Artisan::call("24:period", ['contract' => $id]);
@@ -74,124 +80,123 @@ Route::middleware('guest')->group(function () {
         ->where('driver', 'yandex|vkontakte|google');
 });
 
-    Route::get('fastlogin', function () {
-        Auth::loginUsingId(6);
-        return redirect()->route('users.profile');
-    });
+
+Route::prefix('personal')
+->middleware('auth')->group(function () {
+    Route::get('profile', [UserProfileController::class, 'profile'])
+        ->name('users.profile');
+    Route::post('profile/save', [UserProfileController::class, 'storeProfile'])
+        ->middleware('phone')
+        ->name('users.profile.save');
+    Route::post('profile/validate', [UserProfileController::class, 'checkProfileInput'])
+        ->middleware('phone')
+        ->name('users.profile.validate');
+    Route::post('user/update_phone', [UserController::class, 'updatePhone'])
+        ->middleware('phone')
+        ->name('users.updatePhone');
+    Route::post('user/validate_phone', [UserController::class, 'validatePhone'])
+        ->middleware('phone')
+        ->name('users.validatePhone');
+    
+    Route::get('contracts', [ContractController::class, 'index'])
+        ->middleware('can:see own profile')
+        ->name('users.contracts');
+    
+    Route::get('contracts/{contract}/show', [ContractController::class, 'show'])
+        ->middleware(CanSeeContract::class)
+        ->name('users.contract_show');
+
+    Route::get('contracts/pdf', [PdfController::class, 'contract'])
+        ->middleware('can:see own profile')
+        ->name('users.contract.pdf');
+    
+    Route::get('contracts/create/text', [ContractController::class, 'agree'])
+        ->middleware('can:see own profile')
+        ->name('contracts.agree');
+    Route::any('contracts/create', [ContractController::class, 'create'])
+        ->middleware('can:see own profile')
+        ->name('users.add_contract');
 
 
+    Route::post('contracts/store', [ContractController::class, 'store'])
+        ->middleware('can:see own profile')
+        ->name('contracts.store');
 
-    Route::prefix('personal')
-    ->middleware('auth')->group(function () {
-        Route::get('profile', [UserProfileController::class, 'profile'])
-            ->name('users.profile');
-        Route::post('profile/save', [UserProfileController::class, 'storeProfile'])
-            ->middleware('phone')
-            ->name('users.profile.save');
-        Route::post('profile/validate', [UserProfileController::class, 'checkProfileInput'])
-            ->middleware('phone')
-            ->name('users.profile.validate');
-        Route::post('user/update_phone', [UserController::class, 'updatePhone'])
-            ->middleware('phone')
-            ->name('users.updatePhone');
-        Route::post('user/validate_phone', [UserController::class, 'validatePhone'])
-            ->middleware('phone')
-            ->name('users.validatePhone');
+    Route::get('contracts/{contract}/cancel', [ContractController::class, 'cancel'])
+        ->middleware('can:see own profile')
+        ->name('contracts.cancel');
+    
+    Route::get('contracts/{contract}/cancel_prolongation', [ContractController::class, 'cancelProlongation'])
+        ->middleware('can:see own profile')
+        ->name('contracts.cancel.prolongation');
+
+    Route::get('contracts/{contract}/edit', [ContractController::class, 'edit'])
+        ->middleware('can:see own profile')
+        ->name('contracts.edit');
+
+    Route::post('contracts/{contract}/update', [ContractController::class, 'update'])
+        ->middleware('can:see own profile')
+        ->name('contracts.update');
+
+    Route::get('contracts/{contract}/cancel_change', [ContractController::class, 'cancelChange'])
+        ->middleware('can:see own profile')
+        ->name('contracts.cancel_change');
+
+    Route::get('calculator', [IncomeCalculatorController::class, 'show'])
+        ->name('income_calculator');
+
+    Route::post('organization/save', [NewContractController::class, 'saveRequesites'])
+        ->name('organization.save');
+    
         
-        Route::get('contracts', [ContractController::class, 'index'])
-            ->middleware('can:see own profile')
-            ->name('users.contracts');
+    Route::get('payments', [PaymentController::class, 'indexForUser'])
+        ->middleware('can:see own profile')
+        ->name('payments.for_user');
+
+    
+    Route::post('smscode/check/{type}', [SmscodeController::class,'checkCode'])
+        ->where('type', 'phone_confirmation|contract_creating')
+        ->middleware(['can:see own profile', 'throttle:20'])
+        ->name('smscode.check');
+    
+    Route::post('smscode/create/{type}', [SmscodeController::class,'createCode'])
+        ->where('type', 'phone_confirmation|contract_creating')
+        ->middleware(['can:see own profile', 'throttle:2', 'phone'])
+        ->name('smscode.create');
+});
+
+
+Route::prefix('admin')
+->middleware('auth')->group(function () {
+    Route::post('users/{user}/role', [UserController::class, 'updateRole'])
+        ->middleware('can:assign roles')
+        ->name('users.update-role');
+
+    Route::post('users/{user}/block', [UserController::class, 'blockUser'])
+        ->middleware('can:block users')
+        ->name('users.block');
+
+    Route::post('users/{user}/unblock', [UserController::class, 'unblockUser'])
+        ->middleware('can:block users')
+        ->name('users.unblock');
+
+    Route::post('users/create', [UserController::class, 'create'])
+        ->middleware('can:create users')
+        ->name('users.create');
         
-        Route::get('contracts/{contract}/show', [ContractController::class, 'show'])
-            ->middleware(CanSeeContract::class)
-            ->name('users.contract_show');
+    Route::get('users/{user}', [UserController::class, 'show'])
+        ->middleware('can:see other profiles')
+        ->name('users.show');
 
-        Route::get('contracts/pdf', [PdfController::class, 'contract'])
-            ->middleware('can:see own profile')
-            ->name('users.contract.pdf');
-        
-        Route::get('contracts/create/text', [ContractController::class, 'agree'])
-            ->middleware('can:see own profile')
-            ->name('contracts.agree');
-        Route::any('contracts/create', [ContractController::class, 'create'])
-            ->middleware('can:see own profile')
-            ->name('users.add_contract');
+    Route::get('users', [UserController::class, 'index'])
+        ->middleware('can:see other profiles')
+        ->name('users.index');
 
+    Route::post('settings/update', [ApplicationSettingsController::class, 'update'])
+        ->middleware('can:change settings')
+        ->name('settings.update');
 
-        Route::post('contracts/store', [ContractController::class, 'store'])
-            ->middleware('can:see own profile')
-            ->name('contracts.store');
-
-        Route::get('contracts/{contract}/cancel', [ContractController::class, 'cancel'])
-            ->middleware('can:see own profile')
-            ->name('contracts.cancel');
-
-        Route::get('contracts/{contract}/edit', [ContractController::class, 'edit'])
-            ->middleware('can:see own profile')
-            ->name('contracts.edit');
-
-        Route::post('contracts/{contract}/update', [ContractController::class, 'update'])
-            ->middleware('can:see own profile')
-            ->name('contracts.update');
-
-        Route::get('contracts/{contract}/cancel_change', [ContractController::class, 'cancelChange'])
-            ->middleware('can:see own profile')
-            ->name('contracts.cancel_change');
-
-        Route::get('calculator', [IncomeCalculatorController::class, 'show'])
-            ->name('income_calculator');
-
-        Route::post('organization/save', [NewContractController::class, 'saveRequesites'])
-            ->name('organization.save');
-     
-            
-        Route::get('payments', [PaymentController::class, 'indexForUser'])
-            ->middleware('can:see own profile')
-            ->name('payments.for_user');
-
-        
-        Route::post('smscode/check/{type}', [SmscodeController::class,'checkCode'])
-            ->where('type', 'phone_confirmation|contract_creating')
-            ->middleware(['can:see own profile', 'throttle:20'])
-            ->name('smscode.check');
-        
-        Route::post('smscode/create/{type}', [SmscodeController::class,'createCode'])
-            ->where('type', 'phone_confirmation|contract_creating')
-            ->middleware(['can:see own profile', 'throttle:2', 'phone'])
-            ->name('smscode.create');
-    });
-
-    Route::prefix('admin')
-    ->middleware('auth')->group(function () {
-        Route::post('users/{user}/role', [UserController::class, 'updateRole'])
-            ->middleware('can:assign roles')
-            ->name('users.update-role');
-
-        Route::post('users/{user}/block', [UserController::class, 'blockUser'])
-            ->middleware('can:block users')
-            ->name('users.block');
-
-        Route::post('users/{user}/unblock', [UserController::class, 'unblockUser'])
-            ->middleware('can:block users')
-            ->name('users.unblock');
-
-        Route::post('users/create', [UserController::class, 'create'])
-            ->middleware('can:create users')
-            ->name('users.create');
-            
-        Route::get('users/{user}', [UserController::class, 'show'])
-            ->middleware('can:see other profiles')
-            ->name('users.show');
-
-        Route::get('users', [UserController::class, 'index'])
-            ->middleware('can:see other profiles')
-            ->name('users.index');
-
-        Route::post('settings/update', [ApplicationSettingsController::class, 'update'])
-            ->middleware('can:change settings')
-            ->name('settings.update');
-
-        Route::get('settings', [ApplicationSettingsController::class, 'index'])
-            ->middleware('can:change settings')
-            ->name('settings.index');
-    });
+    Route::get('settings', [ApplicationSettingsController::class, 'index'])
+        ->middleware('can:change settings')
+        ->name('settings.index');
+});

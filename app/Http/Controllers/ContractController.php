@@ -23,7 +23,7 @@ class ContractController extends Controller
 {
     public function index()
     {
-        $contracts = auth()->user()->contracts->load('tariff');
+        $contracts = auth()->user()->contracts->load('tariff', 'payments', 'contractChanges');
         
         return view('users.contracts.contracts_list', compact('contracts'));
     }
@@ -31,6 +31,10 @@ class ContractController extends Controller
     public function show(Contract $contract)
     {
         $contract->load(['tariff', 'contractChanges']);
+
+        if (is_null($contract->paid_at)) {
+            return view('users.contracts.contract', compact('contract'));
+        }
 
         $profitabilities = Profitability::query()
             ->with('payment')
@@ -40,6 +44,7 @@ class ContractController extends Controller
         $payments = Payment::query()
             ->where('contract_id', $contract->id)
             ->where('type', PaymentType::credit)
+            ->where('planned_at', '>', $contract->paid_at->addMonths($contract->duration()))
             ->get();
 
 
@@ -50,9 +55,12 @@ class ContractController extends Controller
         }, 0);
         $totalProfitabilities = new Amount($totalProfitabilities);
 
-        $totalPayments = $payments->where('status', PaymentStatus::processed)->reduce(function ($carry, $item) {
-            return $carry + $item->amount->raw();
-        }, 0);
+        $totalPayments = $contract->payments
+            ->where('type', PaymentType::credit)
+            ->where('status', PaymentStatus::processed)
+            ->reduce(function ($carry, $item) {
+                return $carry + $item->amount->raw();
+            }, 0);
         $totalPayments = new Amount($totalPayments);
 
         return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments'));
@@ -128,4 +136,11 @@ class ContractController extends Controller
 
         return back();
     }
+
+	public function cancelProlongation(Contract $contract)
+	{
+		$contract->update(['prolongate' => false]);
+
+		return back();
+	}
 }

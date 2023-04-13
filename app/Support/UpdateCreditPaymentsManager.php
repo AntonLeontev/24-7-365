@@ -38,7 +38,8 @@ class UpdateCreditPaymentsManager
         $oldProfitPerMonth = $contract->amount->raw() * $contract->tariff->annual_rate / 100 / 12;
         $newProfitPerMonth = $newAmount->raw() * $newTariff->annual_rate / 100 / 12;
 
-        # Create new credit payment
+        // Create new credit payment
+        //$contract->duration() + 1 потому что добавляется текущий период
         if ($contract->duration() + 1 < settings()->payments_start) {
             $firstPaymentAmount = ($contract->duration() + 1) * $oldProfitPerMonth +
                 (settings()->payments_start - $contract->duration() - 1) * $newProfitPerMonth;

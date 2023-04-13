@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\ContractStatus;
-use App\Models\Contract;
 use App\Models\Organization;
 use App\Models\Tariff;
 use App\Models\User;
@@ -34,6 +33,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->unsignedBigInteger('amount');
             $table->string('status', 30)->default(ContractStatus::init->value);
+			$table->boolean('prolongate')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

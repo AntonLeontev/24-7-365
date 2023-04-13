@@ -78,16 +78,6 @@ class GenerateCreditPayments
         // Если старый тариф с выплатой в конце, то прошедший срок идет в зачет новому тарифу
         if ($contract->tariff->getting_profit === Tariff::AT_THE_END) {
             $profitPayment = $this->updateManager->fromAtTheEndToAtTheEndTariff($contract);
-    
-            #TODO Доначислить доходность по новому тарифу (Это делаем в конце периода)
-            // $profitAmout = $contract->duration->raw() * ($newTariff->annual_rate - $contract->tariff->annual_rate) / 12 / 100;
-
-            // Profitability::create([
-            //     'contract_id' => $contract->id,
-            //     'payment_id' => $newPayment->id,
-            //     'amount' => $profitAmout,
-            //     'planned_at' => $newPayment->planned_at,
-            // ]);
         }
 
         // Изменить дату выплат по старым доходностям

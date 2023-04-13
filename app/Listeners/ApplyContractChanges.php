@@ -4,52 +4,45 @@ namespace App\Listeners;
 
 use App\Enums\ContractChangeStatus;
 use App\Events\BillingPeriodEnded;
+use Illuminate\Support\Facades\Log;
 
 class ApplyContractChanges
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
+     * Меняет статусы в ContractChanges и переносит данные в договор
      */
-    public function __construct()
+    public function handle(BillingPeriodEnded $event): void
     {
-    }
+        $contract = $event->contract->refresh();
+        $changes = $contract->contractChanges->load('tariff');
+        
+        $waiting = $changes->where('status', ContractChangeStatus::waitingPeriodEnd);
+        Log::debug('apply', [$changes->toArray(), 'test']);
 
-    /**
-     * Handle the event.
-     *
-     * @param  object  $event
-     * @return void
-     */
-    public function handle(BillingPeriodEnded $event)
-    {
-        $changes = $event->contract->contractChanges;
-
-        $count = $changes
-            ->where('status', ContractChangeStatus::waitingPeriodEnd->value)
-            ->count();
-
-        if ($count === 0) {
+        if ($waiting->isEmpty()) {
             return;
         }
 
         $prevContractChange = $changes
-            ->where('status', ContractChangeStatus::actual->value)
+            ->where('status', ContractChangeStatus::actual)
             ->first();
         $newContractChange = $changes
-            ->where('status', ContractChangeStatus::waitingPeriodEnd->value)
+            ->where('status', ContractChangeStatus::waitingPeriodEnd)
             ->first();
-
-        $prevContractChange->update(['status' => ContractChangeStatus::past->value]);
+        Log::debug('test2');
+        $prevContractChange->update(['status' => ContractChangeStatus::past]);
         $newContractChange->update([
-            'status' => ContractChangeStatus::actual->value,
-            'starts_at' => now(),
+            'status' => ContractChangeStatus::actual,
+            'starts_at' => $event->contract->paid_at->addMonths($event->contract->duration()),
+            //TODO blink
+            // 'starts_at' => now(),
+
         ]);
 
-        $event->contract->update([
+        $contract->update([
             'amount' => $newContractChange->amount,
             'tariff_id' => $newContractChange->tariff_id,
         ]);
+        Log::debug('контракт обновлен', [$newContractChange->tariff_id]);
     }
 }
