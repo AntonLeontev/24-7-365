@@ -14,6 +14,7 @@ use App\Events\PaymentReceived;
 use App\Events\PaymentSent;
 use App\Events\UserBlocked;
 use App\Events\UserUnblocked;
+use App\Listeners\AccrueAdditionalProfitability;
 use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
@@ -21,8 +22,10 @@ use App\Listeners\ContractChangeManager;
 use App\Listeners\CreateProfitability;
 use App\Listeners\DebetPaymentManager;
 use App\Listeners\DeletePendingCreditPayments;
+use App\Listeners\FinishContract;
 use App\Listeners\GenerateCreditPayments;
 use App\Listeners\IncreaseContractChangeDuration;
+use App\Listeners\Prolongate;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
 use Illuminate\Auth\Events\Registered;
@@ -85,7 +88,10 @@ class EventServiceProvider extends ServiceProvider
         BillingPeriodEnded::class => [
             IncreaseContractChangeDuration::class,
             CreateProfitability::class,
+			AccrueAdditionalProfitability::class,
             ApplyContractChanges::class,
+			Prolongate::class,
+			FinishContract::class,
         ],
     ];
 

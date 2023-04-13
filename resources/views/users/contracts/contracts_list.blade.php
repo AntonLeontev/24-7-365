@@ -52,7 +52,23 @@
 							</div>
 							<div class="col">{{ $contract->tariff->title }}</div>
 							<div class="col">{{ $contract->amount }}</div>
-							<div class="col">{{ $contract->status->getName() }}</div>
+							<div class="col">
+								@if (
+									$contract->paid_at &&
+									$contract->prolongate && 
+									$contract->end()->subMonths(2)->lessThanOrEqualTo($contract->paid_at->addMonths($contract->duration()))
+								)
+									<button 
+										class="btn btn-link ps-0"
+										data-bs-toggle="modal" 
+										data-bs-target="#contract_prolongation{{ $contract->id }}" 
+									>
+										Автопродление
+									</button> 
+								@else
+									{{ $contract->status->getName() }}
+								@endif
+							</div>
 						</x-common.tables.dark.row>
 					@endforeach
 				</x-common.tables.dark>                        
@@ -73,5 +89,28 @@
 			<a class="btn btn-outline-primary w-100" href="{{ route('payments.for_user') }}">График платежей</a>
 		</div>
 	</div>
+
+	@foreach ($contracts as $contract)
+		@if(
+			$contract->paid_at &&
+			$contract->prolongate && 
+			$contract->end()->subMonths(2)->lessThanOrEqualTo($contract->paid_at->addMonths($contract->duration()))
+		)
+		<x-common.modal modalTitle="Продлить договор" id="contract_prolongation{{ $contract->id }}">
+			<p>
+				{{ $contract->end()->translatedFormat('d F Y г.') }} договор будет автоматически продлен на тех же условиях. Будет выплачена только доходность.
+			</p>
+			<p>
+				Можно отменить автоматическое продление
+			</p>
+			<div class="d-flex flex-nowrap gap-3">
+				<div class="btn-primary btn w-50">Продлить автоматически</div>
+				<a class="btn-outline-primary btn w-50" href="{{ route('contracts.cancel.prolongation', $contract->id) }}">
+					Отменить продление
+				</a>
+			</div>
+		</x-common.modal>
+		@endif
+	@endforeach
 
 @endsection

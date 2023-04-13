@@ -30,7 +30,7 @@
                     <x-contract.property value="{{ $contract->tariff->duration }} мес." label="Срок" />
                     <x-contract.property value="{{ $contract->paid_at?->translatedFormat('d M Y') }}" label="Начало" />
                     <x-contract.property
-                        value="{{ $contract->paid_at?->addMonths($contract->tariff->duration)->translatedFormat('d M Y') }}"
+                        value="{{ $contract->end()?->translatedFormat('d M Y') }}"
                         label="Завершение" />
                 </div>
             </div>
@@ -155,8 +155,9 @@
 			</div>
 			<div class="card-body">
 
-				<a class="btn btn-outline-danger" href="{{ route('pay-in', $contract->id) }}">Pay-in</a>
-				<a class="btn btn-outline-danger" href="{{ route('period', $contract->id) }}">Period</a>
+				<a class="btn btn-outline-primary" href="{{ route('pay-in', $contract->id) }}">Pay-in</a>
+				<a class="btn btn-outline-primary" href="{{ route('period', $contract->id) }}">Period</a>
+				<a class="btn btn-outline-primary" href="{{ route('pay-out', $contract->id) }}">Pay out</a>
 			</div>
 		</div>
 	@endif
@@ -164,7 +165,7 @@
     <div class="card mb-4">
         <div class="card-header">График выплат по договору</div>
         <div class="card-body">
-            @if ($operations->count() > 0)
+            @isset ($operations)
                 <x-common.tables.yellow class="mb-4">
                     <x-slot:header>
                         <div class="col">Дата</div>
@@ -177,11 +178,11 @@
                         @if ($operation instanceof App\Models\Profitability)
                             <x-common.tables.yellow.row>
                                 <div class="col">{{ $operation->accrued_at->translatedFormat('d F Y') }}</div>
-                                <div class="col">{{ $contract->amountOnDate($operation->accrued_at) }}</div>
+                                <div class="col">{{ $contract->amountOnDate($operation->accrued_at->subDay()) }}</div>
                                 <div class="col">+{{ $operation->amount }}</div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
                                     @if ($operation->payment->planned_at->equalTo($operation->accrued_at))
-                                        @if ($operation->payment->status === 'processed')
+                                        @if ($operation->payment->status === payment_status('processed'))
                                             <svg width="17" height="12" viewBox="0 0 17 12" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -198,10 +199,10 @@
                         @elseif ($operation instanceof App\Models\Payment)
                             <x-common.tables.yellow.row>
                                 <div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
-                                <div class="col">{{ $contract->amountOnDate($operation->planned_at) }}</div>
+                                <div class="col">{{ $contract->amountOnDate($operation->planned_at->subDay()) }}</div>
                                 <div class="col"></div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
-                                    @if ($operation->status->value === 'processed')
+                                    @if ($operation->status === payment_status('processed'))
                                         <svg width="17" height="12" viewBox="0 0 17 12" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path

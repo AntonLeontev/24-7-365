@@ -29,6 +29,7 @@ class Contract extends Model
         'amount',
         'status',
         'paid_at',
+		'prolongate'
     ];
 
     protected $dates = [
@@ -39,6 +40,7 @@ class Contract extends Model
         'amount' => AmountCast::class,
         'paid_at' => 'date:d m Y',
         'status' => ContractStatus::class,
+		'prolongate' => 'boolean',
     ];
 
 
@@ -81,6 +83,15 @@ class Contract extends Model
         return $this->paid_at->addMonths($this->duration() + 1);
     }
 
+    public function end(): ?Carbon
+    {
+        if (is_null($this->paid_at)) {
+            return null;
+        }
+
+        return $this->payments->where('type', payment_type('credit'))->last()?->planned_at;
+    }
+
     public function income(): int
     {
         return $this->paymentsSum(PaymentType::debet);
@@ -98,7 +109,7 @@ class Contract extends Model
 
     public function isChanging(): bool
     {
-        if ($this->status->value !== ContractStatus::active->value) {
+        if ($this->status !== ContractStatus::active) {
             return false;
         }
         
@@ -114,13 +125,21 @@ class Contract extends Model
             }
 
             if (
-                $change->starts_at->greaterThan($date) &&
-                $change->starts_at->addMonths($change->duration)->lessThan($date)
+                $change->starts_at->lessThan($date) &&
+                $change->starts_at->addMonths($change->duration)->greaterThan($date)
             ) {
                 return $change->amount;
             }
         }
 
+        if ($this->periodEnd()->greaterThan($date)) {
+            return $this->amount;
+        }
+
+        if ($this->contractChanges->last()->status === ContractChangeStatus::waitingPeriodEnd) {
+            return $this->contractChanges->last()->amount;
+        }
+        
         return $this->amount;
     }
 
