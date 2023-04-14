@@ -10,26 +10,10 @@
     <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/landing.scss', 'resources/js/app.js'])
 	@yield('scripts')
 </head>
 <body>
-
-
-
-	
-	
-	<div class="container-fluid">
-    	<div class="row">
-    	
-    	    <main class="col mt-4 px-xxl-5">
-    		@yield('content')
-    		</main>
-    		
-    		
-    	</div>
-	</div>	
-		
-	
+	@yield('content')
 </body>
 </html>
