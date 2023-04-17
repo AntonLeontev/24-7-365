@@ -1200,6 +1200,7 @@
 
     <div class="offer" id="offer">
         <div class="stripe__primary"></div>
+		<div class="offer__background"></div>
         <div class="offer__content-wrap">
             <div class="container-xxl">
                 <div class="offer__content">
@@ -1246,7 +1247,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="charge">
         <div class="container-xxl">
@@ -1357,46 +1357,78 @@
 
     <div class="tariffs" id="tariffs">
         <div class="container-xxl">
-            <div class="tariffs__description">
-                <h2 class="title tariffs__title">Наши <span class="text-primary">Тарифы</span>:</h2>
-                <p class="text tariffs__text">Если вы предоставите свободные средства, все остальное (выбор товаров,
-                    поставщиков, закупка товаров, логистика, продажи и др.) сделаем мы!</p>
-                <p class="text tariffs__text">Полученную в итоге доходность поделим так, чтобы Ваша доходность всегда была
-                    не ниже Ваших ожиданий.</p>
-            </div>
-            <div class="tariffs__slider">
-                <div class="slider__card">
-                    <div class="card__title">Тариф «Standart»</div>
-                    <div class="card__body">
-                        <div class="card__percent">
-                            <p class="card__text">от <span class="percent-primary">25%</span></p>
-                            <p class="card__text">доходности за год</p>
-                        </div>
-                        <div class="card__table">
-                            <div class="card__row">
-                                <span class="row__title">Объём вклада</span>
-                                <span class="row__value">от 500 000 р</span>
-                            </div>
-                            <div class="card__row">
-                                <span class="row__title">Cрок размещения</span>
-                                <span class="row__value">от 3 до 9 мес.</span>
-                            </div>
-                            <div class="card__row">
-                                <span class="row__title">Тело вклада</span>
-                                <span class="row__value">в конце срока</span>
-                            </div>
-                            <div class="card__row">
-                                <span class="row__title">Доходность</span>
-                                <span class="row__value">ежемесячно</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <a class="btn btn-outline-primary w-100" href="">Стать партнёром</a>
+			<div class="tariffs__content">
+				<div class="tariffs__description">
+					<h2 class="title tariffs__title">Наши <span class="text-primary">Тарифы</span>:</h2>
+					<p class="text tariffs__text">Если вы предоставите свободные средства, все остальное (выбор товаров,
+						поставщиков, закупка товаров, логистика, продажи и др.) сделаем мы!</p>
+					<p class="text tariffs__text">Полученную в итоге доходность поделим так, чтобы Ваша доходность всегда была
+						не ниже Ваших ожиданий.</p>
+					<a class="btn btn-outline-primary tariffs__button_desc" href="{{ route('register') }}">Стать партнёром</a>
+				</div>
+
+				<div class="tariffs__slider">
+					<div class="slider__card">
+						<div class="card__title">Тариф «Standart»</div>
+						<div class="card__body">
+							<div class="card__percent">
+								<p class="card__text">от <span class="percent-primary">25%</span></p>
+								<p class="card__text">доходности за год</p>
+							</div>
+							<div class="card__table">
+								<div class="card__row">
+									<span class="row__title">Объём вклада</span>
+									<span class="row__value">от 500 000 р</span>
+								</div>
+								<div class="card__row">
+									<span class="row__title">Cрок размещения</span>
+									<span class="row__value">от 3 до 9 мес.</span>
+								</div>
+								<div class="card__row">
+									<span class="row__title">Тело вклада</span>
+									<span class="row__value">в конце срока</span>
+								</div>
+								<div class="card__row">
+									<span class="row__title">Доходность</span>
+									<span class="row__value">ежемесячно</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="slider__card">
+						<div class="card__title">Тариф «Standart»</div>
+						<div class="card__body">
+							<div class="card__percent">
+								<p class="card__text">от <span class="percent-primary">25%</span></p>
+								<p class="card__text">доходности за год</p>
+							</div>
+							<div class="card__table">
+								<div class="card__row">
+									<span class="row__title">Объём вклада</span>
+									<span class="row__value">от 500 000 р</span>
+								</div>
+								<div class="card__row">
+									<span class="row__title">Cрок размещения</span>
+									<span class="row__value">от 3 до 9 мес.</span>
+								</div>
+								<div class="card__row">
+									<span class="row__title">Тело вклада</span>
+									<span class="row__value">в конце срока</span>
+								</div>
+								<div class="card__row">
+									<span class="row__title">Доходность</span>
+									<span class="row__value">ежемесячно</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<a class="btn btn-outline-primary tariffs__button_mobile" href="{{ route('register') }}">Стать партнёром</a>
+			</div>
         </div>
     </div>
-
 
     <div class="roadmap">
         <div class="container-xxl">
@@ -1460,44 +1492,43 @@
                         </div>
                     </div>
                 </div>
+
+				<div class="roadmap__image">
+					<picture>
+						<source srcset="{{ Vite::asset('resources/images/roadmap-xl.webp') }}" media="(min-width: 1200px)">
+						<source srcset="{{ Vite::asset('resources/images/roadmap-md.webp') }}" media="(min-width: 768px)">
+						<source srcset="{{ Vite::asset('resources/images/roadmap-sm.webp') }}">
+						<img class="img-fluid" src="{{ Vite::asset('resources/images/roadmap-xl.png') }}"
+							alt="roadmap image">
+					</picture>
+				</div>
             </div>
         </div>
 
-        <div class="roadmap__image">
-            <picture>
-                <source srcset="{{ Vite::asset('resources/images/roadmap-xl.webp') }}" media="(min-width: 992px)">
-                <source srcset="{{ Vite::asset('resources/images/roadmap-md.webp') }}" media="(min-width: 480px)">
-                <source srcset="{{ Vite::asset('resources/images/roadmap-sm.webp') }}">
-                <img class="img-fluid" src="{{ Vite::asset('resources/images/roadmap-xl.png') }}"
-                    alt="roadmap image">
-            </picture>
-        </div>
 
         <div class="stripe__primary stripe__primary_horizontal"></div>
     </div>
 
-
     <div class="why" id="why">
         <div class="stripe__primary"></div>
-        <div class="why__content">
-            <div class="container-xxl">
-                <div class="title why__title">
-                    <span class="text-primary">Почему схема</span> True Trade Deal <span
-                        class="text-primary">выгоднее</span> собственного магазина?
-                </div>
-                <p class="text why__text">
-                    Многие начинающие предприниматели мечтают о собственном магазине. Вроде бы открыть товарный бизнес
-                    сейчас достаточно просто, необходимо лишь зарегистрировать ИП, закупить товар и продавать его на Ozon,
-                    Wildberries, Яндекс. Маркете или любой другой онлайн-площадке.
-                </p>
-                <p class="text why__text">
-                    Однако эта простая схема содержит много подводных камней, которые, как снежный ком, обрушиваются на
-                    голову начинающего бизнесмена. И вот через пару месяцев мы получаем разочарованного человека, который
-                    остался без денег, но с кучей неликвидного товара на руках. Знакомая ситуация?
-                </p>
-                <a class="btn btn-primary why__button" href="{{ route('register') }}">Начать зарабатывать</a>
-            </div>
-        </div>
+		<div class="why__background"></div>
+		<div class="container-xxl">
+			<div class="title why__title">
+				<span class="text-primary">Почему схема</span> True Trade Deal <span
+					class="text-primary">выгоднее</span> собственного магазина?
+			</div>
+			<p class="text why__text">
+				Многие начинающие предприниматели мечтают о собственном магазине. Вроде бы открыть товарный бизнес
+				сейчас достаточно просто, необходимо лишь зарегистрировать ИП, закупить товар и продавать его на Ozon,
+				Wildberries, Яндекс. Маркете или любой другой онлайн-площадке.
+			</p>
+			<p class="text why__text">
+				Однако эта простая схема содержит много подводных камней, которые, как снежный ком, обрушиваются на
+				голову начинающего бизнесмена. И вот через пару месяцев мы получаем разочарованного человека, который
+				остался без денег, но с кучей неликвидного товара на руках. Знакомая ситуация?
+			</p>
+			<a class="btn btn-primary why__button" href="{{ route('register') }}">Начать зарабатывать</a>
+		</div>
     </div>
 
     <div class="howitworks" id="howitworks">
@@ -1556,19 +1587,28 @@
             <h2 class="title watch__title"><span class="text-primary">Вы можете</span> следить за всем</h2>
             <p class="text watch__text">Как Вы можете контролировать результаты нашего с Вами сотрудничества:</p>
             <div class="watch__cards">
-                <div class="card card_text">Как только Договор и выбранное Вами Приложение вступило в законную силу, в
-                    Вашем личном кабинете сразу же появится график выплат Вашей ожидаемой доходности и возврата 100% объема
-                    предоставленных нам ваших средств.</div>
-                <div class="card card_text">
-                    Со временем, те выплаты вашей доходности, которые мы произведем, будут отмечаться жёлтой галочкой
-                    (исполнено!).
+                <div class="card">
+					<span class="card__text">
+						Как только Договор и выбранное Вами Приложение вступило в законную силу, в
+						Вашем личном кабинете сразу же появится график выплат Вашей ожидаемой доходности и возврата 100% объема
+						предоставленных нам ваших средств.
+					</span>
+					</div>
+                <div class="card">
+					<span class="card__text">
+						Со временем, те выплаты вашей доходности, которые мы произведем, будут отмечаться жёлтой галочкой (исполнено!).
+					</span>
                 </div>
-                <div class="card card_text">
-                    Те выплаты Вашей доходности, которые еще только предстоит исполнить, будут не будут ничем отмечены.
+                <div class="card">
+					<span class="card__text">
+						Те выплаты Вашей доходности, которые еще только предстоит исполнить, будут не будут ничем отмечены.
+					</span>
                 </div>
-                <div class="card card_text">
-                    Таким образом, у Вас будет возможность четко контролировать исполнение обязательств нашей стороны (что
-                    называется, в онлайн режиме).
+                <div class="card">
+					<span class="card__text">
+						Таким образом, у Вас будет возможность четко контролировать исполнение обязательств нашей стороны (что
+						называется, в онлайн режиме).
+					</span>
                 </div>
             </div>
         </div>
@@ -1578,134 +1618,139 @@
         <div class="container-xxl">
             <div class="title faq__title"><span class="text-primary">ответы</span> на частые вопросы</div>
             <div class="faq__questions">
-                <div class="question">
-                    <div class="question__title">
-                        Как мы выбираем наиболее актуальные товары для последующей продажи?
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="question__answer">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
-                        neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
-                        officia nulla.
-                    </div>
-                </div>
-                <div class="question question_active">
-                    <div class="question__title">
-                        Как мы решаем вопросы поставки товаров на наш склад в Москве?
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="question__answer">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
-                        neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
-                        officia nulla.
-                    </div>
-                </div>
-                <div class="question">
-                    <div class="question__title">
-                        Как мы отбираем поставщиков?
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="question__answer">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
-                        neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
-                        officia nulla.
-                    </div>
-                </div>
-                <div class="question">
-                    <div class="question__title">
-                        Какой у нас опыт работы в данной области?
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="question__answer">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
-                        neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
-                        officia nulla.
-                    </div>
-                </div>
-                <div class="question">
-                    <div class="question__title">
-                        Как мы определяем ценообразование товаров, которые мы продаем в розницу?
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="question__answer">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
-                        neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
-                        officia nulla.
-                    </div>
-                </div>
-                <div class="question">
-                    <div class="question__title">
-                        На каких условиях мы продаем наши товары через Ozon, WB и Яндекс-Маркет?
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="question__answer">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
-                        neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
-                        officia nulla.
-                    </div>
-                </div>
-                <div class="question">
-                    <div class="question__title">
-                        Как мы добиваемся быстрых продаж через Ozon, WB и Яндекс-Маркет?
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="question__answer">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
-                        neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
-                        officia nulla.
-                    </div>
-                </div>
-                <div class="question">
-                    <div class="question__title">
-                        Какие риски мы видим в нашей работе и как мы эти риски нивелируем?
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="question__answer">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
-                        neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
-                        officia nulla.
-                    </div>
-                </div>
+				<div class="left">
+					<div class="question">
+						<div class="question__title">
+							Как мы выбираем наиболее актуальные товары для последующей продажи?
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
+									fill="white" />
+							</svg>
+						</div>
+						<div class="question__answer">
+							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
+							neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
+							officia nulla.
+						</div>
+					</div>
+					<div class="question">
+						<div class="question__title">
+							Как мы решаем вопросы поставки товаров на наш склад в Москве?
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
+									fill="white" />
+							</svg>
+						</div>
+						<div class="question__answer">
+							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
+							neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
+							officia nulla.
+						</div>
+					</div>
+					<div class="question">
+						<div class="question__title">
+							Как мы отбираем поставщиков?
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
+									fill="white" />
+							</svg>
+						</div>
+						<div class="question__answer">
+							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
+							neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
+							officia nulla.
+						</div>
+					</div>
+					<div class="question">
+						<div class="question__title">
+							Какие риски мы видим в нашей работе и как мы эти риски нивелируем?
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
+									fill="white" />
+							</svg>
+						</div>
+						<div class="question__answer">
+							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
+							neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
+							officia nulla.
+						</div>
+					</div>
+				</div>
+				<div class="right">
+					<div class="question">
+						<div class="question__title">
+							Как мы определяем ценообразование товаров, которые мы продаем в розницу?
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
+									fill="white" />
+							</svg>
+						</div>
+						<div class="question__answer">
+							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
+							neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
+							officia nulla.
+						</div>
+					</div>
+					<div class="question">
+						<div class="question__title">
+							На каких условиях мы продаем наши товары через Ozon, WB и Яндекс-Маркет?
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
+									fill="white" />
+							</svg>
+						</div>
+						<div class="question__answer">
+							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
+							neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
+							officia nulla.
+						</div>
+					</div>
+					<div class="question">
+						<div class="question__title">
+							Как мы добиваемся быстрых продаж через Ozon, WB и Яндекс-Маркет?
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
+									fill="white" />
+							</svg>
+						</div>
+						<div class="question__answer">
+							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
+							neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
+							officia nulla.
+						</div>
+					</div>
+					<div class="question">
+						<div class="question__title">
+							Какой у нас опыт работы в данной области?
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
+									fill="white" />
+							</svg>
+						</div>
+						<div class="question__answer">
+							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis! Officiis
+							neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque aperiam,
+							officia nulla.
+						</div>
+					</div>
+					
+				</div>
             </div>
         </div>
         <div class="stripe__primary stripe__primary_horizontal"></div>
@@ -1713,8 +1758,9 @@
 
     <div class="whatyouget" id="whatyouget">
         <div class="stripe__primary"></div>
-        <div class="whatyouget__content">
-            <div class="container-xxl">
+		<div class="whatyouget__background"></div>
+		<div class="container-xxl">
+			<div class="whatyouget__content">
                 <div class="whatyouget__left">
                     <div class="title whatyouget__title">Что <span class="text-primary">вы получаете</span> в итоге
                     </div>
