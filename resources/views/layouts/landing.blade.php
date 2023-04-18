@@ -10,7 +10,9 @@
     <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    @vite(['resources/sass/landing.scss', 'resources/js/app.js'])
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/slick.min.js"></script>
+    @vite(['resources/sass/landing.scss', 'resources/js/landing.js'])
 	@yield('scripts')
 </head>
 <body>
