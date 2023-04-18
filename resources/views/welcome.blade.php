@@ -3,7 +3,7 @@
 @section('title', 'Главная')
 
 @section('content')
-
+<div id="app">
     <header class="header">
         <div class="container-xxl header__content">
             <div class="header__menu-button">
@@ -24,13 +24,27 @@
 
             </div>
 
-            <ul class="header__nav">
-                <li class="nav__item nav__item_active"><a class="nav__link" href="#offer">Наше предложение</a></li>
-                <li class="nav__item"><a class="nav__link" href="#tariffs">Тарифы</a></li>
-                <li class="nav__item"><a class="nav__link" href="#howitworks">Как это работает?</a></li>
-                <li class="nav__item"><a class="nav__link" href="#faq">Вопросы</a></li>
-                <li class="nav__item"><a class="nav__link" href="#whatyouget">Вы получаете</a></li>
-            </ul>
+			<div class="header__nav-wrap">
+				<ul class="header__nav" id="nav-desk">
+					<div class="nav-desk__marker"></div>
+
+					<li class="nav__item" data-anchor="offer">
+						<a class="nav__link" href="#offer">Наше предложение</a>
+					</li>
+					<li class="nav__item" data-anchor="tariffs">
+						<a class="nav__link" href="#tariffs">Тарифы</a>
+					</li>
+					<li class="nav__item" data-anchor="howitworks">
+						<a class="nav__link" href="#howitworks">Как это работает?</a>
+					</li>
+					<li class="nav__item" data-anchor="faq">
+						<a class="nav__link" href="#faq">Вопросы</a>
+					</li>
+					<li class="nav__item" data-anchor="whatyouget">
+						<a class="nav__link" href="#whatyouget">Вы получаете</a>
+					</li>
+				</ul>
+			</div>
 
             <div class="header__auth">
                 <a class="btn flex-center auth-button" href="{{ route('login') }}">
@@ -73,7 +87,9 @@
         <div class="mobile-menu" id="mobile-menu" data-mdb-hidden="false">
             <div class="top-mobile-header">
                 <div class="header__logo">
-                    <img src="{{ Vite::asset('resources/images/logo.png') }}" alt="Logo">
+					<a href="#">
+						<img src="{{ Vite::asset('resources/images/logo.png') }}" alt="Logo">
+					</a>
                 </div>
                 <a class="top-mobile-header_close" data-bs-toggle="offcanvas" href="#mobile-menu" role="button"
                     aria-controls="mobile-menu">
@@ -1133,14 +1149,23 @@
                 </a>
             </div>
             <div class="menu__wrap">
-                <ul class="menu__list">
-                    <li class="menu__item">
-                        <a class="menu__link" href="#offer">Наше предложение</a>
+                <ul class="nav__list" id="nav-mobile">
+					<div class="nav-mobile__marker"></div>
+
+                    <li class="nav__item" data-anchor="offer">
+                        <a class="nav__link" href="#offer">Наше предложение</a>
                     </li>
-                    <li class="menu__item"><a class="menu__link" href="#tariffs">Тарифы</a></li>
-                    <li class="menu__item"><a class="menu__link" href="#howitworks">Как это работает?</a></li>
-                    <li class="menu__item"><a class="menu__link" href="#faq">Вопросы</a></li>
-                    <li class="menu__item menu__item_active"><a class="menu__link" href="#whatyouget">Вы получаете</a>
+                    <li class="nav__item" data-anchor="tariffs">
+						<a class="nav__link" href="#tariffs">Тарифы</a>
+					</li>
+                    <li class="nav__item" data-anchor="howitworks">
+						<a class="nav__link" href="#howitworks">Как это работает?</a>
+					</li>
+                    <li class="nav__item" data-anchor="faq">
+						<a class="nav__link" href="#faq">Вопросы</a>
+					</li>
+                    <li class="nav__item" data-anchor="whatyouget">
+						<a class="nav__link" href="#whatyouget">Вы получаете</a>
                     </li>
                 </ul>
 
@@ -1198,7 +1223,8 @@
         <div class="yellow-stripe"></div>
     </div>
 
-    <div class="offer" id="offer">
+    <div class="offer">
+		<div class="anchor" id="offer"></div>
         <div class="stripe__primary"></div>
 		<div class="offer__background"></div>
         <div class="offer__content-wrap">
@@ -1355,7 +1381,8 @@
         <div class="stripe__primary stripe__primary_horizontal"></div>
     </div>
 
-    <div class="tariffs" id="tariffs">
+    <div class="tariffs">
+		<div class="anchor" id="tariffs"></div>
         <div class="container-xxl">
 			<div class="tariffs__content">
 				<div class="tariffs__description">
@@ -1368,60 +1395,52 @@
 				</div>
 
 				<div class="tariffs__slider">
-					<div class="slider__card">
-						<div class="card__title">Тариф «Standart»</div>
-						<div class="card__body">
-							<div class="card__percent">
-								<p class="card__text">от <span class="percent-primary">25%</span></p>
-								<p class="card__text">доходности за год</p>
-							</div>
-							<div class="card__table">
-								<div class="card__row">
-									<span class="row__title">Объём вклада</span>
-									<span class="row__value">от 500 000 р</span>
-								</div>
-								<div class="card__row">
-									<span class="row__title">Cрок размещения</span>
-									<span class="row__value">от 3 до 9 мес.</span>
-								</div>
-								<div class="card__row">
-									<span class="row__title">Тело вклада</span>
-									<span class="row__value">в конце срока</span>
-								</div>
-								<div class="card__row">
-									<span class="row__title">Доходность</span>
-									<span class="row__value">ежемесячно</span>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="slider__card">
-						<div class="card__title">Тариф «Standart»</div>
-						<div class="card__body">
-							<div class="card__percent">
-								<p class="card__text">от <span class="percent-primary">25%</span></p>
-								<p class="card__text">доходности за год</p>
-							</div>
-							<div class="card__table">
-								<div class="card__row">
-									<span class="row__title">Объём вклада</span>
-									<span class="row__value">от 500 000 р</span>
-								</div>
-								<div class="card__row">
-									<span class="row__title">Cрок размещения</span>
-									<span class="row__value">от 3 до 9 мес.</span>
-								</div>
-								<div class="card__row">
-									<span class="row__title">Тело вклада</span>
-									<span class="row__value">в конце срока</span>
-								</div>
-								<div class="card__row">
-									<span class="row__title">Доходность</span>
-									<span class="row__value">ежемесячно</span>
+					<div id="slider">
+						@foreach (tariffs() as $tariffGroup)
+							<div class="slider__card">
+								<div class="card__title">«{{ $tariffGroup->first()->title }}»</div>
+								<div class="card__body">
+									<div class="card__percent">
+										<p class="card__text">
+											от <span class="percent-primary">{{ $tariffGroup->first()->annual_rate }}%</span>
+										</p>
+										<p class="card__text">доходности за год</p>
+									</div>
+									<div class="card__table">
+										<div class="card__row">
+											<span class="row__title">Объём вклада</span>
+											<span class="row__value">от {{ $tariffGroup->first()->min_amount->format(0) }}</span>
+										</div>
+										<div class="card__row">
+											<span class="row__title">Cрок</span>
+											<span class="row__value">
+												от {{ $tariffGroup->first()->duration }} до {{ $tariffGroup->last()->duration }} мес.
+											</span>
+										</div>
+										<div class="card__row">
+											<span class="row__title">Тело вклада</span>
+											<span class="row__value">
+												@if ($tariffGroup->first()->getting_deposit === $tariffGroup->first()::MONTHLY)
+													ежемесячно
+												@else
+													в конце срока
+												@endif
+											</span>
+										</div>
+										<div class="card__row">
+											<span class="row__title">Доходность</span>
+											<span class="row__value">
+												@if ($tariffGroup->first()->getting_profit === $tariffGroup->first()::MONTHLY)
+													ежемесячно
+												@else
+													в конце срока
+												@endif
+											</span>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
+						@endforeach
 					</div>
 				</div>
 
@@ -1531,7 +1550,8 @@
 		</div>
     </div>
 
-    <div class="howitworks" id="howitworks">
+    <div class="howitworks">
+		<div class="anchor" id="howitworks"></div>
         <div class="container-xxl">
             <h2 class="title howitworks__title">Как <span class="text-primary">это работает</span>?</h2>
             <p class="text howitworks__text">
@@ -1614,7 +1634,8 @@
         </div>
     </div>
 
-    <div class="faq" id="faq">
+    <div class="faq">
+		<div class="anchor" id="faq"></div>
         <div class="container-xxl">
             <div class="title faq__title"><span class="text-primary">ответы</span> на частые вопросы</div>
             <div class="faq__questions">
@@ -1756,7 +1777,8 @@
         <div class="stripe__primary stripe__primary_horizontal"></div>
     </div>
 
-    <div class="whatyouget" id="whatyouget">
+    <div class="whatyouget">
+		<div class="anchor" id="whatyouget"></div>
         <div class="stripe__primary"></div>
 		<div class="whatyouget__background"></div>
 		<div class="container-xxl">
@@ -1902,4 +1924,5 @@
             </div>
         </div>
     </footer>
+</div>
 @endsection

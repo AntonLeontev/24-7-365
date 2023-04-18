@@ -45,7 +45,7 @@ if (! function_exists('tariffs')) {
     function tariffs()
     {
         return cache()->rememberForever('tariffs', function () {
-            return Tariff::where('is_active', true)->get()->groupBy('title');
+            return Tariff::where('is_active', true)->orderBy('annual_rate')->get()->groupBy('title');
         });
     }
 }

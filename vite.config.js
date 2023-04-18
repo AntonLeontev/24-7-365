@@ -7,7 +7,16 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/sass/app.scss',
+                'resources/sass/landing.scss',
                 'resources/js/app.js',
+                'resources/js/landing.js',
+                'resources/js/agree.js',
+                'resources/js/calculator.js',
+                'resources/js/userProfile.js',
+                'resources/js/editContract.js',
+                'resources/js/newContract.js',
+                'resources/js/settings.js',
+                'resources/js/users.js',
             ],
             refresh: true,
         }),
