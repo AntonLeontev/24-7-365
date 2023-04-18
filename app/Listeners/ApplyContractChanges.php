@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Enums\ContractChangeStatus;
 use App\Events\BillingPeriodEnded;
+use Illuminate\Support\Facades\Log;
 
 class ApplyContractChanges
 {
@@ -27,7 +28,6 @@ class ApplyContractChanges
         $newContractChange = $changes
             ->where('status', ContractChangeStatus::waitingPeriodEnd)
             ->first();
-
         $prevContractChange->update(['status' => ContractChangeStatus::past]);
         $newContractChange->update([
             'status' => ContractChangeStatus::actual,
@@ -41,5 +41,6 @@ class ApplyContractChanges
             'amount' => $newContractChange->amount,
             'tariff_id' => $newContractChange->tariff_id,
         ]);
+        Log::debug('контракт обновлен', [$newContractChange->tariff_id]);
     }
 }
