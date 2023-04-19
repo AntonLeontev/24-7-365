@@ -49,16 +49,21 @@ export default {
 <style lang="scss" scoped>
 .property {
   position: relative;
-  padding-left: 46px;
+  padding-left: 30px;
+
+  @media (min-width: 1700px) {
+    padding-left: 48px;
+  }
 
   &::before {
-    content: "";
+    content: url("data:image/svg+xml,%3Csvg width='10' height='7' viewBox='0 0 10 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 3.16103L1.17907 2.02009L3.95884 4.71569L8.82093 0L10 1.14337L3.95884 7L0 3.16103Z' fill='%23FCE301'/%3E%3C/svg%3E");
     position: absolute;
-    left: 24px;
-    top: 9px;
-    width: 16px;
-    height: 2px;
-    background-color: #fce301;
+    left: 15px;
+    top: -1px;
+
+    @media (min-width: 1700px) {
+      left: 26px;
+    }
   }
 }
 </style>

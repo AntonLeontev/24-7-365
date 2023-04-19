@@ -2,4 +2,5 @@
 
 @section('title', __('Not Found'))
 @section('code', '404')
-@section('message', __('Not Found'))
+@section('message', 'Страница не найдена')
+@section('text', 'Возможно страница удалена или перенесена')
