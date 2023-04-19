@@ -1217,8 +1217,10 @@
             </div>
         </div>
 
-        <div class="bg-image"></div>
-
+		<picture>
+			<source srcset="{{ Vite::asset('resources/images/firstscreen.webp') }}">
+			<img class="bg-image" src="{{ Vite::asset('resources/images/firstscreen.jpg') }}">
+		</picture>
 
         <div class="yellow-stripe"></div>
     </div>
