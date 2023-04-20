@@ -17,9 +17,14 @@
 
 .auth-box {
 	position: relative;
-	padding: 0 10px;
+	padding: 0 50px;
 	box-shadow: 8px 0px 32px rgba(0, 0, 0, 0.25);
 	width: 320px;
+
+	@include media-breakpoint-up(sm) {
+		width: 500px;
+		padding: 0 100px;
+	}
 
 	@include media-breakpoint-up(md) {
 		width: 600px;
@@ -33,6 +38,7 @@
 	&::before {
 		content: '';
 		position: absolute;
+		display: none;
 		top: 25%;
 		left: -24px;
 		height: 50%;
@@ -40,6 +46,10 @@
 		z-index: -1;
 		background-color: $primary;
 		box-shadow: 0px 0px 100px rgba(252, 227, 1, 0.25);
+
+		@include media-breakpoint-up(sm) {
+			display: block;
+		}
 	}
 }
 
@@ -59,22 +69,63 @@
 		height: 2px;
 		background-color: $primary;
 		box-shadow: 0px 0px 8px rgba(252, 227, 1, 0.5);
-		transition: all 0.3s ease;
+		transition: all 0.8s ease;
 	}
 }
 
 .auth-forms {
+	position: relative;
 	min-height: 380px;
 	display: flex;
 	align-items: center;
+	transform-style: preserve-3d;
+}
+
+.forms-container {
+	position: relative;
+  	width: 100%;
+  	display: flex;
+	align-items: center;
+	transition: all 1s ease;
+	transform-style: preserve-3d;
+	transform-origin: 50% 50% -110px;
+
+	@include media-breakpoint-up(sm) {
+		transform-origin: 50% 50% -150px;
+	}
+
+	@include media-breakpoint-up(md) {
+		transform-origin: 50% 50% -190px;
+	}
+}
+
+.forms-container_register {
+	transform: rotateY(-90deg);
 }
 
 .auth-form {
-	display: none;
+	display: block;
+	transition: all 0.8s;
+	flex-shrink: 0;
+	width: 100%;
+	opacity: 0;
 
 	&_active {
 		display: block;
+		opacity: 1;
 	}
+
+}
+
+.auth-form_login {
+	width: 100%;
+}
+
+.auth-form_register {
+	position: absolute;
+	left: 100%;
+	transform: rotateY(90deg);
+	transform-origin: left;
 }
 
 .auth-tab {

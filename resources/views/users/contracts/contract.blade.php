@@ -22,7 +22,7 @@
         <div class="card-body d-xl-flex flex-xl-row-reverse justify-content-between gap-4">
             <div class="d-flex flex-column flex-md-row justify-content-between gap-md-4 w-xl-66 mb-4 gap-0">
                 <div class="w-100">
-                    <x-contract.property value="{{ $contract->amount }}" label="Тело закупа" />
+                    <x-contract.property value="{{ $contract->amount->format(0) }}" label="Тело закупа" />
                     <x-contract.property value="{{ $contract->tariff->annual_rate }}%" label="Ставка в год" />
                     <x-contract.property value="{{ $contract->tariff->title }}" label="Тариф" />
                 </div>
@@ -178,7 +178,7 @@
                         @if ($operation instanceof App\Models\Profitability)
                             <x-common.tables.yellow.row>
                                 <div class="col">{{ $operation->accrued_at->translatedFormat('d F Y') }}</div>
-                                <div class="col">{{ $contract->amountOnDate($operation->accrued_at->subDay()) }}</div>
+                                <div class="col">{{ $contract->amountOnDate($operation->accrued_at->subDay())->format(0) }}</div>
                                 <div class="col">+{{ $operation->amount }}</div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
                                     @if ($operation->payment->planned_at->equalTo($operation->accrued_at))
@@ -199,7 +199,7 @@
                         @elseif ($operation instanceof App\Models\Payment)
                             <x-common.tables.yellow.row>
                                 <div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
-                                <div class="col">{{ $contract->amountOnDate($operation->planned_at->subDay()) }}</div>
+                                <div class="col">{{ $contract->amountOnDate($operation->planned_at->subDay())->format(0) }}</div>
                                 <div class="col"></div>
                                 <div class="col d-flex justify-content-center flex-nowrap gap-2">
                                     @if ($operation->status === payment_status('processed'))
