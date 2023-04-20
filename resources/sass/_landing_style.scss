@@ -40,42 +40,11 @@ body, body *, html {
 	color: $primary;
 	transition: all 0.3s;
 
-	&:hover {
-		background-color: #fce30118;
-		transform: translateY(-3px);
-	}
-}
-
-.btn-primary {
-	border: 1px $primary solid;
-	color: $dark;
-	background-color: $primary;
-	transition: all 0.3s;
-
-	&:hover {
-		background-color: #fce30118;
-		transform: translateY(-3px);
-	}
-}
-
-.btn-primary {
-	&:hover {
-		background-color: $primary !important;
-		box-shadow: $btn-box-shadow;
-		color: $dark;
-	}
-
-	&:disabled {
-		background-color: $light-grey !important;
-		border-color: $light-grey !important;
-		color: $dark-grey !important;
-	}
-}
-
-.btn-outline-primary {
-	&:hover {
-		background-color: rgba(252, 227, 1, 0.1) !important;
-		color: $primary !important;
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			background-color: rgba(252, 227, 1, 0.1) !important;
+			color: $primary !important;
+		}
 	}
 
 	&:disabled {
@@ -87,6 +56,27 @@ body, body *, html {
 	&:active {
 		background-color: rgba(252, 227, 1, 0.25) !important;
 		color: $primary !important;
+	}
+}
+
+.btn-primary {
+	border: 1px $primary solid;
+	color: $dark;
+	background-color: $primary;
+	transition: all 0.3s;
+
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			background-color: $primary !important;
+			box-shadow: $btn-box-shadow;
+			color: $dark;
+		}
+	}
+
+	&:disabled {
+		background-color: $light-grey !important;
+		border-color: $light-grey !important;
+		color: $dark-grey !important;
 	}
 }
 
