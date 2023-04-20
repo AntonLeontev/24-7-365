@@ -46,7 +46,7 @@ export default {
   created() {},
   data() {
     return {
-      amount: this.amountSaved ?? 1200000,
+      amount: this.amountSaved ?? 500000,
       errors: {},
     };
   },
@@ -54,7 +54,7 @@ export default {
     amountSaved: Number,
   },
   mounted() {
-    this.$refs.amount.value = this.amountSaved ?? 1200000;
+    this.$refs.amount.value = this.amountSaved ?? 500000;
     this.formatNumber();
   },
   methods: {

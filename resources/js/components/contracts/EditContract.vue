@@ -145,7 +145,7 @@ export default {
     validateAmount(event) {
       let amount = +event.target.value.replace(/\D/g, "");
 
-      if (amount < 1000 && amount !== 0) {
+      if (amount < 100000 && amount !== 0) {
         this.errors.addedAmount = "Сумма должна быть больше 1000";
         return;
       }

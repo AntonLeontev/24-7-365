@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       tariffId: null,
-      amount: 1000000,
+      amount: 500000,
       amountError: null,
       tariffBlocks: null,
     };
