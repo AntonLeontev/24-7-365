@@ -7,7 +7,6 @@ use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Events\ContractFinished;
 use App\Events\ContractTerminated;
-use App\Models\Payment;
 
 class CheckContractStatus
 {
@@ -30,20 +29,23 @@ class CheckContractStatus
     {
         $contract = $event->payment->contract;
 
+        $pendingCreditPayments = $contract->payments
+            ->where('type', PaymentType::credit)
+            ->where('status', PaymentStatus::pending);
+
         //Если договор Canceled то сделать Terminated
-        if ($contract->status->value === ContractStatus::canceled->value) {
-            $contract->updateOrFail(['status' => ContractStatus::terminated->value]);
+        if (
+            $contract->status === ContractStatus::canceled &&
+            $pendingCreditPayments->isEmpty()
+        ) {
+            $contract->updateOrFail(['status' => ContractStatus::terminated]);
             event(new ContractTerminated($contract));
             return;
         }
 
         //Если последняя выплата, то завершить
-        $pendingCreditPaymentsCount = $contract->payments->where('type', PaymentType::credit)
-            ->where('status', PaymentStatus::pending)
-            ->count();
-
-        if ($pendingCreditPaymentsCount === 0) {
-            $contract->updateOrFail(['status' => ContractStatus::finished->value]);
+        if ($pendingCreditPayments->isEmpty()) {
+            $contract->updateOrFail(['status' => ContractStatus::finished]);
             event(new ContractFinished($contract));
             return;
         }

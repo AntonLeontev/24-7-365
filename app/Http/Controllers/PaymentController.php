@@ -22,12 +22,17 @@ class PaymentController extends Controller
             ->where('type', PaymentType::credit)
             ->orderBy('planned_at')
             ->with('contract')
-            ->get();
+            ->get()
+            ->filter(function ($payment) {
+                $contract = $payment->contract->load('contractChanges');
+
+                return $payment->planned_at > $contract->paid_at->addMonths($contract->duration());
+            });
 
         $operations = $profitabilities->merge($payments)
             ->groupBy(function ($operation) {
                 if (isset($operation->planned_at)) {
-					return $operation->planned_at->format('Y-m');
+                    return $operation->planned_at->format('Y-m');
                 }
 
                 return $operation->accrued_at->format('Y-m');

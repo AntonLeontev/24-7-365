@@ -60,9 +60,10 @@ class UpdateContractInTheEndProfitTest extends TestCase
 		ContractChangeFactory::new()->create([
 			'contract_id' => $this->contract->id,
 			'type' => ContractChangeType::init,
-			'status' => ContractChangeStatus::pending,
+			'status' => ContractChangeStatus::actual,
 			'tariff_id' => $this->contract->tariff->id,
 			'amount' => $this->contract->amount,
+			'starts_at' => now(),
 		]);
 
 		$payment = Payment::create([

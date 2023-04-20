@@ -65,7 +65,6 @@ class EventServiceProvider extends ServiceProvider
         ContractTariffChanging::class => [
             [ContractChangeManager::class, 'createNewTariffContractChange'],
             DeletePendingCreditPayments::class,
-            //TODO Исходящие выплаты
             [GenerateCreditPayments::class, 'handle'],
         ],
         ContractChangingWithIncreasingAmount::class => [
@@ -88,10 +87,10 @@ class EventServiceProvider extends ServiceProvider
         BillingPeriodEnded::class => [
             IncreaseContractChangeDuration::class,
             CreateProfitability::class,
-			AccrueAdditionalProfitability::class,
+            AccrueAdditionalProfitability::class,
             ApplyContractChanges::class,
-			Prolongate::class,
-			FinishContract::class,
+            Prolongate::class,
+            FinishContract::class,
         ],
     ];
 

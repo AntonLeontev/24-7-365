@@ -30,7 +30,9 @@
 						<x-common.tables.yellow.row>
 							<div class="col">{{ $operation->accrued_at->translatedFormat('d F Y') }}</div>
 							<div class="col">+{{ $operation->amount }}</div>
-							<div class="col"></div>
+							<div class="col">
+								{{ $operation->contract->load('contractChanges')->amountOnDate($operation->accrued_at->subDay())->format(0) }}
+							</div>
 							<div class="col">
 								<a href="{{ route('users.contract_show', $operation->contract->id) }}" class="btn-link">
 									№{{ $operation->contract->id }}
@@ -57,7 +59,9 @@
 							<x-common.tables.yellow.row>
 								<div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
 								<div class="col"></div>
-								<div class="col"></div>
+								<div class="col">
+									{{ $operation->contract->load('contractChanges')->amountOnDate($operation->planned_at->subDay())->format(0) }}
+								</div>
 								<div class="col">
 									<a href="{{ route('users.contract_show', $operation->contract->id) }}" class="btn-link">
 										№{{ $operation->contract->id }}

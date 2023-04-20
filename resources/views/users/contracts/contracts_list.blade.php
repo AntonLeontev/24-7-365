@@ -55,8 +55,10 @@
 							<div class="col">
 								@if (
 									$contract->paid_at &&
-									$contract->prolongate && 
-									$contract->end()->subMonths(2)->lessThanOrEqualTo($contract->paid_at->addMonths($contract->duration()))
+									$contract->prolongate &&
+									$contract->status !== contract_status('canceled') &&
+									$contract->status !== contract_status('terminated') &&
+									$contract->end()->subMonths(2)->lte($contract->paid_at->addMonths($contract->duration()))
 								)
 									<button 
 										class="btn btn-link ps-0"

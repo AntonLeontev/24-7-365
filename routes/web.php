@@ -57,6 +57,19 @@ Route::get('24-period/{contract_id}', function ($id) {
     return back();
 })->name('period');
 
+Route::get('24-period-5/{contract_id}', function (int $id) {
+    Artisan::call("24:period", ['contract' => $id, '--number' => 5]);
+
+    return back();
+})->name('period5');
+
+Route::get('24-rescon/{contract_id}', function ($id) {
+    Artisan::call("24:rescon", ['contract' => $id]);
+    Artisan::call("24:pay-in", ['contract' => $id, '--take' => 1]);
+
+    return back();
+})->name('reset-contract');
+
 Route::get('test', function () {
     return view('test');
 });

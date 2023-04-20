@@ -84,6 +84,24 @@
 		</div>
 	@endif
 
+	@if (app()->isLocal())
+		<div class="card mb-4">
+			<div class="card-header">
+				УДАЛИТЬ
+			</div>
+			<div class="card-body d-flex justify-content-between">
+				<div class="div">
+					<a class="btn btn-outline-primary" href="{{ route('pay-in', $contract->id) }}">Pay-in</a>
+					<a class="btn btn-outline-primary" href="{{ route('period', $contract->id) }}">Period</a>
+					<a class="btn btn-outline-primary" href="{{ route('period5', $contract->id) }}">Period5</a>
+					<a class="btn btn-outline-primary" href="{{ route('pay-out', $contract->id) }}">Pay out</a>
+				</div>
+
+				<a class="btn btn-outline-primary" href="{{ route('reset-contract', $contract->id) }}">Reset</a>
+			</div>
+		</div>
+	@endif
+
 	@if (auth()->id() === $contract->user_id)
 		<div class="card mb-4">
 			<div class="card-body d-flex justify-content-between flex-xl-nowrap flex-wrap gap-3">
@@ -127,9 +145,17 @@
 					</svg>
 					Посмотреть договор
 				</button>
+				
 				<button
 					class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 w-md-48 order-xl-2 gap-2"
-					data-bs-toggle="modal" data-bs-target="#cancelContract">
+					data-bs-toggle="modal" 
+					data-bs-target="#cancelContract"
+					@disabled(
+						$contract->status === contract_status('canceled') || 
+						$contract->status === contract_status('terminated') ||
+						$contract->status === contract_status('finished')
+					)
+				>
 					<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g clip-path="url(#clip0_223_3922)">
 							<path
@@ -148,19 +174,6 @@
 		</div>
 	@endif
 	
-	@if (app()->isLocal())
-		<div class="card mb-4">
-			<div class="card-header">
-				УДАЛИТЬ
-			</div>
-			<div class="card-body">
-
-				<a class="btn btn-outline-primary" href="{{ route('pay-in', $contract->id) }}">Pay-in</a>
-				<a class="btn btn-outline-primary" href="{{ route('period', $contract->id) }}">Period</a>
-				<a class="btn btn-outline-primary" href="{{ route('pay-out', $contract->id) }}">Pay out</a>
-			</div>
-		</div>
-	@endif
 
     <div class="card mb-4">
         <div class="card-header">График выплат по договору</div>
@@ -244,9 +257,19 @@
             @else
                 <p class="text-light">
                     Срок действия договора истекает
-                    {{ $contract->paid_at?->addMonths($contract->tariff->duration)->translatedFormat('d.m.Y') }}
+                    {{ $contract->currentTariffStart()?->addMonths($contract->tariff->duration)->translatedFormat('d.m.Y') }}
                 </p>
-                <p class="text-light">Если вы досрочно расторгните договор ВСТАВИТЬ ТЕКСТ</p>
+				@if($contract->outPaymentsSumFromStart() >= $contract->income())
+					<p class="text-light">Выплаты по договору превысили сумму тела договора. При нажатии на кнопку "Расторгнуть" договор будет помечен как расторгнутый. Выплаты производиться не будут. Отменить это решение будет нельзя</p>
+				@else
+	                <p class="text-light">
+						При нажатии на кнопку "Расторгнуть" будет создана выплата остатка тела договора в размере {{ ($contract->income() - $contract->outPaymentsSumFromStart()) /100 }}р. Выплата будет произведена в течение 2 месяцев.
+					</p>
+					<p class="text-light">
+						До момента произведения выплаты решение можно будет отменить.
+					</p>
+				@endif
+
             @endif
         </div>
         <div class="d-flex flex-column flex-lg-row gap-3">

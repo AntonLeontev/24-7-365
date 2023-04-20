@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\AmountCast;
 use App\Enums\ContractChangeStatus;
+use App\Enums\ContractChangeType;
 use App\Enums\ContractStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
@@ -29,7 +30,7 @@ class Contract extends Model
         'amount',
         'status',
         'paid_at',
-		'prolongate'
+        'prolongate'
     ];
 
     protected $dates = [
@@ -40,7 +41,7 @@ class Contract extends Model
         'amount' => AmountCast::class,
         'paid_at' => 'date:d m Y',
         'status' => ContractStatus::class,
-		'prolongate' => 'boolean',
+        'prolongate' => 'boolean',
     ];
 
 
@@ -102,9 +103,58 @@ class Contract extends Model
         return $this->paymentsSum(PaymentType::credit);
     }
 
+    public function outPaymentsSumFromStart(): int
+    {
+        // Выплаты считаются либо с init либо с последнего prolongate изменения
+        $lastStart = $this->contractChanges->where('type', ContractChangeType::prolongation)->last();
+
+        if (is_null($lastStart)) {
+            $lastStart = $this->contractChanges->where('type', ContractChangeType::init)->last();
+        }
+
+        return $this->payments
+            ->where('type', PaymentType::credit)
+            ->filter(function ($payment) use ($lastStart) {
+                return $payment->planned_at->gt($lastStart->starts_at) &&
+                $payment->planned_at->lte($lastStart->starts_at->addMonths($this->durationFromLastStart()));
+            })
+            ->reduce(function ($carry, $payment) {
+                return $carry + $payment->amount->raw();
+            }, 0);
+    }
+
+    public function durationFromLastStart(): int
+    {
+        return $this->contractChanges->reduce(function ($carry, $change) {
+            if ($change->type === ContractChangeType::init) {
+                    return $change->duration;
+            }
+
+            if ($change->type === ContractChangeType::prolongation) {
+                    return $change->duration;
+            }
+
+            return $change->duration + $carry;
+        }, 0);
+    }
+
     public function duration(): int
     {
         return $this->contractChanges->sum('duration');
+    }
+
+    public function currentTariffStart(): Carbon
+    {
+        $change = $this->currentTariffChange();
+
+        return $change->starts_at;
+    }
+
+    public function currentTariffDuration(): int
+    {
+        $change = $this->currentTariffChange();
+
+        return $change->duration;
     }
 
     public function isChanging(): bool
@@ -143,11 +193,34 @@ class Contract extends Model
         return $this->amount;
     }
 
+    private function currentTariffChange(): ?ContractChange
+    {
+        return $this->contractChanges
+            ->sortBy('starts_at')
+            ->whereIn('status', [ContractChangeStatus::past, ContractChangeStatus::actual])
+            ->reduce(function ($carry, ContractChange $change) {
+                if ($change->type === ContractChangeType::init) {
+                    return $change;
+                }
+
+                if ($change->type === ContractChangeType::change) {
+                    return $carry?->tariff_id === $change->tariff_id ? $carry : $change;
+                }
+
+                if ($change->type === ContractChangeType::prolongation) {
+                    return $change;
+                }
+
+                return $carry;
+            },
+            null);
+    }
+
     private function paymentsSum(PaymentType $type): int
     {
         $sum = $this->payments
             ->where('type', $type)
-            ->where('status', PaymentStatus::processed->value)
+            ->where('status', PaymentStatus::processed)
             ->reduce(function ($sum, $payment) {
                 if ($sum instanceof Payment) {
                     $sum = $sum->amount->raw();
