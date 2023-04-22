@@ -203,42 +203,11 @@
     </div>
   </div>
 
-  <div
-    class="modal fade"
-    aria-labelledby="Введите код из сообщения"
-    aria-hidden="true"
-    tabindex="-1"
-    id="paymentModal"
-  >
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-      <div class="modal-content">
-        <div class="modal-header position-relative d-flex flex-column">
-          <img class="mb-13" src="../../../../images/payment.svg" alt="" />
-          <h5 class="modal-title pe-3 align-self-start">
-            Вы можете скачать платежное поручение
-          </h5>
-          <button
-            class="btn-close position-absolute top-30 end-30"
-            data-bs-dismiss="modal"
-            type="button"
-            aria-label="Закрыть"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <p class="mb-13">или получить его на почту</p>
-          <button class="btn btn-primary w-100 mb-121" @click.prevent="invoiceDownload">
-            Скачать
-          </button>
-          <button
-            class="btn btn-outline-primary w-100 mb-2"
-            @click.prevent="invoiceToEmail"
-          >
-            Получить на почту
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <modal-invoice
+    :paymentId="paymentId"
+    @interface="(modal) => (paymentModal = modal)"
+    @toast="(message) => notify(message, 3000)"
+  ></modal-invoice>
 </template>
 
 <script>
@@ -247,6 +216,7 @@ import InputComponent from "../../common/InputComponent.vue";
 import Smscode from "../../common/Smscode.vue";
 import autoComplete from "@tarekraafat/autocomplete.js";
 import TariffGroup from "../../calculator/TariffGroup.vue";
+import ModalInvoice from "../../common/ModalInvoice.vue";
 
 export default {
   name: "AddContract",
@@ -347,12 +317,6 @@ export default {
       this.phoneModal.hide();
       this.$options.smscodeInterface.confirmPhone();
     },
-    invoiceDownload() {
-      window.location.replace(route("invoice.pdf", this.paymentId));
-    },
-    invoiceToEmail() {
-      alert("To do");
-    },
     async preparePhone() {
       let phone = document.querySelector('[name="phone"]');
 
@@ -426,10 +390,9 @@ export default {
       this.notice = false;
     },
   },
-  components: { ContractAmount, InputComponent, Smscode, TariffGroup },
+  components: { ContractAmount, InputComponent, Smscode, TariffGroup, ModalInvoice },
   mounted() {
     this.phoneModal = new bootstrap.Modal("#phoneModal", { keyboard: false });
-    this.paymentModal = new bootstrap.Modal("#paymentModal", { keyboard: false });
 
     document.querySelector("#address").value = this.user.organization?.legal_address;
     document.querySelector("#inn").value = this.user.organization?.inn ?? "";

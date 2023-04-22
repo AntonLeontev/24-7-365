@@ -109,7 +109,7 @@ class ContractController extends Controller
             return response()->json(['ok' => false, 'message' => 'Договор в процессе изменений. Новые изменения применить нельзя']);
         }
 
-        if ($contract->duration() + 1 === $contract->tariff->duration) {
+        if ($contract->currentTariffDuration() + 1 === $contract->tariff->duration) {
             return response()->json(['ok' => false, 'message' => 'Договор на последнем периоде. Изменения не будут применены']);
         }
 
@@ -137,10 +137,10 @@ class ContractController extends Controller
         return back();
     }
 
-	public function cancelProlongation(Contract $contract)
-	{
-		$contract->update(['prolongate' => false]);
+    public function cancelProlongation(Contract $contract)
+    {
+        $contract->update(['prolongate' => false]);
 
-		return back();
-	}
+        return back();
+    }
 }

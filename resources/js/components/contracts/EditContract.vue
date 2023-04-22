@@ -79,6 +79,7 @@
   <modal-invoice
     :paymentId="paymentId"
     @interface="(modal) => (modalInvoice = modal)"
+    @toast="(message) => notify(message, 3000)"
   ></modal-invoice>
 
   <Transition>
@@ -146,9 +147,10 @@ export default {
       let amount = +event.target.value.replace(/\D/g, "");
 
       if (amount < 100000 && amount !== 0) {
-        this.errors.addedAmount = "Сумма должна быть больше 1000";
+        this.errors.addedAmount = "Сумма должна быть больше 100 000";
         return;
       }
+      1;
 
       this.errors.addedAmount = null;
     },

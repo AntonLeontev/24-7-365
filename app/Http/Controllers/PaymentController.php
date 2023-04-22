@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\PaymentType;
 use App\Models\Payment;
 use App\Models\Profitability;
+use App\Notifications\NewInvoice;
 use Carbon\Carbon;
 
 class PaymentController extends Controller
@@ -44,4 +45,11 @@ class PaymentController extends Controller
 
         return view('users.payments', compact('operations'));
     }
+
+	public function sendInvoice(Payment $payment)
+	{
+		auth()->user()->notify(new NewInvoice($payment));
+
+		return response()->json(['ok' => true]);
+	}
 }

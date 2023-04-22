@@ -96,7 +96,7 @@
 		@if(
 			$contract->paid_at &&
 			$contract->prolongate && 
-			$contract->end()->subMonths(2)->lessThanOrEqualTo($contract->paid_at->addMonths($contract->duration()))
+			$contract->end()->subMonths(2)->lte($contract->paid_at->addMonths($contract->duration()))
 		)
 		<x-common.modal modalTitle="Продлить договор" id="contract_prolongation{{ $contract->id }}">
 			<p>
@@ -106,7 +106,7 @@
 				Можно отменить автоматическое продление
 			</p>
 			<div class="d-flex flex-nowrap gap-3">
-				<div class="btn-primary btn w-50">Продлить автоматически</div>
+				<button class="btn-primary btn w-50" data-bs-dismiss="modal" type="button">Продлить автоматически</button>
 				<a class="btn-outline-primary btn w-50" href="{{ route('contracts.cancel.prolongation', $contract->id) }}">
 					Отменить продление
 				</a>

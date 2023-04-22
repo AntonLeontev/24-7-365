@@ -13,7 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
-use App\Models\Tariff;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -27,11 +27,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// TODO перенести в контороллер
-Route::get('/', function () {
-    $tariffs = Tariff::all();
-    return view('welcome', compact('tariffs'));
-})->withoutMiddleware(CheckBlockedUser::class)
+Route::view('/', 'welcome')->withoutMiddleware(CheckBlockedUser::class)
     ->middleware('guest')
     ->name('home');
 
@@ -57,6 +53,12 @@ Route::get('24-period/{contract_id}', function ($id) {
     return back();
 })->name('period');
 
+Route::get('24-period-2/{contract_id}', function (int $id) {
+    Artisan::call("24:period", ['contract' => $id, '--number' => 2]);
+
+    return back();
+})->name('period2');
+
 Route::get('24-period-5/{contract_id}', function (int $id) {
     Artisan::call("24:period", ['contract' => $id, '--number' => 5]);
 
@@ -71,12 +73,18 @@ Route::get('24-rescon/{contract_id}', function ($id) {
 })->name('reset-contract');
 
 Route::get('test', function () {
-    return view('test');
+    // return view('test');
+    return (new MailMessage())
+                    ->subject("Счет на оплату")
+					->greeting('Приветули!')
+                    ->line("Сгенерирован счет по договору 36.")
+                    ->line("Счет во вложении, также его можно скачать:")
+                    ->action('Скачать', route('invoice.pdf', 12))
+					->salutation('Поки-чмоки!')
+					->render();
 });
 
 /*------------------------------------------*/
-
-Route::get('invoices/{payment}/pdf', [PdfController::class, 'invoice'])->name('invoice.pdf');
 
 Route::post('suggestions/company', [SuggestionsController::class,'company'])
     ->name('suggestions.company');
@@ -166,6 +174,11 @@ Route::prefix('personal')
         ->middleware('can:see own profile')
         ->name('payments.for_user');
 
+    Route::get('payments/{payment}/send-invoice', [PaymentController::class, 'sendInvoice'])
+        ->middleware('can:see own profile')
+        ->name('payments.send-invoice');
+
+    Route::get('invoices/{payment}/pdf', [PdfController::class, 'invoice'])->name('invoice.pdf');
     
     Route::post('smscode/check/{type}', [SmscodeController::class,'checkCode'])
         ->where('type', 'phone_confirmation|contract_creating')

@@ -44,6 +44,8 @@ class Contract extends Model
         'prolongate' => 'boolean',
     ];
 
+    protected $with = ['contractChanges'];
+
 
     public function user(): BelongsTo
     {
@@ -90,7 +92,7 @@ class Contract extends Model
             return null;
         }
 
-        return $this->payments->where('type', payment_type('credit'))->last()?->planned_at;
+        return $this->currentTariffStart()->addMonths($this->tariff->duration);
     }
 
     public function income(): int

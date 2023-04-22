@@ -56,7 +56,15 @@ export default {
       window.location.replace(route("invoice.pdf", this.paymentId));
     },
     invoiceToEmail() {
-      alert("To do");
+      axios(route("payments.send-invoice", this.paymentId))
+        .then((response) => {
+          this.modal.hide();
+          this.$emit("toast", "Счет отправлен");
+        })
+        .catch((response) => {
+          console.log(response);
+          this.$emit("toast", "Ошибка отправки");
+        });
     },
     show() {
       this.modal.show();

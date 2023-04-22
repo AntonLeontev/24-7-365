@@ -70,17 +70,41 @@
 	@if($contract->isChanging())
 		<div class="card">
 			<div class="p-4 pb-5">
-                    <div class="bg-body text-light p-5 text-center">
-						@if ($contract->contractChanges->last()->status->value === 'pending')
-							<p>
-								Запрошены изменения в договоре. Для подтверждения нужно <a class="btn-link" href="{{ route('invoice.pdf', $contract->payments->where('type', payment_type('debet'))->where('status', payment_status('pending'))->last()->id) }}">оплатить счет</a>
-							</p>
-							<p class="mb-0"><a class="btn-link" href="{{ route('contracts.cancel_change', $contract->id) }}">Отменить изменения</a></p>
-						@elseif($contract->contractChanges->last()->status->value === 'waitingPeriodEnd')
-							<p class="mb-0">Изменения будут применены {{ $contract->periodEnd()->format('d.m.Y') }}</p>
-						@endif
-                    </div>
-                </div>
+				<div class="bg-body text-light p-5 text-center">
+					@if ($contract->contractChanges->last()->status->value === 'pending')
+						<p>
+							Запрошены изменения в договоре. Для подтверждения нужно <a class="btn-link" href="{{ route('invoice.pdf', $contract->payments->where('type', payment_type('debet'))->where('status', payment_status('pending'))->last()->id) }}">оплатить счет</a>
+						</p>
+						<p class="mb-0"><a class="btn-link" href="{{ route('contracts.cancel_change', $contract->id) }}">Отменить изменения</a></p>
+					@elseif($contract->contractChanges->last()->status->value === 'waitingPeriodEnd')
+						<p class="mb-0">Изменения будут применены {{ $contract->periodEnd()->format('d.m.Y') }}</p>
+					@endif
+				</div>
+			</div>
+		</div>
+	@endif
+
+	@if(
+		$contract->paid_at &&
+		$contract->prolongate && 
+		$contract->end()->subMonths(2)->lte($contract->paid_at->addMonths($contract->duration()))
+	)
+		<div class="card">
+			<div class="p-4 pb-5">
+				<div class="bg-body text-light p-5 text-center">
+					<p>
+						{{ $contract->end()->translatedFormat('d F Y г.') }} договор будет автоматически продлен на тех же условиях. Будет выплачена только доходность.
+					</p>
+					<p>
+						Можно отменить автоматическое продление
+					</p>
+					<div class="d-flex flex-nowrap gap-3 justify-content-center">
+						<a class="btn-outline-primary btn w-50" href="{{ route('contracts.cancel.prolongation', $contract->id) }}">
+							Отменить продление
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	@endif
 
@@ -93,6 +117,7 @@
 				<div class="div">
 					<a class="btn btn-outline-primary" href="{{ route('pay-in', $contract->id) }}">Pay-in</a>
 					<a class="btn btn-outline-primary" href="{{ route('period', $contract->id) }}">Period</a>
+					<a class="btn btn-outline-primary" href="{{ route('period2', $contract->id) }}">Period2</a>
 					<a class="btn btn-outline-primary" href="{{ route('period5', $contract->id) }}">Period5</a>
 					<a class="btn btn-outline-primary" href="{{ route('pay-out', $contract->id) }}">Pay out</a>
 				</div>
@@ -168,7 +193,11 @@
 							</clipPath>
 						</defs>
 					</svg>
-					Расторгнуть договор
+					@if ($contract->paid_at)
+						Расторгнуть договор
+					@else
+						Удалить договор	
+					@endif
 				</button>
 			</div>
 		</div>
@@ -183,8 +212,8 @@
                     <x-slot:header>
                         <div class="col">Дата</div>
                         <div class="col">Тело закупа</div>
-                        <div class="col">Начислено</div>
                         <div class="col">К выплате</div>
+                        <div class="col">Выплачено</div>
                     </x-slot:header>
 
                     @foreach ($operations as $operation)
@@ -274,7 +303,7 @@
         </div>
         <div class="d-flex flex-column flex-lg-row gap-3">
             <a class="btn btn-primary w-100" href="{{ route('contracts.cancel', $contract->id) }}">
-                @if ($contract->status->value === 'init')
+                @if ($contract->status === contract_status('init'))
                     Удалить
                 @else
                     Расторгнуть
