@@ -9,13 +9,9 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-// TODO Перенести в файл с селектами
-// import Choices from 'choices.js';
-// let selects = document.querySelectorAll(".form-select");
-// selects.forEach((select) => {
-// 	new Choices(select, {
-//         searchEnabled: false,
-//         itemSelectText: "",
-//     });
-// })
+import { createApp } from "vue";
+import Notifications from "./components/common/Notifications.vue";
 
+createApp({
+    components: { Notifications },
+}).mount("#notifications");

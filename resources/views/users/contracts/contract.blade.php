@@ -279,41 +279,47 @@
             @endif
         </div>
     </div>
-    <x-common.modal id="cancelContract" modalTitle="Закрыть договор №{{ $contract->id }}">
-        <div class="mb-5">
-            @if ($contract->status->value === 'init')
-                Неоплаченный договор будет удален
-            @else
-                <p class="text-light">
-                    Срок действия договора истекает
-                    {{ $contract->currentTariffStart()?->addMonths($contract->tariff->duration)->translatedFormat('d.m.Y') }}
-                </p>
-				@if($contract->outPaymentsSumFromStart() >= $contract->income())
-					<p class="text-light">Выплаты по договору превысили сумму тела договора. При нажатии на кнопку "Расторгнуть" договор будет помечен как расторгнутый. Выплаты производиться не будут. Отменить это решение будет нельзя</p>
+	@if (
+		$contract->status !== contract_status('canceled') && 
+		$contract->status !== contract_status('terminated') &&
+		$contract->status !== contract_status('finished')
+	)
+		<x-common.modal id="cancelContract" modalTitle="Закрыть договор №{{ $contract->id }}">
+			<div class="mb-5">
+				@if ($contract->status->value === 'init')
+					Неоплаченный договор будет удален
 				@else
-	                <p class="text-light">
-						При нажатии на кнопку "Расторгнуть" будет создана выплата остатка тела договора в размере {{ ($contract->income() - $contract->outPaymentsSumFromStart()) /100 }}р. Выплата будет произведена в течение 2 месяцев.
-					</p>
 					<p class="text-light">
-						До момента произведения выплаты решение можно будет отменить.
+						Срок действия договора истекает
+						{{ $contract->currentTariffStart()?->addMonths($contract->tariff->duration)->translatedFormat('d.m.Y') }}
 					</p>
+					@if($contract->outPaymentsSumFromStart() >= $contract->income())
+						<p class="text-light">Выплаты по договору превысили сумму тела договора. При нажатии на кнопку "Расторгнуть" договор будет помечен как расторгнутый. Выплаты производиться не будут. Отменить это решение будет нельзя</p>
+					@else
+						<p class="text-light">
+							При нажатии на кнопку "Расторгнуть" будет создана выплата остатка тела договора в размере {{ ($contract->income() - $contract->outPaymentsSumFromStart()) /100 }}р. Выплата будет произведена в течение 2 месяцев.
+						</p>
+						<p class="text-light">
+							До момента произведения выплаты решение можно будет отменить.
+						</p>
+					@endif
+	
 				@endif
-
-            @endif
-        </div>
-        <div class="d-flex flex-column flex-lg-row gap-3">
-            <a class="btn btn-primary w-100" href="{{ route('contracts.cancel', $contract->id) }}">
-                @if ($contract->status === contract_status('init'))
-                    Удалить
-                @else
-                    Расторгнуть
-                @endif
-            </a>
-            <button class="btn btn-outline-primary w-100" data-bs-dismiss="modal" type="button">
-                Отмена
-            </button>
-        </div>
-    </x-common.modal>
+			</div>
+			<div class="d-flex flex-column flex-lg-row gap-3">
+				<a class="btn btn-primary w-100" href="{{ route('contracts.cancel', $contract->id) }}">
+					@if ($contract->status === contract_status('init'))
+						Удалить
+					@else
+						Расторгнуть
+					@endif
+				</a>
+				<button class="btn btn-outline-primary w-100" data-bs-dismiss="modal" type="button">
+					Отмена
+				</button>
+			</div>
+		</x-common.modal>
+	@endunless
     <div class="modal" id="contractText" tabindex="-1">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">

@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\IncomeCalculatorController;
 use App\Http\Controllers\NewContractController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\SmscodeController;
@@ -76,12 +77,12 @@ Route::get('test', function () {
     // return view('test');
     return (new MailMessage())
                     ->subject("Счет на оплату")
-					->greeting('Приветули!')
+                    ->greeting('Приветули!')
                     ->line("Сгенерирован счет по договору 36.")
                     ->line("Счет во вложении, также его можно скачать:")
                     ->action('Скачать', route('invoice.pdf', 12))
-					->salutation('Поки-чмоки!')
-					->render();
+                    ->salutation('Поки-чмоки!')
+                    ->render();
 });
 
 /*------------------------------------------*/
@@ -189,6 +190,12 @@ Route::prefix('personal')
         ->where('type', 'phone_confirmation|contract_creating')
         ->middleware(['can:see own profile', 'throttle:2', 'phone'])
         ->name('smscode.create');
+
+    Route::post('notifications/unread', [NotificationsController::class, 'unread'])
+        ->name('notifications.unread');
+
+    Route::get('notifications/read-all', [NotificationsController::class, 'readAll'])
+        ->name('notifications.read_all');
 });
 
 
