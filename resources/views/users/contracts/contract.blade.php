@@ -238,7 +238,7 @@
                                     @endif
                                 </div>
                             </x-common.tables.yellow.row>
-                        @elseif ($operation instanceof App\Models\Payment)
+                        {{-- @elseif ($operation instanceof App\Models\Payment)
                             <x-common.tables.yellow.row>
                                 <div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
                                 <div class="col">{{ $contract->amountOnDate($operation->planned_at->subDay())->format(0) }}</div>
@@ -254,12 +254,12 @@
                                     @endif
                                     {{ $operation->amount }}
                                 </div>
-                            </x-common.tables.yellow.row>
+                            </x-common.tables.yellow.row> --}}
                         @endif
                     @endforeach
                 </x-common.tables.yellow>
                 <x-common.tables.total header="Итого за период:">
-                    <x-common.tables.total.row label="Всего начислено доходности" :value="$totalProfitabilities" />
+                    <x-common.tables.total.row label="Всего доходности" :value="$totalProfitabilities" />
                     <x-common.tables.total.row label="Всего выплат" :value="$totalPayments" />
                 </x-common.tables.total>
             @else

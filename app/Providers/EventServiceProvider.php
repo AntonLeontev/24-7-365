@@ -8,6 +8,7 @@ use App\Events\ContractChangeCanceled;
 use App\Events\ContractChangingWithIncreasingAmount;
 use App\Events\ContractCreated;
 use App\Events\ContractFinished;
+use App\Events\ContractProlongated;
 use App\Events\ContractTariffChanging;
 use App\Events\ContractTerminated;
 use App\Events\PaymentReceived;
@@ -21,11 +22,14 @@ use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeManager;
 use App\Listeners\CreateProfitability;
 use App\Listeners\DebetPaymentManager;
+use App\Listeners\DeleteFutureProfitabilities;
 use App\Listeners\DeletePendingCreditPayments;
 use App\Listeners\FinishContract;
 use App\Listeners\GenerateCreditPayments;
+use App\Listeners\GenerateProfitabilities;
 use App\Listeners\IncreaseContractChangeDuration;
 use App\Listeners\Prolongate;
+use App\Listeners\ProlongationNotification;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
 use Illuminate\Auth\Events\Registered;
@@ -76,22 +80,27 @@ class EventServiceProvider extends ServiceProvider
             [DebetPaymentManager::class, 'deleteDebetPendingPayments'],
         ],
         PaymentReceived::class => [
+            DeletePendingCreditPayments::class,
+			DeleteFutureProfitabilities::class,
             UpdateContractChange::class,
             UpdateContract::class,
-            DeletePendingCreditPayments::class,
             [GenerateCreditPayments::class, 'handle'],
+			GenerateProfitabilities::class,
         ],
         PaymentSent::class => [
             CheckContractStatus::class,
         ],
         BillingPeriodEnded::class => [
             IncreaseContractChangeDuration::class,
-            CreateProfitability::class,
-            AccrueAdditionalProfitability::class,
+            // CreateProfitability::class,
+            // AccrueAdditionalProfitability::class,
             ApplyContractChanges::class,
             Prolongate::class,
             FinishContract::class,
         ],
+		ContractProlongated::class => [
+			ProlongationNotification::class,
+		],
     ];
 
     protected $subscribe = [];

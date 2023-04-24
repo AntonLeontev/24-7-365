@@ -41,6 +41,5 @@ class ApplyContractChanges
             'amount' => $newContractChange->amount,
             'tariff_id' => $newContractChange->tariff_id,
         ]);
-        Log::debug('контракт обновлен', [$newContractChange->tariff_id]);
     }
 }

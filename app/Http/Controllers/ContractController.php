@@ -39,29 +39,32 @@ class ContractController extends Controller
         $profitabilities = Profitability::query()
             ->with('payment')
             ->where('contract_id', $contract->id)
+			->orderBy('accrued_at')
             ->get();
         
-        $payments = Payment::query()
-            ->where('contract_id', $contract->id)
-            ->where('type', PaymentType::credit)
-            ->where('planned_at', '>', $contract->paid_at->addMonths($contract->duration()))
-            ->get();
+        // $payments = Payment::query()
+        //     ->where('contract_id', $contract->id)
+        //     ->where('type', PaymentType::credit)
+        //     ->where('planned_at', '>', $contract->paid_at->addMonths($contract->duration()))
+        //     ->get();
 
 
-        $operations = $profitabilities->mergeRecursive($payments)->sortBy('planned_at');
+        // $operations = $profitabilities->mergeRecursive($payments)->sortBy('planned_at');
+		$operations = $profitabilities;
 
         $totalProfitabilities = $contract->profitabilities->reduce(function ($carry, $item) {
             return $carry + $item->amount->raw();
         }, 0);
         $totalProfitabilities = new Amount($totalProfitabilities);
 
-        $totalPayments = $contract->payments
-            ->where('type', PaymentType::credit)
-            ->where('status', PaymentStatus::processed)
-            ->reduce(function ($carry, $item) {
-                return $carry + $item->amount->raw();
-            }, 0);
-        $totalPayments = new Amount($totalPayments);
+        // $totalPayments = $contract->payments
+        //     ->where('type', PaymentType::credit)
+        //     ->where('status', PaymentStatus::processed)
+        //     ->reduce(function ($carry, $item) {
+        //         return $carry + $item->amount->raw();
+        //     }, 0);
+        // $totalPayments = new Amount($totalPayments);
+        $totalPayments = 0;
 
         return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments'));
     }

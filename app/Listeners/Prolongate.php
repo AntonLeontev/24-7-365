@@ -6,14 +6,19 @@ use App\Enums\ContractChangeStatus;
 use App\Enums\ContractChangeType;
 use App\Enums\PaymentType;
 use App\Events\BillingPeriodEnded;
+use App\Events\ContractProlongated as EventsContractProlongated;
 use App\Models\ContractChange;
 use App\Models\Tariff;
+use App\Notifications\ContractProlongated;
+use App\Support\Managers\ProfitabilityManager;
 use App\Support\UpdateCreditPaymentsManager;
 
 class Prolongate
 {
-    public function __construct(private UpdateCreditPaymentsManager $manager)
-    {
+    public function __construct(
+        private UpdateCreditPaymentsManager $paymentsManager,
+        private ProfitabilityManager $profitabilityManager,
+    ) {
     }
 
     /**
@@ -56,15 +61,16 @@ class Prolongate
 
         //Create new payments
         if ($contract->tariff->getting_profit === Tariff::MONTHLY) {
-            $this->manager->fromMonthlyToMonthlyTariff($contract);
-            return;
+            $this->paymentsManager->fromMonthlyToMonthlyTariff($contract);
         }
 
         if ($contract->tariff->getting_profit === Tariff::AT_THE_END) {
-            $this->manager->fromAtTheEndToAtTheEndTariff($contract);
-            return;
+            $this->paymentsManager->fromAtTheEndToAtTheEndTariff($contract);
         }
 
+        //Create new profitabilities
+        $this->profitabilityManager->createInitialProfitabilities($contract->refresh());
 
+        event(new EventsContractProlongated($contract));
     }
 }

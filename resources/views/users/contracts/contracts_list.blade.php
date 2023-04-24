@@ -50,7 +50,7 @@
 								<a class="btn-link"
 									href="{{ route('users.contract_show', $contract->id) }}">№{{ $contract->id }}</a>
 							</div>
-							<div class="col">{{ $contract->tariff->title }}</div>
+							<div class="col">{{ $contract->tariff->title }} - {{ $contract->tariff->duration }} мес.</div>
 							<div class="col">{{ $contract->amount }}</div>
 							<div class="col">
 								@if (

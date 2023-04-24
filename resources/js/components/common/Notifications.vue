@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="position-relative">
     <div class="position-relative d-flex align-items-center gap-3" @click="toggle">
       <div class="position-relative top-notifications cursor-pointer">
         <svg
@@ -114,6 +114,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
