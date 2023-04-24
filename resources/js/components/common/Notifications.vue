@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="position-relative d-flex align-items-center gap-3" @click="toggle">
-      <div
-        class="position-relative align-items-center top-notifications col-auto cursor-pointer"
-      >
+      <div class="position-relative top-notifications cursor-pointer">
         <svg
           width="20"
           height="22"
@@ -33,11 +31,11 @@
       </div>
       <div class="modal__body">
         <div class="notification" v-for="notification in notifications">
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between gap-3">
             <div class="notification__heading">
               <span v-if="notification.data.title">{{ notification.data.title }}</span>
             </div>
-            <div class="fs-8 text-light">
+            <div class="fs-8 text-light text-nowrap">
               {{ datetime(notification.created_at) }}
             </div>
           </div>
@@ -117,73 +115,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.notifications__number {
-  position: absolute;
-  top: -3px;
-  right: 24px;
-  min-width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  background-color: #fce301;
-  box-shadow: 0px 0px 12px rgba(252, 227, 1, 0.5);
-  color: #19191a;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 100%;
-  text-align: center;
-  vertical-align: baseline;
-}
 
-.notifications__modal {
-  position: absolute;
-  top: 80px;
-  right: 10px;
-  z-index: 2;
-  padding: 20px;
-  width: 414px;
-  background: #202022;
-  border: 2px solid rgba(252, 227, 1, 0.5);
-}
-
-.modal__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding-bottom: 14px;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #737373;
-}
-
-.modal__body {
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
-  max-height: 466px;
-  overflow: auto;
-}
-
-.notification {
-  display: flex;
-  flex-direction: column;
-  row-gap: 14px;
-  padding: 14px;
-  background: #19191a;
-
-  &__heading {
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 140%;
-    text-align: left;
-  }
-
-  &__text {
-    font-size: 14px;
-    line-height: 140%;
-    color: #737373;
-    text-align: left;
-  }
-}
 </style>

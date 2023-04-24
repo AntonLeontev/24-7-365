@@ -16,7 +16,6 @@ use App\Http\Requests\StoreContractRequest;
 use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Profitability;
-use App\Notifications\ContractViewed;
 use App\ValueObjects\Amount;
 use DomainException;
 
@@ -32,8 +31,6 @@ class ContractController extends Controller
     public function show(Contract $contract)
     {
         $contract->load(['tariff', 'contractChanges']);
-
-        auth()->user()->notify(new ContractViewed($contract));
 
         if (is_null($contract->paid_at)) {
             return view('users.contracts.contract', compact('contract'));
