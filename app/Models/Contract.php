@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 class Contract extends Model
 {
@@ -70,6 +71,11 @@ class Contract extends Model
     public function contractChanges(): HasMany
     {
         return $this->hasMany(ContractChange::class);
+    }
+
+    public function lastChange(): ContractChange
+    {
+        return $this->contractChanges->last();
     }
 
     public function profitabilities(): HasMany
@@ -154,9 +160,66 @@ class Contract extends Model
 
     public function currentTariffDuration(): int
     {
-        $change = $this->currentTariffChange();
+        $duration = 0;
 
-        return $change->duration;
+        $this->contractChanges
+            ->sortBy('starts_at')
+            ->whereIn('status', [ContractChangeStatus::past, ContractChangeStatus::actual])
+            ->reduce(function ($carry, ContractChange $change) use (&$duration) {
+                if ($change->type === ContractChangeType::init) {
+                    $duration = $change->duration;
+                }
+
+                if ($change->type === ContractChangeType::change) {
+                    $carry?->tariff_id === $change->tariff_id
+                        ? $duration += $change->duration
+                        : $duration = $change->duration;
+                }
+
+                if ($change->type === ContractChangeType::prolongation) {
+                    $duration = $change->duration;
+                }
+
+                return $change;
+            },
+            null);
+
+        return $duration;
+    }
+
+    public function lastEndTariffStart(): Carbon
+    {
+        $endChange = $this->contractChanges
+            ->load('tariff')
+            ->sortBy('created_at')
+            ->reduce(function ($carry, ContractChange $change) {
+                if ($change->tariff->getting_profit === Tariff::MONTHLY) {
+                    return $carry;
+                }
+
+                if ($change->type === ContractChangeType::init) {
+                    return $change;
+                }
+
+                if ($change->type === ContractChangeType::prolongation) {
+                    return $change;
+                }
+
+                if (
+                    is_null($carry) &&
+                    $change->tariff->getting_profit === Tariff::AT_THE_END
+                ) {
+                    return $change;
+                }
+
+                return $carry;
+            }, null);
+
+        if (is_null($endChange)) {
+            throw new DomainException("Нет перехода на тариф с оплатой в конце срока", 1);
+        }
+
+        return $endChange->starts_at;
     }
 
     public function isChanging(): bool
@@ -206,7 +269,9 @@ class Contract extends Model
                 }
 
                 if ($change->type === ContractChangeType::change) {
-                    return $carry?->tariff_id === $change->tariff_id ? $carry : $change;
+                    return $carry?->tariff_id === $change->tariff_id
+                        ? $carry
+                        : $change;
                 }
 
                 if ($change->type === ContractChangeType::prolongation) {

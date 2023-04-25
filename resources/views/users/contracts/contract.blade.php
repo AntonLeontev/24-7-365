@@ -112,6 +112,9 @@
 		<div class="card mb-4">
 			<div class="card-header">
 				УДАЛИТЬ
+				<div class="fs-7">Длится {{ $contract->duration() }} мес</div>
+				<div class="fs-7">Последний тариф {{ $contract->currentTariffDuration() }} мес</div>
+				<div class="fs-7">Нач тек тарифа {{ $contract->currentTariffStart()->translatedFormat('d F Y') }}</div>
 			</div>
 			<div class="card-body d-flex justify-content-between">
 				<div class="div">
@@ -231,8 +234,8 @@
                                                     d="M6.15251 11.3346L0.703125 6.2785L2.06547 5.01447L6.15251 8.80657L14.9241 0.667969L16.2865 1.932L6.15251 11.3346Z"
                                                     fill="#60FC01" />
                                             </svg>
-                                        @endif
-                                        {{ $operation->payment->amount }}
+											@endif
+											{{ $operation->payment->amount }}
                                     @else
                                         {{ $operation->payment->planned_at->translatedFormat('d F Y') }}
                                     @endif

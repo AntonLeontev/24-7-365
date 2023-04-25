@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\ContractProlongated;
+use App\Notifications\ContractProlongated as ProlongatedNotification;
 
 class ProlongationNotification
 {
@@ -23,6 +24,6 @@ class ProlongationNotification
      */
     public function handle(ContractProlongated $event)
     {
-        auth()->user()->notify(new ContractProlongated($event->contract));
+        auth()->user()->notify(new ProlongatedNotification($event->contract));
     }
 }

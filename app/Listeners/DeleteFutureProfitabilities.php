@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Enums\ContractStatus;
+use App\Events\ContractTariffChanging;
 use App\Events\PaymentReceived;
 use App\Models\Profitability;
 use App\Support\Managers\ProfitabilityManager;
@@ -24,9 +25,10 @@ class DeleteFutureProfitabilities
      * @param  object  $event
      * @return void
      */
-    public function handle(PaymentReceived $event)
+    public function handle(PaymentReceived | ContractTariffChanging $event)
     {
-        $contract = $event->payment->contract->refresh();
+        $contract = $event->contract ?? $event->payment->contract;
+		$contract->refresh();
 
         if ($contract->status === ContractStatus::init) {
             return;

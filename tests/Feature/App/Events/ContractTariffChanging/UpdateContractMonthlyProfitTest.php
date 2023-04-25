@@ -166,6 +166,8 @@ class UpdateContractMonthlyProfitTest extends TestCase
 		// 8 платежей новая доходность 
 		// платеж тело + новая доходность
 
+		$this->contract->refresh();
+
 		$payments = Payment::whereNull('deleted_at')->get();
 		$this->assertCount(11, $payments);
 
@@ -214,7 +216,7 @@ class UpdateContractMonthlyProfitTest extends TestCase
 		$this->assertCount(1, $payments);
 
 		//Profitability
-		$this->assertCount(1, $this->contract->profitabilities);
+		$this->assertCount(11, $this->contract->profitabilities);
 
 		foreach ($this->contract->profitabilities->load('payment') as $profitability) {
 			$this->assertNotNull($profitability->payment);
@@ -305,7 +307,7 @@ class UpdateContractMonthlyProfitTest extends TestCase
 		$this->assertCount(1, $payments);
 
 		//Profitability
-		$this->assertCount($periods, $this->contract->profitabilities);
+		$this->assertCount($periods + 1 + $newTariff->duration, $this->contract->profitabilities);
 
 		foreach ($this->contract->profitabilities->load('payment') as $profitability) {
 			$this->assertNotNull($profitability->payment);

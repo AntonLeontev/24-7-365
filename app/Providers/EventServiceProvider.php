@@ -15,12 +15,10 @@ use App\Events\PaymentReceived;
 use App\Events\PaymentSent;
 use App\Events\UserBlocked;
 use App\Events\UserUnblocked;
-use App\Listeners\AccrueAdditionalProfitability;
 use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeManager;
-use App\Listeners\CreateProfitability;
 use App\Listeners\DebetPaymentManager;
 use App\Listeners\DeleteFutureProfitabilities;
 use App\Listeners\DeletePendingCreditPayments;
@@ -69,7 +67,9 @@ class EventServiceProvider extends ServiceProvider
         ContractTariffChanging::class => [
             [ContractChangeManager::class, 'createNewTariffContractChange'],
             DeletePendingCreditPayments::class,
+            DeleteFutureProfitabilities::class,
             [GenerateCreditPayments::class, 'handle'],
+            GenerateProfitabilities::class,
         ],
         ContractChangingWithIncreasingAmount::class => [
             [ContractChangeManager::class, 'createIncreaseAmountContractChange'],
@@ -81,11 +81,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         PaymentReceived::class => [
             DeletePendingCreditPayments::class,
-			DeleteFutureProfitabilities::class,
+            DeleteFutureProfitabilities::class,
             UpdateContractChange::class,
             UpdateContract::class,
             [GenerateCreditPayments::class, 'handle'],
-			GenerateProfitabilities::class,
+            GenerateProfitabilities::class,
         ],
         PaymentSent::class => [
             CheckContractStatus::class,
@@ -98,9 +98,9 @@ class EventServiceProvider extends ServiceProvider
             Prolongate::class,
             FinishContract::class,
         ],
-		ContractProlongated::class => [
-			ProlongationNotification::class,
-		],
+        ContractProlongated::class => [
+            ProlongationNotification::class,
+        ],
     ];
 
     protected $subscribe = [];

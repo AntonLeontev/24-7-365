@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContractStatus;
-use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Events\ContractCanceled;
 use App\Events\ContractChangeCanceled;
@@ -14,7 +13,6 @@ use App\Http\Requests\CancelContractRequest;
 use App\Http\Requests\ContractUpdateRequest;
 use App\Http\Requests\StoreContractRequest;
 use App\Models\Contract;
-use App\Models\Payment;
 use App\Models\Profitability;
 use App\ValueObjects\Amount;
 use DomainException;
@@ -39,7 +37,7 @@ class ContractController extends Controller
         $profitabilities = Profitability::query()
             ->with('payment')
             ->where('contract_id', $contract->id)
-			->orderBy('accrued_at')
+            ->orderBy('accrued_at')
             ->get();
         
         // $payments = Payment::query()
@@ -50,7 +48,7 @@ class ContractController extends Controller
 
 
         // $operations = $profitabilities->mergeRecursive($payments)->sortBy('planned_at');
-		$operations = $profitabilities;
+        $operations = $profitabilities;
 
         $totalProfitabilities = $contract->profitabilities->reduce(function ($carry, $item) {
             return $carry + $item->amount->raw();
@@ -64,7 +62,7 @@ class ContractController extends Controller
         //         return $carry + $item->amount->raw();
         //     }, 0);
         // $totalPayments = new Amount($totalPayments);
-        $totalPayments = 0;
+        $totalPayments = new Amount($contract->outgoing());
 
         return view('users.contracts.contract', compact('contract', 'operations', 'totalProfitabilities', 'totalPayments'));
     }
