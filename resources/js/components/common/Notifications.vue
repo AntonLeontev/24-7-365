@@ -80,7 +80,7 @@ export default {
     readAll() {
       axios.get(route("notifications.read_all")).then(() => {
         this.show = false;
-        this.getUnread();
+        this.notifications = {};
       });
     },
     toggle() {

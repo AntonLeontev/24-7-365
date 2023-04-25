@@ -9,7 +9,6 @@ use App\Events\BillingPeriodEnded;
 use App\Events\ContractProlongated as EventsContractProlongated;
 use App\Models\ContractChange;
 use App\Models\Tariff;
-use App\Notifications\ContractProlongated;
 use App\Support\Managers\ProfitabilityManager;
 use App\Support\UpdateCreditPaymentsManager;
 
