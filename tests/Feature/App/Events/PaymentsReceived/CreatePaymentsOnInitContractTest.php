@@ -79,7 +79,7 @@ class CreatePaymentsOnInitContractTest extends TestCase
 		$this->assertDatabaseHas('contracts', [
 			'id' => $this->contract->id,
 			'status' => ContractStatus::active,
-			'paid_at' => now(),
+			'paid_at' => now()->format('Y-m-d H:i:s'),
 		]);
 
 		// 1 входящий платеж

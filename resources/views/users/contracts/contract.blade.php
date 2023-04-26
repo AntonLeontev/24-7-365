@@ -112,9 +112,11 @@
 		<div class="card mb-4">
 			<div class="card-header">
 				УДАЛИТЬ
-				<div class="fs-7">Длится {{ $contract->duration() }} мес</div>
-				<div class="fs-7">Последний тариф {{ $contract->currentTariffDuration() }} мес</div>
-				<div class="fs-7">Нач тек тарифа {{ $contract->currentTariffStart()->translatedFormat('d F Y') }}</div>
+				@if ($contract->paid_at)
+					<div class="fs-7">Длится {{ $contract->duration() }} мес</div>
+					<div class="fs-7">Последний тариф {{ $contract->currentTariffDuration() }} мес</div>
+					<div class="fs-7">Нач тек тарифа {{ $contract->currentTariffStart()->translatedFormat('d F Y') }}</div>
+				@endif
 			</div>
 			<div class="card-body d-flex justify-content-between">
 				<div class="div">

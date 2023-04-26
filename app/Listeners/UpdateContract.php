@@ -26,17 +26,10 @@ class UpdateContract
     {
         $contract = $event->payment->contract;
 
-        if ($contract->status === ContractStatus::init) {
-            $contract->updateOrFail(['status' => ContractStatus::active, 'paid_at' => now()]);
-            return;
+        if ($contract->status !== ContractStatus::init) {
+			return;
         }
-
-        //TODO Эти изменения должны произойти в конце отчетного периода
-        // $contractChange = $contract->contractChanges->last();
-        
-        // $contract->updateOrFail([
-        //  'tariff_id' => $contractChange->tariff_id,
-        //  'amount' => $contractChange->amount,
-        // ]);
+		
+		$contract->updateOrFail(['status' => ContractStatus::active, 'paid_at' => now()]);
     }
 }

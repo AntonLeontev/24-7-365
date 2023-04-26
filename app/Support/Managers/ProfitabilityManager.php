@@ -69,7 +69,7 @@ class ProfitabilityManager
         $lastChange = $contract->contractChanges->last()->load('tariff');
         $tariff = $lastChange->tariff;
         
-        $lastEndTariffStart = $contract->lastEndTariffStart();
+        $lastEndTariffStart = $contract->lastEndTariffChange()->starts_at;
 
         $profitabilities = $contract->profitabilities
             ->filter(function ($profitability) use ($lastEndTariffStart) {

@@ -146,9 +146,28 @@ class UpdateCreditPaymentsManager
         $newTariff = Tariff::find($contract->refresh()->contractChanges->last()->tariff_id);
         $newAmount = $contract->contractChanges->last()->amount;
         
-        //Доходность за прошедшие месяцы считается по новому тарифу, но по старой сумме
-        $oldProfit = $contract->amount->raw() * $newTariff->annual_rate / 100 / 12 * ($contract->duration() + 1);
-        $newProfit = $newAmount->raw() * $newTariff->annual_rate / 100 / 12 * ($newTariff->duration - $contract->duration() - 1);
+        // find start atTheEnd contract change
+        $lastEndTariffChange = $contract->lastEndTariffChange();
+
+        $endTariffChanges = $contract->contractChanges
+            ->filter(function ($change) use ($lastEndTariffChange) {
+                return $change->starts_at >= $lastEndTariffChange->starts_at;
+            });
+
+        $endTariffDuration = $endTariffChanges
+            ->reduce(function ($carry, $change) {
+                return $carry + $change->duration;
+            }, 0);
+
+        $oldProfit = $endTariffChanges
+            ->reduce(function ($carry, $change) use ($newTariff) {
+                return $carry + $change->amount->raw() * $newTariff->annual_rate / 100 / 12 * $change->duration;
+            }, 0);
+
+        // Добавляем доходность за текущий период
+        $oldProfit += $contract->amount->raw() * $newTariff->annual_rate / 100 / 12;
+
+        $newProfit = $newAmount->raw() * $newTariff->annual_rate / 100 / 12 * ($newTariff->duration - $endTariffDuration - 1);
         
         return Payment::create([
             'account_id' => $contract->organization->accounts->first()->id,
@@ -156,11 +175,14 @@ class UpdateCreditPaymentsManager
             'amount' => $newAmount->raw() + $oldProfit + $newProfit,
             'type' => PaymentType::credit,
             'status' => PaymentStatus::pending,
-            'planned_at' => $contract->currentTariffStart()->addMonths($newTariff->duration),
-            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->currentTariffStart()->format('d.m.Y')} - {$contract->currentTariffStart()->addMonths($newTariff->duration)->format('d.m.Y')}",
+            'planned_at' => $contract->lastEndTariffChange()->starts_at->addMonths($newTariff->duration),
+            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->lastEndTariffChange()->starts_at->format('d.m.Y')} - {$contract->lastEndTariffChange()->starts_at->addMonths($newTariff->duration)->format('d.m.Y')}",
         ]);
     }
 
+    /**
+     * Создает выплаты при увеличении суммы без смены тарифа - помесячно
+     */
     public function increaseAmountOnMonthlyTariff(Contract $contract): ?Payment
     {
         $newAmount = $contract->contractChanges->last()->amount;
@@ -219,13 +241,36 @@ class UpdateCreditPaymentsManager
         return null;
     }
 
+    /**
+     * Создает выплату при увеличении суммы без смены тарифа - в конце срока
+     */
     public function increaseAmountEndToEndTariff(Contract $contract)
     {
         $newAmount = $contract->contractChanges->last()->amount;
         
         //Доходность за прошедшие месяцы считается по новому тарифу, но по старой сумме
-        $oldProfit = $contract->amount->raw() * $contract->tariff->annual_rate / 100 / 12 * ($contract->duration() + 1);
-        $newProfit = $newAmount->raw() * $contract->tariff->annual_rate / 100 / 12 * ($contract->tariff->duration - $contract->duration() - 1);
+        // find start atTheEnd contract change
+        $lastEndTariffChange = $contract->lastEndTariffChange();
+
+        $endTariffChanges = $contract->contractChanges
+            ->filter(function ($change) use ($lastEndTariffChange) {
+                return $change->starts_at >= $lastEndTariffChange->starts_at;
+            });
+
+        $endTariffDuration = $endTariffChanges
+            ->reduce(function ($carry, $change) {
+                return $carry + $change->duration;
+            }, 0);
+
+        $oldProfit = $endTariffChanges
+            ->reduce(function ($carry, $change) use ($contract) {
+                return $carry + $change->amount->raw() * $contract->tariff->annual_rate / 100 / 12 * $change->duration;
+            }, 0);
+
+        // Добавляем доходность за текущий период
+        $oldProfit += $contract->amount->raw() * $contract->tariff->annual_rate / 100 / 12;
+
+        $newProfit = $newAmount->raw() * $contract->tariff->annual_rate / 100 / 12 * ($contract->tariff->duration - $endTariffDuration - 1);
         
         return Payment::create([
             'account_id' => $contract->organization->accounts->first()->id,
@@ -233,8 +278,8 @@ class UpdateCreditPaymentsManager
             'amount' => $newAmount->raw() + $oldProfit + $newProfit,
             'type' => PaymentType::credit,
             'status' => PaymentStatus::pending,
-            'planned_at' => $contract->paid_at->addMonths($contract->tariff->duration),
-            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths($contract->tariff->duration)->format('d.m.Y')}",
+            'planned_at' => $lastEndTariffChange->starts_at->addMonths($contract->tariff->duration),
+            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$lastEndTariffChange->starts_at->format('d.m.Y')} - {$lastEndTariffChange->starts_at->addMonths($contract->tariff->duration)->format('d.m.Y')}",
         ]);
     }
 }

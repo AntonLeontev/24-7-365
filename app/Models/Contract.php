@@ -187,7 +187,7 @@ class Contract extends Model
         return $duration;
     }
 
-    public function lastEndTariffStart(): Carbon
+    public function lastEndTariffChange(): ContractChange
     {
         $endChange = $this->contractChanges
             ->load('tariff')
@@ -219,7 +219,7 @@ class Contract extends Model
             throw new DomainException("Нет перехода на тариф с оплатой в конце срока", 1);
         }
 
-        return $endChange->starts_at;
+        return $endChange;
     }
 
     public function isChanging(): bool
