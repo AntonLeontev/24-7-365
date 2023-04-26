@@ -92,8 +92,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         BillingPeriodEnded::class => [
             IncreaseContractChangeDuration::class,
-            // CreateProfitability::class,
-            // AccrueAdditionalProfitability::class,
             ApplyContractChanges::class,
             Prolongate::class,
             FinishContract::class,
