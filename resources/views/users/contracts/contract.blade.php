@@ -229,14 +229,14 @@
 							<div class="col d-flex justify-content-center flex-nowrap gap-2">
 								@if ($operation->payment->planned_at->equalTo($operation->accrued_at))
 									@if ($operation->payment->status === payment_status('processed'))
-										<svg width="17" height="12" viewBox="0 0 17 12" fill="none"
+										{{-- <svg width="17" height="12" viewBox="0 0 17 12" fill="none"
 											xmlns="http://www.w3.org/2000/svg">
 											<path
 												d="M6.15251 11.3346L0.703125 6.2785L2.06547 5.01447L6.15251 8.80657L14.9241 0.667969L16.2865 1.932L6.15251 11.3346Z"
 												fill="#60FC01" />
-										</svg>
-										@endif
+										</svg> --}}
 										{{ $operation->payment->amount }}
+										@endif
 								@else
 									{{ $operation->payment->planned_at->translatedFormat('d F Y') }}
 								@endif
@@ -245,6 +245,7 @@
                     @endforeach
                 </x-common.tables.yellow>
                 <x-common.tables.total header="Итого за период:">
+                    <x-common.tables.total.row label="Тело закупа" :value="$contract->amount->format(0)" />
                     <x-common.tables.total.row label="Всего доходности" :value="$totalProfitabilities" />
                     <x-common.tables.total.row label="Всего выплат" :value="$totalPayments" />
                 </x-common.tables.total>
