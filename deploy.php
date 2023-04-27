@@ -20,4 +20,12 @@ host('45.146.165.254')
 
 // Hooks
 
+task('build', function () {
+    cd('{{release_path}}');
+    run('npm install');
+    run('npm run build');
+});
+
+after('deploy:update_code', 'build');
+
 after('deploy:failed', 'deploy:unlock');

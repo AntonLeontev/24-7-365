@@ -11,14 +11,14 @@ class RefreshCommand extends Command
      *
      * @var string
      */
-    protected $signature = '24:refresh';
+    protected $signature = '24:initdb';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Refreshes application';
+    protected $description = 'Fills DB with init data';
 
 
     /**
@@ -34,16 +34,9 @@ class RefreshCommand extends Command
         }
 
         $this->call('migrate:fresh');
-        $this->call('db:seed', ['--class' => 'SuperUserSeeder']);
         $this->call('db:seed', ['--class' => 'RolesPermissionsSeeder']);
-        $this->call('db:seed', ['--class' => 'TestUsersWithRolesSeeder']);
-        $this->call('db:seed', ['--class' => 'UsersSeeder']);
         $this->call('db:seed', ['--class' => 'TariffsSeeder']);
         $this->call('db:seed', ['--class' => 'ApplicationSettingsSeeder']);
-        
-        $this->call('db:seed', ['--class' => 'AccountsSeeder']);
-        $this->call('db:seed', ['--class' => 'ContractsSeeder']);
-        $this->call('db:seed', ['--class' => 'PaymentsSeeder']);
         
         $this->call('cache:clear');
 
