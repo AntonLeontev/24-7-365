@@ -222,45 +222,26 @@
                     </x-slot:header>
 
                     @foreach ($operations as $operation)
-                        @if ($operation instanceof App\Models\Profitability)
-                            <x-common.tables.yellow.row>
-                                <div class="col">{{ $operation->accrued_at->translatedFormat('d F Y') }}</div>
-                                <div class="col">{{ $contract->amountOnDate($operation->accrued_at->subDay())->format(0) }}</div>
-                                <div class="col">+{{ $operation->amount }}</div>
-                                <div class="col d-flex justify-content-center flex-nowrap gap-2">
-                                    @if ($operation->payment->planned_at->equalTo($operation->accrued_at))
-                                        @if ($operation->payment->status === payment_status('processed'))
-                                            <svg width="17" height="12" viewBox="0 0 17 12" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M6.15251 11.3346L0.703125 6.2785L2.06547 5.01447L6.15251 8.80657L14.9241 0.667969L16.2865 1.932L6.15251 11.3346Z"
-                                                    fill="#60FC01" />
-                                            </svg>
-											@endif
-											{{ $operation->payment->amount }}
-                                    @else
-                                        {{ $operation->payment->planned_at->translatedFormat('d F Y') }}
-                                    @endif
-                                </div>
-                            </x-common.tables.yellow.row>
-                        {{-- @elseif ($operation instanceof App\Models\Payment)
-                            <x-common.tables.yellow.row>
-                                <div class="col">{{ $operation->planned_at->translatedFormat('d F Y') }}</div>
-                                <div class="col">{{ $contract->amountOnDate($operation->planned_at->subDay())->format(0) }}</div>
-                                <div class="col"></div>
-                                <div class="col d-flex justify-content-center flex-nowrap gap-2">
-                                    @if ($operation->status === payment_status('processed'))
-                                        <svg width="17" height="12" viewBox="0 0 17 12" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M6.15251 11.3346L0.703125 6.2785L2.06547 5.01447L6.15251 8.80657L14.9241 0.667969L16.2865 1.932L6.15251 11.3346Z"
-                                                fill="#60FC01" />
-                                        </svg>
-                                    @endif
-                                    {{ $operation->amount }}
-                                </div>
-                            </x-common.tables.yellow.row> --}}
-                        @endif
+						<x-common.tables.yellow.row>
+							<div class="col">{{ $operation->accrued_at->translatedFormat('d F Y') }}</div>
+							<div class="col">{{ $contract->amountOnDate($operation->accrued_at->subDay())->format(0) }}</div>
+							<div class="col">+{{ $operation->amount }}</div>
+							<div class="col d-flex justify-content-center flex-nowrap gap-2">
+								@if ($operation->payment->planned_at->equalTo($operation->accrued_at))
+									@if ($operation->payment->status === payment_status('processed'))
+										<svg width="17" height="12" viewBox="0 0 17 12" fill="none"
+											xmlns="http://www.w3.org/2000/svg">
+											<path
+												d="M6.15251 11.3346L0.703125 6.2785L2.06547 5.01447L6.15251 8.80657L14.9241 0.667969L16.2865 1.932L6.15251 11.3346Z"
+												fill="#60FC01" />
+										</svg>
+										@endif
+										{{ $operation->payment->amount }}
+								@else
+									{{ $operation->payment->planned_at->translatedFormat('d F Y') }}
+								@endif
+							</div>
+						</x-common.tables.yellow.row>
                     @endforeach
                 </x-common.tables.yellow>
                 <x-common.tables.total header="Итого за период:">
