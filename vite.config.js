@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/js/newContract.js',
                 'resources/js/settings.js',
                 'resources/js/users.js',
+                'resources/js/auth.js',
             ],
             refresh: true,
         }),
