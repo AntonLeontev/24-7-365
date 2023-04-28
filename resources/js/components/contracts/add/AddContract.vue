@@ -238,7 +238,7 @@ export default {
   },
   props: {
     amountSaved: Number,
-    tariffIdSaved: {},
+    tariffIdSaved: { default: 0 },
     tariffs: Object,
     user: Object,
   },

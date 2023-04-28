@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
+use App\Http\Middleware\ContractTextAccepted;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -136,7 +137,7 @@ Route::prefix('personal')
         ->middleware('can:see own profile')
         ->name('contracts.agree');
     Route::any('contracts/create', [ContractController::class, 'create'])
-        ->middleware('can:see own profile')
+        ->middleware(['can:see own profile', ContractTextAccepted::class])
         ->name('users.add_contract');
 
 
