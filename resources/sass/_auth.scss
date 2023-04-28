@@ -79,28 +79,22 @@
 	display: flex;
 	align-items: center;
 	transform-style: preserve-3d;
+	perspective: 2500px;
 }
 
 .forms-container {
 	position: relative;
   	width: 100%;
-  	display: flex;
+  	display: grid; 
+	grid-template: 1fr / 1fr;
+    grid-template-areas: "frontAndBack";
 	align-items: center;
 	transition: all 1s ease;
 	transform-style: preserve-3d;
-	transform-origin: 50% 50% -110px;
-
-	@include media-breakpoint-up(sm) {
-		transform-origin: 50% 50% -150px;
-	}
-
-	@include media-breakpoint-up(md) {
-		transform-origin: 50% 50% -210px;
-	}
 }
 
 .forms-container_register {
-	transform: rotateY(-90deg);
+	transform: rotateY(-180deg);
 }
 
 .auth-form {
@@ -108,7 +102,10 @@
 	transition: all 0.8s;
 	flex-shrink: 0;
 	width: 100%;
-	opacity: 0;
+	opacity: 1;
+	-webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
 
 	&_active {
 		display: block;
@@ -119,13 +116,12 @@
 
 .auth-form_login {
 	width: 100%;
+	grid-area: frontAndBack;
 }
 
 .auth-form_register {
-	position: absolute;
-	left: 100%;
-	transform: rotateY(90deg);
-	transform-origin: left;
+	grid-area: frontAndBack;
+	transform: rotateY(180deg);
 }
 
 .auth-tab {

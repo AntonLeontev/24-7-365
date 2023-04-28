@@ -3,6 +3,7 @@
 namespace Deployer;
 
 require 'recipe/laravel.php';
+require 'recipe/deploy/push.php';
 
 // Config
 
@@ -18,7 +19,7 @@ host('45.146.165.254')
     ->set('remote_user', 'deployer')
     ->set('deploy_path', '~/24-7-365');
 
-// Hooks
+// Tasks
 
 task('build', function () {
     cd('{{release_path}}');
@@ -26,6 +27,16 @@ task('build', function () {
     run('npm run build');
 });
 
+task('making writable', function () {
+    cd('~/24-7-365/current/storage');
+    run('chmod -R 777 ./logs');
+    run('chmod -R 777 ./framework');
+});
+    
+    // Hooks
+
 after('deploy:update_code', 'build');
 
 after('deploy:failed', 'deploy:unlock');
+
+after('push', 'making writable');
