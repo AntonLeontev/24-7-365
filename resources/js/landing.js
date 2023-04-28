@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	$("#slider").slick({
         slidesToShow: 1,
-        infinite: false,
+        infinite: true,
+        autoplay: true,
         variableWidth: true,
         mobileFirst: true,
         arrows: false,
@@ -17,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 breakpoint: 1200,
                 settings: {
+                    centerMode: true,
+                    centerPadding: "0",
                     slidesToShow: 2,
                     slidesToScroll: 1,
                     variableWidth: false,

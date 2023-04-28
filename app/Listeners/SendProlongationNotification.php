@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\ContractProlongated;
 use App\Notifications\ContractProlongated as ProlongatedNotification;
 
-class ProlongationNotification
+class SendProlongationNotification
 {
     /**
      * Create the event listener.

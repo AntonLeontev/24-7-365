@@ -6,12 +6,15 @@
     <div class="property fs-8 fs-md-7">
       Объем вклада от
       <span class="text-nowrap"
-        >{{ tariffs[0].min_amount.amount.toLocaleString() }} ₽</span
+        >{{ new Intl.NumberFormat("ru-RU").format(tariffs[0].min_amount.amount) }} ₽</span
       >
       <span v-if="tariffs[0].max_amount.raw !== 0">
         до
         <span class="text-nowrap"
-          >{{ tariffs[0].max_amount.amount.toLocaleString() }} ₽</span
+          >{{
+            new Intl.NumberFormat("ru-RU").format(tariffs[0].max_amount.amount)
+          }}
+          ₽</span
         ></span
       >
     </div>

@@ -325,6 +325,7 @@ select {
 		@include media-breakpoint-up(lg) {
 			justify-content: center;
 			border-bottom: none;
+			padding: 16px 10px;
 		}
 	}
 
@@ -343,6 +344,7 @@ select {
 		@include media-breakpoint-up(lg) {
 			padding: 14px 0;
 			flex-direction: column-reverse;
+			justify-content: center;
 			row-gap: 8px;
 			border-bottom: none;
 			border-left: 2px solid $app-table-border-color;

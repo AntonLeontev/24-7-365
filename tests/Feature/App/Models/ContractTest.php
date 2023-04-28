@@ -40,7 +40,7 @@ class ContractTest extends TestCase
 		$this->contract = ContractFactory::new()->create([
 			'user_id' => $this->user->id,
 			'organization_id' => $this->organization->id,
-			'tariff_id' => Tariff::inRandomOrder()->first()->id,
+			'tariff_id' => Tariff::first(), //Standart - 3
 		]);
 
 		ContractChangeFactory::new()->create([
@@ -52,7 +52,7 @@ class ContractTest extends TestCase
 		]);
 	}
 
-	public function test_current_tariff_start()
+	public function test_current_tariff()
 	{
 		$start = $this->contract->currentTariffStart();
 
@@ -71,10 +71,7 @@ class ContractTest extends TestCase
 		$this->assertSame('1990-12-10', $start->format('Y-m-d'));
 
 
-		$tariffId = Tariff::all('id')
-			->pluck('id')
-			->reject(fn($id) => $id === $this->contract->tariff_id)
-			->random();
+		$tariffId = Tariff::where('title', 'Standart')->where('duration', 9)->first(); //Standart - 9
 
 		ContractChangeFactory::new()->create([
 			'contract_id' => $this->contract->id,
@@ -102,21 +99,32 @@ class ContractTest extends TestCase
 		$this->assertSame('1993-12-10', $start->format('Y-m-d'));
 
 
-		$tariffId = Tariff::all('id')
-			->pluck('id')
-			->reject(fn($id) => $id === $this->contract->tariff_id)
-			->random();
+		$tariffId = Tariff::where('title', 'Platinum 1')->where('duration', 12)->first(); // Platinum1 - 12
 
 		ContractChangeFactory::new()->create([
 			'contract_id' => $this->contract->id,
 			'tariff_id' => $tariffId,
 			'type' => ContractChangeType::change,
-			'status' => ContractChangeStatus::waitingPeriodEnd,
+			'status' => ContractChangeStatus::actual,
 			'starts_at' => '1994-12-10',
 		]);
 
 		$start = $this->contract->refresh()->currentTariffStart();
 
-		$this->assertSame('1993-12-10', $start->format('Y-m-d'));
+		$this->assertSame('1994-12-10', $start->format('Y-m-d'));
+
+		$tariffId = Tariff::where('title', 'Platinum 1')->where('duration', 24)->first(); // Platinum1 - 24
+
+		ContractChangeFactory::new()->create([
+			'contract_id' => $this->contract->id,
+			'tariff_id' => $tariffId,
+			'type' => ContractChangeType::change,
+			'status' => ContractChangeStatus::actual,
+			'starts_at' => '1995-12-10',
+		]);
+
+		$start = $this->contract->refresh()->currentTariffStart();
+
+		$this->assertSame('1994-12-10', $start->format('Y-m-d'));
 	}
 }

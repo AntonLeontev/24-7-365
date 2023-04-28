@@ -27,7 +27,7 @@ use App\Listeners\GenerateCreditPayments;
 use App\Listeners\GenerateProfitabilities;
 use App\Listeners\IncreaseContractChangeDuration;
 use App\Listeners\Prolongate;
-use App\Listeners\ProlongationNotification;
+use App\Listeners\SendProlongationNotification;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
 use Illuminate\Auth\Events\Registered;
@@ -82,6 +82,7 @@ class EventServiceProvider extends ServiceProvider
         PaymentReceived::class => [
             DeletePendingCreditPayments::class,
             DeleteFutureProfitabilities::class,
+			
             UpdateContractChange::class,
             UpdateContract::class,
             [GenerateCreditPayments::class, 'handle'],
@@ -97,7 +98,7 @@ class EventServiceProvider extends ServiceProvider
             FinishContract::class,
         ],
         ContractProlongated::class => [
-            ProlongationNotification::class,
+            SendProlongationNotification::class,
         ],
     ];
 

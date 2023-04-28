@@ -48,8 +48,13 @@ class GenerateCreditPayments
 
     public function update(Contract $contract): void
     {
+        if ($contract->isLastPeriod()) {
+            return;
+        }
+
         $newTariff = Tariff::find($contract->contractChanges->last()->tariff_id);
 
+        // Тариф не изменился, только сумма
         if ($newTariff->id === $contract->tariff->id) {
             if ($contract->tariff->getting_profit === Tariff::MONTHLY) {
                 $profitPayment = $this->updateManager->increaseAmountOnMonthlyTariff($contract);
@@ -65,6 +70,7 @@ class GenerateCreditPayments
             return;
         }
 
+        // Изменился тариф
         if ($contract->tariff->getting_profit === Tariff::MONTHLY) {
             if ($newTariff->getting_profit === Tariff::MONTHLY) {
                 $profitPayment = $this->updateManager->fromMonthlyToMonthlyTariff($contract);

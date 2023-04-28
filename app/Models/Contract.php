@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Log;
 
 class Contract extends Model
 {
@@ -171,9 +170,26 @@ class Contract extends Model
                 }
 
                 if ($change->type === ContractChangeType::change) {
-                    $carry?->tariff_id === $change->tariff_id
-                        ? $duration += $change->duration
-                        : $duration = $change->duration;
+                    if ($carry?->tariff_id === $change->tariff_id) {
+                        $duration += $change->duration;
+                        return $change;
+                    }
+
+                    if ($change->tariff->getting_profit === Tariff::MONTHLY) {
+                        $duration = $change->duration;
+                        return $change;
+                    }
+
+                    if (
+                        $carry->tariff->getting_profit === Tariff::MONTHLY &&
+                        $change->tariff->getting_profit === Tariff::AT_THE_END
+                    ) {
+                        $duration = $change->duration;
+                        return $change;
+                    }
+
+                    $duration += $change->duration;
+                    return $carry;
                 }
 
                 if ($change->type === ContractChangeType::prolongation) {
@@ -232,6 +248,11 @@ class Contract extends Model
             $this->contractChanges->last()->status === ContractChangeStatus::waitingPeriodEnd;
     }
 
+    public function isLastPeriod(): bool
+    {
+        return $this->currentTariffDuration() + 1 >= $this->tariff->duration;
+    }
+
     public function amountOnDate(Carbon $date): Amount
     {
         foreach ($this->contractChanges->reverse() as $change) {
@@ -261,6 +282,7 @@ class Contract extends Model
     private function currentTariffChange(): ?ContractChange
     {
         return $this->contractChanges
+			->load('tariff')
             ->sortBy('starts_at')
             ->whereIn('status', [ContractChangeStatus::past, ContractChangeStatus::actual])
             ->reduce(function ($carry, ContractChange $change) {
@@ -269,9 +291,22 @@ class Contract extends Model
                 }
 
                 if ($change->type === ContractChangeType::change) {
-                    return $carry?->tariff_id === $change->tariff_id
-                        ? $carry
-                        : $change;
+                    if ($carry?->tariff_id === $change->tariff_id) {
+                        return $carry;
+                    }
+
+                    if ($change->tariff->getting_profit === Tariff::MONTHLY) {
+                        return $change;
+                    }
+
+                    if (
+                        $carry->tariff->getting_profit === Tariff::MONTHLY &&
+                        $change->tariff->getting_profit === Tariff::AT_THE_END
+                    ) {
+                        return $change;
+                    }
+
+                    return $carry;
                 }
 
                 if ($change->type === ContractChangeType::prolongation) {

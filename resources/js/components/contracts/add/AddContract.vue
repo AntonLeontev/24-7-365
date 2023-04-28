@@ -249,7 +249,7 @@ export default {
         return;
       }
 
-      if (this.tariffId === "" || _.isNil(this.tariffId)) {
+      if (this.tariffId === 0 || _.isNil(this.tariffId)) {
         this.notify("Не выбран тариф");
         return;
       }
