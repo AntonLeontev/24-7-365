@@ -578,6 +578,7 @@ body, body *, html {
 			left: unset;
 			right: -10px;
 			bottom: -260px;
+			aspect-ratio: 168/129;
 		}
 
 		@include media-breakpoint-up(md) {
@@ -593,6 +594,7 @@ body, body *, html {
 		@include media-breakpoint-up(xl) {
 		  position: static;
 		  width: 700px;
+		  aspect-ratio: 7/6;
 		}
 	}
 
@@ -1211,17 +1213,23 @@ body, body *, html {
 		position: absolute;
 		bottom: -245px;
 		right: 60px;
+		width: 291px;
+		aspect-ratio: 291/225;
 		z-index: 0;
 
 		@include media-breakpoint-up(md) {
 			right: unset;
 			left: 0px;
+			width: 387px;
+			aspect-ratio: 387/299;
 		}
 
 		@include media-breakpoint-up(xl) {
 			right: 0px;
 			left: unset;
 			bottom: -270px;
+			width: 524px;
+			aspect-ratio: 524/404;
 		}
 	}
 }

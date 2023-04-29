@@ -39,4 +39,4 @@ after('deploy:update_code', 'build');
 
 after('deploy:failed', 'deploy:unlock');
 
-after('push', 'making writable');
+// after('push', 'making writable');
