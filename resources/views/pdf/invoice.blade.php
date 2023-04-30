@@ -3,18 +3,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	
 	<style type="text/css">
-	@font-face { 
-		font-family: "Roboto";
-		src: url({{ '/storage/fonts/Roboto-Medium.ttf' }}) format("truetype");
-		font-weight: 400;
-	}
-	@font-face { 
-		font-family: "Roboto";
-		src: url({{ '/storage/fonts/Roboto-Bold.ttf' }}) format("truetype");
-		font-weight: bold;
-	}
 
-	* {font-family: Roboto;font-size: 14px;line-height: 14px;}
+	* {font-family: 'DejaVu Sans';font-size: 14px;line-height: 14px;}
 	table {margin: 0 0 15px 0;width: 100%;border-collapse: collapse;border-spacing: 0;}		
 	table th {padding: 5px;font-weight: bold;}        
 	table td {padding: 5px;}	
