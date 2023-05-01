@@ -1,8 +1,8 @@
 <?php
 
+use App\Support\Logging\Formatters\TelegramFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
-use Monolog\Handler\SyslogUdpHandler;
 
 return [
 
@@ -53,13 +53,13 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'telegram'],
             'ignore_exceptions' => false,
         ],
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path("logs/" . now()->format('Y-m-d') . ".log"),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
@@ -68,25 +68,6 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
-        ],
-
-        'slack' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Laravel Log',
-            'emoji' => ':boom:',
-            'level' => env('LOG_LEVEL', 'critical'),
-        ],
-
-        'papertrail' => [
-            'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
-            'handler_with' => [
-                'host' => env('PAPERTRAIL_URL'),
-                'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
-            ],
         ],
 
         'stderr' => [
@@ -116,6 +97,20 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        'telegram' => [
+            'driver'  => 'monolog',
+            'level' => env('LOG_LEVEL', 'debug'),
+            'handler' => Monolog\Handler\TelegramBotHandler::class,
+            'with' => [
+                'apiKey' => env("TELEGRAM_LOG_BOT_API_KEY", ''),
+                'channel' => env('TELEGRAM_LOG_BOT_CHANNEL', ''),
+                'splitLongMessages' => true,
+                'delayBetweenMessages' => true,
+                'parseMode' => 'HTML',
+            ],
+            'formatter' => TelegramFormatter::class,
         ],
     ],
 
