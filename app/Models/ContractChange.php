@@ -13,18 +13,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ContractChange extends Model
 {
     use HasFactory;
-	use SoftDeletes;
+    use SoftDeletes;
 
-
-    protected $dates = [
-        'starts_at',
+	
+    protected $casts = [
+        'amount' => AmountCast::class,
+        'status' => ContractChangeStatus::class,
+        'type' => ContractChangeType::class,
+        'starts_at' => 'datetime'
     ];
-
-	protected $casts = [
-		'amount' => AmountCast::class,
-		'status' => ContractChangeStatus::class,
-		'type' => ContractChangeType::class,
-	];
 
     protected $fillable = [
         'contract_id',
@@ -42,18 +39,18 @@ class ContractChange extends Model
         return $this->belongsTo(Contract::class);
     }
 
-	public function tariff(): BelongsTo
-	{
-		return $this->belongsTo(Tariff::class);
-	}
+    public function tariff(): BelongsTo
+    {
+        return $this->belongsTo(Tariff::class);
+    }
 
-	public function name(): string
-	{
-		return match (true) {
-			$this->type === self::TYPE_INCREASE_AMOUNT => 'Увеличение суммы',
-			$this->type === self::TYPE_CHANGE_TARIFF => 'Смена тарифа',
-			$this->type === self::TYPE_PROLONGATION => 'Атопродление',
-			$this->type === self::TYPE_INITIAL => 'Первичный',
-		};
-	}
+    public function name(): string
+    {
+        return match (true) {
+            $this->type === self::TYPE_INCREASE_AMOUNT => 'Увеличение суммы',
+            $this->type === self::TYPE_CHANGE_TARIFF => 'Смена тарифа',
+            $this->type === self::TYPE_PROLONGATION => 'Атопродление',
+            $this->type === self::TYPE_INITIAL => 'Первичный',
+        };
+    }
 }

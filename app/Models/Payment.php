@@ -15,12 +15,7 @@ class Payment extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
 
-    protected $dates = [
-        'planned_at',
-        'paid_at',
-    ];
 
     protected $fillable = [
         'account_id',
@@ -30,13 +25,15 @@ class Payment extends Model
         'status',
         'planned_at',
         'paid_at',
-		'description',
+        'description',
     ];
 
     protected $casts = [
         'amount' => AmountCast::class,
-		'status' => PaymentStatus::class,
-		'type' => PaymentType::class,
+        'status' => PaymentStatus::class,
+        'type' => PaymentType::class,
+        'planned_at' => 'datetime',
+        'paid_at' => 'datetime',
     ];
 
 
@@ -50,8 +47,8 @@ class Payment extends Model
         return $this->belongsTo(Contract::class);
     }
 
-	public function profitabilities(): HasMany
-	{
-		return $this->hasMany(Profitability::class);
-	}
+    public function profitabilities(): HasMany
+    {
+        return $this->hasMany(Profitability::class);
+    }
 }

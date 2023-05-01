@@ -21,13 +21,10 @@ class Profitability extends Model
 
     protected $casts = [
         'amount' => AmountCast::class,
+        'accrued_at' => 'datetime',
     ];
 
-    protected $dates = [
-        'accrued_at',
-    ];
-
-
+	
     public function contract(): BelongsTo
     {
         return $this->belongsTo(Contract::class);

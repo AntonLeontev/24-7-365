@@ -33,10 +33,6 @@ class Contract extends Model
         'prolongate'
     ];
 
-    protected $dates = [
-        'paid_at',
-    ];
-
     protected $casts = [
         'amount' => AmountCast::class,
         'paid_at' => 'date:d m Y',
