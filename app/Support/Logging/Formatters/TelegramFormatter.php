@@ -43,13 +43,15 @@ class TelegramFormatter extends NormalizerFormatter
             $message = $message->replace("{{$key}}", $value);
         }
 
-        $context = htmlspecialchars(print_r($record->context, true));
+		if (!empty($record->contaxt)) {
+			$context = htmlspecialchars(print_r($record->context, true));
+	
+			if (strlen($context) > 4000) {
+				return $message->append("\n", $context);
+			}
+		}
 
-        if (strlen($context) > 4000) {
-            return $message->append("\n", $context);
-        }
-
-        return $message->append("\n", '<pre>', $context, '</pre>');
+        return $message->append("\n", '<pre>', $context ?? '', '</pre>');
     }
 
     private function postFormat(string $message): string
