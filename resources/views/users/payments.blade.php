@@ -4,10 +4,10 @@
 
 @section('content')
 
-	<x-common.h1 class="mb-4">График платежей</x-common.h1>
+	<x-common.h1 class="">График платежей</x-common.h1>
 
 	@foreach ($profitabilities as $date => $monthOperations)
-	<div class="card mb-4">
+	<div class="card my-13">
 		<div class="card-header">
 			{{ now()->parse($date)->translatedFormat("F, Y год") }}
 		</div>

@@ -27,6 +27,10 @@ use App\Listeners\GenerateCreditPayments;
 use App\Listeners\GenerateProfitabilities;
 use App\Listeners\IncreaseContractChangeDuration;
 use App\Listeners\Prolongate;
+use App\Listeners\SendContractCreatedNotification;
+use App\Listeners\SendContractFinishedNotification;
+use App\Listeners\SendPaymentReceivedNotification;
+use App\Listeners\SendPaymentSentNotification;
 use App\Listeners\SendProlongationNotification;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
@@ -55,6 +59,7 @@ class EventServiceProvider extends ServiceProvider
         ContractCreated::class => [
             [ContractChangeManager::class, 'createInitContractChange'],
             [DebetPaymentManager::class, 'createInitialPayment'],
+			SendContractCreatedNotification::class,
         ],
         ContractCanceled::class => [
             CancelContract::class,
@@ -63,6 +68,7 @@ class EventServiceProvider extends ServiceProvider
             DeletePendingCreditPayments::class,
         ],
         ContractFinished::class => [
+			SendContractFinishedNotification::class,
         ],
         ContractTariffChanging::class => [
             [ContractChangeManager::class, 'createNewTariffContractChange'],
@@ -87,9 +93,12 @@ class EventServiceProvider extends ServiceProvider
             UpdateContract::class,
             [GenerateCreditPayments::class, 'handle'],
             GenerateProfitabilities::class,
+
+			SendPaymentReceivedNotification::class,
         ],
         PaymentSent::class => [
             CheckContractStatus::class,
+			SendPaymentSentNotification::class,
         ],
         BillingPeriodEnded::class => [
             IncreaseContractChangeDuration::class,

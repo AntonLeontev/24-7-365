@@ -35,7 +35,7 @@ task('making writable', function () {
     
     // Hooks
 
-after('deploy:update_code', 'build');
+// after('deploy:publish', 'build');
 
 after('deploy:failed', 'deploy:unlock');
 

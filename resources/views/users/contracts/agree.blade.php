@@ -9,7 +9,7 @@
 @section('content')
     <x-common.h1>Заключение нового договора</x-common.h1>
 
-    <div class="card">
+    <div class="card my-13">
         <div class="card-header d-flex justify-content-between align-items-center">
             Заключение договора
             <div class="d-flex gap-3">

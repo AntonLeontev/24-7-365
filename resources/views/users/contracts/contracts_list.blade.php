@@ -3,9 +3,9 @@
 @section('title', 'Активные договоры')
 
 @section('content')
-	<x-common.h1 class="mb-4">Активные договоры</x-common.h1>
+	<x-common.h1 class="">Активные договоры</x-common.h1>
 
-	<div class="card">
+	<div class="card my-13">
 		<div class="card-header d-flex justify-content-between">
 			Список договоров
 			<div class="d-none d-lg-flex gap-2">
