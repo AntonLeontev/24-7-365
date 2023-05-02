@@ -12,8 +12,8 @@ class TelegramFormatter extends NormalizerFormatter
         if (isset($record->context['exception'])) {
             $message = $this->formatException($record);
         } else {
-			$message = $this->formatMessage($record);
-		}
+            $message = $this->formatMessage($record);
+        }
 
         return $this->postFormat($message);
     }
@@ -43,13 +43,13 @@ class TelegramFormatter extends NormalizerFormatter
             $message = $message->replace("{{$key}}", $value);
         }
 
-		if (!empty($record->contaxt)) {
-			$context = htmlspecialchars(print_r($record->context, true));
-	
-			if (strlen($context) > 4000) {
-				return $message->append("\n", $context);
-			}
-		}
+        if (!empty($record->context)) {
+            $context = htmlspecialchars(print_r($record->context, true));
+    
+            if (strlen($context) > 4000) {
+                return $message->append("\n", $context);
+            }
+        }
 
         return $message->append("\n", '<pre>', $context ?? '', '</pre>');
     }
