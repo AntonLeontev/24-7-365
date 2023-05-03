@@ -13,7 +13,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             Заключение договора
             <div class="d-flex gap-3">
-                <a class="btn btn-outline-primary d-none d-lg-block" href="{{ route('users.contract.pdf') }}">
+                <a class="btn btn-outline-primary d-none d-lg-block" href="{{ route('users.contract.pdf') }}" download>
                     Скачать договор в PDF
                 </a>
             </div>
@@ -30,7 +30,7 @@
 				<x-common.form.checkbox name="agreed" class="fs-7 fs-sm-6">Я согласен с условиями договора и приложением к договору</x-common.form.checkbox>
 				<button class="btn btn-primary w-100 fs-7 fs-sm-6" disabled>Продолжить заключение договора</button>
 			</form>
-            <a class="btn btn-outline-primary w-100 d-lg-none mt-4 fs-7 fs-sm-6" href="{{ route('users.contract.pdf') }}">
+            <a class="btn btn-outline-primary w-100 d-lg-none mt-4 fs-7 fs-sm-6" href="{{ route('users.contract.pdf') }}" download>
                 Скачать договор в PDF
             </a>
         </div>

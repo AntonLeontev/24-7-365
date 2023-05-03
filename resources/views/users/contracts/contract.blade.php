@@ -73,7 +73,7 @@
 				<div class="bg-body text-light p-5 text-center">
 					@if ($contract->contractChanges->last()->status->value === 'pending')
 						<p>
-							Запрошены изменения в договоре. Для подтверждения нужно <a class="btn-link" href="{{ route('invoice.pdf', $contract->payments->where('type', payment_type('debet'))->where('status', payment_status('pending'))->last()->id) }}">оплатить счет</a>
+							Запрошены изменения в договоре. Для подтверждения нужно <a class="btn-link" href="{{ route('invoice.pdf', $contract->payments->where('type', payment_type('debet'))->where('status', payment_status('pending'))->last()->id) }}" download>оплатить счет</a>
 						</p>
 						<p class="mb-0"><a class="btn-link" href="{{ route('contracts.cancel_change', $contract->id) }}">Отменить изменения</a></p>
 					@elseif($contract->contractChanges->last()->status->value === 'waitingPeriodEnd')
@@ -258,7 +258,7 @@
                         @if ($contract->status->value === 'init')
                             <p>
                                 Для активации нужно оплатить <a class="btn-link"
-                                    href="{{ route('invoice.pdf', $contract->payments->first()->id) }}">счет</a>
+                                    href="{{ route('invoice.pdf', $contract->payments->first()->id) }}" download>счет</a>
                             </p>
                         @endif
                     </div>
@@ -313,7 +313,11 @@
                 <div class="modal-header">
                     <h5 class="modal-title pe-3 fs-md-4">Текст договора</h5>
                     <div class="d-flex gap-3">
-                        <a class="btn btn-outline-primary d-none d-lg-block" href="{{ route('users.contract.pdf') }}">
+                        <a 
+							class="btn btn-outline-primary d-none d-lg-block" 
+							href="{{ route('users.contract.pdf') }}"
+							download
+						>
                             Скачать договор в PDF
                         </a>
                         <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
@@ -323,7 +327,7 @@
                     <div class="contract-text text-bg-dark vh-70 overflow-auto px-3 py-3">
                         @include('pdf.contract.text')
                     </div>
-                    <a class="btn btn-outline-primary w-100 d-lg-none mt-4" href="{{ route('users.contract.pdf') }}">
+                    <a class="btn btn-outline-primary w-100 d-lg-none mt-4" href="{{ route('users.contract.pdf') }}" download>
                         Скачать договор в PDF
                     </a>
                 </div>
