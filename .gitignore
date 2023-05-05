@@ -4,6 +4,7 @@
 /public/storage
 /storage/*.key
 /storage/fonts
+/storage/sberCert
 /vendor
 .env
 .env.backup

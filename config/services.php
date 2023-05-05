@@ -32,4 +32,14 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI')
     ],
 
+    'sber' => [
+        'scope' => env('SBER_SCOPE'),
+        'client_id' => env('SBER_CLIENT_ID'),
+        'client_secret' => env('SBER_CLIENT_SECRET'),
+        'auth_host' => 'https://edupir.testsbi.sberbank.ru:9443',
+        'api_host' => 'https://edupirfintech.sberbank.ru:9443',
+		'cert_path' => env('SBER_CERT_PATH'),
+		'cert_pass' => env('SBER_CERT_PASS'),
+    ],
+
 ];
