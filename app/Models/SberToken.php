@@ -11,8 +11,15 @@ class SberToken extends Model
 
 
     protected $fillable = [
-		'id', 
-		'access_token',
-		'refresh_token', 
-	];
+        'id',
+        'access_token',
+        'refresh_token',
+        'token_type',
+        'expires_in',
+    ];
+
+    protected $casts = [
+        'updated_at' => 'datetime',
+        'created_at' => 'datetime',
+    ];
 }

@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('sber_tokens', function (Blueprint $table) {
             $table->id();
-			$table->string('refresh_token');
-			$table->string('access_token');
+            $table->string('refresh_token');
+            $table->string('access_token');
+            $table->string('token_type');
+            $table->smallInteger('expires_in');
             $table->timestamps();
         });
     }

@@ -232,4 +232,6 @@ Route::prefix('sber')
         
         Route::get('auth-code', [SberController::class, 'authCodeRedirect'])
             ->name('sber.auth-code');
+
+        Route::get('test', [SberController::class, 'test']);
     });
