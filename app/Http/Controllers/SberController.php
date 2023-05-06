@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\Sber\SberApiException;
+use App\Jobs\GetTransactions;
 use App\Models\SberToken;
 use App\Support\Services\Sber\SberBusinessApi;
 use App\Support\Services\Sber\SberBusinessApiService;
@@ -41,10 +42,10 @@ class SberController extends Controller
 
     public function test(SberBusinessApiService $service)
     {
-        // dispatch(new GetTransactions());
-        // return 'ok';
+        dispatch(new GetTransactions());
+        return 'ok';
 
-        $response = $service->transactions();
-		dd($response);
+        // $response = $service->transactions();
+		// dd($response);
     }
 }

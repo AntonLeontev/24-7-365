@@ -45,6 +45,7 @@ class SberBusinessApi
                 ],
                 'cert' => [config('services.sber.cert_path'), config('services.sber.cert_pass')],
                 'query' => $query ?? $this->transactionsQuery($date ?? now()),
+                'timeout' => 10.0,
             ]);
         } catch (TransferException $e) {
             throw new SberApiException($e->getMessage(), 1);
@@ -69,6 +70,7 @@ class SberBusinessApi
                 ],
                 'cert' => [config('services.sber.cert_path'), config('services.sber.cert_pass')],
                 'query' => $query,
+                'timeout' => 10.0,
                 'allow_redirects' => false
             ]);
         } catch (TransferException $e) {
