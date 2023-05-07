@@ -3,8 +3,10 @@
 namespace App\Support\Services\Sber;
 
 use App\DTOs\SberTokensDTO;
+use App\Enums\PaymentType;
 use App\Exceptions\Sber\SberApiException;
 use App\Exceptions\Sber\TransactionsNotReadyException;
+use App\Models\Payment;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
@@ -58,6 +60,34 @@ class SberBusinessApi
         $response = json_decode($response->getBody()->getContents());
 
         return $response;
+    }
+
+    public function createPayment(string $accessToken, Payment $payment): bool
+    {
+        if ($payment->type === PaymentType::debet) {
+            throw new SberApiException("Создание платежного поручения по входящему платежу", 1);
+        }
+
+        try {
+            $response = $this->client->post($this->paymentsUrl(), [
+                'headers' => [
+                    'Authorization' => $accessToken,
+                    'Accept' => 'application/json',
+                ],
+                'cert' => [config('services.sber.cert_path'), config('services.sber.cert_pass')],
+                'json' => $this->paymentsQuery($payment),
+                'timeout' => 10.0,
+				'http_errors' => false,
+            ]);
+        } catch (TransferException $e) {
+            throw new SberApiException($e->getMessage(), 1);
+        }
+
+		if ($response->getStatusCode() >= 400) {
+			throw new SberApiException($response->getBody()->getContents());
+		}
+
+		return true;
     }
 
     private function requestTokens(array $query): SberTokensDTO
@@ -129,6 +159,35 @@ class SberBusinessApi
         ];
     }
 
+    private function paymentsQuery(Payment $payment): array
+    {
+        return [
+            'amount' => $payment->amount->amount(),
+            'date' => $payment->planned_at->format('Y-m-d'),
+            'externalId' => $payment->id,
+            'operationCode' => '01',
+            'payeeAccount' => $payment->account->payment_account,
+            'payeeBankBic' => $payment->account->bik,
+            'payeeBankCorrAccount' => $payment->account->correspondent_account,
+            'payeeInn' => $payment->account->organization->inn,
+            'payeeKpp' => $payment->account->organization->kpp,
+            'payeeName' => $payment->account->organization->title,
+            'payerAccount' => settings()->payment_account,
+            'payerBankBic' => settings()->bik,
+            'payerBankCorrAccount' => settings()->correspondent_account,
+            'payerInn' => settings()->inn,
+            'payerKpp' => settings()->kpp,
+            'payerName' => settings()->organization_title,
+            'priority' => 3,
+            'purpose' => $payment->description,
+            'vat' => [
+                'type' => 'NO_VAT',
+                'rate' => '0',
+                'amount' => 0,
+			],
+        ];
+    }
+
     private function authUrl(): string
     {
         return config('services.sber.auth_host') . '/ic/sso/api/v2/oauth/authorize';
@@ -142,5 +201,10 @@ class SberBusinessApi
     private function transactionsUrl(): string
     {
         return config('services.sber.api_host') . '/fintech/api/v2/statement/transactions';
+    }
+
+    private function paymentsUrl(): string
+    {
+        return config('services.sber.api_host') . '/fintech/api/v1/payments';
     }
 }

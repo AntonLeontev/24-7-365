@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Account;
-use App\Models\Contract;
-use App\Models\Organization;
 
 
 /**
@@ -20,15 +19,16 @@ class PaymentFactory extends Factory
      */
     public function definition()
     {
-       
         return [
-            //'account_id' => ,
-            //'organization_id' => ,
-            //'contract_id'=>,
-            'type'=>2,
-            'amount' => rand(2000000,80000000),
-            'status' => 1,
+			'id' => $this->faker->uuid(),
+            // 'account_id' => ,
+            // 'organization_id' => ,
+            // 'contract_id'=>,
+            'type' => PaymentType::credit,
+            'amount' => rand(2000000, 80000000),
+            'status' => PaymentStatus::pending,
 			'planned_at' => now(),
+			'description' => 'Test payment'
         ];
     }
 }

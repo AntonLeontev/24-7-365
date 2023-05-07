@@ -25,7 +25,7 @@ class FindPaymentByTransaction implements ShouldQueue
 
 
     public $tries = 2;
-    public $timeout = 120;
+    public $timeout = 30;
 
 
     public function __construct(private object $transaction)

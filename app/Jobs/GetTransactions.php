@@ -18,8 +18,22 @@ class GetTransactions implements ShouldQueue
     use SerializesModels;
 
 
+    public $tries = 3;
+    public $timeout = 30;
+
+
     public function __construct(private ?string $query = null)
     {
+    }
+
+    /**
+	* Calculate the number of seconds to wait before retrying the job.
+	*
+	* @return array<int, int>
+	*/
+    public function backoff(): array
+    {
+        return [5, 25];
     }
 
     public function handle(SberBusinessApiService $service): void

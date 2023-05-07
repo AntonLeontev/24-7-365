@@ -3,8 +3,10 @@
 namespace App\Support\Services\Sber;
 
 use App\DTOs\SberTokensDTO;
+use App\Models\Payment;
 use App\Models\SberToken;
 use Carbon\Carbon;
+use DomainException;
 
 class SberBusinessApiService
 {
@@ -19,9 +21,18 @@ class SberBusinessApiService
         return $this->api->getTransactions($token, $date, $query);
     }
 
+    public function createPayment(Payment $payment): bool
+    {
+        $token = $this->getAccessToken();
+
+        return $this->api->createPayment($token, $payment);
+    }
+
     private function getAccessToken(): string
     {
         $tokens = SberToken::find(1);
+
+        throw_if(is_null($tokens), DomainException::class, 'Refresh токен не найден. Нужно первый раз получить токен в Сбере');
 
         if ($tokens->updated_at->addSeconds($tokens->expires_in - 60) > now()) {
             return "{$tokens->token_type} {$tokens->access_token}";

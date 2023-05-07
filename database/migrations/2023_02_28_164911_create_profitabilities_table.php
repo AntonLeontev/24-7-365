@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Contract;
-use App\Models\Payment;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +20,9 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->foreignIdFor(Payment::class)
+			$table->foreignUuid('payment_id')
+				->references('id')
+				->on('payments')
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

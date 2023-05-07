@@ -9,7 +9,6 @@ use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Events\ContractTariffChanging;
 use App\Models\Contract;
-use App\Models\ContractChange;
 use App\Models\Organization;
 use App\Models\Payment;
 use App\Models\Tariff;
@@ -74,6 +73,7 @@ class UpdateContractInTheEndProfitTest extends TestCase
 			'status' => PaymentStatus::pending,
 			'planned_at' => now()->addMonths($this->contract->tariff->duration),
 			'paid_at' => null,
+			'description' => 'test',
 		]);
 
 		ProfitabilityFactory::new()->count(random_int(1, 5))->create(['payment_id' => $payment->id]);

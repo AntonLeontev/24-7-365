@@ -6,8 +6,7 @@ use App\Traits\GivesEnum;
 
 enum PaymentStatus: string
 {
-	use GivesEnum;
-
+    use GivesEnum;
 
 
     /**
@@ -19,4 +18,9 @@ enum PaymentStatus: string
      * Платеж проведен банком
      */
     case processed = 'processed';
+
+    /**
+     * В банке создано платежное поручение
+     */
+    case sent_to_bank = 'sent_to_bank';
 }

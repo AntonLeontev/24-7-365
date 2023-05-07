@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PaymentSentToBank;
 use App\Exceptions\Sber\SberApiException;
-use App\Jobs\GetTransactions;
+use App\Models\Organization;
+use App\Models\Payment;
 use App\Models\SberToken;
 use App\Support\Services\Sber\SberBusinessApi;
 use App\Support\Services\Sber\SberBusinessApiService;
@@ -42,10 +44,24 @@ class SberController extends Controller
 
     public function test(SberBusinessApiService $service)
     {
-        dispatch(new GetTransactions());
-        return 'ok';
+        // dispatch(new GetTransactions());
+        // return 'ok';
 
         // $response = $service->transactions();
-		// dd($response);
+        // dd($response);
+
+        /**---------------------------------- */
+        $org = Organization::latest()->with('accounts', 'contracts')->get()->first();
+
+        $account = $org->accounts->first();
+
+        $payment = Payment::factory()->create([
+            'account_id' => $account->id,
+            'contract_id' => $org->contracts->first()->id,
+        ]);
+
+		$service->createPayment($payment);
+
+		event(new PaymentSentToBank($payment));
     }
 }

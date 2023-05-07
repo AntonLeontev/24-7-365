@@ -13,10 +13,12 @@ use App\Events\ContractTariffChanging;
 use App\Events\ContractTerminated;
 use App\Events\PaymentReceived;
 use App\Events\PaymentSent;
+use App\Events\PaymentSentToBank;
 use App\Events\UserBlocked;
 use App\Events\UserUnblocked;
 use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
+use App\Listeners\MarkPaymentSentToBank;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeManager;
 use App\Listeners\DebetPaymentManager;
@@ -96,6 +98,9 @@ class EventServiceProvider extends ServiceProvider
 
 			SendPaymentReceivedNotification::class,
         ],
+		PaymentSentToBank::class => [
+			MarkPaymentSentToBank::class,
+		],
         PaymentSent::class => [
             CheckContractStatus::class,
 			SendPaymentSentNotification::class,

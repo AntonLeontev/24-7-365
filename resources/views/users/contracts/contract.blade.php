@@ -223,7 +223,7 @@
 
                     @foreach ($operations as $operation)
 						<x-common.tables.yellow.row>
-							<div class="col">{{ $operation->accrued_at->translatedFormat('d F Y') }}</div>
+							<div class="col">{{ $operation->accrued_at->translatedFormat('j F Y') }}</div>
 							<div class="col">{{ $contract->amountOnDate($operation->accrued_at->subDay())->format(0) }}</div>
 							<div class="col">+{{ $operation->amount }}</div>
 							<div class="col d-flex justify-content-center flex-nowrap gap-2">
@@ -238,7 +238,7 @@
 										{{ $operation->payment->amount }}
 										@endif
 								@else
-									{{ $operation->payment->planned_at->translatedFormat('d F Y') }}
+									{{ $operation->payment->planned_at->translatedFormat('j F Y') }}
 								@endif
 							</div>
 						</x-common.tables.yellow.row>
