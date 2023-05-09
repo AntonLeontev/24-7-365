@@ -55,7 +55,7 @@
 							<div class="col">
 								@if (
 									$contract->paid_at &&
-									$contract->prolongate &&
+									($contract->prolongate || is_null($contract->prolongate)) &&
 									$contract->status !== contract_status('canceled') &&
 									$contract->status !== contract_status('terminated') &&
 									$contract->end()->subMonths(2)->lte($contract->paid_at->addMonths($contract->duration()))
@@ -95,7 +95,7 @@
 	@foreach ($contracts as $contract)
 		@if(
 			$contract->paid_at &&
-			$contract->prolongate && 
+			($contract->prolongate || is_null($contract->prolongate)) && 
 			$contract->end()->subMonths(2)->lte($contract->paid_at->addMonths($contract->duration()))
 		)
 		<x-common.modal modalTitle="Продлить договор" id="contract_prolongation{{ $contract->id }}">

@@ -65,7 +65,7 @@
 		</tbody>
 	</table>
 	
-	<h1>Счет на оплату № {{ $payment->id }} от {{ $payment->created_at->translatedFormat('d F Y') }}</h1>
+	<h1>Счет на оплату №{{ $payment->number }} от {{ $payment->created_at->translatedFormat('d F Y') }}</h1>
  
 	<table class="contract">
 		<tbody>

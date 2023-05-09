@@ -17,7 +17,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+			$table->unsignedInteger('number')->index();
             $table->foreignIdFor(Account::class)
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
@@ -29,7 +30,7 @@ return new class extends Migration
             $table->string('status', 20)->default(PaymentStatus::pending->value);
             $table->date('planned_at')->nullable();
             $table->date('paid_at')->nullable();
-			$table->text('description')->nullable();
+            $table->text('description');
             $table->softDeletes();
             $table->timestamps();
         });

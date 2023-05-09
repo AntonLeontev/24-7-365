@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
+use RuntimeException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -43,8 +44,15 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        $this->reportable(function (RuntimeException $e) {
+            if (str_starts_with($e->getMessage(), 'Telegram API error')) {
+				Log::error($e->getMessage());
+                return;
+            }
+        });
+
         $this->reportable(function (Throwable $e) {
-			Log::channel('telegram')->error($e->getMessage(), ['exception' => $e]);
+            Log::channel('telegram')->error($e->getMessage(), ['exception' => $e]);
         });
     }
 }

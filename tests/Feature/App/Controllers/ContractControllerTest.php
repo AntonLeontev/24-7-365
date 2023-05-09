@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\App\Controllers;
 
-use App\Events\ContractCreated;
 use App\Http\Controllers\ContractController;
 use App\Models\Contract;
 use App\Models\Organization;
@@ -14,7 +13,7 @@ use Database\Factories\OrganizationFactory;
 use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ContractControllerTest extends TestCase
@@ -53,6 +52,7 @@ class ContractControllerTest extends TestCase
 	public function test_storing_contract()
 	{
 		$this->withoutExceptionHandling();
+		Notification::fake();
 
 		$tariffId = Tariff::where('title', 'Standart')->first()->id;
 		$amount = $this->faker->numberBetween(500000, 5000000);

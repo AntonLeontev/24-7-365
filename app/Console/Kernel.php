@@ -2,8 +2,12 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CheckPayments;
+use App\Console\Commands\CheckPeriodEnd;
+use App\Console\Commands\SendPaymentsToBank;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +19,23 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+		$schedule->command(CheckPeriodEnd::class)->dailyAt('1:00')
+			->after(function () {
+				Log::channel('schedule')->info('Выполнен перевод конца периода договоров');
+			}
+		);
+
+		$schedule->command(CheckPayments::class)->dailyAt('1:00')
+			->after(function () {
+				Log::channel('schedule')->info('Выполнена проверка транзакций в банке');
+			}
+		);
+
+		$schedule->command(SendPaymentsToBank::class)->dailyAt('1:30')
+			->after(function () {
+				Log::channel('schedule')->info('Выполнена отправка исходящих платежей');
+			}
+		);
     }
 
     /**

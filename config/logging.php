@@ -112,6 +112,24 @@ return [
             ],
             'formatter' => TelegramFormatter::class,
         ],
+
+        'bank' => [
+            'driver' => 'single',
+            'path' => storage_path("logs/bank.log"),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'bankerr' => [
+            'driver' => 'single',
+            'path' => storage_path("logs/bankerr.log"),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'schedule' => [
+            'driver' => 'single',
+            'path' => storage_path("logs/schedule.log"),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
     ],
 
 ];

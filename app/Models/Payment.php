@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\AmountCast;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,7 @@ class Payment extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use HasUuids;
 
 
     protected $fillable = [
@@ -50,5 +52,14 @@ class Payment extends Model
     public function profitabilities(): HasMany
     {
         return $this->hasMany(Profitability::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Payment $payment) {
+            $lastNumber = $payment->latest()->first()?->number;
+
+			$payment->number = ($lastNumber ?? 0) + 1;
+        });
     }
 }

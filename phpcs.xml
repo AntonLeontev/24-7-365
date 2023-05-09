@@ -72,7 +72,7 @@
 	<!-- Устанавливает количество пустых строк между элементами класса (свойствами и методами например) -->
     <rule ref="SlevomatCodingStandard.Classes.ClassMemberSpacing">
 		<properties>
-			<property name="linesCountBetweenMembers" value="2" />
+			<property name="linesCountBetweenMembers" value="1" />
 		</properties>
 	</rule>	
 
@@ -127,10 +127,10 @@
 		</properties>
 	</rule>
 
-	<!-- Исполльзует оператор ?: где возможно -->
+	<!-- Использует оператор ?: где возможно -->
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireShortTernaryOperator"/>
 
-	<!-- Исполльзует оператор ?= где возможно -->
+	<!-- Использует оператор ?= где возможно -->
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
 
 	<!-- Исправляет условия, в которых обе ветки возвращают true или false -->

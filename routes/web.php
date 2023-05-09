@@ -7,6 +7,7 @@ use App\Http\Controllers\NewContractController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\SberController;
 use App\Http\Controllers\SmscodeController;
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\SuggestionsController;
@@ -15,7 +16,6 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -74,17 +74,6 @@ Route::get('24-rescon/{contract_id}', function ($id) {
     return back();
 })->name('reset-contract');
 
-Route::get('test', function () {
-    // return view('test');
-    return (new MailMessage())
-                    ->subject("Счет на оплату")
-                    ->greeting('Приветули!')
-                    ->line("Сгенерирован счет по договору 36.")
-                    ->line("Счет во вложении, также его можно скачать:")
-                    ->action('Скачать', route('invoice.pdf', 12))
-                    ->salutation('Поки-чмоки!')
-                    ->render();
-});
 
 /*------------------------------------------*/
 
@@ -234,3 +223,15 @@ Route::prefix('admin')
         ->middleware('can:change settings')
         ->name('settings.index');
 });
+
+Route::prefix('sber')
+    ->group(function () {
+        Route::get('auth', [SberController::class, 'auth'])
+            ->middleware(['auth', 'can:update sber token'])
+            ->name('sber.auth');
+        
+        Route::get('auth-code', [SberController::class, 'authCodeRedirect'])
+            ->name('sber.auth-code');
+
+        Route::get('test', [SberController::class, 'test']);
+    });
