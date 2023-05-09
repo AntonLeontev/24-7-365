@@ -25,7 +25,7 @@
     <div class="notifications__modal" v-if="notifications.length > 0" v-show="show">
       <div class="modal__header">
         <span class="fs-6">Уведомления</span>
-        <button class="btn btn-link fs-8" @click="readAll">
+        <button class="btn btn-link fs-8 text-end pe-0" @click="readAll">
           Пометить всё прочитанным
         </button>
       </div>
