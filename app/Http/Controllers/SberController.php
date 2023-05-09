@@ -42,6 +42,7 @@ class SberController extends Controller
         );
     }
 
+	//TODO delete
     public function test(SberBusinessApiService $service)
     {
         // dispatch(new GetTransactions());

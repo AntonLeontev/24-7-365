@@ -18,7 +18,6 @@ use App\Events\UserBlocked;
 use App\Events\UserUnblocked;
 use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
-use App\Listeners\MarkPaymentSentToBank;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeManager;
 use App\Listeners\DebetPaymentManager;
@@ -28,7 +27,9 @@ use App\Listeners\FinishContract;
 use App\Listeners\GenerateCreditPayments;
 use App\Listeners\GenerateProfitabilities;
 use App\Listeners\IncreaseContractChangeDuration;
+use App\Listeners\MarkPaymentSentToBank;
 use App\Listeners\Prolongate;
+use App\Listeners\SendAutoprolongationRemind;
 use App\Listeners\SendContractCreatedNotification;
 use App\Listeners\SendContractFinishedNotification;
 use App\Listeners\SendPaymentReceivedNotification;
@@ -61,7 +62,7 @@ class EventServiceProvider extends ServiceProvider
         ContractCreated::class => [
             [ContractChangeManager::class, 'createInitContractChange'],
             [DebetPaymentManager::class, 'createInitialPayment'],
-			SendContractCreatedNotification::class,
+            SendContractCreatedNotification::class,
         ],
         ContractCanceled::class => [
             CancelContract::class,
@@ -70,7 +71,7 @@ class EventServiceProvider extends ServiceProvider
             DeletePendingCreditPayments::class,
         ],
         ContractFinished::class => [
-			SendContractFinishedNotification::class,
+            SendContractFinishedNotification::class,
         ],
         ContractTariffChanging::class => [
             [ContractChangeManager::class, 'createNewTariffContractChange'],
@@ -90,26 +91,27 @@ class EventServiceProvider extends ServiceProvider
         PaymentReceived::class => [
             DeletePendingCreditPayments::class,
             DeleteFutureProfitabilities::class,
-			
+            
             UpdateContractChange::class,
             UpdateContract::class,
             [GenerateCreditPayments::class, 'handle'],
             GenerateProfitabilities::class,
 
-			SendPaymentReceivedNotification::class,
+            SendPaymentReceivedNotification::class,
         ],
-		PaymentSentToBank::class => [
-			MarkPaymentSentToBank::class,
-		],
+        PaymentSentToBank::class => [
+            MarkPaymentSentToBank::class,
+        ],
         PaymentSent::class => [
             CheckContractStatus::class,
-			SendPaymentSentNotification::class,
+            SendPaymentSentNotification::class,
         ],
         BillingPeriodEnded::class => [
             IncreaseContractChangeDuration::class,
             ApplyContractChanges::class,
             Prolongate::class,
             FinishContract::class,
+            SendAutoprolongationRemind::class,
         ],
         ContractProlongated::class => [
             SendProlongationNotification::class,

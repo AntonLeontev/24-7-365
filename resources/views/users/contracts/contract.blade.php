@@ -86,8 +86,9 @@
 
 	@if(
 		$contract->paid_at &&
-		$contract->prolongate && 
-		$contract->end()->subMonths(2)->lte($contract->paid_at->addMonths($contract->duration()))
+		($contract->prolongate || is_null($contract->prolongate)) && 
+		// $contract->end()->subMonths(2)->lte($contract->paid_at->addMonths($contract->duration()))
+		$contract->end()->subMonths(2)->lte(now())
 	)
 		<div class="card">
 			<div class="p-4 pb-5">

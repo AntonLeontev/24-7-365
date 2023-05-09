@@ -124,6 +124,12 @@ return [
             'path' => storage_path("logs/bankerr.log"),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
+
+        'schedule' => [
+            'driver' => 'single',
+            'path' => storage_path("logs/schedule.log"),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
     ],
 
 ];
