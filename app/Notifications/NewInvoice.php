@@ -43,7 +43,7 @@ class NewInvoice extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         $pdf = Pdf::loadView('pdf.invoice', ['payment' => $this->payment])->output();
-        $name = "Счет №{$this->payment->id} от {$this->payment->created_at->format('d.m.Y')}";
+        $name = "Счет №{$this->payment->number} от {$this->payment->created_at->format('d.m.Y')}.pdf";
 
         return (new MailMessage())
                     ->subject("Счет на оплату")

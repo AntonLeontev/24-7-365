@@ -4,10 +4,8 @@ namespace App\Console\Commands;
 
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
-use App\Events\PaymentSentToBank;
 use App\Jobs\CreateBankPayment;
 use App\Models\Payment;
-use App\Support\Services\Sber\SberBusinessApiService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 

@@ -45,22 +45,17 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
-        'ses' => [
-            'transport' => 'ses',
+        'yandex' => [
+            'transport' => 'smtp',
+            'host' => 'smtp.yandex.ru',
+            'port' => 465,
+            'encryption' => 'ssl',
+            'username' => 'aner-anton',
+            'password' => env('YANDEX_MAIL_PASS'),
+            'timeout' => 20,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
-        'mailgun' => [
-            'transport' => 'mailgun',
-        ],
-
-        'postmark' => [
-            'transport' => 'postmark',
-        ],
-
-        'sendmail' => [
-            'transport' => 'sendmail',
-            'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
-        ],
 
         'log' => [
             'transport' => 'log',
@@ -92,8 +87,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'aner-anton@ya.ru'),
+        'name' => env('MAIL_FROM_NAME', '24-7-365'),
     ],
 
     /*

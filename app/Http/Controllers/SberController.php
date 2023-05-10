@@ -42,7 +42,7 @@ class SberController extends Controller
         );
     }
 
-	//TODO delete
+    //TODO delete
     public function test(SberBusinessApiService $service)
     {
         // dispatch(new GetTransactions());
@@ -61,8 +61,8 @@ class SberController extends Controller
             'contract_id' => $org->contracts->first()->id,
         ]);
 
-		$service->createPayment($payment);
+        $service->createPayment($payment);
 
-		event(new PaymentSentToBank($payment));
+        event(new PaymentSentToBank($payment));
     }
 }

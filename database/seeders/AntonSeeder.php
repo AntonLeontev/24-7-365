@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class AdminSeeder extends Seeder
+class AntonSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -22,6 +22,6 @@ class AdminSeeder extends Seeder
 			'password' => bcrypt('12345678'),
 		]);
 
-		$user->assignRole('Админ');
+		$user->assignRole('Клиент');
     }
 }

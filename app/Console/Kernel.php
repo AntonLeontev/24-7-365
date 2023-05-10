@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
 			}
 		);
 
-		$schedule->command(CheckPayments::class)->dailyAt('1:00')
+		$schedule->command(CheckPayments::class)->hourly()
 			->after(function () {
 				Log::channel('schedule')->info('Выполнена проверка транзакций в банке');
 			}

@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
-
-@section('title', $user->first_name)
+@section('title')
+	@empty($user->first_name)
+		Профиль
+	@else
+		{{ $user->first_name }}
+	@endif
+@endsection
 
 @section('scripts')
 	@vite(['resources/js/userProfile.js'])
