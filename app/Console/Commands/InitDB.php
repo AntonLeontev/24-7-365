@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class RefreshCommand extends Command
+class InitDB extends Command
 {
     /**
      * The name and signature of the console command.
@@ -37,6 +37,9 @@ class RefreshCommand extends Command
         $this->call('db:seed', ['--class' => 'RolesPermissionsSeeder']);
         $this->call('db:seed', ['--class' => 'TariffsSeeder']);
         $this->call('db:seed', ['--class' => 'ApplicationSettingsSeeder']);
+        $this->call('db:seed', ['--class' => 'SuperUserSeeder']);
+        $this->call('db:seed', ['--class' => 'AdminSeeder']);
+        $this->call('db:seed', ['--class' => 'AntonSeeder']);
         
         $this->call('cache:clear');
 
