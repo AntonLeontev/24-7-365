@@ -213,18 +213,26 @@
                 <div class="offer__content">
                     <h2 class="title offer__title"><span class="text-primary">наше предложение</span> «True Trade Deal»
                     </h2>
-                    <p class="text offer__text">Давайте объединим Ваши свободные средства и наш опыт.</p>
                     <div class="offer__cards">
                         <div class="offer__card card_with-title">
-                            <div class="card__title">У нас есть большой опыт</div>
+                            <div class="card__title">1. У нас есть большой опыт</div>
                             <div class="card__body">Мы умеем закупать максимально актуальные товары рынка розничных продаж
                                 … и
                                 умеем быстро их продавать через Ozon, WB и Яндекс-Маркет … но у нас не хватает оборотных
                                 средств
                                 в таком объеме, чтобы вывести нашу маржу на максимально достижимый уровень.</div>
                         </div>
+						<div class="offer__card card_with-title">
+							<div class="card__title">2. Давайте объединимся</div>
+							<div class="card__body">Давайте объединим наши ресурсные возможности (наши опыт, знания,
+								умения
+								и
+								наши собственные средства в оборотке … и ваши средства) … добьемся максимальной
+								маржинальности
+								торговых операций нашей компании … и честно поделим итоговую операционную прибыль.</div>
+						</div>
                         <div class="offer__card card_with-title">
-                            <div class="card__title">Мы ищем партнёров</div>
+                            <div class="card__title">3. Мы ищем партнёров</div>
                             <div class="card__body">Мы ищем партнёров по закупкам, которые не так опытны в отборе, закупке
                                 и
                                 продаже актуальных товаров … но у котрых есть оборотные средства, которых нам не хватает
@@ -233,16 +241,7 @@
                                 миллионов рублей других наших Партнеров по закупкам).</div>
                         </div>
                         <div class="offer__card card_with-title">
-                            <div class="card__title">Давайте объединимся</div>
-                            <div class="card__body">Давайте объединим наши ресурсные возможности (наши опыт, знания,
-                                умения
-                                и
-                                наши собственные средства в оборотке … и ваши средства) … добьемся максимальной
-                                маржинальности
-                                торговых операций нашей компании … и честно поделим итоговую операционную прибыль.</div>
-                        </div>
-                        <div class="offer__card card_with-title">
-                            <div class="card__title">Мы предлагаем Вам доходность</div>
+                            <div class="card__title">4. Мы предлагаем Вам доходность</div>
                             <div class="card__body">По нашей оценке, в зависимости от условий предоставления нам ваших
                                 средств
                                 в оборотку, Ваша ожидаемая доходность в год может колебаться от 24 до 100% годовых … а при
@@ -250,6 +249,7 @@
                             </div>
                         </div>
                     </div>
+                    <p class="text offer__text">Давайте объединим Ваши свободные средства и наш опыт.</p>
                 </div>
             </div>
         </div>
@@ -261,11 +261,7 @@
                 <div class="title charge__title">Исходя из нашего опыта, <span class="text-primary">вы поручаете
                         нам</span>:
                 </div>
-                <div class="text charge__text">
-                    Если вы предоставите свободные средства, все остальное (выбор товаров, поставщиков, закупка товаров,
-                    логистика, продажи и др.) сделаем мы!
-                    Полученную в итоге доходность поделим так, чтобы Ваша доходность всегда была не ниже Ваших ожиданий.
-                </div>
+                
                 <div class="charge__cards">
                     <div class="card">
                         <div class="card__image">
@@ -357,6 +353,14 @@
                         <div class="card__text">Организовать продажи этих товаров в полном объеме.</div>
                     </div>
                 </div>
+
+				<div class="text charge__text">
+                    Если вы предоставите свободные средства, все остальное (выбор товаров, поставщиков, закупка товаров,
+                    логистика, продажи и др.) сделаем мы!
+				</div>
+				<div class="text charge__text">
+                    Полученную в итоге доходность поделим так, чтобы Ваша доходность всегда была не ниже Ваших ожиданий.
+                </div>
             </div>
         </div>
         <div class="stripe__primary stripe__primary_horizontal"></div>
@@ -368,10 +372,27 @@
 			<div class="tariffs__content">
 				<div class="tariffs__description">
 					<h2 class="title tariffs__title">Наши <span class="text-primary">Тарифы</span>:</h2>
-					<p class="text tariffs__text">Если вы предоставите свободные средства, все остальное (выбор товаров,
-						поставщиков, закупка товаров, логистика, продажи и др.) сделаем мы!</p>
-					<p class="text tariffs__text">Полученную в итоге доходность поделим так, чтобы Ваша доходность всегда была
-						не ниже Ваших ожиданий.</p>
+
+					<p class="text tariffs__text">
+						Предлагаем вам 5 вариантов тарифов ожидаемой доходности. Тарифы различаются:
+					</p>
+					<ul class="tariffs__list">
+						<li class="text list__item">
+							по объему Вашего вклада (от 500 тыс.р до 5 млн.р. / свыше 5 млн.р.)
+						</li>
+						<li class="text list__item">
+							сроку использования вашего вклада (от 6 до 9 мес. / от 1 до 3 лет)
+						</li>
+						<li class="text list__item">
+							срокам выплачиваемой доходности (ежемесячно / в конце срока договора)
+						</li>
+						<li class="text list__item">
+							величине доходности (от 25% до 125% / от 150% до 200% годовых)
+						</li>
+					</ul>
+					<p class="text tariffs__text">
+						Чтобы точно посчитать вашу доходность, зарегистрируйтесь в Личном Кабинете и получите доступ к расчету "Калькулятора Доходности"
+					</p>
 					<a class="btn btn-outline-primary tariffs__button_desc" href="{{ route('register') }}">Стать партнёром</a>
 				</div>
 
@@ -379,13 +400,13 @@
 					<div id="slider">
 						@foreach (tariffs() as $tariffGroup)
 							<div class="slider__card">
-								<div class="card__title">«{{ $tariffGroup->first()->title }}»</div>
+								<div class="card__title">{{ ++$loop->index }}. «{{ $tariffGroup->first()->title }}»</div>
 								<div class="card__body">
 									<div class="card__percent">
 										<p class="card__text">
 											от <span class="percent-primary">{{ $tariffGroup->first()->annual_rate }}%</span>
 										</p>
-										<p class="card__text">доходности за год</p>
+										<p class="card__text">доходности в год</p>
 									</div>
 									<div class="card__table">
 										<div class="card__row">
@@ -399,9 +420,9 @@
 											</span>
 										</div>
 										<div class="card__row">
-											<span class="row__title">Тело вклада</span>
+											<span class="row__title">Доходность</span>
 											<span class="row__value">
-												@if ($tariffGroup->first()->getting_deposit === $tariffGroup->first()::MONTHLY)
+												@if ($tariffGroup->first()->getting_profit === $tariffGroup->first()::MONTHLY)
 													ежемесячно
 												@else
 													в конце срока
@@ -409,9 +430,9 @@
 											</span>
 										</div>
 										<div class="card__row">
-											<span class="row__title">Доходность</span>
+											<span class="row__title">Тело вклада</span>
 											<span class="row__value">
-												@if ($tariffGroup->first()->getting_profit === $tariffGroup->first()::MONTHLY)
+												@if ($tariffGroup->first()->getting_deposit === $tariffGroup->first()::MONTHLY)
 													ежемесячно
 												@else
 													в конце срока
@@ -534,25 +555,24 @@
     <div class="howitworks">
 		<div class="anchor" id="howitworks"></div>
         <div class="container-xxl">
-            <h2 class="title howitworks__title">Как <span class="text-primary">это работает</span>?</h2>
-            <p class="text howitworks__text">
+            <h2 class="title howitworks__title">Давайте разберемся, <span class="text-primary">как устроена наша модель</span>:</h2>
+            {{-- <p class="text howitworks__text">
                 Давайте разберемся, как устроена наша модель:
-            </p>
+            </p> --}}
             <div class="howitworks__cards">
                 <div class="howitworks__card card_with-title">
-                    <div class="card__title">Вы переводите средства</div>
+                    <div class="card__title">1. Вы переводите средства</div>
                     <div class="card__body">Для закупки товаров, Вы с р/с вашего ИП переводите нам по договору, например,
-                        1
-                        млн.р. (Агентский договор, по которому вы нанимаете нас за Агентское вознаграждение исполнить всю
+                        1 млн.р. (Агентский договор, по которому вы нанимаете нас за Агентское вознаграждение исполнить всю
                         вышеозначенную работу).</div>
                 </div>
                 <div class="howitworks__card card_with-title">
-                    <div class="card__title">Мы осуществляем закупки</div>
+                    <div class="card__title">2. Мы осуществляем закупки</div>
                     <div class="card__body">Эти деньги поступают в оборот: мы закупаем товары и продаем их с максимально
                         возможной маржинальностью. На реализацию одной партии товара в среднем уходит 1-2 месяца</div>
                 </div>
                 <div class="howitworks__card card_with-title">
-                    <div class="card__title">Реализуем товар закупленный на полученые от вас средства</div>
+                    <div class="card__title">3. Реализуем товар закупленный на полученые от вас средства</div>
                     <div class="card__body">
                         В итоге, мы не только отбиваем затраты на закупку товаров, но и зарабатываем доходность. Наше
                         Агентское вознаграждение, это вся доходность от проведенной торговой операции сверх Вашей ожидаемой
@@ -561,7 +581,7 @@
                 </div>
                 <div class="howitworks__card card_with-title">
                     <div class="card__title">
-                        Повторяем цикл «Закупка - Продажа»
+                        4. Повторяем цикл «Закупка - Продажа»
                     </div>
                     <div class="card__body">
                         Дальше мы снова закупаем партию товара и пытаемся реализовать ее с максимальной маржинальностью. За
@@ -570,7 +590,7 @@
                 </div>
                 <div class="howitworks__card card_with-title">
                     <div class="card__title">
-                        Выплачиваем Вам доходность
+                        5. Выплачиваем Вам доходность
                     </div>
                     <div class="card__body">
                         Все расходы нашей деятельности мы берем на себя и компенсируем их из той маржи, которая останется
@@ -585,29 +605,29 @@
 
     <div class="watch" id="watch">
         <div class="container-xxl">
-            <h2 class="title watch__title"><span class="text-primary">Вы можете</span> следить за всем</h2>
-            <p class="text watch__text">Как Вы можете контролировать результаты нашего с Вами сотрудничества:</p>
+            <h2 class="title watch__title">Вы можете <span class="text-primary">контролировать результаты</span> нашего сотрудничества:</h2>
+            {{-- <p class="text watch__text">Как Вы можете контролировать результаты нашего с Вами сотрудничества:</p> --}}
             <div class="watch__cards">
                 <div class="card">
 					<span class="card__text">
-						Как только Договор и выбранное Вами Приложение вступило в законную силу, в
+						1. Как только Договор и выбранное Вами Приложение вступило в законную силу, в
 						Вашем личном кабинете сразу же появится график выплат Вашей ожидаемой доходности и возврата 100% объема
 						предоставленных нам ваших средств.
 					</span>
 					</div>
                 <div class="card">
 					<span class="card__text">
-						Со временем, те выплаты вашей доходности, которые мы произведем, будут отмечаться жёлтой галочкой (исполнено!).
+						2. Со временем, те выплаты вашей доходности, которые мы произведем, будут отмечаться жёлтой галочкой (исполнено!).
 					</span>
                 </div>
                 <div class="card">
 					<span class="card__text">
-						Те выплаты Вашей доходности, которые еще только предстоит исполнить, будут не будут ничем отмечены.
+						3. Те выплаты Вашей доходности, которые еще только предстоит исполнить, не будут ничем отмечены.
 					</span>
                 </div>
                 <div class="card">
 					<span class="card__text">
-						Таким образом, у Вас будет возможность четко контролировать исполнение обязательств нашей стороны (что
+						4. Таким образом, у Вас будет возможность четко контролировать исполнение обязательств нашей стороны (что
 						называется, в онлайн режиме).
 					</span>
                 </div>
