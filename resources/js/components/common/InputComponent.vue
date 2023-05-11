@@ -1,5 +1,5 @@
 <template>
-  <div class="form-input">
+  <div class="form-input" :class="class">
     <input
       :type="type"
       class="form-control"
@@ -15,9 +15,9 @@
       :tabindex="tabindex"
       :id="id"
     />
-    <label class="form-label" v-show="!error && isFilled">{{ placeholder }}</label>
-    <label class="form-label" v-show="!error && !isFilled">{{ label }}</label>
-    <label class="form-label text-primary" v-cloak v-show="error" v-text="error"></label>
+    <label class="form-label mb-0" v-show="!error && isFilled">{{ placeholder }}</label>
+    <label class="form-label mb-0" v-show="!error && !isFilled">{{ label }}</label>
+    <label class="form-label text-primary mb-0" v-cloak v-show="error" v-text="error"></label>
   </div>
 </template>
 

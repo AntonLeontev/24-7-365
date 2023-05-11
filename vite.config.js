@@ -6,18 +6,18 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/sass/app.scss',
-                'resources/sass/landing.scss',
-                'resources/js/app.js',
-                'resources/js/landing.js',
-                'resources/js/agree.js',
-                'resources/js/calculator.js',
-                'resources/js/userProfile.js',
-                'resources/js/editContract.js',
-                'resources/js/newContract.js',
-                'resources/js/settings.js',
-                'resources/js/users.js',
-                'resources/js/auth.js',
+                "resources/sass/app.scss",
+                "resources/sass/landing.scss",
+                "resources/js/app.js",
+                "resources/js/landing.js",
+                "resources/js/agree.js",
+                "resources/js/calculator.js",
+                "resources/js/userProfile.js",
+                "resources/js/editContract.js",
+                "resources/js/newContract.js",
+                "resources/js/settings.js",
+                "resources/js/users.js",
+                "resources/js/auth.js",
             ],
             refresh: true,
         }),
@@ -32,7 +32,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.esm-bundler.js',
+            vue: "vue/dist/vue.esm-bundler.js",
         },
     },
 });
