@@ -55,7 +55,7 @@
                             @if (auth()->id() === $user->id)
                                 <button class="btn btn-link fs-8 fs-md-7 pb-0" data-bs-toggle="modal"
                                     data-bs-target="#callBack" type="button" tabindex="-1">
-                                    У меня нет ИП/ООО
+                                    У меня нет ИП / ООО
                                 </button>
                             @endif
                         </div>
@@ -227,7 +227,7 @@
 		</div>
 	@endcan
 
-	<x-common.modal id="callBack" modalTitle="У вас нет ИП/ООО?">
+	<x-common.modal id="callBack" modalTitle="У вас нет ИП / ООО?">
 		<p class="fs-8 fs-md-7 mb-13">Введите номер телефона, с вами свяжется работник банка и вам бесплатно помогут в
 			оформлении ИП или ООО</p>
 		<form action="" method="POST">

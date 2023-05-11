@@ -12,7 +12,6 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 	@yield('scripts')
-	@routes()
 </head>
 <body>
 	<div class="auth__wrap" id="app">
