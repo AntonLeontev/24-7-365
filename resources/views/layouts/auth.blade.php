@@ -12,6 +12,8 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 	@yield('scripts')
+
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
 	<div class="auth__wrap" id="app">

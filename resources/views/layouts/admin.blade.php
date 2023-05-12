@@ -12,10 +12,11 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 	@yield('scripts')
+
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
 	<div id="app">
-		git
 		<main class="py-4">
 			@yield('content')
 		</main>

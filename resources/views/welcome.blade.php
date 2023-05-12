@@ -31,6 +31,9 @@
 					<li class="nav__item" data-anchor="offer">
 						<a class="nav__link" href="#offer">Наше предложение</a>
 					</li>
+					<li class="nav__item" data-anchor="charge">
+                        <a class="nav__link" href="#charge">Опыт</a>
+                    </li>
 					<li class="nav__item" data-anchor="tariffs">
 						<a class="nav__link" href="#tariffs">Тарифы</a>
 					</li>
@@ -133,6 +136,9 @@
 
                     <li class="nav__item" data-anchor="offer">
                         <a class="nav__link" href="#offer">Наше предложение</a>
+                    </li>
+                    <li class="nav__item" data-anchor="charge">
+                        <a class="nav__link" href="#charge">Опыт</a>
                     </li>
                     <li class="nav__item" data-anchor="tariffs">
 						<a class="nav__link" href="#tariffs">Тарифы</a>
@@ -256,6 +262,7 @@
     </div>
 
     <div class="charge">
+		<div class="anchor" id="charge"></div>
         <div class="container-xxl">
             <div class="charge__content">
                 <div class="title charge__title">Исходя из нашего опыта, <span class="text-primary">вы поручаете
@@ -475,9 +482,10 @@
                     <div class="bordered">
                         <div class="bordered__number">03</div>
                         <div class="text bordered__text">
-                            Оформите ИП или ООО, если Вы этого не сделали ранее. Если надо, мы можем помочь Вам
-                            зарегистрировать
-                            ИП или ООО.
+                            Оформите ИП или ООО, если Вы этого не сделали ранее. Если надо, мы можем помочь Вам зарегистрировать ИП или ООО. 
+							<button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#callBack" type="button" tabindex="-1">
+								Зарегистрировать ИП / ООО
+							</button>
                         </div>
                     </div>
                     <div class="bordered">
@@ -548,7 +556,6 @@
 				голову начинающего бизнесмена. И вот через пару месяцев мы получаем разочарованного человека, который
 				остался без денег, но с кучей неликвидного товара на руках. Знакомая ситуация?
 			</p>
-			<a class="btn btn-primary why__button" href="{{ route('register') }}">Начать зарабатывать</a>
 		</div>
     </div>
 
@@ -632,6 +639,7 @@
 					</span>
                 </div>
             </div>
+			<a class="btn btn-primary watch__button" href="{{ route('register') }}">Начать зарабатывать</a>
         </div>
     </div>
 
@@ -926,4 +934,18 @@
         </div>
     </footer>
 </div>
+
+<x-common.modal id="callBack" modalTitle="У вас нет ИП / ООО?">
+		<p class="fs-8 fs-md-7 mb-13">Введите номер телефона, с вами свяжется работник банка и вам бесплатно помогут в
+			оформлении ИП или ООО</p>
+		<form action="" method="POST">
+			@csrf
+			<x-common.form.input class="mb-13" name='phone' placeholder="+7" label="Ваш номер телефона" />
+			<button class="btn btn-primary w-100 mb-2">Отправить</button>
+			<x-common.form.checkbox class="fs-9 fs-md-8" name="check" label=''>
+				Я согласен на <a class="text-reset" href="#">обработку персональных данных</a> и ознакомлен с <a
+					class="text-reset" href="#">политикой конфиденциальности</a>.
+			</x-common.form.checkbox>
+		</form>
+	</x-common.modal>
 @endsection

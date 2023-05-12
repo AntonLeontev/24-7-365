@@ -13,6 +13,8 @@
     @vite(['resources/sass/landing.scss', 'resources/js/landing.js'])
 	@yield('scripts')
 
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
 	<link rel="prefetch" href="{{ Vite::asset('resources/sass/app.scss') }}" as="style">
 	<link rel="prefetch" href="{{ Vite::asset('resources/js/app.js') }}" as="script">
 </head>

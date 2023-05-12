@@ -187,7 +187,7 @@ Route::prefix('personal')
     
     Route::post('smscode/create/{type}', [SmscodeController::class,'createCode'])
         ->where('type', 'phone_confirmation|contract_creating')
-        ->middleware(['can:see own profile', 'throttle:2', 'phone'])
+        ->middleware(['can:see own profile', 'throttle:4', 'phone'])
         ->name('smscode.create');
 
     Route::post('notifications/unread', [NotificationsController::class, 'unread'])

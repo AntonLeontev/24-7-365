@@ -1,10 +1,6 @@
 <div class="card auth-box">
 	<div class="card-header d-flex justify-content-center align-items-center flex-column">
 		<a href="{{ route('home') }}"><img src="{{ Vite::asset('resources/images/logo.png') }}" alt="Logo"></a>
-		<div>
-
-			<a class="btn-link fs-8" href="{{ route('home') }}">На главную</a>
-		</div>
 	</div>
 
 	<div class="card-body px-0">
@@ -31,4 +27,5 @@
 			</a>
 		</div>
 	</div>
+	<a class="auth-close btn-close" href="{{ route('home') }}"></a>
 </div>

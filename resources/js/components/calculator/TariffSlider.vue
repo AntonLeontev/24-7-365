@@ -10,15 +10,14 @@
       @update="change"
       ref="slider"
     />
-    <div class="d-flex justify-content-between mt-11 text-light">
-      <div v-for="tariff in tariffs">
-        <span
-          class="duration fs-7"
-          :class="{ 'text-white': duration == tariff.duration }"
-          @click="duration = tariff.duration"
-        >
-          {{ tariff.duration }} мес.
-        </span>
+    <div class="duration-bar d-flex justify-content-between text-light">
+      <div
+        class="duration fs-7"
+        :class="{ 'text-white': duration == tariff.duration }"
+        @click="duration = tariff.duration"
+        v-for="tariff in tariffs"
+      >
+        {{ tariff.duration }} мес.
       </div>
     </div>
 
@@ -42,15 +41,14 @@
       @update="change"
       ref="slider"
     />
-    <div class="d-flex justify-content-end mt-11 text-light">
-      <div v-for="tariff in tariffs">
-        <span
-          class="duration fs-7"
-          :class="{ 'text-white': duration == tariff.duration }"
-          @click="duration = tariff.duration"
-        >
-          {{ tariff.duration }} мес.
-        </span>
+    <div class="d-flex justify-content-end text-light">
+      <div
+        class="duration fs-7"
+        :class="{ 'text-white': duration == tariff.duration }"
+        @click="duration = tariff.duration"
+        v-for="tariff in tariffs"
+      >
+        {{ tariff.duration }} мес.
       </div>
     </div>
   </div>
@@ -151,8 +149,17 @@ export default {
     background-color: #fff;
   }
 }
+
+.duration-bar {
+  position: relative;
+  z-index: 2;
+  transform: translateY(-3px);
+}
 .duration {
   transition: color 0.3s ease;
   cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  height: 30px;
 }
 </style>
