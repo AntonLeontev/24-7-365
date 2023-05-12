@@ -1,18 +1,6 @@
 <?php
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Third Party Services
-    |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials for third party services such
-    | as Mailgun, Postmark, AWS and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
-    |
-    */
-
     'yandex' => [
         'client_id' => env('YANDEX_CLIENT_ID'),
         'client_secret' => env('YANDEX_CLIENT_SECRET'),
@@ -39,8 +27,13 @@ return [
         'account_number' => env('SBER_ACCOUNT_NUMBER'),
         'auth_host' => 'https://edupir.testsbi.sberbank.ru:9443',
         'api_host' => 'https://edupirfintech.sberbank.ru:9443',
-		'cert_path' => env('SBER_CERT_PATH'),
-		'cert_pass' => env('SBER_CERT_PASS'),
+        'cert_path' => env('SBER_CERT_PATH'),
+        'cert_pass' => env('SBER_CERT_PASS'),
     ],
 
+    'stream-telecom' => [
+        'login' => env('STREAM_TELECOM_LOGIN'),
+        'password' => env('STREAM_TELECOM_PASSWORD'),
+        'sadr' => env('STREAM_TELECOM_SADR', 'SMS Info'),
+    ],
 ];

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Contracts\SmsService;
 use App\Contracts\SuggestionsContract;
 use App\Support\Services\DadataService;
+use App\Support\Services\StreamTelecom\StreamTelecomService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon;
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(SuggestionsContract::class, DadataService::class);
+		$this->app->bind(SmsService::class, StreamTelecomService::class);
     }
 
     /**

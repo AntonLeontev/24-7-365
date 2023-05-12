@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\SmsService;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\IncomeCalculatorController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
+use App\Models\User;
+use App\Notifications\SmsCodeNotification;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -73,6 +76,12 @@ Route::get('24-rescon/{contract_id}', function ($id) {
 
     return back();
 })->name('reset-contract');
+
+Route::get('test', function (SmsService $service) {
+    return 'undefined';
+});
+
+
 
 
 /*------------------------------------------*/
