@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\GetUserFromSocialsAction;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 
 class SocialsController extends Controller
 {
@@ -14,7 +15,11 @@ class SocialsController extends Controller
 
     public function callback(string $driver, GetUserFromSocialsAction $action)
     {
-        $user = $action($driver);
+        try {
+			$user = $action($driver);
+        } catch (InvalidStateException $e) {
+            return back();
+        }
 
         auth()->login($user, true);
 

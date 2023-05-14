@@ -27,10 +27,10 @@ task('build', function () {
     run('npm run build');
 });
 
-task('making writable', function () {
-    cd('~/24-7-365/current/storage');
-    run('chmod -R 777 ./logs');
-    run('chmod -R 777 ./framework');
+task('config:clear', function () {
+    cd('~/24-7-365/current');
+    run('php artisan config:clear');
+    run('php artisan config:cache');
 });
     
     // Hooks

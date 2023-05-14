@@ -23,11 +23,7 @@ class GetUserFromSocialsAction
 
     public function __invoke(string $driver): User
     {
-        try {
-            $socialiteUser = Socialite::driver($driver)->user();
-        } catch (InvalidStateException $e) {
-            return to_route('register');
-        }
+		$socialiteUser = Socialite::driver($driver)->user();
 
         $user = User::where('email', $socialiteUser->getEmail())->first();
 
