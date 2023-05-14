@@ -11,19 +11,19 @@ class SocialsController extends Controller
 {
     public function redirect(string $driver)
     {
+        return Socialite::driver($driver)->redirect();
+    }
+
+    public function callback(string $driver, GetUserFromSocialsAction $action)
+    {
         if (request()->has('error') && request('error') === 'access_denied') {
-            return back();
+            return to_route('login');
         }
 
         if (request()->has('error')) {
             throw new DomainException(request('error_description'), 1);
         }
 
-        return Socialite::driver($driver)->redirect();
-    }
-
-    public function callback(string $driver, GetUserFromSocialsAction $action)
-    {
         try {
             $user = $action($driver);
         } catch (InvalidStateException $e) {
