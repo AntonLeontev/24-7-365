@@ -22,7 +22,6 @@ class Contract extends Model
     use HasFactory;
     use SoftDeletes;
 
-
     protected $fillable = [
         'user_id',
         'organization_id',
@@ -41,7 +40,6 @@ class Contract extends Model
     ];
 
     protected $with = ['contractChanges'];
-
 
     public function user(): BelongsTo
     {
@@ -84,7 +82,11 @@ class Contract extends Model
             throw new DomainException("Попытка определить конец периода у неоплаченного договора", 1);
         }
 
-        return $this->paid_at->addMonths($this->duration() + 1);
+        return $this->paid_at->addMonths($this->duration() + 1)
+            ->setHours(0)
+            ->setMinutes(0)
+            ->setSeconds(0)
+            ->setMillis(0);
     }
 
     public function end(): ?Carbon
@@ -278,7 +280,7 @@ class Contract extends Model
     private function currentTariffChange(): ?ContractChange
     {
         return $this->contractChanges
-			->load('tariff')
+            ->load('tariff')
             ->sortBy('starts_at')
             ->whereIn('status', [ContractChangeStatus::past, ContractChangeStatus::actual])
             ->reduce(function ($carry, ContractChange $change) {
