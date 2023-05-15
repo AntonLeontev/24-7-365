@@ -8,13 +8,16 @@ use Illuminate\Notifications\Notification;
 
 class SmsChannel
 {
-	public function __construct(private SmsService $service)
-	{}
+    public function __construct(private SmsService $service)
+    {
+    }
 
     public function send(User $notifiable, Notification $notification): void
     {
         $message = $notification->toSms($notifiable);
+
+        $phone = $notification->phone ?: $notifiable->phone;
  
-        $this->service->sendSms($notifiable->phone, $message);
+        $this->service->sendSms($phone, $message);
     }
 }

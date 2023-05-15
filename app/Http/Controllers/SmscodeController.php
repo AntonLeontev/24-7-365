@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SmscodeCreateRequest;
 use App\Http\Requests\SmscodeRequest;
 use App\Models\Smscode;
+use App\Notifications\SmsCodeNotification;
 
 class SmscodeController extends Controller
 {
@@ -42,6 +43,7 @@ class SmscodeController extends Controller
         ]);
 
         //TODO Send code via sms. Use notifications and queues
+        // auth()->user()->notify(new SmsCodeNotification($code->code, $request->phone));
 
         return response()->json(['ok' => true, 'code' => $code->code]);
     }

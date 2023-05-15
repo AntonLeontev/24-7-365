@@ -5,19 +5,17 @@ namespace App\Notifications;
 use App\Notifications\Channels\SmsChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SmsCodeNotification extends Notification implements ShouldQueue
+class SmsCodeNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(private string $code)
+    public function __construct(public string $code, public string $phone = '')
     {
-        //
     }
 
     /**
