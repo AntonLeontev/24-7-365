@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex flex-column gap-2 py-121 pe-11"
+    class="d-flex flex-column gap-2 py-121 pe-12"
     :class="{ 'bg-secondary': style == 'contract', 'bg-body': style == 'calculator' }"
   >
     <div class="property fs-8 fs-md-7">

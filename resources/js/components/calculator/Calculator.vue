@@ -18,6 +18,7 @@
                 autocorrect="off"
                 autocomplete="off"
                 autocapitalize="off"
+                autofocus
                 @input="handleAmount"
                 ref="amount"
               />
@@ -67,11 +68,13 @@ import TariffGroup from "./TariffGroup.vue";
 
 export default {
   name: "Calculator",
-  async mounted() {},
+  async mounted() {
+    this.$refs.amount.value = "";
+  },
   data() {
     return {
       tariffId: null,
-      amount: 500000,
+      amount: null,
       amountError: null,
       tariffBlocks: null,
     };

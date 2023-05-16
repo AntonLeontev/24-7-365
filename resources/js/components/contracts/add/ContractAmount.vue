@@ -14,6 +14,7 @@
           autocorrect="off"
           autocomplete="off"
           autocapitalize="off"
+          autofocus
           @keyup="input"
           :class="{ 'border-primary': errors.amount }"
           ref="amount"
@@ -46,7 +47,7 @@ export default {
   created() {},
   data() {
     return {
-      amount: this.amountSaved ?? 500000,
+      amount: this.amountSaved,
       errors: {},
     };
   },
@@ -54,8 +55,10 @@ export default {
     amountSaved: Number,
   },
   mounted() {
-    this.$refs.amount.value = this.amountSaved ?? 500000;
-    this.formatNumber();
+    this.$refs.amount.value = this.amountSaved === 0 ? "" : this.amountSaved;
+    if (this.amountSaved > 0) {
+      this.formatNumber();
+    }
   },
   methods: {
     input() {

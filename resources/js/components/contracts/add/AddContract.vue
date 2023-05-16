@@ -25,6 +25,10 @@
           </Transition>
         </template>
       </div>
+      <div class="pb-2 text-center" v-if="amount < 500000">
+        Введите желаемую сумму закупа (не менее 500 тыс руб. / до 5 млн. руб / свыше 5 млн
+        руб.)
+      </div>
     </div>
   </div>
 
