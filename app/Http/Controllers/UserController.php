@@ -7,6 +7,7 @@ use App\Events\UserUnblocked;
 use App\Http\Requests\UpdatePhoneRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Requests\UserCreateRequest;
+use App\Http\Resources\UserCollection;
 use App\Models\User;
 use App\ValueObjects\Amount;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -17,6 +18,10 @@ class UserController extends Controller
 {
     public function index(User $user, Request $request)
     {
+        if (!request()->ajax()) {
+            return view('users.index');
+        }
+
         $users = $user->query()
             ->select([
                 'users.id',
@@ -43,29 +48,22 @@ class UserController extends Controller
                         ->orWhere('organizations.title', 'like', '%' . request()->search . '%');
                 });
             })
-            ->get()
-            ->when(request()->has(['filter']), function ($collection, $value) {
+            ->when(request()->has(['filter']), function (Builder $query) {
                 if (request()->filter === 'with_contracts') {
-                    return $collection->filter(function ($value) {
-                        return $value->contracts_sum > 0;
-                    });
+                    $query->having('contracts_sum', '>', 0);
                 }
             })
-            ->transform(function ($item) {
+            ->simplePaginate()
+            ->withQueryString()
+			->through(function ($item) {
                 if (!is_null($item->contracts_sum)) {
                     $item->contracts_sum = new Amount($item->contracts_sum);
                 }
 
                 return $item;
-            })
-            ->paginate()
-            ->withQueryString();
+            });
 
-        if (request()->ajax()) {
-            return response()->json($users)->header('Cache-Control', 'no-store, no-cache, must-revalidate');
-        }
-
-        return view('users.index');
+        return (new UserCollection($users))->response()->header('Cache-Control', 'no-store, no-cache, must-revalidate');
     }
 
     public function show(User $user)

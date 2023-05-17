@@ -85,6 +85,13 @@
             </li>
         @endif
     @endcan
+    @can('see invoices')
+        @if (Route::has('invoices.index'))
+            <li class="{{ Route::is('invoices.index') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('invoices.index') }}">Счета</a>
+            </li>
+        @endif
+    @endcan
 
 
 

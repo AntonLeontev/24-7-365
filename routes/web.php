@@ -1,6 +1,5 @@
 <?php
 
-use App\Contracts\SmsService;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\IncomeCalculatorController;
@@ -17,10 +16,10 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
-use App\Models\User;
-use App\Notifications\SmsCodeNotification;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,8 +76,11 @@ Route::get('24-rescon/{contract_id}', function ($id) {
     return back();
 })->name('reset-contract');
 
-Route::get('test', function (SmsService $service) {
-    return 'undefined';
+Route::get('test', function () {
+    $role = Role::where('name', 'Админ')->first();
+    Permission::create(['name' => 'see invoices']);
+	$role->givePermissionTo('see invoices');
+	return 'ok';
 });
 
 
@@ -231,6 +233,10 @@ Route::prefix('admin')
     Route::get('settings', [ApplicationSettingsController::class, 'index'])
         ->middleware('can:change settings')
         ->name('settings.index');
+        
+    Route::get('invoices', [PaymentController::class, 'invoicesIndex'])
+        ->middleware('can:see invoices')
+        ->name('invoices.index');
 });
 
 Route::prefix('sber')

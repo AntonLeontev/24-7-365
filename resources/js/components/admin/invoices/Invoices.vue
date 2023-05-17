@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header">
       <div class="row">
-        <span class="col-12 col-xxl-4">Список пользователей</span>
+        <span class="col-12 col-xxl-4">Выставленные счета</span>
 
         <div class="col-12 col-xxl-8">
           <div class="row gy-2">
@@ -29,7 +29,7 @@
                 </svg>
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4">
+            <!-- <div class="col-12 col-sm-6 col-md-4">
               <div class="form-selection">
                 <select class="form-select" @change="changeFilter">
                   <option value="all">Все</option>
@@ -48,29 +48,7 @@
                   />
                 </svg>
               </div>
-            </div>
-            <div class="col-12 col-md-4">
-              <button
-                class="btn btn-outline-primary d-flex w-100 justify-content-center align-items-center gap-2 text-nowrap"
-                data-bs-toggle="modal"
-                data-bs-target="#createUser"
-                type="button"
-              >
-                Создать пользователя
-                <svg
-                  width="11"
-                  height="12"
-                  viewBox="0 0 11 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M10.75 6.75H6.25V11.25H4.75V6.75H0.25V5.25H4.75V0.75H6.25V5.25H10.75V6.75Z"
-                    fill="#FCE301"
-                  />
-                </svg>
-              </button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -78,79 +56,85 @@
 
     <div class="card-body">
       <div class="table_dark">
-        <table-header
-          @change-sort="changeSort"
-          :sort="this.sort"
-          :order="this.order"
-        ></table-header>
+        <table-header>
+          <column-title
+            title="number"
+            @change-sort="changeSort"
+            :sort="this.sort"
+            :order="this.order"
+            >№</column-title
+          >
+          <column-title
+            title="organization"
+            @change-sort="changeSort"
+            :sort="this.sort"
+            :order="this.order"
+            >Организация</column-title
+          >
+          <column-title
+            title="amount"
+            @change-sort="changeSort"
+            :sort="this.sort"
+            :order="this.order"
+            >Сумма</column-title
+          >
+          <column-title
+            title="status"
+            @change-sort="changeSort"
+            :sort="this.sort"
+            :order="this.order"
+            >Статус</column-title
+          >
+        </table-header>
         <div class="table_dark__body">
-          <template v-for="user in users.data">
-            <div class="table_dark__row" :href="route('users.show', user.id)">
+          <template v-for="(invoice, key) in invoices.data" v-key="key">
+            <div class="table_dark__row">
               <div class="col">
-                <a :href="route('users.show', user.id)">
-                  {{ user.first_name ?? "Без имени" }}
-                </a>
+                {{ invoice.number }}
               </div>
-              <div class="col text-wrap text-break">
-                {{ user.organization ?? "Нет" }}
-              </div>
-              <div class="col">{{ user.contracts_sum?.formatted ?? 0 }}</div>
-              <div class="col"></div>
+              <div class="col text-wrap text-break">{{ invoice.organization_title }}</div>
+              <div class="col">{{ invoice.amount.formatted }}</div>
               <div class="col">
-                <span class="text-success" v-if="user.is_blocked">Заблокирован</span>
-                <span class="text-danger" v-else>Активен</span>
+                {{ invoice.status }}
               </div>
             </div>
           </template>
         </div>
       </div>
 
-      <simple-pagination :paginator="users" @change-page="changePage"></simple-pagination>
+      <div class="mt-3">
+        <simple-pagination
+          :paginator="invoices"
+          @change-page="changePage"
+        ></simple-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import TableHeader from "./TableHeader.vue";
-import Choices from "choices.js";
-
 export default {
-  name: "Users",
-  created() {},
-  mounted() {
+  name: "Invoices",
+  created() {
     this.update();
-
-    let selects = document.querySelectorAll(".form-select");
-    selects.forEach((select) => {
-      new Choices(select, {
-        searchEnabled: false,
-        itemSelectText: "",
-        shouldSort: false,
-        allowHTML: true,
-      });
-    });
   },
-  computed: {},
+  mounted() {},
   data() {
     return {
-      users: {},
+      invoices: {},
       page: 1,
       search: "",
       sort: "",
       order: "ASC",
-      filter: "all",
     };
   },
   props: {},
   methods: {
-    route(...vars) {
-      return route(...vars);
-    },
     async update(url = this.url()) {
       await axios
         .get(url, {})
         .then((response) => {
-          this.users = response.data;
+          this.invoices = response.data;
         })
         .catch((data) => {
           if (data.response.status === 401) {
@@ -182,7 +166,7 @@ export default {
       this.update(data.href);
     },
     url() {
-      let url = new URL(route("users.index"));
+      let url = new URL(route("invoices.index"));
 
       if (this.page != 1) url.searchParams.append("page", this.page);
 
@@ -192,8 +176,6 @@ export default {
         url.searchParams.append("sort", this.sort);
         url.searchParams.append("order", this.order);
       }
-
-      if (this.filter !== "all") url.searchParams.append("filter", this.filter);
 
       return url.href;
     },
@@ -221,12 +203,8 @@ export default {
 
       this.order = "ASC";
     },
-    changeFilter(event) {
-      this.filter = event.target.value;
-      this.update();
-    },
   },
-  components: { TableHeader },
+  components: {},
 };
 </script>
 
