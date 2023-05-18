@@ -18,10 +18,7 @@
 	<link rel="apple-touch-icon" href="favicon180.png">
 	<link rel="manifest" href="manifest.webmanifest">
 
-	<meta property="og:title" content="@yield('title') | {{ config('app.name', 'Laravel') }}"/>
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content="{{ request()->url() }}" />
-	<meta property="og:image" content="{{ env('APP_URL') }}/ogimage.jpg"/>
+	@include('layouts.part.openGraph')
 </head>
 <body>
 	<div class="application">
