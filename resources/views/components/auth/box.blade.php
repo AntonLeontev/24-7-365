@@ -1,6 +1,8 @@
 <div class="card auth-box">
 	<div class="card-header d-flex justify-content-center align-items-center flex-column">
-		<a href="{{ route('home') }}"><img src="{{ Vite::asset('resources/images/logo.png') }}" alt="Logo"></a>
+		<a href="{{ route('home') }}">
+			@include('layouts.part.logo')
+		</a>
 	</div>
 
 	<div class="card-body px-0">
