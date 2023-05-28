@@ -15,8 +15,8 @@
 	@yield('scripts')
 
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
-	<link rel="apple-touch-icon" href="favicon180.png">
-	<link rel="manifest" href="manifest.webmanifest">
+	<link rel="apple-touch-icon" href="/favicon180.png">
+	<link rel="manifest" href="/manifest.webmanifest">
 
 	@include('layouts.part.openGraph')
 </head>

@@ -617,7 +617,7 @@ body, body *, html {
 		height: 100%;
 		width: 100%;
 		object-fit: cover;
-		opacity: 0.02;
+		opacity: 0.08;
 	}
 
 	& .yellow-stripe {
@@ -1241,6 +1241,14 @@ body, body *, html {
 					text-align: left;
 					padding-right: 14px;
 				}
+			}
+		}
+	}
+
+	.bordered_active {
+		.bordered__number {
+			&::before {
+				background-color: $primary;
 			}
 		}
 	}

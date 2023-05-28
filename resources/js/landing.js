@@ -33,6 +33,31 @@ document.addEventListener('DOMContentLoaded', () => {
         .querySelector(".faq__questions")
         .addEventListener("click", questionsClick);
 
+
+	/** Переключение точек на карте */
+	let bordered = Array.from(document.querySelectorAll('.bordered'));
+	bordered.pop();
+	bordered.shift();
+
+	function cycleRoadmap() {
+        let point = bordered[count];
+
+        point.classList.add("bordered_active");
+        setTimeout(() => {
+            point.classList.remove("bordered_active");
+        }, 800);
+
+        count++;
+
+        if (count === bordered.length) {
+            count = 0;
+        }
+    }
+
+	let count = 0;
+
+	setInterval(cycleRoadmap, 800);
+
 });
 
 function handleScroll() {
@@ -152,6 +177,7 @@ function questionsClick(event) {
 	parent.style.height =
 		target.getBoundingClientRect().height + height + "px";
 }
+
 
 
 
