@@ -2,10 +2,10 @@
 
 namespace App\Actions;
 
+use App\Exceptions\Socials\EmailIsNullException;
 use App\Models\User;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 use Laravel\Socialite\Facades\Socialite;
-use Laravel\Socialite\Two\InvalidStateException;
 
 class GetUserFromSocialsAction
 {
@@ -23,7 +23,11 @@ class GetUserFromSocialsAction
 
     public function __invoke(string $driver): User
     {
-		$socialiteUser = Socialite::driver($driver)->user();
+        $socialiteUser = Socialite::driver($driver)->user();
+
+        if (is_null($socialiteUser->getEmail())) {
+            throw new EmailIsNullException("В профиле не указан email", 1);
+        }
 
         $user = User::where('email', $socialiteUser->getEmail())->first();
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\GetUserFromSocialsAction;
+use App\Exceptions\Socials\EmailIsNullException;
 use DomainException;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
@@ -28,6 +29,8 @@ class SocialsController extends Controller
             $user = $action($driver);
         } catch (InvalidStateException $e) {
             return back();
+        } catch (EmailIsNullException $e) {
+            return to_route('register')->with(['email_is_null' => true]);
         }
 
         auth()->login($user, true);

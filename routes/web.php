@@ -18,8 +18,6 @@ use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,10 +75,7 @@ Route::get('24-rescon/{contract_id}', function ($id) {
 })->name('reset-contract');
 
 Route::get('test', function () {
-    $role = Role::where('name', 'Админ')->first();
-    Permission::create(['name' => 'see invoices']);
-	$role->givePermissionTo('see invoices');
-	return 'ok';
+    return to_route('register')->with(['email_is_null' => true]);
 });
 
 
