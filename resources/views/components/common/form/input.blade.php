@@ -5,6 +5,7 @@
 	'value' => '',
 	'label' => '',
 	'id' => '',
+	'pattern' => '',
 	'disabled' => false,
 	'max' => '255',
 	'min' => '',
@@ -16,6 +17,7 @@
 <div {{ $attributes->class('form-input')->merge() }}>
 	<input 
 		type="{{ $type }}" 
+		@if($type === 'date') {{ $pattern }} @endif
 		class="form-control"  
 		name="{{ $name }}" 
 		placeholder="{{ $placeholder }}" 

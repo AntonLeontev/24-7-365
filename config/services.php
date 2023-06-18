@@ -36,4 +36,9 @@ return [
         'password' => env('STREAM_TELECOM_PASSWORD'),
         'sadr' => env('STREAM_TELECOM_SADR', 'SMS Info'),
     ],
+
+	'tochka' => [
+		'token' => env('TOCHKA_BANK_TOKEN'),
+		'mode' => env('TOCHKA_BANK_WORK_MODE'),
+	],
 ];

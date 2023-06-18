@@ -227,7 +227,7 @@
 		</div>
 	@endcan
 
-	<x-common.modal id="callBack" modalTitle="У вас нет ИП / ООО?">
+	{{-- <x-common.modal id="callBack" modalTitle="У вас нет ИП / ООО?">
 		<p class="fs-8 fs-md-7 mb-13">Введите номер телефона, с вами свяжется работник банка и вам бесплатно помогут в
 			оформлении ИП или ООО</p>
 		<form action="" method="POST">
@@ -239,7 +239,8 @@
 					class="text-reset" href="#">политикой конфиденциальности</a>.
 			</x-common.form.checkbox>
 		</form>
-	</x-common.modal>
+	</x-common.modal> --}}
+	<x-common.openCompany id="callBack" />
 
 	@can('block users')
 	@php

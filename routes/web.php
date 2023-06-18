@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\CreateCompanyController;
 use App\Http\Controllers\IncomeCalculatorController;
 use App\Http\Controllers\NewContractController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\RegisterCompanyController;
 use App\Http\Controllers\SberController;
 use App\Http\Controllers\SmscodeController;
 use App\Http\Controllers\SocialsController;
@@ -17,6 +19,7 @@ use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,7 +78,7 @@ Route::get('24-rescon/{contract_id}', function ($id) {
 })->name('reset-contract');
 
 Route::get('test', function () {
-    return to_route('register')->with(['email_is_null' => true]);
+    return '<p>3&nbsp;&nbsp;&nbsp;spaces is</p>';
 });
 
 
@@ -87,6 +90,8 @@ Route::post('suggestions/company', [SuggestionsController::class,'company'])
     ->name('suggestions.company');
 Route::post('suggestions/bank', [SuggestionsController::class,'bank'])
     ->name('suggestions.bank');
+
+Route::post('register-company', RegisterCompanyController::class)->name('register-company');
 
 Auth::routes(['verify' => true]);
 

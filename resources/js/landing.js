@@ -1,4 +1,8 @@
 import * as bootstrap from "bootstrap";
+window.bootstrap = bootstrap;
+import Choices from "choices.js";
+import axios from "axios";
+window.axios = axios;
 import.meta.glob(["../images/**", "../fonts/**"]);
 
 
@@ -58,6 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	setInterval(cycleRoadmap, 800);
 
+});
+
+let selects = document.querySelectorAll(".form-select");
+selects.forEach((select) => {
+    new Choices(select, {
+        searchEnabled: false,
+        itemSelectText: "",
+        shouldSort: false,
+        allowHTML: true,
+    });
 });
 
 function handleScroll() {

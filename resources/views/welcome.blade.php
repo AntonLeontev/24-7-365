@@ -693,11 +693,11 @@
                                 </svg>
                             </div>
                             <div class="question__answer">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis!
-                                Officiis
-                                neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque
-                                aperiam,
-                                officia nulla.
+								<ul>
+									<li>Мы используем средства аналитики изучения тенденций для понимания того, на что обратили бы своё внимание наши потенциальные клиенты.</li>
+									<li>Так же, проводим исследование конкурентов, чтобы понять, что они предлагают, каковы их цены и какие у нас есть возможности для качественного и/или ценового отличия от них.</li>
+									<li>Таким образом, следим за мнениями, как потребителей, так и рейтингами товаров конкурентов, которые могут помочь нам определить, какие товары будут пользоваться наибольшим спросом сегодня (что называется «здесь и сейчас»).</li>
+								</ul>
                             </div>
                         </div>
                         <div class="question">
@@ -711,11 +711,12 @@
                                 </svg>
                             </div>
                             <div class="question__answer">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis!
-                                Officiis
-                                neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque
-                                aperiam,
-                                officia nulla.
+								<p>
+									Мы обращаем внимание на то, что для правильной и своевременной доставки товаров из Китая в Россию, очень важно внимательно относиться к оформлению документов и иметь опыт работы с поставщиками в Китае и транспортными компаниями.
+								</p>
+								<p>
+									Такой опыт у нас есть!
+								</p>
                             </div>
                         </div>
                         <div class="question">
@@ -729,11 +730,12 @@
                                 </svg>
                             </div>
                             <div class="question__answer">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis!
-                                Officiis
-                                neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque
-                                aperiam,
-                                officia nulla.
+                                <p>
+									Мы исследуем рынок, чтобы понимать, какие есть поставщики, какие условия сотрудничества они предлагают и каких результатов они добиваются, изучаем репутацию поставщиков, читаем отзывы и исследуем данные о них, чтобы определить их надежность и профессионализм.
+								</p>
+								<p>
+									Затем сравниваем предложения разных поставщиков, чтобы выбрать наилучшие условия для постоянного повышения маржинальности нашей компании.
+								</p>
                             </div>
                         </div>
                         <div class="question">
@@ -747,11 +749,22 @@
                                 </svg>
                             </div>
                             <div class="question__answer">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis!
-                                Officiis
-                                neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque
-                                aperiam,
-                                officia nulla.
+                                <p>
+									Мы работаем только с проверенными и надежными поставщиками на территории Китая. Для этого мы проводим тщательный отбор и скрупулезное исследование каждого поставщика, прежде чем принимать решение о заключении контракта.
+								</p>
+								<p>
+									Мы всегда договариваемся о контроле качества товаров до их отправки. Мы не отправляем товары на склад без их тщательной проверки.
+								</p>
+								<p><b>И тем не менее, так же нами предусмотрены:</b></p>
+								<ul>
+									<li>Страхование непоставки товара от Поставщика (Китай, Турция, ОАЭ и т.д. / или российского Cargo) ... это в случае, если деньги мы заплатили за поставку товара, а товар нам не поставили!!</li>
+									<li>
+										Страхование невыплаты нам денег от Маркетплейса (например, потому что маркетплейс обанкротился ... или просто не платят и все!!)
+									</li>
+									<li>
+										Страхование невозврата закупочных средств Принципала (если вдруг с нами что случилось ... или что другое)?! … пока это только прорабатываем!!
+									</li>
+								</ul>
                             </div>
                         </div>
                     </div>
@@ -767,29 +780,9 @@
                                 </svg>
                             </div>
                             <div class="question__answer">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis!
-                                Officiis
-                                neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque
-                                aperiam,
-                                officia nulla.
-                            </div>
-                        </div>
-                        <div class="question">
-                            <div class="question__title">
-                                На каких условиях мы продаем наши товары через Ozon, WB и Яндекс-Маркет?
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M24 13.7143H13.7143V24H10.2857V13.7143H0V10.2857H10.2857V0H13.7143V10.2857H24V13.7143Z"
-                                        fill="white" />
-                                </svg>
-                            </div>
-                            <div class="question__answer">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis!
-                                Officiis
-                                neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque
-                                aperiam,
-                                officia nulla.
+                                <p>
+									Мы учитываем многие факторы, такие как ценовые стратегии конкурентов, рыночный спрос, экономические циклы, циклы жизни товаров и многие другие факторы. Ценообразование должно анализировать полученную информацию и учитывать все факторы, чтобы достичь максимальной маржинальности продажи товаров в розницу.
+								</p>
                             </div>
                         </div>
                         <div class="question">
@@ -803,11 +796,9 @@
                                 </svg>
                             </div>
                             <div class="question__answer">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis!
-                                Officiis
-                                neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque
-                                aperiam,
-                                officia nulla.
+                                <p>
+									Быстрые продажи достигаются путем своевременного удовлетворения потребностей покупателей, использования правильной маркетинговой стратегии и тем, что мы самым внимательным образом следим за качеством продаваемой продукции и устанавливаем ценовую политику, которая будет более чем конкурентоспособна на рынке.
+								</p>
                             </div>
                         </div>
                         <div class="question">
@@ -821,11 +812,28 @@
                                 </svg>
                             </div>
                             <div class="question__answer">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam ex qui placeat nobis!
-                                Officiis
-                                neque nisi unde ratione obcaecati possimus totam atque dolore tenetur aut, nihil cumque
-                                aperiam,
-                                officia nulla.
+                                <p>
+									Мы имеем комплекс навыков и опыта, которые помогают разрабатывать эффективные стратегии продвижения продуктов и услуг в интернете, повышать конверсию, увеличивать прибыль и обеспечивать удовлетворенность клиентов.
+								</p>
+								<p>
+									Умеем разрабатывать эффективные стратегии маркетинга: выбор оптимальных каналов продвижения, оценка эффективности инструментов, привлечение целевой аудитории.
+								</p>
+								<p>
+									Имеем навыки аналитики: сбор и анализ данных, отслеживание результатов, улучшение процессов продаж и взаимодействия с клиентами.
+								</p>
+								<p>
+									Имеем опыт реализации товаров через крупнейшие маркетплейсы: Ozon, WB, Яндекс Маркет и СберМегаМаркет … а также через торговые сети М.Видео и Эльдорадо.
+								</p>
+								<p><b>Цифры за последние 4 года работы:</b></p>
+								<p>
+									Продано online более 300 000 единиц продукции разных категорий, привлечено более 250 000 покупателей.
+								</p>
+								<p>
+									Запустили собственный бренд электроники Tesla Experience
+								</p>
+								<p>
+									Проработаны четкие механизмы по производству товара в Китае, а также по логистике от Китая, до покрытия зоной продаж по всей РФ и части СНГ.
+								</p>
                             </div>
                         </div>
 
@@ -1058,17 +1066,5 @@
         </footer>
     </div>
 
-    <x-common.modal id="callBack" modalTitle="У вас нет ИП / ООО?">
-        <p class="fs-8 fs-md-7 mb-13">Введите номер телефона, с вами свяжется работник банка и вам бесплатно помогут в
-            оформлении ИП или ООО</p>
-        <form action="" method="POST">
-            @csrf
-            <x-common.form.input class="mb-13" name='phone' placeholder="+7" label="Ваш номер телефона" />
-            <button class="btn btn-primary w-100 mb-2">Отправить</button>
-            <x-common.form.checkbox class="fs-9 fs-md-8" name="check" label=''>
-                Я согласен на <a class="text-reset" href="#">обработку персональных данных</a> и ознакомлен с <a
-                    class="text-reset" href="#">политикой конфиденциальности</a>.
-            </x-common.form.checkbox>
-        </form>
-    </x-common.modal>
+<x-common.openCompany id="callBack" />
 @endsection
