@@ -54,8 +54,8 @@
 	</form>
 
 	
-	<div class="toast-container position-fixed bottom-0 end-0 py-3 px-4">
-		<div id="liveToast" class="toast text-bg-dark border border-primary d-none z-3" role="alert" aria-live="assertive" aria-atomic="true">
+	<div class="toast-container position-fixed bottom-0 end-0 py-3 px-4" style="z-index: 3">
+		<div id="createCompanyToast" class="toast text-bg-dark border border-primary d-none z-3" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="toast-body position-relative text-primary p-3">
 				<span class="toast-text">
 					Hello, world! This is a toast message. Hello, world! This is a toast message. Hello, world! This is a toast message. Hello, world! This is a toast message.
@@ -96,7 +96,7 @@
 
 		const toastClose = document.getElementById('toastClose')
 		const toastText = document.querySelector('.toast-text')
-		const toast = document.getElementById('liveToast')
+		const toast = document.getElementById('createCompanyToast')
 	
 		if (toastClose) {
 			toastClose.addEventListener('click', () => {
@@ -107,6 +107,7 @@
 		changeDocument();
 		changeOrgForm();
 		toggleButton();
+		toastShow();
 
 		function changeDocument() {
 			if (typeDoc.value != 21) {
