@@ -37,7 +37,7 @@
             <ul class="contract-list w-xl-33">
 				<li>
 					<span>
-						Объем вклада от <span class="text-nowrap">{{ $contract->tariff->min_amount }}</span>
+						Объем ваших средств от <span class="text-nowrap">{{ $contract->tariff->min_amount }}</span>
 						@if ($contract->tariff->max_amount->raw() > 0)
 							до <span class="text-nowrap">{{ $contract->tariff->max_amount }}</span>
 						@endif
@@ -45,7 +45,7 @@
 				</li>
 			
 				<li>
-					Тело вклада в конце срока
+					Возврат средств в конце срока
 				</li>
 				<li>
 					@if ($contract->tariff->getting_profit === $contract->tariff::MONTHLY)

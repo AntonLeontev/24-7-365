@@ -32,12 +32,12 @@
           append="%"
         />
         <tariff-calculation
-          label="Доходность в месяц:"
+          label="Доходность в месяц (%):"
           :value="profitPerMonthPersent"
           append="%"
         />
         <tariff-calculation
-          label="Доходность в месяц:"
+          label="Доходность в месяц (₽):"
           :value="profitPerMonth"
           append=" ₽"
         />
@@ -47,7 +47,7 @@
           append=" ₽"
         />
         <tariff-calculation
-          :label="'ROI за ' + selectedTariff.duration + ' мес.'"
+          :label="'Коэф. доходности (ROI) за ' + selectedTariff.duration + ' мес.'"
           :value="roiPerDuration"
           append=""
         />
@@ -55,7 +55,7 @@
     </div>
     <div>
       <div class="mb-121 mb-md-13">
-        <p class="mb-121 fs-7">Срок вклада:</p>
+        <p class="mb-121 fs-7">Срок:</p>
         <tariff-slider
           :tariffs="tariffs"
           :selectedTariffId="selectedTariffId"
