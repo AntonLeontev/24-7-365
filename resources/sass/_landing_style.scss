@@ -731,6 +731,7 @@ body, body *, html {
 	&__text {
 		margin-top: 36px;
 		font-size: 18px;
+		color: #fff;
 
 		@include media-breakpoint-up(xl) {
 			font-size: 22px;
@@ -1102,7 +1103,7 @@ body, body *, html {
 					}
 
 					@include media-breakpoint-up(xl) {
-						order: 6;
+						order: 4;
 					}
 
 					&::after {
@@ -1113,7 +1114,7 @@ body, body *, html {
 						}
 
 						@include media-breakpoint-up(xl) {
-							border-left: none;
+							border-left: dashed 2px #fff;
 						}
 					}
 				}
@@ -1126,7 +1127,7 @@ body, body *, html {
 					order: 6;
 
 					@include media-breakpoint-up(xl) {
-						order: 3;
+						order: 6;
 					}
 
 					&::after {
@@ -1137,7 +1138,6 @@ body, body *, html {
 
 						@include media-breakpoint-up(xl) {
 							border-right: none;
-							border-left: dashed 2px #fff;
 						}
 					}
 				}
@@ -1459,6 +1459,10 @@ body, body *, html {
 			flex-direction: column;
 			row-gap: 24px;
 			column-gap: 24px;
+		}
+
+		.bottom {
+			grid-column: 1 / -1;
 		}
 
 		.question {
