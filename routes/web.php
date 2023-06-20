@@ -18,6 +18,7 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
+use App\Http\Middleware\SendRegisterCompanyMail;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -91,7 +92,9 @@ Route::post('suggestions/company', [SuggestionsController::class,'company'])
 Route::post('suggestions/bank', [SuggestionsController::class,'bank'])
     ->name('suggestions.bank');
 
-Route::post('register-company', RegisterCompanyController::class)->name('register-company');
+Route::post('register-company', RegisterCompanyController::class)
+	->middleware(SendRegisterCompanyMail::class)
+	->name('register-company');
 Route::view('register-company/personal', 'register-company.personal')->name('register-company.personal');
 Route::view('register-company/booking', 'register-company.booking')->name('register-company.booking');
 
