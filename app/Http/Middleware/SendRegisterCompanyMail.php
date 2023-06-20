@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use App\Mail\CompanyRegistered;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,7 +28,7 @@ class SendRegisterCompanyMail
 
         $json = json_decode($response->content(), false);
 
-        Mail::to('aner-anton@ya.ru')->send(new CompanyRegistered(
+        Mail::to('reg@true-trade.ru')->send(new CompanyRegistered(
             $request->telephone,
             $request->first_name,
             $request->last_name,
