@@ -10,22 +10,22 @@
 				<option value="ltd">ООО</option>
 				<option value="fe">ИП</option>
 			</x-common.form.select>
-			<div class="d-flex flex-column flex-lg-row gap-2">
+			{{-- <div class="d-flex flex-column flex-lg-row gap-2">
 				<x-common.form.input class="mb-12 w-100" name='inn' label="ИНН директора/физ.лица для ИП" />
 				<x-common.form.input class="mb-12 w-100" name='snils' label="СНИЛС" />
-			</div>
+			</div> --}}
 			<div class="d-flex flex-column flex-lg-row gap-2">
 				<x-common.form.input class="mb-12 w-100" name='last_name' label="Фамилия директора/физ.лица для ИП" />
 				<x-common.form.input class="mb-12 w-100" name='first_name' label="Имя директора/физ.лица для ИП" />
 				<x-common.form.input class="mb-12 w-100" name='second_name' label="Отчество директора/физ.лица для ИП" />
 			</div>
 			<div class="d-flex flex-column flex-lg-row gap-2">
-				<x-common.form.input class="mb-12 w-100" type="date" pattern="\d{4}-\d{2}-\d{2}" name='birthday' label="Дата рождения директора/физ.лица для ИП" />
+				{{-- <x-common.form.input class="mb-12 w-100" type="date" pattern="\d{4}-\d{2}-\d{2}" name='birthday' label="Дата рождения директора/физ.лица для ИП" /> --}}
 				<x-common.form.input class="mb-12 w-100" name='telephone' label="Номер телефона" />
 			</div>
 		</div>
 		
-		<div class="d-flex flex-column">
+		{{-- <div class="d-flex flex-column">
 			<div class="d-flex flex-column flex-lg-row gap-2">
 				<x-common.form.select class="mb-12 w-100" name='typeDoc' label="Тип документа">
 					<option value="21">Паспорт РФ</option>
@@ -44,23 +44,22 @@
 				<x-common.form.input class="mb-12 w-100 d-none" type="date" pattern="\d{4}-\d{2}-\d{2}" name='dateEnd' label="Дата окончания дейстивия документа" />
 				<x-common.form.input class="mb-12 w-100 d-none" name='issuedBy' label="Кем выдан документ" />
 			</div>
-		</div>
+		</div> --}}
 
 		<button class="btn btn-primary w-100 mb-2" disabled>Отправить</button>
 		<x-common.form.checkbox class="fs-9 fs-md-8" name="check" label=''>
-			Я согласен на <a class="text-reset" href="#">обработку персональных данных</a> и ознакомлен с <a
-				class="text-reset" href="#">политикой конфиденциальности</a>.
+			Я согласен на <a class="text-reset" href="{{ route('register-company.personal') }}">обработку персональных данных</a> и с <a
+				class="text-reset" href="{{ route('register-company.booking') }}">условиями бронирования счета</a>.
 		</x-common.form.checkbox>
 	</form>
 
-	
 	<div class="toast-container position-fixed bottom-0 end-0 py-3 px-4" style="z-index: 3">
-		<div id="createCompanyToast" class="toast text-bg-dark border border-primary d-none z-3" role="alert" aria-live="assertive" aria-atomic="true">
+		<div id="createCompanyToast" class="toast text-bg-dark border border-primary z-3" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="toast-body position-relative text-primary p-3">
 				<span class="toast-text">
-					Hello, world! This is a toast message. Hello, world! This is a toast message. Hello, world! This is a toast message. Hello, world! This is a toast message.
+					Сообщение
 				</span>
-				<button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" id="toastClose" aria-label="Close"></button>
+				<button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" data-bs-dismiss="toast" id="toastClose" aria-label="Close"></button>
 			</div>
 		</div>
 	</div>
@@ -76,8 +75,8 @@
 		form.addEventListener('submit', submitCompanyForm);
 	
 		let orgForm = form.querySelector('[name="org_form"]');
-		let innLabel = form.querySelector('[name="inn"]').nextElementSibling;
-		let snilsLabel = form.querySelector('[name="snils"]').nextElementSibling;
+		// let innLabel = form.querySelector('[name="inn"]').nextElementSibling;
+		// let snilsLabel = form.querySelector('[name="snils"]').nextElementSibling;
 		let lastNameLabel = form.querySelector('[name="last_name"]').nextElementSibling;
 		let firsNameLabel = form.querySelector('[name="first_name"]').nextElementSibling;
 		let secondNameLabel = form.querySelector('[name="second_name"]').nextElementSibling;
@@ -85,29 +84,23 @@
 		let btn = form.querySelector('button');
 	
 	
-		let typeDoc = form.querySelector('[name="typeDoc"]');
-		let serial = form.querySelector('[name="serial"]').closest('.form-input');
-		let dateEnd = form.querySelector('[name="dateEnd"]').closest('.form-input');
-		let issuedBy = form.querySelector('[name="issuedBy"]').closest('.form-input');
+		// let typeDoc = form.querySelector('[name="typeDoc"]');
+		// let serial = form.querySelector('[name="serial"]').closest('.form-input');
+		// let dateEnd = form.querySelector('[name="dateEnd"]').closest('.form-input');
+		// let issuedBy = form.querySelector('[name="issuedBy"]').closest('.form-input');
 	
 		orgForm.addEventListener('change', changeOrgForm);
-		typeDoc.addEventListener('change', changeDocument);
+		// typeDoc.addEventListener('change', changeDocument);
 		check.addEventListener('change', toggleButton);
 
-		const toastClose = document.getElementById('toastClose')
 		const toastText = document.querySelector('.toast-text')
 		const toast = document.getElementById('createCompanyToast')
+
+		const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast, {'autohide': false})
 	
-		if (toastClose) {
-			toastClose.addEventListener('click', () => {
-				toastHide()
-			})
-		}
-	
-		changeDocument();
+		// changeDocument();
 		changeOrgForm();
 		toggleButton();
-		toastShow();
 
 		function changeDocument() {
 			if (typeDoc.value != 21) {
@@ -130,16 +123,16 @@
 		}
 		function changeOrgForm() {
 			if (orgForm.value === 'ltd') {
-				innLabel.innerText = 'ИНН директора';
-				snilsLabel.innerText = 'СНИЛС директора';
+				// innLabel.innerText = 'ИНН директора';
+				// snilsLabel.innerText = 'СНИЛС директора';
 				lastNameLabel.innerText = 'Фамилия директора';
 				firsNameLabel.innerText = 'Имя директора';
 				secondNameLabel.innerText = 'Отчество директора';
 				return;
 			}
 	
-			innLabel.innerText = 'ИНН';
-			snilsLabel.innerText = 'СНИЛС';
+			// innLabel.innerText = 'ИНН';
+			// snilsLabel.innerText = 'СНИЛС';
 			lastNameLabel.innerText = 'Фамилия';
 			firsNameLabel.innerText = 'Имя';
 			secondNameLabel.innerText = 'Отчество';
@@ -152,16 +145,9 @@
 	
 			btn.disabled = true;
 		}
-		function toastShow(text, delay = null) {
+		function toastShow(text) {
 			toastText.innerHTML = text;
-			toast.classList.remove('d-none');
-
-			if (!delay) return;
-
-			setTimeout(toastHide, delay);
-		}
-		function toastHide() {
-			toast.classList.add('d-none');
+			toastBootstrap.show()
 		}
 		function submitCompanyForm(event) {
 			event.preventDefault();
