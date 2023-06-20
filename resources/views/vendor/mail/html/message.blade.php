@@ -2,7 +2,7 @@
     {{-- Header --}}
     <x-slot:header>
         <x-mail::header :url="config('app.url')">
-            <img src="/logo.png" alt="True Trade">
+            <img src="https://true-trade.ru/logo.png" alt="True Trade">
         </x-mail::header>
     </x-slot:header>
 
