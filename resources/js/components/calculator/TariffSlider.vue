@@ -97,7 +97,7 @@ export default {
 
       let value = this.min + ((this.max - this.min) / 100) * left;
 
-      this.duration = value;
+      //   this.duration = value;
 
       this.change();
     },
