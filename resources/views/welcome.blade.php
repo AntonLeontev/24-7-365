@@ -25,15 +25,12 @@
 
                 </div>
 
-                <div class="header__nav-wrap">
+                <nav class="header__nav-wrap">
                     <ul class="header__nav" id="nav-desk">
                         <div class="nav-desk__marker"></div>
 
                         <li class="nav__item" data-anchor="offer">
                             <a class="nav__link" href="#offer">Наше предложение</a>
-                        </li>
-                        <li class="nav__item" data-anchor="charge">
-                            <a class="nav__link" href="#charge">Опыт</a>
                         </li>
                         <li class="nav__item" data-anchor="tariffs">
                             <a class="nav__link" href="#tariffs">Тарифы</a>
@@ -44,11 +41,14 @@
                         <li class="nav__item" data-anchor="faq">
                             <a class="nav__link" href="#faq">Вопросы</a>
                         </li>
-                        <li class="nav__item" data-anchor="whatyouget">
-                            <a class="nav__link" href="#whatyouget">Вы получаете</a>
+						<li class="nav__item" data-anchor="news">
+                            <a class="nav__link" href="#news">Новости</a>
+                        </li>
+                        <li class="nav__item" data-anchor="contacts">
+                            <a class="nav__link" href="#contacts">Контакты</a>
                         </li>
                     </ul>
-                </div>
+                </nav>
 
                 <div class="header__auth">
                     <a class="btn flex-center auth-button" href="{{ route('login') }}">
@@ -181,11 +181,11 @@
                         <h1 class="title firstscreen__h1">
                             <span class="text-primary">Прибыльный товарный бизнес,</span> созданный для того, чтобы помочь
                             Вам
-                            зарабатывать <span class="text-primary">от 25% годовых!</span>
+                            зарабатывать <span class="text-primary">от 24% годовых!</span>
                         </h1>
 
                         <p class="text firstscreen__text">
-                            Помогаем получить от 25% до 100% в год по модели “True Trade Deal” (Честная Торговая Сделка).
+                            Помогаем получить от 24% до 96% в год по модели “True Trade Deal” (Честная Торговая Сделка).
                         </p>
 
                         <a class="btn btn-primary firstscreen__button" href="{{ route('register') }}">Начать
@@ -256,7 +256,7 @@
                                 <div class="card__title">4. Мы предлагаем Вам доходность</div>
                                 <div class="card__body text-justify">По нашей оценке, в зависимости от условий предоставления нам
                                     средств
-                                    в оборотку, Ваша ожидаемая доходность в год может колебаться от 25 до 100% годовых … а
+                                    в оборотку, Ваша ожидаемая доходность в год может колебаться от 24 до 96% годовых … а
                                     при
                                     определенных условиях, от 150 до 200% годовых.
                                 </div>
@@ -379,7 +379,6 @@
 					</div>
                 </div>
             </div>
-            <div class="stripe__primary stripe__primary_horizontal"></div>
         </div>
 
         <div class="tariffs">
@@ -397,13 +396,13 @@
                                 по объему Ваших средств (от 500 тыс.р до 5 млн.р. / свыше 5 млн.р.)
                             </li>
                             <li class="text list__item">
-                                сроку использования Ваших средств (от 6 до 9 мес. / от 1 до 3 лет)
+                                сроку использования Ваших средств (от 3 до 9 мес. / от 1 до 3 лет)
                             </li>
                             <li class="text list__item">
                                 срокам выплачиваемой доходности (ежемесячно / в конце срока договора)
                             </li>
                             <li class="text list__item">
-                                величине доходности (от 25% до 125% / от 150% до 200% годовых)
+                                величине доходности (от 24% до 96% / от 96% до 200% годовых)
                             </li>
                         </ul>
                         <p class="text tariffs__text">
@@ -472,9 +471,86 @@
                         партнёром</a>
                 </div>
             </div>
+
+			<div class="stripe__primary stripe__primary_horizontal"></div>
         </div>
 
-        <div class="roadmap">
+        <div class="why" id="why">
+			<div class="anchor" id="howitworks"></div>
+            <div class="stripe__primary"></div>
+            <div class="why__background"></div>
+            <div class="container-xxl">
+                <div class="title why__title">
+                    <span class="text-primary">Почему схема</span> True Trade Deal <span
+                        class="text-primary">выгоднее</span> собственного магазина?
+                </div>
+                <p class="text why__text">
+                    Многие начинающие предприниматели мечтают о собственном магазине. Вроде бы открыть товарный бизнес
+                    сейчас достаточно просто, необходимо лишь зарегистрировать ИП, закупить товар и продавать его на Ozon,
+                    Wildberries, Яндекс-Маркете или любой другой онлайн-площадке.
+                </p>
+                <p class="text why__text">
+                    Однако эта простая схема содержит много подводных камней, которые, как снежный ком, обрушиваются на
+                    голову начинающего бизнесмена. И вот через пару месяцев мы получаем разочарованного человека, который
+                    остался без денег, но с кучей неликвидного товара на руках. Знакомая ситуация?
+                </p>
+            </div>
+        </div>
+
+        <div class="howitworks">
+            <div class="container-xxl">
+                <h2 class="title howitworks__title">Давайте разберемся, <span class="text-primary">как устроена наша
+                        модель</span>:</h2>
+                <div class="howitworks__cards">
+                    <div class="howitworks__card card_with-title">
+                        <div class="card__title">1. Вы переводите средства</div>
+                        <div class="card__body text-justify">Для закупки товаров, Вы с р/с вашего ИП переводите нам по договору,
+                            например,
+                            1 млн.р. (Агентский договор, по которому вы нанимаете нас за Агентское вознаграждение исполнить
+                            всю
+                            вышеозначенную работу).</div>
+                    </div>
+                    <div class="howitworks__card card_with-title">
+                        <div class="card__title">2. Мы осуществляем закупки</div>
+                        <div class="card__body text-justify">Эти деньги поступают в оборот: мы закупаем товары и продаем их с
+                            максимально
+                            возможной маржинальностью. На реализацию одной партии товара в среднем уходит 1-2 месяца</div>
+                    </div>
+                    <div class="howitworks__card card_with-title">
+                        <div class="card__title">3. Реализуем товар закупленный на полученые от вас средства</div>
+                        <div class="card__body text-justify">
+                            В итоге, мы не только отбиваем затраты на закупку товаров, но и зарабатываем доходность. Наше
+                            Агентское вознаграждение, это вся доходность от проведенной торговой операции сверх Вашей
+                            ожидаемой
+                            доходности.
+                        </div>
+                    </div>
+                    <div class="howitworks__card card_with-title">
+                        <div class="card__title">
+                            4. Повторяем цикл «Закупка - Продажа»
+                        </div>
+                        <div class="card__body text-justify">
+                            Дальше мы снова закупаем партию товара и пытаемся реализовать ее с максимальной маржинальностью.
+                            Таких циклов может быть разное количество, но в среднем мы успеваем провести не менее 8-12 подобных циклов за год.
+                        </div>
+                    </div>
+                    <div class="howitworks__card card_with-title">
+                        <div class="card__title">
+                            5. Выплачиваем Вам доходность
+                        </div>
+                        <div class="card__body text-justify">
+                            Все расходы нашей деятельности мы берем на себя и компенсируем их из той маржи, которая
+                            останется
+                            после выплаты Вам ожидаемой доходности и возврата Вам первоначальных средств (того самого 1
+                            млн.р.)
+                            который вы перевели нам по договору изначально.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<div class="roadmap">
             <div class="container-xxl">
                 <div class="roadmap__content">
                     <h2 class="title roadmap__title">
@@ -554,85 +630,6 @@
                     </div>
                 </div>
             </div>
-
-
-            <div class="stripe__primary stripe__primary_horizontal"></div>
-        </div>
-
-        <div class="why" id="why">
-            <div class="stripe__primary"></div>
-            <div class="why__background"></div>
-            <div class="container-xxl">
-                <div class="title why__title">
-                    <span class="text-primary">Почему схема</span> True Trade Deal <span
-                        class="text-primary">выгоднее</span> собственного магазина?
-                </div>
-                <p class="text why__text">
-                    Многие начинающие предприниматели мечтают о собственном магазине. Вроде бы открыть товарный бизнес
-                    сейчас достаточно просто, необходимо лишь зарегистрировать ИП, закупить товар и продавать его на Ozon,
-                    Wildberries, Яндекс-Маркете или любой другой онлайн-площадке.
-                </p>
-                <p class="text why__text">
-                    Однако эта простая схема содержит много подводных камней, которые, как снежный ком, обрушиваются на
-                    голову начинающего бизнесмена. И вот через пару месяцев мы получаем разочарованного человека, который
-                    остался без денег, но с кучей неликвидного товара на руках. Знакомая ситуация?
-                </p>
-            </div>
-        </div>
-
-        <div class="howitworks">
-            <div class="anchor" id="howitworks"></div>
-            <div class="container-xxl">
-                <h2 class="title howitworks__title">Давайте разберемся, <span class="text-primary">как устроена наша
-                        модель</span>:</h2>
-                <div class="howitworks__cards">
-                    <div class="howitworks__card card_with-title">
-                        <div class="card__title">1. Вы переводите средства</div>
-                        <div class="card__body text-justify">Для закупки товаров, Вы с р/с вашего ИП переводите нам по договору,
-                            например,
-                            1 млн.р. (Агентский договор, по которому вы нанимаете нас за Агентское вознаграждение исполнить
-                            всю
-                            вышеозначенную работу).</div>
-                    </div>
-                    <div class="howitworks__card card_with-title">
-                        <div class="card__title">2. Мы осуществляем закупки</div>
-                        <div class="card__body text-justify">Эти деньги поступают в оборот: мы закупаем товары и продаем их с
-                            максимально
-                            возможной маржинальностью. На реализацию одной партии товара в среднем уходит 1-2 месяца</div>
-                    </div>
-                    <div class="howitworks__card card_with-title">
-                        <div class="card__title">3. Реализуем товар закупленный на полученые от вас средства</div>
-                        <div class="card__body text-justify">
-                            В итоге, мы не только отбиваем затраты на закупку товаров, но и зарабатываем доходность. Наше
-                            Агентское вознаграждение, это вся доходность от проведенной торговой операции сверх Вашей
-                            ожидаемой
-                            доходности.
-                        </div>
-                    </div>
-                    <div class="howitworks__card card_with-title">
-                        <div class="card__title">
-                            4. Повторяем цикл «Закупка - Продажа»
-                        </div>
-                        <div class="card__body text-justify">
-                            Дальше мы снова закупаем партию товара и пытаемся реализовать ее с максимальной маржинальностью.
-                            Таких циклов может быть разное количество, но в среднем мы успеваем провести не менее 8-12 подобных циклов за год.
-                        </div>
-                    </div>
-                    <div class="howitworks__card card_with-title">
-                        <div class="card__title">
-                            5. Выплачиваем Вам доходность
-                        </div>
-                        <div class="card__body text-justify">
-                            Все расходы нашей деятельности мы берем на себя и компенсируем их из той маржи, которая
-                            останется
-                            после выплаты Вам ожидаемой доходности и возврата Вам первоначальных средств (того самого 1
-                            млн.р.)
-                            который вы перевели нам по договору изначально.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="stripe__primary stripe__primary_horizontal"></div>
         </div>
 
         <div class="watch" id="watch">
@@ -669,12 +666,14 @@
                 </div>
                 <a class="btn btn-primary watch__button" href="{{ route('register') }}">Начать зарабатывать</a>
             </div>
+
+			<div class="stripe__primary stripe__primary_horizontal"></div>
         </div>
 
         <div class="faq">
             <div class="anchor" id="faq"></div>
             <div class="container-xxl">
-                <div class="title faq__title"><span class="text-primary">ответы</span> на самые частые вопросы:</div>
+                <div class="title faq__title"><span class="text-primary">ответы</span> на самые часто задаваемые уточняющие вопросы:</div>
                 <div class="faq__questions">
                     <div class="left">
                         <div class="question">

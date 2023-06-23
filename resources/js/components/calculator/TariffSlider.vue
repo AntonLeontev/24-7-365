@@ -10,6 +10,7 @@
       @update="change"
       ref="slider"
     />
+    <div class="control-bar" @click="setSlider"></div>
     <div class="duration-bar d-flex justify-content-between text-light">
       <div
         class="duration fs-7"
@@ -89,6 +90,17 @@ export default {
       this.$emit("tariffChange", value);
       setTimeout(() => (this.duration = value), 100);
     },
+    setSlider(event) {
+      const rect = event.target.getBoundingClientRect();
+
+      let left = (100 * event.offsetX) / rect.width;
+
+      let value = this.min + ((this.max - this.min) / 100) * left;
+
+      this.duration = value;
+
+      this.change();
+    },
   },
   components: { Slider },
   computed: {
@@ -150,16 +162,24 @@ export default {
   }
 }
 
+.control-bar {
+  position: relative;
+  top: -21px;
+  height: 35px;
+  cursor: pointer;
+  z-index: 100;
+}
+
 .duration-bar {
+  margin-top: -21px;
   position: relative;
   z-index: 2;
-  transform: translateY(-3px);
 }
 .duration {
-  transition: color 0.3s ease;
-  cursor: pointer;
   display: flex;
-  align-items: flex-end;
   height: 30px;
+  cursor: pointer;
+  align-items: flex-end;
+  transition: color 0.3s ease;
 }
 </style>

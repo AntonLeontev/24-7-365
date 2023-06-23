@@ -13,12 +13,12 @@ class PdfController extends Controller
         if (request()->is('invoices/{\d}/pdf/get')) {
             return view('pdf.invoice', compact('payment'));
         }
-        return Pdf::loadView('pdf.invoice', compact('payment'))->download('invoice.pdf');
+        return Pdf::loadView('pdf.invoice', compact('payment'))->download('Счет.pdf');
     }
 
     public function contract()
     {
         // return view('pdf.contract.index');
-        return Pdf::loadView('pdf.contract.index')->download('contract.pdf');
+        return Pdf::loadView('pdf.contract.index')->download('Оферта.pdf');
     }
 }

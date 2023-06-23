@@ -159,7 +159,7 @@ body, body *, html {
 	left: 0;
 	right: 0;
 	height: 24px;
-	z-index: -1;
+	z-index: 1;
 
 	@include media-breakpoint-up(xl) {
 		height: 48px;
@@ -310,7 +310,7 @@ body, body *, html {
 		}
 
 		.nav__item {
-			color: $light-grey;
+			color: $lighter;
 			transition: all 0.3s ease;
 			
 			&:hover {
@@ -639,9 +639,9 @@ body, body *, html {
 	position: relative;
 	padding: 64px 0;
 
-	@include media-breakpoint-up(xxl) {
-		padding: 124px 0;
-	}
+	// @include media-breakpoint-up(xxl) {
+	// 	padding: 124px 0;
+	// }
 
 	.stripe__primary {
 		position: absolute;
@@ -713,9 +713,9 @@ body, body *, html {
 	padding-top: 64px;
 	padding-bottom: 88px;
 
-	@include media-breakpoint-up(xxl) {
-		padding: 124px 0 172px;
-	}
+	// @include media-breakpoint-up(xxl) {
+	// 	padding: 124px 0 172px;
+	// }
 
 	&__content {
 		display: flex;
@@ -797,7 +797,7 @@ body, body *, html {
 .tariffs {
 	position: relative;
 	padding-top: 64px;
-	padding-bottom: 64px;
+	padding-bottom: 100px;
 	background-color: $dark-grey;
 
 	&__content {
@@ -832,7 +832,6 @@ body, body *, html {
 	}
 
 	&__list {
-		// background: $body-bg;
 		list-style: none;
 
 		.list__item {
@@ -968,6 +967,10 @@ body, body *, html {
 	padding-top: 64px;
 	padding-bottom: 200px;
 	overflow: hidden;
+
+	@include media-breakpoint-up(xl) {
+		padding-bottom: 100px;
+	}
 
 	&__content {
 		position: relative;
@@ -1271,7 +1274,7 @@ body, body *, html {
 		@include media-breakpoint-up(xl) {
 			right: 0px;
 			left: unset;
-			bottom: -270px;
+			bottom: -170px;
 			width: 524px;
 			aspect-ratio: 524/404;
 		}
@@ -1357,7 +1360,7 @@ body, body *, html {
 
 .watch {
 	position: relative;
-	padding: 64px 0;
+	padding: 64px 0 100px;
 	background-color: $dark-grey;
 
 	.container-xxl {

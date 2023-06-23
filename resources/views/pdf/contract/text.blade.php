@@ -27,6 +27,7 @@
 		page-break-after: always;
 	}
 	.contract__p {
+		text-align: justify;
 		line-height: 1.3;
 	}
 </style>
