@@ -73,8 +73,8 @@ export default {
     selectedTariffId: {},
   },
   methods: {
-    change() {
-      let duration = this.duration;
+    change(val = null) {
+      let duration = val ?? this.duration;
 
       let value = _.reduce(
         this.tariffs,
@@ -99,7 +99,7 @@ export default {
 
       //   this.duration = value;
 
-      this.change();
+      this.change(value);
     },
   },
   components: { Slider },
