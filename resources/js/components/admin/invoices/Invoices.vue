@@ -65,6 +65,13 @@
             >№</column-title
           >
           <column-title
+            title="contract"
+            @change-sort="changeSort"
+            :sort="this.sort"
+            :order="this.order"
+            >Договор</column-title
+          >
+          <column-title
             title="organization"
             @change-sort="changeSort"
             :sort="this.sort"
@@ -83,7 +90,7 @@
             @change-sort="changeSort"
             :sort="this.sort"
             :order="this.order"
-            >Статус</column-title
+            >Оплата</column-title
           >
         </table-header>
         <div class="table_dark__body">
@@ -92,10 +99,21 @@
               <div class="col">
                 {{ invoice.number }}
               </div>
+              <div class="col">
+                <a :href="`/personal/contracts/${invoice.contract_id}/show`"
+                  >№ {{ invoice.contract_id }}</a
+                >
+              </div>
               <div class="col text-wrap text-break">{{ invoice.organization_title }}</div>
               <div class="col">{{ invoice.amount.formatted }}</div>
               <div class="col">
-                {{ invoice.status }}
+                <div
+                  class="p-2 rounded"
+                  :class="{
+                    'bg-danger': invoice.status === 'pending',
+                    'bg-success': invoice.status !== 'pending',
+                  }"
+                ></div>
               </div>
             </div>
           </template>

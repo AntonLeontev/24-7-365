@@ -139,9 +139,6 @@
                         <li class="nav__item" data-anchor="offer">
                             <a class="nav__link" href="#offer">Наше предложение</a>
                         </li>
-                        <li class="nav__item" data-anchor="charge">
-                            <a class="nav__link" href="#charge">Опыт</a>
-                        </li>
                         <li class="nav__item" data-anchor="tariffs">
                             <a class="nav__link" href="#tariffs">Тарифы</a>
                         </li>
@@ -151,8 +148,11 @@
                         <li class="nav__item" data-anchor="faq">
                             <a class="nav__link" href="#faq">Вопросы</a>
                         </li>
-                        <li class="nav__item" data-anchor="whatyouget">
-                            <a class="nav__link" href="#whatyouget">Вы получаете</a>
+                        <li class="nav__item" data-anchor="news">
+                            <a class="nav__link" href="#news">Новости</a>
+                        </li>
+                        <li class="nav__item" data-anchor="contacts">
+                            <a class="nav__link" href="#contacts">Контакты</a>
                         </li>
                     </ul>
 
@@ -1019,6 +1019,19 @@
                 </div>
             </div>
         </div>
+
+		<div class="news">
+			<div class="anchor" id="news"></div>
+			<div class="container-xxl">
+				<div class="title text-center mb-4">Новости</div>
+				<div class="px-5">
+					<div class="px-5">
+
+						<script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-discussion="true_trade_group/2" data-comments-limit="3" data-height="500" data-colorful="1" data-color="202022" data-dark="1"></script>
+					</div>
+				</div>
+			</div>
+		</div>
 
         <footer class="footer">
             <div class="container-xxl">

@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\ApplicationSettingsController;
+use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\ContractController;
-use App\Http\Controllers\CreateCompanyController;
 use App\Http\Controllers\IncomeCalculatorController;
 use App\Http\Controllers\NewContractController;
 use App\Http\Controllers\NotificationsController;
@@ -20,8 +20,9 @@ use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,7 +80,10 @@ Route::get('24-rescon/{contract_id}', function ($id) {
 })->name('reset-contract');
 
 Route::get('test', function () {
-    return '<p>3&nbsp;&nbsp;&nbsp;spaces is</p>';
+    Permission::create(['name' => 'create news']);
+    $role = Role::where(['name' => 'Админ'])->first();
+    $role->givePermissionTo('create news');
+    return 'ok';
 });
 
 
@@ -93,8 +97,8 @@ Route::post('suggestions/bank', [SuggestionsController::class,'bank'])
     ->name('suggestions.bank');
 
 Route::post('register-company', RegisterCompanyController::class)
-	->middleware(SendRegisterCompanyMail::class)
-	->name('register-company');
+    ->middleware(SendRegisterCompanyMail::class)
+    ->name('register-company');
 Route::view('register-company/personal', 'register-company.personal')->name('register-company.personal');
 Route::view('register-company/booking', 'register-company.booking')->name('register-company.booking');
 
@@ -242,6 +246,8 @@ Route::prefix('admin')
     Route::get('invoices', [PaymentController::class, 'invoicesIndex'])
         ->middleware('can:see invoices')
         ->name('invoices.index');
+
+	Route::resource('articles', ArticlesController::class)->except(['show']);
 });
 
 Route::prefix('sber')

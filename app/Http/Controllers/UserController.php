@@ -26,6 +26,7 @@ class UserController extends Controller
             ->select([
                 'users.id',
                 'users.first_name',
+                'users.email',
                 'users.is_blocked',
                 DB::raw('organizations.title AS organization'),
                 'role_id',

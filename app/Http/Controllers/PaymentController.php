@@ -48,6 +48,7 @@ class PaymentController extends Controller
                 'payments.status',
                 'payments.created_at',
                 'payments.amount',
+                'payments.contract_id',
                 DB::raw('organizations.title AS organization_title'),
             ])
             ->leftJoin('accounts', 'payments.account_id', 'accounts.id')

@@ -25,6 +25,7 @@ class RolesPermissionsSeeder extends Seeder
         Permission::create(['name' => 'change settings']);
         Permission::create(['name' => 'update sber token']);
         Permission::create(['name' => 'see invoices']);
+        Permission::create(['name' => 'create news']);
 
         
         $role = Role::create(['name' => 'Клиент']);
@@ -39,6 +40,7 @@ class RolesPermissionsSeeder extends Seeder
         $role->givePermissionTo('change settings');
         $role->givePermissionTo('update sber token');
         $role->givePermissionTo('see invoices');
+        $role->givePermissionTo('create news');
 
 
         $role = Role::create(['name' => 'АСБК']);

@@ -13,20 +13,16 @@
 		</div>
 	</div>
 
-
-    <div>
-
-        @include('layouts.part.socials_links')
-
-        <div class="sidebar-bottom">
-            @include('layouts.part.agreements')
-            <br>
-            @include('layouts.part.copyright')
-
-
-        </div>
-
-    </div>
+	@if (auth()->user()->hasRole('Клиент'))
+		<div>
+			@include('layouts.part.socials_links')
+			<div class="sidebar-bottom">
+				@include('layouts.part.agreements')
+				<br>
+				@include('layouts.part.copyright')
+			</div>
+		</div>
+	@endif
 
 
 

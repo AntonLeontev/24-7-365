@@ -88,7 +88,11 @@
             <div class="table_dark__row" :href="route('users.show', user.id)">
               <div class="col">
                 <a :href="route('users.show', user.id)">
-                  {{ user.first_name ?? "Без имени" }}
+                  {{
+                    user.first_name === null || user.first_name === ""
+                      ? user.email
+                      : user.first_name
+                  }}
                 </a>
               </div>
               <div class="col text-wrap text-break">
@@ -97,8 +101,8 @@
               <div class="col">{{ user.contracts_sum?.formatted ?? 0 }}</div>
               <div class="col"></div>
               <div class="col">
-                <span class="text-success" v-if="user.is_blocked">Заблокирован</span>
-                <span class="text-danger" v-else>Активен</span>
+                <span class="text-danger" v-if="user.is_blocked">Заблокирован</span>
+                <span class="text-success" v-else>Активен</span>
               </div>
             </div>
           </template>
