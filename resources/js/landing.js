@@ -36,6 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document
         .querySelector(".faq__questions")
         .addEventListener("click", questionsClick);
+	
+	document
+		.querySelectorAll(".question__title")
+		.forEach(el => {
+			let parent = el.parentElement;
+
+			parent.style.height = el.getBoundingClientRect().height + "px";
+			el.style.height = el.getBoundingClientRect().height + "px";
+		});
 
 
 	/** Переключение точек на карте */
@@ -168,8 +177,6 @@ function questionsClick(event) {
 
 	if (!target) return;
 
-	let answer =
-		target.parentElement.querySelector(".question__answer");
 	let parent = target.parentElement;
 
 	if (
@@ -184,6 +191,9 @@ function questionsClick(event) {
 
 	parent.style.height = target.getBoundingClientRect().height + "px";
 	parent.classList.add("question_active");
+
+	let answer =
+		target.parentElement.querySelector(".question__answer");
 
 	answer.style.display = "block";
 	let height = answer.getBoundingClientRect().height;

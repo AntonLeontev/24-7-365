@@ -1464,20 +1464,35 @@ body, body *, html {
 			column-gap: 24px;
 		}
 
+		.top {
+			grid-column: 1 / -1;
+
+			display: grid;
+			grid-template-columns: 1fr;
+			column-gap: 24px;
+			row-gap: 24px;
+
+			@include media-breakpoint-up(md) {
+				grid-template-columns: 1fr 1fr;
+			}
+		}
+
 		.bottom {
 			grid-column: 1 / -1;
 		}
 
 		.question {
+			height: 100%;
 			padding: 0 14px 0;
 			background-color: $dark-grey;
 			transition: all 0.5s ease;
 			overflow: hidden;
 
+			.question__title {
+				height: 100%;	
+			}
+
 			&_active {
-				.question__answer {
-					
-				}
 				.question__title{
 					svg {
 						transform: rotateZ(405deg);

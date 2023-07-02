@@ -37,6 +37,9 @@ use Spatie\Permission\Models\Role;
 Route::view('/', 'welcome')->withoutMiddleware(CheckBlockedUser::class)
     ->middleware('guest')
     ->name('home');
+Route::view('/policy', 'policy')->withoutMiddleware(CheckBlockedUser::class)
+    ->middleware('guest')
+    ->name('policy');
 
 /**
  * DELETE
