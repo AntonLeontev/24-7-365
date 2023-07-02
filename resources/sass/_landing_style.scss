@@ -1643,6 +1643,17 @@ body, body *, html {
 	padding: 64px 0;
 }
 
+.contacts {
+	position: relative;
+	padding: 64px 0;
+}
+
+.team {
+	position: relative;
+	padding: 64px 0;
+	background-color: $dark-grey;
+}
+
 .footer {
 	position: relative;
 	padding: 48px 0;
