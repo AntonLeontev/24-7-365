@@ -9,17 +9,17 @@ class Article extends Model
 {
     use HasFactory;
 
-	protected $fillable = [
-		'title',
-		'thumbnail',
-		'slug',
-		'text',
-		'active',
-	];
+    protected $fillable = [
+        'id',
+        'message_id',
+        'text',
+        'from',
+        'photo',
+        'photo_height',
+        'photo_width',
+    ];
 
-	protected $perPage = 20;
+    protected $perPage = 20;
 
-	protected $casts = [
-		'active' => 'boolean',
-	];
+    protected $casts = [];
 }

@@ -421,8 +421,8 @@
                                     <div class="card__body">
                                         <div class="card__percent">
                                             <p class="card__text">
-                                                от <span
-                                                    class="percent-primary">{{ $tariffGroup->first()->annual_rate }}%</span>
+                                                до <span
+                                                    class="percent-primary">{{ $tariffGroup->last()->annual_rate }}%</span>
                                             </p>
                                             <p class="card__text">доходности в год</p>
                                         </div>
