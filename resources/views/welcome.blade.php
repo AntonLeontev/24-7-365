@@ -1124,8 +1124,31 @@
 			</div>
 		</div>
 
-		<section class="contacts">
+		<section class="team">
 			<div class="anchor" id="contacts"></div>
+			<div class="container-xxl">
+				<div class="title text-center mb-4 text-primary">Наша Команда</div>
+				<div class="row pt-14 mb-17">
+					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
+						<img src="/images/team/01.webp" alt="Илья Дмитров" class="image-fluid">
+						<div class="text-primary fs-4">Илья Дмитров</div>
+						<div class="fs-7">Генеральный директор</div>
+					</div>
+					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
+						<img src="/images/team/02.webp" alt="Олег Лозовой" class="image-fluid">
+						<div class="text-primary fs-4">Олег Лозовой</div>
+						<div class="fs-7">Старший партнер</div>
+					</div>
+					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
+						<img src="/images/team/03.webp" alt="Павел Водянкин" class="image-fluid">
+						<div class="text-primary fs-4">Павел Водянкин</div>
+						<div class="fs-7">Младший партнер</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="contacts">
 			<div class="container-xxl">
 				<div class="title text-center mb-4 text-primary">Контакты</div>
 				<div class="mb-17 pt-13 row">
@@ -1141,7 +1164,7 @@
 						</svg>
 						{{ settings()->email }}
 					</a>
-					<a href="https://t.me/true_trade_group" class="text-reset col-12 col-md-4 d-flex justify-content-end align-items-center gap-2 fs-5">
+					<a href="https://t.me/true_trade_group" target="_blank" class="text-reset col-12 col-md-4 d-flex justify-content-end align-items-center gap-2 fs-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
 							<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"/>
 						</svg>
@@ -1166,29 +1189,6 @@
 			</div>
 		</section>
 
-		<section class="team">
-			<div class="container-xxl">
-				<div class="title text-center mb-4 text-primary">Наша Команда</div>
-				<div class="row pt-14 mb-17">
-					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
-						<img src="/images/team/01.webp" alt="Илья Дмитров" class="image-fluid">
-						<div class="text-primary fs-4">Илья Дмитров</div>
-						<div class="fs-7">Генеральный директор</div>
-					</div>
-					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
-						<img src="/images/team/02.webp" alt="Олег Лозовой" class="image-fluid">
-						<div class="text-primary fs-4">Олег Лозовой</div>
-						<div class="fs-7">Старший партнер</div>
-					</div>
-					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
-						<img src="/images/team/03.webp" alt="Павел Водянкин" class="image-fluid">
-						<div class="text-primary fs-4">Павел Водянкин</div>
-						<div class="fs-7">Младший партнер</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
         <footer class="footer">
             <div class="container-xxl">
                 <div class="footer__content">
@@ -1196,28 +1196,30 @@
                         @include('layouts.part.logo')
                     </div>
                     <div class="footer__socials">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0_154_2487)">
-                                <path
-                                    d="M18.3764 1.77531L0.657315 8.64352C-0.0557314 8.96336 -0.296903 9.60387 0.484972 9.95149L5.03067 11.4036L16.0216 4.57582C16.6217 4.14719 17.2361 4.26148 16.7074 4.73301L7.26771 13.3242L6.97118 16.96C7.24583 17.5214 7.74872 17.524 8.0695 17.245L10.6811 14.761L15.154 18.1277C16.1929 18.7459 16.7581 18.347 16.9817 17.2139L19.9154 3.2502C20.22 1.85547 19.7006 1.24094 18.3764 1.77531Z"
-                                    fill="#737373" />
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_154_2487">
-                                    <rect width="20" height="20" fill="white" />
-                                </clipPath>
-                            </defs>
-                        </svg>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+						<a href="https://t.me/true_trade_group" target="_blank">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<g clip-path="url(#clip0_154_2487)">
+									<path
+										d="M18.3764 1.77531L0.657315 8.64352C-0.0557314 8.96336 -0.296903 9.60387 0.484972 9.95149L5.03067 11.4036L16.0216 4.57582C16.6217 4.14719 17.2361 4.26148 16.7074 4.73301L7.26771 13.3242L6.97118 16.96C7.24583 17.5214 7.74872 17.524 8.0695 17.245L10.6811 14.761L15.154 18.1277C16.1929 18.7459 16.7581 18.347 16.9817 17.2139L19.9154 3.2502C20.22 1.85547 19.7006 1.24094 18.3764 1.77531Z"
+										fill="#737373" />
+								</g>
+								<defs>
+									<clipPath id="clip0_154_2487">
+										<rect width="20" height="20" fill="white" />
+									</clipPath>
+								</defs>
+							</svg>
+						</a>
+                        {{-- <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
                                 d="M18.9336 5.15625C19.0727 4.71563 18.9336 4.39531 18.3184 4.39531H16.2727C15.7566 4.39531 15.5184 4.67578 15.3793 4.97578C15.3793 4.97578 14.327 7.53828 12.8574 9.19961C12.3809 9.68008 12.1625 9.84023 11.9043 9.84023C11.7652 9.84023 11.5863 9.68008 11.5863 9.23984V5.13555C11.5863 4.61523 11.4277 4.375 10.9906 4.375H7.77344C7.45547 4.375 7.25703 4.61523 7.25703 4.85547C7.25703 5.35586 7.9918 5.47617 8.07109 6.87734V9.92188C8.07109 10.5824 7.95391 10.7031 7.69375 10.7031C6.99883 10.7031 5.31094 8.1207 4.29844 5.17812C4.10156 4.59531 3.90156 4.375 3.38516 4.375H1.31992C0.724219 4.375 0.625 4.65508 0.625 4.95547C0.625 5.49609 1.31992 8.21836 3.86172 11.8215C5.54961 14.2824 7.95234 15.6051 10.1168 15.6051C11.4277 15.6051 11.5863 15.3047 11.5863 14.8043V12.9426C11.5863 12.3422 11.7055 12.2422 12.1227 12.2422C12.4203 12.2422 12.9566 12.402 14.168 13.5832C15.5578 14.9844 15.7961 15.625 16.5707 15.625H18.616C19.2117 15.625 19.4898 15.3246 19.3309 14.7441C19.1523 14.1637 18.477 13.323 17.6031 12.3223C17.1266 11.7621 16.4117 11.1414 16.1934 10.841C15.8957 10.4406 15.975 10.2805 16.1934 9.92031C16.1734 9.92031 18.6758 6.35703 18.9336 5.15469"
                                 fill="#737373" />
-                        </svg>
+                        </svg> --}}
                     </div>
                     <div class="footer__nav">
-                        <a class="footer__link" href="{{ route('policy') }}">Условия использования</a>
+                        <a class="footer__link" href="{{ route('policy') }}">Условия пользования</a>
                     </div>
                     <div class="footer__copyright">
                         © 2023 {{ settings()->organization_title }}. Все права защищены.
