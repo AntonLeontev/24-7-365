@@ -70,7 +70,7 @@
 
                             <p class="text-light fs-8 w-100 text-center mb-0">
                                 Нажимая кнопку “Создать аккаунт”, вы соглашаетесь с <a class="text-white"
-								href="/policy">Условиями использования</a>.
+								href="/policy">Условиями&nbspиспользования</a>.
                             </p>
                         </form>
                     </div>
