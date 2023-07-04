@@ -1,5 +1,5 @@
 <template>
-  <div class="table_dark__header">
+  <div class="table_dark_admin__header row">
     <slot></slot>
   </div>
 </template>

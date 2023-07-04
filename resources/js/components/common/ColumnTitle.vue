@@ -1,5 +1,5 @@
 <template>
-  <div class="col title cursor-pointer" :data-title="title" @click="changeSort">
+  <div :data-title="title" @click="changeSort" :class="class">
     <slot></slot>
     <svg
       v-show="title === sort"
@@ -29,12 +29,19 @@ export default {
     title: String,
     sort: String,
     order: String,
+	col: {default: null},
   },
   methods: {
     changeSort(event) {
       this.$emit("change-sort", { title: this.title });
     },
   },
+  computed: {
+	class() {
+		let col = this.col === null ? 'col' : `col-${this.col}`;
+		return `${col} title cursor-pointer`;
+	}
+  }
 };
 </script>
 

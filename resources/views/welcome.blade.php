@@ -41,12 +41,12 @@
                         <li class="nav__item" data-anchor="faq">
                             <a class="nav__link" href="#faq">Вопросы</a>
                         </li>
-						<li class="nav__item" data-anchor="news">
-                            <a class="nav__link" href="#news">Новости</a>
-                        </li>
                         <li class="nav__item" data-anchor="contacts">
-                            <a class="nav__link" href="#contacts">Контакты</a>
+							<a class="nav__link" href="#contacts">Контакты</a>
                         </li>
+						<li class="nav__item" data-anchor="news">
+							<a class="nav__link" href="#news">Новости</a>
+						</li>
                     </ul>
                 </nav>
 
@@ -148,12 +148,12 @@
                         <li class="nav__item" data-anchor="faq">
                             <a class="nav__link" href="#faq">Вопросы</a>
                         </li>
-                        <li class="nav__item" data-anchor="news">
-                            <a class="nav__link" href="#news">Новости</a>
-                        </li>
                         <li class="nav__item" data-anchor="contacts">
-                            <a class="nav__link" href="#contacts">Контакты</a>
+							<a class="nav__link" href="#contacts">Контакты</a>
                         </li>
+						<li class="nav__item" data-anchor="news">
+							<a class="nav__link" href="#news">Новости</a>
+						</li>
                     </ul>
 
                     <a class="menu-btn btn btn-outline-primary flex-center" href="{{ route('login') }}">
@@ -1111,38 +1111,34 @@
             </div>
         </div>
 
-		<div class="news">
-			<div class="anchor" id="news"></div>
-			<div class="container-xxl">
-				<div class="title text-center mb-4 text-primary">Новости</div>
-				<div class="px-5">
-					<div class="px-5">
-
-						<script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-discussion="true_trade_group/2" data-comments-limit="3" data-height="500" data-colorful="1" data-color="202022" data-dark="1"></script>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<section class="team">
 			<div class="anchor" id="contacts"></div>
 			<div class="container-xxl">
 				<div class="title text-center mb-4 text-primary">Наша Команда</div>
-				<div class="row pt-14 mb-17">
+				<div class="row pt-14 mb-17 gx-1">
 					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
 						<img src="/images/team/01.webp" alt="Илья Дмитров" class="image-fluid">
-						<div class="text-primary fs-4">Илья Дмитров</div>
+						<div class="text-primary fs-4">Илья А. Дмитров</div>
 						<div class="fs-7">Генеральный директор</div>
+						<div class="fs-7">(Общее управление)</div>
 					</div>
 					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
 						<img src="/images/team/02.webp" alt="Олег Лозовой" class="image-fluid">
-						<div class="text-primary fs-4">Олег Лозовой</div>
-						<div class="fs-7">Старший партнер</div>
+						<div class="text-primary fs-4">Олег И. Лозовой</div>
+						<div class="fs-7">Партнер</div>
+						<div class="fs-7">(Стратегия развития)</div>
+						<div class="fs-6 mt-4 text-center">
+							<p>Предприниматель, инвестор</p>
+							<p>Основатель, управляющий партнёр SMPL</p>
+							<p>Основатель и управляющий бизнес-инкубатора R&D Capital.</p>
+							<p>Активный участник разработки закона «О страховании частных инвестиций в приоритетный список предприятий РФ».</p>
+						</div>
 					</div>
 					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
 						<img src="/images/team/03.webp" alt="Павел Водянкин" class="image-fluid">
-						<div class="text-primary fs-4">Павел Водянкин</div>
-						<div class="fs-7">Младший партнер</div>
+						<div class="text-primary fs-4">Павел С. Водянкин</div>
+						<div class="fs-7">Партнер</div>
+						<div class="fs-7">(Операционное управление)</div>
 					</div>
 				</div>
 			</div>
@@ -1151,8 +1147,9 @@
 		<section class="contacts">
 			<div class="container-xxl">
 				<div class="title text-center mb-4 text-primary">Контакты</div>
-				<div class="mb-17 pt-13 row">
-					<a href="tel:{{ str_replace('-', '', settings()->phone)  }}" class="text-reset col-12 col-md-4 d-flex justify-content-start align-items-center gap-2 fs-5">
+				<div class="mb-17 pt-13 row gy-4">
+					<a href="tel:{{ str_replace('-', '', settings()->phone)  }}" 
+						class="text-reset col-12 col-md-4 d-flex justify-content-center justify-content-md-start align-items-center gap-2 fs-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
 						</svg>
@@ -1164,7 +1161,7 @@
 						</svg>
 						{{ settings()->email }}
 					</a>
-					<a href="https://t.me/true_trade_group" target="_blank" class="text-reset col-12 col-md-4 d-flex justify-content-end align-items-center gap-2 fs-5">
+					<a href="https://t.me/true_trade_group" target="_blank" class="text-reset col-12 col-md-4 d-flex justify-content-center justify-content-md-end align-items-center gap-2 fs-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
 							<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"/>
 						</svg>
@@ -1188,6 +1185,18 @@
 				</div>
 			</div>
 		</section>
+
+		<div class="news">
+			<div class="anchor" id="news"></div>
+			<div class="container-xxl">
+				<div class="title text-center mb-4 text-primary">Новости</div>
+				<div class="px-md-5">
+					<div class="px-md-5">
+						<script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-discussion="true_trade_group/2" data-comments-limit="3" data-height="500" data-colorful="1" data-color="202022" data-dark="1"></script>
+					</div>
+				</div>
+			</div>
+		</div>
 
         <footer class="footer">
             <div class="container-xxl">

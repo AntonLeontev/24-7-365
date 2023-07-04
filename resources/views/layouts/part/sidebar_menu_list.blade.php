@@ -98,7 +98,7 @@
             </li>
         @endif
     @endcan
-    @can('create news')
+    {{-- @can('create news')
         @if (Route::has('articles.index'))
             <li class="{{ Route::is('articles.index') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('articles.index') }}">
@@ -109,7 +109,7 @@
 				</a>
             </li>
         @endif
-    @endcan
+    @endcan --}}
 	@can('change settings')
         @if (Route::has('settings.index'))
             <li class="{{ Route::is('settings.index') ? 'active' : '' }}">

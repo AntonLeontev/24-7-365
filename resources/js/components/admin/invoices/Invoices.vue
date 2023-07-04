@@ -55,13 +55,14 @@
     </div>
 
     <div class="card-body">
-      <div class="table_dark">
+      <div class="table_dark_admin">
         <table-header>
           <column-title
             title="number"
             @change-sort="changeSort"
             :sort="this.sort"
             :order="this.order"
+			:col="1"
             >№</column-title
           >
           <column-title
@@ -69,6 +70,7 @@
             @change-sort="changeSort"
             :sort="this.sort"
             :order="this.order"
+			:col="2"
             >Договор</column-title
           >
           <column-title
@@ -83,6 +85,7 @@
             @change-sort="changeSort"
             :sort="this.sort"
             :order="this.order"
+			:col="3"
             >Сумма</column-title
           >
           <column-title
@@ -90,23 +93,24 @@
             @change-sort="changeSort"
             :sort="this.sort"
             :order="this.order"
+			:col="2"
             >Оплата</column-title
           >
         </table-header>
-        <div class="table_dark__body">
+        <div class="table_dark_admin__body">
           <template v-for="(invoice, key) in invoices.data" v-key="key">
-            <div class="table_dark__row">
-              <div class="col">
+            <div class="table_dark_admin__row row">
+              <div class="col col-lg-1">
                 {{ invoice.number }}
               </div>
-              <div class="col">
+              <div class="col col-lg-2">
                 <a :href="`/personal/contracts/${invoice.contract_id}/show`"
                   >№ {{ invoice.contract_id }}</a
                 >
               </div>
               <div class="col text-wrap text-break">{{ invoice.organization_title }}</div>
-              <div class="col">{{ invoice.amount.formatted }}</div>
-              <div class="col">
+              <div class="col col-lg-3">{{ invoice.amount.formatted }}</div>
+              <div class="col col-lg-2">
                 <div
                   class="p-2 rounded"
                   :class="{
