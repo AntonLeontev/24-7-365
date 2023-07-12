@@ -20,6 +20,8 @@ use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeManager;
+use App\Listeners\SyncOrganization;
+use App\Listeners\SyncContract;
 use App\Listeners\DebetPaymentManager;
 use App\Listeners\DeleteFutureProfitabilities;
 use App\Listeners\DeletePendingCreditPayments;
@@ -63,6 +65,8 @@ class EventServiceProvider extends ServiceProvider
             [ContractChangeManager::class, 'createInitContractChange'],
             [DebetPaymentManager::class, 'createInitialPayment'],
             SendContractCreatedNotification::class,
+			SyncOrganization::class,
+			SyncContract::class,
         ],
         ContractCanceled::class => [
             CancelContract::class,

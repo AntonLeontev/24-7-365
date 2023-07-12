@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\AccountingSystemContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,12 +14,11 @@ class Account extends Model
     use HasFactory;
     use SoftDeletes;
 
-
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'id',
-		'organization_id',
+        'organization_id',
         'payment_account',
         'correspondent_account',
         'bik',
@@ -26,13 +26,20 @@ class Account extends Model
         'status',
     ];
 
-	public function payments(): HasMany
-	{
-		return $this->hasMany(Payment::class);
-	}
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 
-	public function organization(): BelongsTo
-	{
-		return $this->belongsTo(Organization::class);
-	}
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::updated(function (Account $account) {
+            app(AccountingSystemContract::class)->syncOrganization($account->organization);
+        });
+    }
 }

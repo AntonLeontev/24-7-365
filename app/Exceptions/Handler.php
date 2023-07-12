@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Support\Services\Planfact\Exceptions\PlanfactBadRequestException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
@@ -36,7 +37,6 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-
     /**
      * Register the exception handling callbacks for the application.
      *
@@ -46,9 +46,15 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (RuntimeException $e) {
             if (str_starts_with($e->getMessage(), 'Telegram API error')) {
-				Log::error($e->getMessage());
+                Log::error($e->getMessage());
                 return;
             }
+        });
+
+        $this->reportable(function (PlanfactBadRequestException $e) {
+            Log::channel('telegram')->error($e->getMessage());
+//TODO test
+			// return back();
         });
 
         $this->reportable(function (Throwable $e) {

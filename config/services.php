@@ -41,4 +41,11 @@ return [
 		'token' => env('TOCHKA_BANK_TOKEN'),
 		'mode' => env('TOCHKA_BANK_WORK_MODE'),
 	],
+
+	'planfact' => [
+		'key' => env('PLANFACT_API_KEY'),
+		'account_id' => env('PLANFACT_ACCOUNT_ID'),
+		'income_category' => env('PLANFACT_INCOME_CATEGORY_ID'),
+		'outcome_category' => env('PLANFACT_OUTCOME_CATEGORY_ID'),
+	],
 ];

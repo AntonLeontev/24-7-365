@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\AccountingSystemContract;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\ContractController;
@@ -19,10 +20,9 @@ use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
+use App\Models\Organization;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,11 +82,15 @@ Route::get('24-rescon/{contract_id}', function ($id) {
     return back();
 })->name('reset-contract');
 
-Route::get('test', function () {
-    Permission::create(['name' => 'create news']);
-    $role = Role::where(['name' => 'Админ'])->first();
-    $role->givePermissionTo('create news');
-    return 'ok';
+Route::get('test', function (AccountingSystemContract $service) {
+    $org = Organization::orderByDesc('created_at')->first();
+
+    $service->syncOrganization($org);
+
+
+    // dd();
+    // dd(json_decode(PlanfactApi::createOutcome(now()->addMonth()->format('Y-m-d'), 6475152, 882745, 30000, 12, 'Выплата %')->body()));
+    // dd(PlanfactApi::getOperationCategories()->json());
 });
 
 
@@ -250,7 +254,7 @@ Route::prefix('admin')
         ->middleware('can:see invoices')
         ->name('invoices.index');
 
-	Route::resource('articles', ArticlesController::class)->except(['show']);
+    Route::resource('articles', ArticlesController::class)->except(['show']);
 });
 
 Route::prefix('sber')

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\AccountingSystemContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,6 @@ class Organization extends Model
     use HasFactory;
     use SoftDeletes;
 
-	
     protected $fillable = [
         'id',
         'user_id',
@@ -25,7 +25,6 @@ class Organization extends Model
         'director',
         'directors_post',
     ];
-
 
     public function user(): BelongsTo
     {
@@ -40,5 +39,12 @@ class Organization extends Model
     public function accounts(): HasMany
     {
         return $this->hasMany(Account::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::updated(function (Organization $organization) {
+            app(AccountingSystemContract::class)->syncOrganization($organization);
+        });
     }
 }

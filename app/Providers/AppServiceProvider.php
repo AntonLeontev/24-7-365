@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Contracts\AccountingSystemContract;
 use App\Contracts\SmsService;
 use App\Contracts\SuggestionsContract;
 use App\Support\Services\DadataService;
+use App\Support\Services\Planfact\PlanfactService;
 use App\Support\Services\StreamTelecom\StreamTelecomService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(SuggestionsContract::class, DadataService::class);
 		$this->app->bind(SmsService::class, StreamTelecomService::class);
+		$this->app->bind(AccountingSystemContract::class, PlanfactService::class);
     }
 
     /**
