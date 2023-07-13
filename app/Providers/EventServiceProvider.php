@@ -12,6 +12,7 @@ use App\Events\ContractProlongated;
 use App\Events\ContractTariffChanging;
 use App\Events\ContractTerminated;
 use App\Events\PaymentReceived;
+use App\Events\PaymentsDeleted;
 use App\Events\PaymentSent;
 use App\Events\PaymentSentToBank;
 use App\Events\UserBlocked;
@@ -24,6 +25,7 @@ use App\Listeners\SyncOrganization;
 use App\Listeners\SyncContract;
 use App\Listeners\DebetPaymentManager;
 use App\Listeners\DeleteFutureProfitabilities;
+use App\Listeners\DeletePaymentsInAccountingSystem;
 use App\Listeners\DeletePendingCreditPayments;
 use App\Listeners\FinishContract;
 use App\Listeners\GenerateCreditPayments;
@@ -37,6 +39,7 @@ use App\Listeners\SendContractFinishedNotification;
 use App\Listeners\SendPaymentReceivedNotification;
 use App\Listeners\SendPaymentSentNotification;
 use App\Listeners\SendProlongationNotification;
+use App\Listeners\SyncPayment;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
 use Illuminate\Auth\Events\Registered;
@@ -101,8 +104,13 @@ class EventServiceProvider extends ServiceProvider
             [GenerateCreditPayments::class, 'handle'],
             GenerateProfitabilities::class,
 
+			SyncPayment::class,
+
             SendPaymentReceivedNotification::class,
         ],
+		PaymentsDeleted::class => [
+			DeletePaymentsInAccountingSystem::class,
+		],
         PaymentSentToBank::class => [
             MarkPaymentSentToBank::class,
         ],

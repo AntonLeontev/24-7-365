@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\AmountCast;
+use App\Contracts\AccountingSystemContract;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -17,7 +18,6 @@ class Payment extends Model
     use HasFactory;
     use SoftDeletes;
     use HasUuids;
-
 
     protected $fillable = [
         'account_id',
@@ -37,7 +37,6 @@ class Payment extends Model
         'planned_at' => 'datetime',
         'paid_at' => 'datetime',
     ];
-
 
     public function account(): BelongsTo
     {
@@ -59,7 +58,23 @@ class Payment extends Model
         static::creating(function (Payment $payment) {
             $lastNumber = $payment->latest()->first()?->number;
 
-			$payment->number = ($lastNumber ?? 0) + 1;
+            $payment->number = ($lastNumber ?? 0) + 1;
+        });
+
+        static::created(function (Payment $payment) {
+            if ($payment->type === PaymentType::debet) {
+                return;
+            }
+
+            app(AccountingSystemContract::class)->syncPayment($payment);
+        });
+
+        static::updated(function (Payment $payment) {
+            if ($payment->type === PaymentType::debet) {
+                return;
+            }
+
+            app(AccountingSystemContract::class)->syncPayment($payment);
         });
     }
 }

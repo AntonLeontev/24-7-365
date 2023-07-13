@@ -68,6 +68,7 @@ class PlanfactApi
         ?string $inn = null,
         ?string $kpp = null,
         ?string $account = null,
+        ?string $externalId = null,
     ): Response {
         return Http::planfact()
             ->put("/api/v1/contragents/{$id}", [
@@ -76,7 +77,12 @@ class PlanfactApi
                 'contrAgentInn' => $inn,
                 'contrAgentKpp' => $kpp,
                 'contrAgentAcct' => $account,
+                'externalId' => $externalId,
                 'contrAgentType' => 'Mixed',
+                'contrAgentGroupId' => config('services.planfact.contragent_group'),
+                'rememberCategory' => true,
+                'operationIncomeCategoryId' => config('services.planfact.income_category'),
+                'operationOutcomeCategoryId' => config('services.planfact.outcome_category'),
             ]);
     }
 
@@ -155,5 +161,40 @@ class PlanfactApi
                 ],
                 'externalId' => $externalId,
             ]);
+    }
+
+    public static function updateOutcome(
+		int $id,
+        string $date,
+        int $contrAgentId,
+        int $projectId,
+        float $value,
+        string $externalId,
+        ?string $comment = null,
+    ): Response {
+        return Http::planfact()
+            ->put("/api/v1/operations/outcome/{$id}", [
+                'operationDate' => $date,
+                'contrAgentId' => $contrAgentId,
+                'accountId' => config('services.planfact.account_id'),
+                'comment' => $comment,
+                'isCommitted' => false,
+                'items' => [
+                    [
+                        'calculationDate' => $date,
+                        'operationCategoryId' => config('services.planfact.outcome_category'),
+                        'contrAgentId' => $contrAgentId,
+                        'projectId' => $projectId,
+                        'value' => $value,
+                    ],
+                ],
+                'externalId' => $externalId,
+            ]);
+    }
+
+    public static function deletePayment(int $id): Response
+    {
+        return Http::planfact()
+            ->delete("/api/v1/operations/{$id}");
     }
 }

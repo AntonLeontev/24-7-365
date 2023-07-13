@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Enums\ContractChangeType;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
+use App\Events\PaymentsDeleted;
 use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Tariff;
@@ -16,15 +17,18 @@ class UpdateCreditPaymentsManager
      */
     public function deletePendingPayments(Contract $contract): void
     {
-        $paymentsIds = $contract->payments
+        $payments = $contract->payments
             ->where('type', PaymentType::credit)
             ->where('status', PaymentStatus::pending)
             ->filter(function ($payment) use ($contract) {
                 return $payment->planned_at->greaterThan($contract->paid_at->addMonths($contract->duration() + 1)->format('Y-m-d'));
-            })
-            ->pluck('id');
+            });
+
+        $paymentsIds = $payments->pluck('id');
 
         Payment::whereIn('id', $paymentsIds)->delete();
+
+		event(new PaymentsDeleted($payments));
     }
 
     /**

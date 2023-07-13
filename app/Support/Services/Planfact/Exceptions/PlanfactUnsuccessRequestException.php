@@ -2,10 +2,9 @@
 
 namespace App\Support\Services\Planfact\Exceptions;
 
-use Exception;
 use Illuminate\Http\Client\Response;
 
-class PlanfactUnsuccessRequestException extends Exception
+class PlanfactUnsuccessRequestException extends PlanfactException
 {
     public function __construct(Response $response)
     {

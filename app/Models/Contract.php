@@ -161,6 +161,7 @@ class Contract extends Model
 
         $this->contractChanges
             ->sortBy('starts_at')
+			->load('tariff')
             ->whereIn('status', [ContractChangeStatus::past, ContractChangeStatus::actual])
             ->reduce(function ($carry, ContractChange $change) use (&$duration) {
                 if ($change->type === ContractChangeType::init) {

@@ -3,11 +3,15 @@
 namespace App\Support\Services\Planfact;
 
 use App\Contracts\AccountingSystemContract;
+use App\Enums\PaymentType;
 use App\Models\Contract;
 use App\Models\Organization;
 use App\Models\Payment;
+use App\Support\Services\Planfact\Exceptions\PlanfactException;
 use App\Support\Services\Planfact\Exceptions\PlanfactUnsuccessRequestException;
+use Exception;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Log;
 
 class PlanfactService implements AccountingSystemContract
 {
@@ -42,6 +46,45 @@ class PlanfactService implements AccountingSystemContract
 
     public function syncPayment(Payment $payment): void
     {
+        try {
+            if (!empty($payment->pf_id)) {
+                $this->updatePayment($payment);
+                return;
+            }
+
+            if ($payment->type === PaymentType::credit) {
+                $createMethod = 'createOutcome';
+            } else {
+                $createMethod = 'createIncome';
+            }
+
+            $date = $payment->paid_at ?? $payment->planned_at;
+
+            $response = $this->api->{$createMethod}(
+                $date->format('Y-m-d'),
+                $payment->load('contract')->contract->organization->pf_id,
+                $payment->contract->pf_id,
+                $payment->amount->amount(),
+                $payment->id,
+                $payment->description,
+            );
+
+            $this->validateResponse($response);
+        } catch (Exception $e) {
+            Log::channel('telegram')->error($e->getMessage(), ["Payment ID: {$payment->id}"]);
+            return;
+        }
+        
+
+        $payment->pf_id = $response->json('data.operationId');
+        $payment->saveQuietly();
+    }
+
+    public function deletePayment(Payment $payment): void
+    {
+        $response = $this->api->deletePayment($payment->pf_id);
+
+        $this->validateResponse($response);
     }
 
     private function createContrAgent(Organization $organization): int
@@ -66,7 +109,8 @@ class PlanfactService implements AccountingSystemContract
             $organization->title,
             $organization->inn,
             $organization->kpp,
-            $organization->accounts->first()->payment_account
+            $organization->accounts->first()->payment_account,
+            $organization->id,
         );
 
         $this->validateResponse($response);
@@ -79,7 +123,7 @@ class PlanfactService implements AccountingSystemContract
             sprintf(
                 '%s ИНН %s',
                 $contract->organization->title,
-				$contract->organization->inn
+                $contract->organization->inn
             ),
             $contract->id,
         );
@@ -87,6 +131,28 @@ class PlanfactService implements AccountingSystemContract
         $this->validateResponse($response);
 
         return $response->json('data.projectId');
+    }
+
+    /**
+     * @throws PlanfactException
+     */
+    private function updatePayment(Payment $payment): void
+    {
+        if ($payment->type === PaymentType::debet) {
+            throw new PlanfactException('Try to update incoming payment with id ' . $payment->id);
+        }
+
+        $response = $this->api->updateOutcome(
+            $payment->pf_id,
+            $payment->planned_at->format('Y-m-d'),
+            $payment->load('contract')->contract->organization->pf_id,
+            $payment->contract->pf_id,
+            $payment->amount->amount(),
+            $payment->id,
+            $payment->description,
+        );
+
+        $this->validateResponse($response);
     }
 
     private function validateResponse(Response $response): void
