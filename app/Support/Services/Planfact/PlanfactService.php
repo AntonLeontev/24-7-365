@@ -26,7 +26,12 @@ class PlanfactService implements AccountingSystemContract
             return;
         }
 
-        $pfId = $this->createContrAgent($organization);
+        try {
+            $pfId = $this->createContrAgent($organization);
+        } catch (Exception $e) {
+            Log::channel('telegram')->error($e->getMessage(), ["Organization ID: {$organization->id}"]);
+            return;
+        }
 
         $organization->pf_id = $pfId;
         $organization->saveQuietly();
@@ -38,7 +43,13 @@ class PlanfactService implements AccountingSystemContract
             return;
         }
 
-        $pfId = $this->createProject($contract);
+        try {
+            $pfId = $this->createProject($contract);
+        } catch (Exception $e) {
+            Log::channel('telegram')->error($e->getMessage(), ["Contract ID: {$contract->id}"]);
+            return;
+        }
+
 
         $contract->pf_id = $pfId;
         $contract->saveQuietly();
@@ -82,9 +93,14 @@ class PlanfactService implements AccountingSystemContract
 
     public function deletePayment(Payment $payment): void
     {
-        $response = $this->api->deletePayment($payment->pf_id);
+        try {
+            $response = $this->api->deletePayment($payment->pf_id);
 
-        $this->validateResponse($response);
+            $this->validateResponse($response);
+        } catch (Exception $e) {
+            Log::channel('telegram')->error($e->getMessage(), ["Payment ID: {$payment->id}"]);
+            return;
+        }
     }
 
     private function createContrAgent(Organization $organization): int
@@ -155,6 +171,9 @@ class PlanfactService implements AccountingSystemContract
         $this->validateResponse($response);
     }
 
+    /**
+     * @throws PlanfactUnsuccessRequestException
+     */
     private function validateResponse(Response $response): void
     {
         if ($response->json('isSuccess')) {

@@ -51,12 +51,6 @@ class Handler extends ExceptionHandler
             }
         });
 
-        $this->reportable(function (PlanfactBadRequestException $e) {
-            Log::channel('telegram')->error($e->getMessage());
-//TODO test
-			// return back();
-        });
-
         $this->reportable(function (Throwable $e) {
             Log::channel('telegram')->error($e->getMessage(), ['exception' => $e]);
         });
