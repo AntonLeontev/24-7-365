@@ -55,11 +55,15 @@ class PlanfactApi
                 'contrAgentAcct' => $account,
                 'contrAgentType' => 'Mixed',
                 'externalId' => $externalId,
+                'contrAgentGroupId' => config('services.planfact.contragent_group'),
+                'rememberCategory' => true,
+                'operationIncomeCategoryId' => config('services.planfact.income_category'),
+                'operationOutcomeCategoryId' => config('services.planfact.outcome_category'),
             ]);
     }
 
     public static function updateContrAgent(
-		int $id,
+        int $id,
         ?string $title = null,
         ?string $inn = null,
         ?string $kpp = null,
