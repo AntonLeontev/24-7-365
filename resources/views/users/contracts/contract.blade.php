@@ -177,34 +177,54 @@
 					Посмотреть договор
 				</button>
 				
-				<button
-					class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 w-md-48 order-xl-2 gap-2"
-					data-bs-toggle="modal" 
-					data-bs-target="#cancelContract"
-					@disabled(
-						$contract->status === contract_status('canceled') || 
-						$contract->status === contract_status('terminated') ||
-						$contract->status === contract_status('finished')
-					)
-				>
-					<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<g clip-path="url(#clip0_223_3922)">
-							<path
-								d="M10.7503 12.0012L7 8.25091L3.24966 12.0012L1.99955 10.7511L5.74989 7.00079L1.99955 3.25045L3.24966 2.00034L7 5.75068L10.7503 2.00034L12.0005 3.25045L8.25011 7.00079L12.0005 10.7511L10.7503 12.0012Z"
-								fill="#FCE301" />
-						</g>
-						<defs>
-							<clipPath id="clip0_223_3922">
-								<rect width="14" height="14" fill="white" />
-							</clipPath>
-						</defs>
-					</svg>
-					@if ($contract->paid_at)
-						Расторгнуть договор
-					@else
-						Удалить договор	
-					@endif
-				</button>
+				@if ($contract->status === contract_status('canceled'))
+					<button
+						class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 w-md-48 order-xl-2 gap-2"
+					>
+						<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_223_3922)">
+								<path
+									d="M10.7503 12.0012L7 8.25091L3.24966 12.0012L1.99955 10.7511L5.74989 7.00079L1.99955 3.25045L3.24966 2.00034L7 5.75068L10.7503 2.00034L12.0005 3.25045L8.25011 7.00079L12.0005 10.7511L10.7503 12.0012Z"
+									fill="#FCE301" />
+							</g>
+							<defs>
+								<clipPath id="clip0_223_3922">
+									<rect width="14" height="14" fill="white" />
+								</clipPath>
+							</defs>
+						</svg>
+						Отменить расторжение
+					</button>
+				@else
+					<button
+						class="btn btn-outline-primary d-flex justify-content-center align-items-center w-100 w-md-48 order-xl-2 gap-2"
+						data-bs-toggle="modal" 
+						data-bs-target="#cancelContract"
+						@disabled(
+							$contract->status === contract_status('canceled') || 
+							$contract->status === contract_status('terminated') ||
+							$contract->status === contract_status('finished')
+						)
+					>
+						<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_223_3922)">
+								<path
+									d="M10.7503 12.0012L7 8.25091L3.24966 12.0012L1.99955 10.7511L5.74989 7.00079L1.99955 3.25045L3.24966 2.00034L7 5.75068L10.7503 2.00034L12.0005 3.25045L8.25011 7.00079L12.0005 10.7511L10.7503 12.0012Z"
+									fill="#FCE301" />
+							</g>
+							<defs>
+								<clipPath id="clip0_223_3922">
+									<rect width="14" height="14" fill="white" />
+								</clipPath>
+							</defs>
+						</svg>
+						@if ($contract->paid_at)
+							Расторгнуть договор
+						@else
+							Удалить договор	
+						@endif
+					</button>
+				@endif
 			</div>
 		</div>
 	@endif
