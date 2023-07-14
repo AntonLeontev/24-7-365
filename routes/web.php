@@ -91,7 +91,7 @@ Route::get('test', function (AccountingSystemContract $service) {
 
     // dd();
     // dd(json_decode(PlanfactApi::createOutcome(now()->addMonth()->format('Y-m-d'), 6475152, 882745, 30000, 12, 'Выплата %')->body()));
-    dd(PlanfactApi::getContrAgents()->json());
+    dd(PlanfactApi::getOperationCategories()->json());
 });
 
 

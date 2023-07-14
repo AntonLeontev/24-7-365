@@ -23,7 +23,7 @@ class HttpServiceProvider extends ServiceProvider
     {
         Http::macro('planfact', function () {
             return Http::withHeaders(['X-ApiKey' => config('services.planfact.key')])
-                ->timeout(2)
+                ->timeout(8)
                 ->asJson()
                 ->acceptJson()
                 ->baseUrl('https://api.planfact.io')

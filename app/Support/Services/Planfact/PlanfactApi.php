@@ -29,7 +29,7 @@ class PlanfactApi
     {
         return Http::planfact()
             ->get('/api/v1/operationcategories', [
-                'filter.operationCategoryType' => 'Outcome'
+                'filter.operationCategoryType' => 'Liabilities'
             ]);
     }
 
@@ -164,7 +164,7 @@ class PlanfactApi
     }
 
     public static function updateOutcome(
-		int $id,
+        int $id,
         string $date,
         int $contrAgentId,
         int $projectId,
