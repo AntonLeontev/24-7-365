@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 		$schedule->command(CheckPeriodEnd::class)->dailyAt('1:00')
+			->evenInMaintenanceMode()
 			->after(function () {
 				Log::channel('schedule')->info('Выполнен перевод конца периода договоров');
 			}
