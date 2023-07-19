@@ -7,26 +7,28 @@ use Illuminate\Support\Facades\Http;
 
 class StreamTelecomService implements SmsService
 {
-    public const URL = 'https://gateway.api.sc/get/';
+    public const URL = '';
 
     public function sendSms(string $phone, string $message): void
     {
-        Http::get(self::URL, [
-            'user' => config('services.stream-telecom.login'),
-            'pwd' => config('services.stream-telecom.password'),
-            'sadr' => config('services.stream-telecom.sadr'),
-            'dadr' => $phone,
-            'text' => $message,
-        ]);
+        Http::streamTelecom()
+            ->get('', [
+                'user' => config('services.stream-telecom.login'),
+                'pwd' => config('services.stream-telecom.password'),
+                'sadr' => config('services.stream-telecom.sadr'),
+                'dadr' => $phone,
+                'text' => $message,
+            ]);
     }
 
     public function balance(): string
     {
-        $response = Http::get(self::URL, [
-            'user' => config('services.stream-telecom.login'),
-            'pwd' => config('services.stream-telecom.password'),
-            'balance' => 1,
-        ]);
+        $response = Http::streamTelecom()
+            ->get('', [
+                'user' => config('services.stream-telecom.login'),
+                'pwd' => config('services.stream-telecom.password'),
+                'balance' => 1,
+            ]);
 
         return $response->body();
     }

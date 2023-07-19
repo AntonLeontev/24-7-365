@@ -36,5 +36,11 @@ class HttpServiceProvider extends ServiceProvider
             return Http::timeout(5)
                 ->baseUrl('https://api.telegram.org/bot' . config('services.telegram.bot'));
         });
+
+        Http::macro('streamTelecom', function () {
+            return Http::timeout(5)
+				->retry(3, 200)
+                ->baseUrl('https://gateway.api.sc/get/');
+        });
     }
 }
