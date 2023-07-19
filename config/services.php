@@ -46,7 +46,8 @@ return [
         'key' => env('PLANFACT_API_KEY'),
         'account_id' => env('PLANFACT_ACCOUNT_ID'),
         'income_category' => env('PLANFACT_INCOME_CATEGORY_ID'),
-        'outcome_category' => env('PLANFACT_OUTCOME_CATEGORY_ID'),
+        'outcome_body_category' => env('PLANFACT_OUTCOME_BODY_CATEGORY_ID'),
+        'outcome_profit_category' => env('PLANFACT_OUTCOME_PROFIT_CATEGORY_ID'),
         'contragent_group' => env('PLANFACT_CONTRAGENT_GROUP_ID'),
     ],
 	'telegram' => [

@@ -1,6 +1,5 @@
 <?php
 
-use App\Contracts\AccountingSystemContract;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\ContractController;
@@ -22,7 +21,6 @@ use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
 use App\Support\Services\Planfact\PlanfactApi;
 use App\Support\Services\StreamTelecom\StreamTelecomService;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -43,55 +41,53 @@ Route::view('/policy', 'policy')->withoutMiddleware(CheckBlockedUser::class)
     ->middleware('guest')
     ->name('policy');
 
-/**
- * DELETE
- */
-//TODO delete
-Route::get('24-pay-in/{contract_id}', function ($id) {
-    Artisan::call("24:pay-in", ['contract' => $id, '--take' => 1]);
-
-    return back();
-})->name('pay-in');
-
-Route::get('24-pay-out/{contract_id}', function ($id) {
-    Artisan::call("24:pay-out", ['contract' => $id, '--take' => 1]);
-
-    return back();
-})->name('pay-out');
-
-Route::get('24-period/{contract_id}', function ($id) {
-    Artisan::call("24:period", ['contract' => $id]);
-
-    return back();
-})->name('period');
-
-Route::get('24-period-2/{contract_id}', function (int $id) {
-    Artisan::call("24:period", ['contract' => $id, '--number' => 2]);
-
-    return back();
-})->name('period2');
-
-Route::get('24-period-5/{contract_id}', function (int $id) {
-    Artisan::call("24:period", ['contract' => $id, '--number' => 5]);
-
-    return back();
-})->name('period5');
-
-Route::get('24-rescon/{contract_id}', function ($id) {
-    Artisan::call("24:rescon", ['contract' => $id]);
-    Artisan::call("24:pay-in", ['contract' => $id, '--take' => 1]);
-
-    return back();
-})->name('reset-contract');
-
-Route::get('test', function (StreamTelecomService $service) {
-    // $org = Organization::orderByDesc('created_at')->first();
-
-    // $service->syncOrganization($org);
-
-
-    return $service->balance();
-});
+if (app()->isLocal()) {
+    Route::get('24-pay-in/{contract_id}', function ($id) {
+        Artisan::call("24:pay-in", ['contract' => $id, '--take' => 1]);
+    
+        return back();
+    })->name('pay-in');
+    
+    Route::get('24-pay-out/{contract_id}', function ($id) {
+        Artisan::call("24:pay-out", ['contract' => $id, '--take' => 1]);
+    
+        return back();
+    })->name('pay-out');
+    
+    Route::get('24-period/{contract_id}', function ($id) {
+        Artisan::call("24:period", ['contract' => $id]);
+    
+        return back();
+    })->name('period');
+    
+    Route::get('24-period-2/{contract_id}', function (int $id) {
+        Artisan::call("24:period", ['contract' => $id, '--number' => 2]);
+    
+        return back();
+    })->name('period2');
+    
+    Route::get('24-period-5/{contract_id}', function (int $id) {
+        Artisan::call("24:period", ['contract' => $id, '--number' => 5]);
+    
+        return back();
+    })->name('period5');
+    
+    Route::get('24-rescon/{contract_id}', function ($id) {
+        Artisan::call("24:rescon", ['contract' => $id]);
+        Artisan::call("24:pay-in", ['contract' => $id, '--take' => 1]);
+    
+        return back();
+    })->name('reset-contract');
+    
+    Route::get('test', function (StreamTelecomService $service) {
+        // $org = Organization::orderByDesc('created_at')->first();
+    
+        // $service->syncOrganization($org);
+    
+    
+        dd(PlanfactApi::getOperationCategories()->json());
+    });
+}
 
 
 

@@ -30,7 +30,7 @@ class PlanfactApi
     {
         return Http::planfact()
             ->get('/api/v1/operationcategories', [
-                'filter.operationCategoryType' => 'Outcome'
+                'filter.operationCategoryType' => 'Liabilities'
             ]);
     }
 
@@ -59,7 +59,7 @@ class PlanfactApi
                 'contrAgentGroupId' => config('services.planfact.contragent_group'),
                 'rememberCategory' => true,
                 'operationIncomeCategoryId' => config('services.planfact.income_category'),
-                'operationOutcomeCategoryId' => config('services.planfact.outcome_category'),
+                'operationOutcomeCategoryId' => config('services.planfact.outcome_profit_category'),
             ]);
     }
 
@@ -83,7 +83,7 @@ class PlanfactApi
                 'contrAgentGroupId' => config('services.planfact.contragent_group'),
                 'rememberCategory' => true,
                 'operationIncomeCategoryId' => config('services.planfact.income_category'),
-                'operationOutcomeCategoryId' => config('services.planfact.outcome_category'),
+                'operationOutcomeCategoryId' => config('services.planfact.outcome_profit_category'),
             ]);
     }
 
@@ -154,7 +154,7 @@ class PlanfactApi
                 'items' => [
                     [
                         'calculationDate' => $date,
-                        'operationCategoryId' => config('services.planfact.outcome_category'),
+                        'operationCategoryId' => config('services.planfact.outcome_profit_category'),
                         'contrAgentId' => $contrAgentId,
                         'projectId' => $projectId,
                         'value' => $value,
@@ -184,7 +184,7 @@ class PlanfactApi
                 'items' => [
                     [
                         'calculationDate' => $date,
-                        'operationCategoryId' => config('services.planfact.outcome_category'),
+                        'operationCategoryId' => config('services.planfact.outcome_profit_category'),
                         'contrAgentId' => $contrAgentId,
                         'projectId' => $projectId,
                         'value' => $value,
