@@ -31,5 +31,10 @@ class HttpServiceProvider extends ServiceProvider
                     throw new PlanfactBadRequestException($response);
                 });
         });
+
+        Http::macro('telegram', function () {
+            return Http::timeout(5)
+                ->baseUrl('https://api.telegram.org/bot' . config('services.telegram.bot'));
+        });
     }
 }

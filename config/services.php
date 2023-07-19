@@ -49,4 +49,8 @@ return [
         'outcome_category' => env('PLANFACT_OUTCOME_CATEGORY_ID'),
         'contragent_group' => env('PLANFACT_CONTRAGENT_GROUP_ID'),
     ],
+	'telegram' => [
+		'bot' => env('TELEGRAM_TOKEN'),
+		'amount_chat' => env('TELEGRAM_AMOUNT_GROUP_ID'),
+	],
 ];

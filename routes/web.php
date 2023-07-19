@@ -20,8 +20,9 @@ use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
-use App\Models\Organization;
 use App\Support\Services\Planfact\PlanfactApi;
+use App\Support\Services\StreamTelecom\StreamTelecomService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -83,15 +84,13 @@ Route::get('24-rescon/{contract_id}', function ($id) {
     return back();
 })->name('reset-contract');
 
-Route::get('test', function (AccountingSystemContract $service) {
-    $org = Organization::orderByDesc('created_at')->first();
+Route::get('test', function (StreamTelecomService $service) {
+    // $org = Organization::orderByDesc('created_at')->first();
 
     // $service->syncOrganization($org);
 
 
-    // dd();
-    // dd(json_decode(PlanfactApi::createOutcome(now()->addMonth()->format('Y-m-d'), 6475152, 882745, 30000, 12, 'Выплата %')->body()));
-    dd(PlanfactApi::getOperationCategories()->json());
+    return $service->balance();
 });
 
 

@@ -3,12 +3,15 @@
 namespace App\Support\Services\Planfact;
 
 use App\Contracts\AccountingSystemContract;
+use App\DTOs\PurchaseAmountDTO;
+use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Models\Contract;
 use App\Models\Organization;
 use App\Models\Payment;
 use App\Support\Services\Planfact\Exceptions\PlanfactException;
 use App\Support\Services\Planfact\Exceptions\PlanfactUnsuccessRequestException;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Log;
@@ -103,6 +106,17 @@ class PlanfactService implements AccountingSystemContract
         }
     }
 
+    public function getPurchasesAmount(Carbon $date): PurchaseAmountDTO
+    {
+        $balance = $this->api->getAccountBalance(now())->json('data.total');
+        $cashflow = $this->api->getCashflow(now(), $date);
+
+        $outPlan = $cashflow->json('data.outcomePlanValue');
+        $outFact = $cashflow->json('data.outcomeFactValue');
+
+        return new PurchaseAmountDTO($date, $balance - $outPlan + $outFact);
+    }
+
     private function createContrAgent(Organization $organization): int
     {
         $response = $this->api->createContrAgent(
@@ -158,14 +172,18 @@ class PlanfactService implements AccountingSystemContract
             throw new PlanfactException('Try to update incoming payment with id ' . $payment->id);
         }
 
+        $date = $payment->paid_at ?? $payment->planned_at;
+        $isCommitted = $payment->status === PaymentStatus::processed;
+
         $response = $this->api->updateOutcome(
             $payment->pf_id,
-            $payment->planned_at->format('Y-m-d'),
+            $date->format('Y-m-d'),
             $payment->load('contract')->contract->organization->pf_id,
             $payment->contract->pf_id,
             $payment->amount->amount(),
             $payment->id,
             $payment->description,
+            $isCommitted,
         );
 
         $this->validateResponse($response);

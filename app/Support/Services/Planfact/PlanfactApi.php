@@ -2,6 +2,7 @@
 
 namespace App\Support\Services\Planfact;
 
+use Carbon\Carbon;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -29,7 +30,7 @@ class PlanfactApi
     {
         return Http::planfact()
             ->get('/api/v1/operationcategories', [
-                'filter.operationCategoryType' => 'Liabilities'
+                'filter.operationCategoryType' => 'Outcome'
             ]);
     }
 
@@ -171,6 +172,7 @@ class PlanfactApi
         float $value,
         string $externalId,
         ?string $comment = null,
+        bool $isCommitted = false,
     ): Response {
         return Http::planfact()
             ->put("/api/v1/operations/outcome/{$id}", [
@@ -178,7 +180,7 @@ class PlanfactApi
                 'contrAgentId' => $contrAgentId,
                 'accountId' => config('services.planfact.account_id'),
                 'comment' => $comment,
-                'isCommitted' => false,
+                'isCommitted' => $isCommitted,
                 'items' => [
                     [
                         'calculationDate' => $date,
@@ -196,5 +198,25 @@ class PlanfactApi
     {
         return Http::planfact()
             ->delete("/api/v1/operations/{$id}");
+    }
+
+    public static function getAccountBalance(Carbon $date): Response
+    {
+        return Http::planfact()
+            ->get("/api/v1/businessmetrics/accountbalance", [
+                'filter.currentDate' => $date->format('Y-m-d'),
+                'filter.accountIds' => config('services.planfact.account_id'),
+            ]);
+    }
+
+    public static function getCashflow(Carbon $dateStart, Carbon $dateEnd): Response
+    {
+        return Http::planfact()
+            ->get("/api/v1/businessmetrics/cashflow", [
+                'filter.periodStartDate' => $dateStart->format('Y-m-d'),
+                'filter.periodEndDate' => $dateEnd->format('Y-m-d'),
+                'filter.accountId' => config('services.planfact.account_id'),
+                'filter.isCalculation' => 'false',
+            ]);
     }
 }
