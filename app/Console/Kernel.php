@@ -39,7 +39,7 @@ class Kernel extends ConsoleKernel
 		// 	}
 		// );
 
-		$schedule->command(CalcPurchaseAmount::class)->hourly()
+		$schedule->command(CalcPurchaseAmount::class)->dailyAt('8:00')
 			->evenInMaintenanceMode()
 			->after(function () {
 				Log::channel('schedule')->info('Выполнен расчет свободных денег');
