@@ -33,7 +33,7 @@ class CalcPurchaseAmount extends Command
 
         $message = $this->renderMessage($one, $two, $three);
 
-        $telegram->sendText($message, config('services.telegram.amount_chat'));
+        $telegram->sendSilentText($message, config('services.telegram.amount_chat'));
     }
 
     private function renderMessage(...$amounts): string

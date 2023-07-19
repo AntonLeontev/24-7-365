@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CalcPurchaseAmount;
 use App\Console\Commands\CheckPayments;
 use App\Console\Commands\CheckPeriodEnd;
 use App\Console\Commands\SendPaymentsToBank;
@@ -25,15 +26,21 @@ class Kernel extends ConsoleKernel
 			}
 		);
 
-		$schedule->command(CheckPayments::class)->hourly()
-			->after(function () {
-				Log::channel('schedule')->info('Выполнена проверка транзакций в банке');
-			}
-		);
+		// $schedule->command(CheckPayments::class)->hourly()
+		// 	->after(function () {
+		// 		Log::channel('schedule')->info('Выполнена проверка транзакций в банке');
+		// 	}
+		// );
 
-		$schedule->command(SendPaymentsToBank::class)->dailyAt('1:30')
+		// $schedule->command(SendPaymentsToBank::class)->dailyAt('1:30')
+		// 	->after(function () {
+		// 		Log::channel('schedule')->info('Выполнена отправка исходящих платежей');
+		// 	}
+		// );
+
+		$schedule->command(CalcPurchaseAmount::class)->hourly()
 			->after(function () {
-				Log::channel('schedule')->info('Выполнена отправка исходящих платежей');
+				Log::channel('schedule')->info('Выполнен расчет свободных денег');
 			}
 		);
     }
