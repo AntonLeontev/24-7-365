@@ -80,11 +80,7 @@ if (app()->isLocal()) {
     })->name('reset-contract');
     
     Route::get('test', function (StreamTelecomService $service) {
-        // $org = Organization::orderByDesc('created_at')->first();
-    
-        // $service->syncOrganization($org);
-    
-    
+		return $service->balance();
         dd(PlanfactApi::getOperationCategories()->json());
     });
 }

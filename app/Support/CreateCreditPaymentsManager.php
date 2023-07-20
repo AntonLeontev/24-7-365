@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Enums\PaymentType;
 use App\Models\Contract;
 use App\Models\Payment;
+use Carbon\Carbon;
 
 class CreateCreditPaymentsManager
 {
@@ -18,33 +19,30 @@ class CreateCreditPaymentsManager
 
         //Формируем выплаты на период договора
         foreach (range(1, $tariff->duration) as $month) {
-            if (! $firstPaymentScheduled) {
+            if ($firstPaymentScheduled) {
+                $paymentAmount = $profitPerMonth;
+                $periodStart = $contract->paid_at->addMonths($month - 1);
+                $periodEnd = $contract->paid_at->addMonths($month);
+            } else {
                 if ($month < settings()->payments_start) {
                     $paymentAmount += $profitPerMonth;
                     continue;
                 }
                 
                 $firstPaymentScheduled = true;
-                $description = "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths(settings()->payments_start)->format('d.m.Y')}";
+                $periodStart = $contract->paid_at;
+                $periodEnd = $contract->paid_at->addMonths(settings()->payments_start);
             }
 
-            if ($month === $tariff->duration) {
-                $paymentAmount += $contract->amount->raw();
-                
-                $description = "Выплата тела договора и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($month - 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($month)->format('d.m.Y')}";
+            $payDay = $contract->paid_at->addMonths($month);
+
+            $this->createProfitOutcomePayment($paymentAmount, $contract, $payDay, $periodStart, $periodEnd);
+
+            if ($month !== $tariff->duration) {
+                continue;
             }
 
-            Payment::create([
-                'account_id' => $contract->organization->accounts->first()->id,
-                'contract_id' => $contract->id,
-                'amount' => $paymentAmount,
-                'type' => PaymentType::credit,
-                'planned_at' => $contract->paid_at->addMonths($month),
-                'description' => $description,
-            ]);
-
-            $paymentAmount = $profitPerMonth;
-            $description = "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($month - 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($month)->format('d.m.Y')}";
+            $this->createBodyOutcomePayment($contract->amount->raw(), $contract, $payDay);
         }
     }
 
@@ -53,14 +51,41 @@ class CreateCreditPaymentsManager
         $tariff = $contract->tariff;
 
         $profit = $contract->amount->raw() * $tariff->annual_rate / 100 / 12 * $tariff->duration;
-    
+
+        $payDay = $contract->paid_at->addMonths($tariff->duration);
+
+        $this->createProfitOutcomePayment($profit, $contract, $payDay, $contract->paid_at, $contract->paid_at->addMonths($tariff->duration));
+
+        $this->createBodyOutcomePayment($contract->amount->raw(), $contract, $payDay);
+    }
+
+    private function createProfitOutcomePayment(int $amount, Contract $contract, Carbon $payDay, ?Carbon $periodStart = null, ?Carbon $periodEnd = null)
+    {
+        $description = "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
+
+        if (!is_null($periodStart) && !is_null($periodEnd)) {
+            $description .= " за период {$periodStart->format('d.m.Y')} - {$periodEnd->format('d.m.Y')}";
+        }
+
+        $this->createPayment($amount, $contract, $payDay, $description);
+    }
+
+    private function createBodyOutcomePayment(int $amount, Contract $contract, Carbon $payDay)
+    {
+        $description = "Возврат тела по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
+
+        $this->createPayment($amount, $contract, $payDay, $description);
+    }
+
+    private function createPayment(int $amount, Contract $contract, Carbon $payDay, string $description): void
+    {
         Payment::create([
             'account_id' => $contract->organization->accounts->first()->id,
             'contract_id' => $contract->id,
-            'amount' => $contract->amount->raw() + $profit,
+            'amount' => $amount,
             'type' => PaymentType::credit,
-            'planned_at' => $contract->paid_at->addMonths($tariff->duration),
-            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths($tariff->duration)->format('d.m.Y')}",
+            'planned_at' => $payDay,
+            'description' => $description,
         ]);
     }
 }

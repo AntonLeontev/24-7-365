@@ -23,6 +23,9 @@ class HttpServiceProvider extends ServiceProvider
     {
         Http::macro('planfact', function () {
             return Http::withHeaders(['X-ApiKey' => config('services.planfact.key')])
+                ->when(!app()->isProduction(), function ($request) {
+                    return $request->withOptions(['verify' => false]);
+                })
                 ->timeout(8)
                 ->asJson()
                 ->acceptJson()
@@ -39,7 +42,7 @@ class HttpServiceProvider extends ServiceProvider
 
         Http::macro('streamTelecom', function () {
             return Http::timeout(5)
-				->retry(3, 200)
+                ->retry(3, 200)
                 ->baseUrl('https://gateway.api.sc/get/');
         });
     }

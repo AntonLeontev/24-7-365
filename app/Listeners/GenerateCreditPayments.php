@@ -10,6 +10,7 @@ use App\Models\Profitability;
 use App\Models\Tariff;
 use App\Support\CreateCreditPaymentsManager;
 use App\Support\UpdateCreditPaymentsManager;
+use Illuminate\Support\Facades\Log;
 
 class GenerateCreditPayments
 {
@@ -49,6 +50,7 @@ class GenerateCreditPayments
     public function update(Contract $contract): void
     {
         if ($contract->isLastPeriod()) {
+			Log::channel('telegram')->alert('Обновление договора в последний период', ['Contract' => $contract->id]);
             return;
         }
 

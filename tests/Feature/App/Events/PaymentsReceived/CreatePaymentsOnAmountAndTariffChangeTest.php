@@ -20,6 +20,7 @@ use Database\Factories\ContractFactory;
 use Database\Factories\OrganizationFactory;
 use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class CreatePaymentsOnAmountAndTariffChangeTest extends TestCase
@@ -35,6 +36,18 @@ class CreatePaymentsOnAmountAndTariffChangeTest extends TestCase
 	public function setUp(): void
 	{
 		parent::setUp();
+
+		Http::fake([
+			'api.planfact.io/*' => Http::response([
+				'isSuccess' => true,
+				'data' => [
+					'contrAgentId' => random_int(1, 9999),
+					'projectId' => random_int(1, 9999),
+				]
+			]),
+		])->asJson();
+
+		// dd(Http::planfact()->post('/')->json());
 
 		$this->artisan('db:seed', ['--class' => 'RolesPermissionsSeeder']);
         $this->artisan('db:seed', ['--class' => 'TariffsSeeder']);
@@ -346,6 +359,7 @@ class CreatePaymentsOnAmountAndTariffChangeTest extends TestCase
 
 		// Инициируем контракт входящим платежом
 		$payment = $this->contract->payments->where('type', PaymentType::debet)->first();
+		$payment->update(['paid_at' => now()]);
 		event(new PaymentReceived($payment));
 		$this->contract->refresh();
 
