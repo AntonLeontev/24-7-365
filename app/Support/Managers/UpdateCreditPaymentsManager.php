@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Managers;
 
 use App\Enums\ContractChangeType;
 use App\Enums\PaymentStatus;
@@ -12,6 +12,10 @@ use App\Models\Tariff;
 
 class UpdateCreditPaymentsManager
 {
+    public function __construct(public PaymentCreator $creator)
+    {
+    }
+
     /**
      * Удаляет исходящие платежи после текущего отчетного периода
      */
@@ -28,7 +32,7 @@ class UpdateCreditPaymentsManager
 
         Payment::whereIn('id', $paymentsIds)->delete();
 
-		event(new PaymentsDeleted($payments));
+        event(new PaymentsDeleted($payments));
     }
 
     /**
@@ -49,14 +53,12 @@ class UpdateCreditPaymentsManager
             $firstPaymentAmount = ($contract->duration() + 1) * $oldProfitPerMonth +
                 (settings()->payments_start - $contract->duration() - 1) * $newProfitPerMonth;
 
-            $firstPayment = Payment::create([
-                'account_id' => $contract->organization->accounts->first()->id,
-                'contract_id' => $contract->id,
-                'amount' => $firstPaymentAmount,
-                'type' => PaymentType::credit,
-                'planned_at' => $contract->paid_at->addMonths(settings()->payments_start),
-                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths(settings()->payments_start)->format('d.m.Y')}",
-            ]);
+            $payDay = $contract->paid_at->addMonths(settings()->payments_start);
+            $periodStart = $contract->paid_at;
+            $periodEnd = $contract->paid_at->addMonths(settings()->payments_start);
+
+            $firstPayment = $this->creator
+                ->createProfitOutcomePayment($firstPaymentAmount, $contract, $payDay, $periodStart, $periodEnd);
         }
 
         $start = settings()->payments_start - $contract->duration();
@@ -74,28 +76,19 @@ class UpdateCreditPaymentsManager
         }
 
         foreach (range($start, $newTariff->duration) as $month) {
-            // Last payment with body
-            if ($month === $newTariff->duration) {
-                Payment::create([
-                    'account_id' => $contract->organization->accounts->first()->id,
-                    'contract_id' => $contract->id,
-                    'amount' => $newProfitPerMonth + $newAmount->raw(),
-                    'type' => PaymentType::credit,
-                    'planned_at' => $contract->currentTariffStart()->addMonths($delay + $month),
-                    'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->currentTariffStart()->addMonths($month - 1)->format('d.m.Y')} - {$contract->currentTariffStart()->addMonths($month)->format('d.m.Y')}",
-                ]);
-                continue;
-            }
-
             // Regular payments
-            Payment::create([
-                'account_id' => $contract->organization->accounts->first()->id,
-                'contract_id' => $contract->id,
-                'amount' => $newProfitPerMonth,
-                'type' => PaymentType::credit,
-                'planned_at' => $contract->currentTariffStart()->addMonths($delay + $month),
-                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->currentTariffStart()->addMonths($month - 1)->format('d.m.Y')} - {$contract->currentTariffStart()->addMonths($month)->format('d.m.Y')}",
-            ]);
+
+            $payDay = $contract->currentTariffStart()->addMonths($delay + $month);
+            $periodStart = $contract->currentTariffStart()->addMonths($delay + $month - 1);
+            $periodEnd = $contract->currentTariffStart()->addMonths($delay + $month);
+
+            $this->creator
+                ->createProfitOutcomePayment($newProfitPerMonth, $contract, $payDay, $periodStart, $periodEnd);
+
+            if ($month === $newTariff->duration) {
+                $this->creator
+                    ->createBodyOutcomePayment($newAmount->raw(), $contract, $payDay);
+            }
         }
 
         if ($contract->duration() + 1 < settings()->payments_start) {
@@ -119,26 +112,41 @@ class UpdateCreditPaymentsManager
 
         // Создаем выплату для доходности, которая будет начислена в конце текущего периода
         if ($contract->duration() + 1 < settings()->payments_start) {
-            Payment::create([
-                'account_id' => $contract->organization->accounts->first()->id,
-                'contract_id' => $contract->id,
-                'amount' => $oldProfitPerMonth * ($contract->duration() + 1),
-                'type' => PaymentType::credit,
-                'status' => PaymentStatus::pending,
-                'planned_at' => $contract->paid_at->addMonths(settings()->payments_start),
-                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths($contract->duration() + 1)->format('d.m.Y')}",
-            ]);
+            $this->creator
+                ->createProfitOutcomePayment(
+                    $oldProfitPerMonth * ($contract->duration() + 1),
+                    $contract,
+                    $contract->paid_at->addMonths(settings()->payments_start),
+                    $contract->currentTariffStart(),
+                    $contract->paid_at->addMonths($contract->duration() + 1)
+                );
         }
 
-        return Payment::create([
-            'account_id' => $contract->organization->accounts->first()->id,
-            'contract_id' => $contract->id,
-            'amount' => (int) ($newProfitPerMonth * $newTariff->duration + $newAmount->raw()),
-            'type' => PaymentType::credit,
-            'status' => PaymentStatus::pending,
-            'planned_at' => $contract->paid_at->addMonths($contract->duration() + 1 + $newTariff->duration),
-            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($contract->duration() + 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($newTariff->duration)->format('d.m.Y')}",
-        ]);
+        $payDay = $contract->paid_at->addMonths($contract->duration() + 1 + $newTariff->duration);
+
+        $payment = $this->creator
+            ->createProfitOutcomePayment(
+                $newProfitPerMonth * $newTariff->duration,
+                $contract,
+                $payDay,
+                $contract->paid_at->addMonths($contract->duration() + 1),
+                $payDay,
+            );
+
+        $this->creator
+            ->createBodyOutcomePayment($newAmount->raw(), $contract, $payDay);
+
+        return $payment;
+
+        // return Payment::create([
+        //     'account_id' => $contract->organization->accounts->first()->id,
+        //     'contract_id' => $contract->id,
+        //     'amount' => (int) ($newProfitPerMonth * $newTariff->duration + $newAmount->raw()),
+        //     'type' => PaymentType::credit,
+        //     'status' => PaymentStatus::pending,
+        //     'planned_at' => $contract->paid_at->addMonths($contract->duration() + 1 + $newTariff->duration),
+        //     'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->addMonths($contract->duration() + 1)->format('d.m.Y')} - {$contract->paid_at->addMonths($newTariff->duration)->format('d.m.Y')}",
+        // ]);
     }
 
     /**
@@ -172,16 +180,17 @@ class UpdateCreditPaymentsManager
         $oldProfit += $contract->amount->raw() * $newTariff->annual_rate / 100 / 12;
 
         $newProfit = $newAmount->raw() * $newTariff->annual_rate / 100 / 12 * ($newTariff->duration - $endTariffDuration - 1);
-        
-        return Payment::create([
-            'account_id' => $contract->organization->accounts->first()->id,
-            'contract_id' => $contract->id,
-            'amount' => $newAmount->raw() + $oldProfit + $newProfit,
-            'type' => PaymentType::credit,
-            'status' => PaymentStatus::pending,
-            'planned_at' => $contract->lastEndTariffChange()->starts_at->addMonths($newTariff->duration),
-            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->lastEndTariffChange()->starts_at->format('d.m.Y')} - {$contract->lastEndTariffChange()->starts_at->addMonths($newTariff->duration)->format('d.m.Y')}",
-        ]);
+
+        $payDay = $contract->lastEndTariffChange()->starts_at->addMonths($newTariff->duration);
+        $periodStart = $contract->lastEndTariffChange()->starts_at;
+
+        $payment = $this->creator
+            ->createProfitOutcomePayment($oldProfit + $newProfit, $contract, $payDay, $periodStart, $payDay);
+
+        $this->creator
+            ->createBodyOutcomePayment($newAmount->raw(), $contract, $payDay);
+
+		return $payment;
     }
 
     /**
@@ -199,14 +208,12 @@ class UpdateCreditPaymentsManager
             $firstPaymentAmount = ($contract->duration() + 1) * $oldProfitPerMonth +
                 (settings()->payments_start - $contract->duration() - 1) * $newProfitPerMonth;
 
-            $firstPayment = Payment::create([
-                'account_id' => $contract->organization->accounts->first()->id,
-                'contract_id' => $contract->id,
-                'amount' => $firstPaymentAmount,
-                'type' => PaymentType::credit,
-                'planned_at' => $contract->paid_at->addMonths(settings()->payments_start),
-                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->paid_at->format('d.m.Y')} - {$contract->paid_at->addMonths(settings()->payments_start)->format('d.m.Y')}",
-            ]);
+            $payDay = $contract->paid_at->addMonths(settings()->payments_start);
+            $periodStart = $contract->paid_at;
+            $periodEnd = $contract->paid_at->addMonths(settings()->payments_start);
+
+            $firstPayment = $this->creator
+                ->createProfitOutcomePayment($firstPaymentAmount, $contract, $payDay, $periodStart, $periodEnd);
         }
 
         $start = settings()->payments_start > $contract->duration() + 1 ?
@@ -214,28 +221,20 @@ class UpdateCreditPaymentsManager
         $contract->currentTariffDuration() + 2;
 
         foreach (range($start, $contract->tariff->duration) as $month) {
-            // Last payment with body
-            if ($month === $contract->tariff->duration) {
-                Payment::create([
-                    'account_id' => $contract->organization->accounts->first()->id,
-                    'contract_id' => $contract->id,
-                    'amount' => $newProfitPerMonth + $newAmount->raw(),
-                    'type' => PaymentType::credit,
-                    'planned_at' => $contract->currentTariffStart()->addMonths($month),
-                    'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->currentTariffStart()->addMonths($month - 1)->format('d.m.Y')} - {$contract->currentTariffStart()->addMonths($month)->format('d.m.Y')}",
-                ]);
-                continue;
-            }
-
             // Regular payments
-            Payment::create([
-                'account_id' => $contract->organization->accounts->first()->id,
-                'contract_id' => $contract->id,
-                'amount' => $newProfitPerMonth,
-                'type' => PaymentType::credit,
-                'planned_at' => $contract->currentTariffStart()->addMonths($month),
-                'description' => "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$contract->currentTariffStart()->addMonths($month - 1)->format('d.m.Y')} - {$contract->currentTariffStart()->addMonths($month)->format('d.m.Y')}",
-            ]);
+            $payDay = $contract->currentTariffStart()->addMonths($month);
+            $periodStart = $contract->currentTariffStart()->addMonths($month - 1);
+            $periodEnd = $contract->currentTariffStart()->addMonths($month);
+
+            $this->creator
+                ->createProfitOutcomePayment($newProfitPerMonth, $contract, $payDay, $periodStart, $periodEnd);
+
+            if ($month === $contract->tariff->duration) {
+                $payDay = $contract->currentTariffStart()->addMonths($month);
+
+                $this->creator
+                    ->createBodyOutcomePayment($newAmount->raw(), $contract, $payDay);
+            }
         }
 
         if ($contract->duration() + 1 < settings()->payments_start) {
@@ -248,7 +247,7 @@ class UpdateCreditPaymentsManager
     /**
      * Создает выплату при увеличении суммы без смены тарифа - в конце срока
      */
-    public function increaseAmountEndToEndTariff(Contract $contract)
+    public function increaseAmountEndToEndTariff(Contract $contract): Payment
     {
         $newAmount = $contract->contractChanges->last()->amount;
         
@@ -275,15 +274,17 @@ class UpdateCreditPaymentsManager
         $oldProfit += $contract->amount->raw() * $contract->tariff->annual_rate / 100 / 12;
 
         $newProfit = $newAmount->raw() * $contract->tariff->annual_rate / 100 / 12 * ($contract->tariff->duration - $endTariffDuration - 1);
-        
-        return Payment::create([
-            'account_id' => $contract->organization->accounts->first()->id,
-            'contract_id' => $contract->id,
-            'amount' => $newAmount->raw() + $oldProfit + $newProfit,
-            'type' => PaymentType::credit,
-            'status' => PaymentStatus::pending,
-            'planned_at' => $lastEndTariffChange->starts_at->addMonths($contract->tariff->duration),
-            'description' => "Выплата тела и доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')} за период {$lastEndTariffChange->starts_at->format('d.m.Y')} - {$lastEndTariffChange->starts_at->addMonths($contract->tariff->duration)->format('d.m.Y')}",
-        ]);
+
+        $payDay = $lastEndTariffChange->starts_at->addMonths($contract->tariff->duration);
+        $periodStart = $contract->paid_at;
+        $periodEnd = $lastEndTariffChange->starts_at->addMonths($contract->tariff->duration);
+
+        $profitPayment = $this->creator
+            ->createProfitOutcomePayment($oldProfit + $newProfit, $contract, $payDay, $periodStart, $periodEnd);
+
+        $this->creator
+            ->createBodyOutcomePayment($newAmount->raw(), $contract, $payDay);
+
+        return $profitPayment;
     }
 }

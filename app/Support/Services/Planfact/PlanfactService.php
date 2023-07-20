@@ -68,8 +68,12 @@ class PlanfactService implements AccountingSystemContract
 
             if ($payment->type === PaymentType::credit) {
                 $createMethod = 'createOutcome';
+                $categoryId = $payment->is_body
+                    ? config('services.planfact.outcome_body_category')
+                    : config('services.planfact.outcome_profit_category');
             } else {
                 $createMethod = 'createIncome';
+                $categoryId = config('services.planfact.income_category');
             }
 
             $date = $payment->paid_at ?? $payment->planned_at;
@@ -80,6 +84,7 @@ class PlanfactService implements AccountingSystemContract
                 $payment->contract->pf_id,
                 $payment->amount->amount(),
                 $payment->id,
+                $categoryId,
                 $payment->description,
             );
 
@@ -174,6 +179,9 @@ class PlanfactService implements AccountingSystemContract
 
         $date = $payment->paid_at ?? $payment->planned_at;
         $isCommitted = $payment->status === PaymentStatus::processed;
+        $categoryId = $payment->is_body
+            ? config('services.planfact.outcome_body_category')
+            : config('services.planfact.outcome_profit_category');
 
         $response = $this->api->updateOutcome(
             $payment->pf_id,
@@ -182,6 +190,7 @@ class PlanfactService implements AccountingSystemContract
             $payment->contract->pf_id,
             $payment->amount->amount(),
             $payment->id,
+            $categoryId,
             $payment->description,
             $isCommitted,
         );

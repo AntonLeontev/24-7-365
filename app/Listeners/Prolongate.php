@@ -10,7 +10,7 @@ use App\Events\ContractProlongated as EventsContractProlongated;
 use App\Models\ContractChange;
 use App\Models\Tariff;
 use App\Support\Managers\ProfitabilityManager;
-use App\Support\UpdateCreditPaymentsManager;
+use App\Support\Managers\UpdateCreditPaymentsManager;
 
 class Prolongate
 {

@@ -28,6 +28,7 @@ class Payment extends Model
         'planned_at',
         'paid_at',
         'description',
+		'is_body',
     ];
 
     protected $casts = [
@@ -36,6 +37,7 @@ class Payment extends Model
         'type' => PaymentType::class,
         'planned_at' => 'datetime',
         'paid_at' => 'datetime',
+		'is_body' => 'boolean',
     ];
 
     public function account(): BelongsTo

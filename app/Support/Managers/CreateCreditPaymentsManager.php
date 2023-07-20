@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Managers;
 
 use App\Enums\PaymentType;
 use App\Models\Contract;
@@ -9,7 +9,11 @@ use Carbon\Carbon;
 
 class CreateCreditPaymentsManager
 {
-    public function createPaymentsForMonthlyTariff(Contract $contract)
+    public function __construct(public PaymentCreator $creator)
+    {
+    }
+
+    public function createPaymentsForMonthlyTariff(Contract $contract): void
     {
         $tariff = $contract->tariff;
 
@@ -36,17 +40,17 @@ class CreateCreditPaymentsManager
 
             $payDay = $contract->paid_at->addMonths($month);
 
-            $this->createProfitOutcomePayment($paymentAmount, $contract, $payDay, $periodStart, $periodEnd);
+            $this->creator->createProfitOutcomePayment($paymentAmount, $contract, $payDay, $periodStart, $periodEnd);
 
             if ($month !== $tariff->duration) {
                 continue;
             }
 
-            $this->createBodyOutcomePayment($contract->amount->raw(), $contract, $payDay);
+            $this->creator->createBodyOutcomePayment($contract->amount->raw(), $contract, $payDay);
         }
     }
 
-    public function createPaymentsForAtTheEndTariff(Contract $contract)
+    public function createPaymentsForAtTheEndTariff(Contract $contract): void
     {
         $tariff = $contract->tariff;
 
@@ -54,9 +58,9 @@ class CreateCreditPaymentsManager
 
         $payDay = $contract->paid_at->addMonths($tariff->duration);
 
-        $this->createProfitOutcomePayment($profit, $contract, $payDay, $contract->paid_at, $contract->paid_at->addMonths($tariff->duration));
+        $this->creator->createProfitOutcomePayment($profit, $contract, $payDay, $contract->paid_at, $contract->paid_at->addMonths($tariff->duration));
 
-        $this->createBodyOutcomePayment($contract->amount->raw(), $contract, $payDay);
+        $this->creator->createBodyOutcomePayment($contract->amount->raw(), $contract, $payDay);
     }
 
     private function createProfitOutcomePayment(int $amount, Contract $contract, Carbon $payDay, ?Carbon $periodStart = null, ?Carbon $periodEnd = null)

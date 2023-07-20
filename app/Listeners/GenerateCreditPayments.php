@@ -8,14 +8,13 @@ use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Profitability;
 use App\Models\Tariff;
-use App\Support\CreateCreditPaymentsManager;
-use App\Support\UpdateCreditPaymentsManager;
+use App\Support\Managers\CreateCreditPaymentsManager;
+use App\Support\Managers\UpdateCreditPaymentsManager;
 use Illuminate\Support\Facades\Log;
 
 class GenerateCreditPayments
 {
     private Contract $contract;
-
 
     public function __construct(
         public UpdateCreditPaymentsManager $updateManager,

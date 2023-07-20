@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Support\UpdateCreditPaymentsManager;
+use App\Support\Managers\UpdateCreditPaymentsManager;
 
 class DeletePendingCreditPayments
 {

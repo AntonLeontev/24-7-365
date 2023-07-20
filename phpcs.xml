@@ -119,13 +119,13 @@
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
 
 	<!-- Исправляет конструкции if-else на более читаемые -->
-    <rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit">
+    <!-- <rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit">
 		<properties>
 			<property name="ignoreStandaloneIfInScope" value="false" />
 			<property name="ignoreOneLineTrailingIf" value="true" />
 			<property name="ignoreTrailingIfWithOneInstruction" value="true" />
 		</properties>
-	</rule>
+	</rule> -->
 
 	<!-- Использует оператор ?: где возможно -->
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireShortTernaryOperator"/>

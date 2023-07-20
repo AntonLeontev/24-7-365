@@ -113,6 +113,7 @@ class PlanfactApi
         int $projectId,
         float $value,
         string $externalId,
+		int $categoryId,
         ?string $comment = null,
     ): Response {
         return Http::planfact()
@@ -126,7 +127,7 @@ class PlanfactApi
                     [
                         'calculationDate' => $date,
                         'isCalculationCommitted' => true,
-                        'operationCategoryId' => config('services.planfact.income_category'),
+                        'operationCategoryId' => $categoryId,
                         'contrAgentId' => $contrAgentId,
                         'projectId' => $projectId,
                         'value' => $value,
@@ -142,6 +143,7 @@ class PlanfactApi
         int $projectId,
         float $value,
         string $externalId,
+        int $categoryId,
         ?string $comment = null,
     ): Response {
         return Http::planfact()
@@ -154,7 +156,7 @@ class PlanfactApi
                 'items' => [
                     [
                         'calculationDate' => $date,
-                        'operationCategoryId' => config('services.planfact.outcome_profit_category'),
+                        'operationCategoryId' => $categoryId,
                         'contrAgentId' => $contrAgentId,
                         'projectId' => $projectId,
                         'value' => $value,
@@ -171,6 +173,7 @@ class PlanfactApi
         int $projectId,
         float $value,
         string $externalId,
+        int $categoryId,
         ?string $comment = null,
         bool $isCommitted = false,
     ): Response {
@@ -184,9 +187,10 @@ class PlanfactApi
                 'items' => [
                     [
                         'calculationDate' => $date,
-                        'operationCategoryId' => config('services.planfact.outcome_profit_category'),
+                        'operationCategoryId' => $categoryId,
                         'contrAgentId' => $contrAgentId,
                         'projectId' => $projectId,
+                        'isCalculationCommitted' => $isCommitted,
                         'value' => $value,
                     ],
                 ],
