@@ -7,6 +7,7 @@ use App\Enums\ContractChangeType;
 use App\Enums\PaymentType;
 use App\Events\BillingPeriodEnded;
 use App\Events\ContractProlongated as EventsContractProlongated;
+use App\Events\PaymentsDeleted;
 use App\Models\ContractChange;
 use App\Models\Tariff;
 use App\Support\Managers\ProfitabilityManager;
@@ -51,12 +52,15 @@ class Prolongate
             'duration' => 0,
         ]);
 
-        //sub body from last payment
+        //Delete body payment
         $lastPayment = $contract->payments
             ->where('type', PaymentType::credit)
+			->where('is_body', true)
             ->last();
 
-        $lastPayment->update(['amount' => $lastPayment->amount->raw() - $contract->amount->raw()]);
+        $lastPayment->delete();
+
+		event(new PaymentsDeleted(collect([$lastPayment])));
 
         //Create new payments
         if ($contract->tariff->getting_profit === Tariff::MONTHLY) {

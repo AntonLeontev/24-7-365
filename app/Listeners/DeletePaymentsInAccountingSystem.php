@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Contracts\AccountingSystemContract;
 use App\Events\PaymentsDeleted;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class DeletePaymentsInAccountingSystem
 {
@@ -21,8 +19,8 @@ class DeletePaymentsInAccountingSystem
      */
     public function handle(PaymentsDeleted $event): void
     {
-		foreach ($event->payments as $payment) {
-			$this->service->deletePayment($payment);
-		}
+        foreach ($event->payments as $payment) {
+            $this->service->deletePayment($payment);
+        }
     }
 }
