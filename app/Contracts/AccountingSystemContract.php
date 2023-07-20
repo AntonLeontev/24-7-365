@@ -17,4 +17,6 @@ interface AccountingSystemContract
     public function syncPayment(Payment $payment): void;
 
 	public function getPurchasesAmount(Carbon $date): PurchaseAmountDTO;
+
+	public function deletePayment(Payment $payment): void;
 }
