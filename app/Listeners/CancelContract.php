@@ -10,6 +10,7 @@ use App\Events\PaymentsDeleted;
 use App\Models\Contract;
 use App\Models\Payment;
 use App\Models\Profitability;
+use App\Support\Managers\PaymentCreator;
 
 class CancelContract
 {
@@ -18,7 +19,7 @@ class CancelContract
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public PaymentCreator $creator)
     {
     }
 
@@ -57,7 +58,7 @@ class CancelContract
             ->where('payment', null)
             ->pluck('id');
 
-		Profitability::whereIn('id', $profitabilitiesIds)->delete();
+        Profitability::whereIn('id', $profitabilitiesIds)->delete();
 
         // Считаем сумму выплаты
         $outgoingPaymentsSum = $contract->refresh()->outPaymentsSumFromStart();
@@ -70,23 +71,17 @@ class CancelContract
             return;
         }
 
-
-        $payment = Payment::create([
-            'account_id' => $contract->organization->accounts->first()->id,
-            'contract_id' => $contract->id,
-            'amount' => $receivedMoney - $outgoingPaymentsSum,
-            'type' => PaymentType::credit,
-            // 'planned_at' => now()->addMonths(2),
-            // TODO flip
-            'planned_at' => $contract->paid_at->addMonths($contract->duration() + 2),
-            'description' => "Выплата тела договора №{$contract->id} от {$contract->paid_at->format('d.m.Y')} при досрочном расторжении"
-        ]);
+        $payment = $this->creator->createBodyOutcomePayment(
+			$receivedMoney - $outgoingPaymentsSum, 
+			$contract, 
+			$contract->paid_at->addMonths($contract->duration() + 2)
+		);
 
         Profitability::create([
             'payment_id' => $payment->id,
             'contract_id' => $contract->id,
             'amount' => $receivedMoney - $outgoingPaymentsSum,
-			'accrued_at' => $payment->planned_at,
+            'accrued_at' => $payment->planned_at,
         ]);
 
         //TODO Механизм определения выплат, если договор продлевался или менялся тариф
