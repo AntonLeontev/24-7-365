@@ -1,9 +1,9 @@
 <?php
 
 use App\Enums\PaymentType;
-use App\Enums\TransactionType;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\CallbackFormController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\IncomeCalculatorController;
 use App\Http\Controllers\NewContractController;
@@ -89,8 +89,8 @@ if (app()->isLocal()) {
         // dd(TochkaBankApi::getWebhooks()->json());
             // dd(PlanfactApi::getOperationCategories()->json());
 
-			$payment = Payment::where('type', PaymentType::credit)->first();
-			dd($service->createPayment($payment)->json());
+            $payment = Payment::where('type', PaymentType::credit)->first();
+            dd($service->createPayment($payment)->json());
     });
 }
 
@@ -109,6 +109,8 @@ Route::post('register-company', RegisterCompanyController::class)
     ->name('register-company');
 Route::view('register-company/personal', 'register-company.personal')->name('register-company.personal');
 Route::view('register-company/booking', 'register-company.booking')->name('register-company.booking');
+
+Route::post('call-back-form', CallbackFormController::class)->name('callbackForm');
 
 Auth::routes(['verify' => true]);
 

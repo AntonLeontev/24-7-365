@@ -1176,7 +1176,7 @@
 						Заказать обратный звонок
 					</div>
 					<div class="card-body px-13">
-						<form action="" class="d-flex flex-column flex-md-row justify-content-between align-items-end gap-5">
+						<form id="callbackform" action="" class="d-flex flex-column flex-md-row justify-content-between align-items-end gap-5">
 							<x-common.form.input name="name" placeholder="Имя" label="Не обязательно" class="w-100" />
 							<x-common.form.input name="phone" placeholder="Номер телефона" label="Обязательно" class="w-100" />
 							<button type="submit" class="btn btn-outline-primary w-100">Отправить</button>
@@ -1184,6 +1184,39 @@
 					</div>
 				</div>
 			</div>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', () => {
+					const callBackForm = document.querySelector('#callbackform');
+					const toastText = document.querySelector('.main-toast-text')
+					const toast = document.getElementById('mainToast');
+
+					const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast, {'autohide': false})
+
+					callBackForm.addEventListener('submit', (event) => {
+						event.preventDefault();
+						let data = new FormData(callBackForm);
+
+						if (data.get('phone') === '') {
+							toastShow('Введите телефонный номер')
+							return;
+						}
+
+						axios
+							.post('/call-back-form', data)
+							.then((response) => {
+								toastShow('Заявка принята')
+							})
+							.catch(() => console.log('not ok'))
+					})
+
+					function toastShow(text) {
+						toastText.innerHTML = text;
+						toastBootstrap.show()
+					}
+				})
+
+			</script>
 		</section>
 
 		<div class="news">
@@ -1236,6 +1269,17 @@
                 </div>
             </div>
         </footer>
+
+		<div class="toast-container position-fixed bottom-0 end-0 py-3 px-4" style="z-index: 3">
+			<div id="mainToast" class="toast text-bg-dark border border-primary z-3" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="toast-body position-relative text-primary p-3">
+					<span class="main-toast-text">
+						Сообщение
+					</span>
+					<button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" data-bs-dismiss="toast" id="toastClose" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>
     </div>
 
 <x-common.openCompany id="callBack" />

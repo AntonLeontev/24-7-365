@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class CompanyRegistered extends Mailable
+class CallbackForm extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -18,10 +18,7 @@ class CompanyRegistered extends Mailable
      */
     public function __construct(
         public string $phone,
-        public ?string $firstName,
-        public ?string $lastName,
-        public ?string $secondName,
-        public int $number,
+        public ?string $name,
     ) {
     }
 
@@ -31,7 +28,7 @@ class CompanyRegistered extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Заявка на регистрацию компании',
+            subject: 'Заявка на обратный звонок',
         );
     }
 
@@ -41,13 +38,10 @@ class CompanyRegistered extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.orders.company-registered',
+            markdown: 'emails.orders.callback-form',
             with: [
                 'phone' => $this->phone,
-                'firstName' => $this->firstName,
-                'lastName' => $this->lastName,
-                'secondName' => $this->secondName,
-                'number' => $this->number,
+                'name' => $this->name,
             ],
         );
     }
