@@ -3,15 +3,16 @@
 namespace App\Support\Services\StreamTelecom;
 
 use App\Contracts\SmsService;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class StreamTelecomService implements SmsService
 {
     public const URL = '';
 
-    public function sendSms(string $phone, string $message): void
+    public function sendSms(string $phone, string $message): Response
     {
-        Http::streamTelecom()
+        return Http::streamTelecom()
             ->get('', [
                 'user' => config('services.stream-telecom.login'),
                 'pwd' => config('services.stream-telecom.password'),

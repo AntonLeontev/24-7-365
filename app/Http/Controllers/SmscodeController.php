@@ -42,8 +42,7 @@ class SmscodeController extends Controller
             'status' => Smscode::STATUS_PENDING,
         ]);
 
-        //TODO Send code via sms. Use notifications and queues
-        // auth()->user()->notify(new SmsCodeNotification($code->code, $request->phone));
+        auth()->user()->notify(new SmsCodeNotification($code->code, $request->phone));
 
         return response()->json(['ok' => true, 'code' => $code->code]);
     }

@@ -264,10 +264,23 @@
 							</div>
 						</x-common.tables.yellow.row>
                     @endforeach
+
+					@if ($contract->status === contract_status('active'))
+						<x-common.tables.yellow.row>
+							<div class="col">{{ $operation->accrued_at->translatedFormat('j F Y') }}</div>
+							<div class="col">{{ $contract->amountOnDate($operation->accrued_at->subDay())->format(0) }}</div>
+							<div class="col">{{ $contract->payments->last()->amount }}</div>
+							<div class="col">
+								@if ($contract->payments->last()->status === payment_status('processed'))
+									{{ $contract->payments->last()->amount }}
+								@endif	
+							</div>
+						</x-common.tables.yellow.row>
+					@endif
                 </x-common.tables.yellow>
                 <x-common.tables.total header="Итого за период:">
                     <x-common.tables.total.row label="Тело закупа" :value="$contract->amount->format(0)" />
-                    <x-common.tables.total.row label="Всего доходности" :value="$totalProfitabilities" />
+                    <x-common.tables.total.row label="Всего к выплате" :value="$totalProfitabilities" />
                     <x-common.tables.total.row label="Всего выплат" :value="$totalPayments" />
                 </x-common.tables.total>
             @else
