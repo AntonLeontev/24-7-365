@@ -2,8 +2,10 @@
 
 namespace App\Jobs;
 
+use App\DTOs\TransactionDTO;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
+use App\Enums\TransactionType;
 use App\Events\PaymentReceived;
 use App\Events\PaymentSent;
 use App\Models\Payment;
@@ -23,18 +25,16 @@ class FindPaymentByTransaction implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-
     public $tries = 2;
     public $timeout = 30;
 
-
-    public function __construct(private object $transaction)
+    public function __construct(private TransactionDTO $transaction)
     {
     }
 
     public function handle(): void
     {
-        $transaction = Transaction::query()->where('operation_id', $this->transaction->operationId)->first();
+        $transaction = Transaction::query()->where('operation_id', $this->transaction->id)->first();
 
         if ($transaction) {
             return;
@@ -42,51 +42,51 @@ class FindPaymentByTransaction implements ShouldQueue
 
         $this->saveTransactionToDb();
 
-        if (in_array($this->transaction->rurTransfer->payerInn, config('allowed-settings.ignored_inn'))) {
+        if (in_array($this->transaction->contrAgentInn, config('allowed-settings.ignored_inn'))) {
             return;
         }
 
         foreach (config('allowed-settings.ignored_accounts') as $bic => $account) {
             if (
-                $this->transaction->rurTransfer->payerBankBic === $bic &&
-                $this->transaction->rurTransfer->payerAccount === $account
+                $this->transaction->contrAgentBic === $bic &&
+                $this->transaction->contrAgentAccount === $account
             ) {
                 return;
             }
         }
 
-        if ($this->type($this->transaction->direction) === PaymentType::debet) {
-            $this->handleDebetPayment();
+        if ($this->transaction->type === TransactionType::credit) {
+            $this->handleIncomePayment();
         } else {
-            $this->handleCreditPayment();
+            $this->handleOutcomePayment();
         }
     }
 
-    private function handleDebetPayment()
+    private function handleIncomePayment()
     {
         $payments = Payment::query()
             ->select($this->columns())
             ->leftJoin('accounts', 'payments.account_id', 'accounts.id')
             ->where('type', PaymentType::debet)
-            ->where('accounts.bik', $this->transaction->rurTransfer->payerBankBic)
-            ->where('accounts.payment_account', $this->transaction->rurTransfer->payerAccount)
+            ->where('accounts.bik', $this->transaction->contrAgentBic)
+            ->where('accounts.payment_account', $this->transaction->contrAgentAccount)
             ->get();
 
         if ($payments->isEmpty()) {
-            $this->log("Неопознанный входящий платеж от [{$this->transaction->rurTransfer->payerName}]");
+            $this->log("Неопознанный входящий платеж от [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
             return;
         }
 
-        $exactPayments = $payments->where('amount.raw', $this->transaction->amount->amount * 100)
-            ->where('description', $this->transaction->paymentPurpose);
+        $exactPayments = $payments->where('amount.raw', $this->transaction->amount->raw())
+            ->where('description', $this->transaction->description);
 
         if ($exactPayments->isEmpty()) {
-            $this->log('Не удалось привязать входящий платеж от нашего клиента');
+            $this->log("Не удалось привязать входящий платеж от нашего клиента [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
             return;
         }
 
         if ($exactPayments->count() > 1) {
-            $this->log('Более одного платежа подходит под транзакцию банка. Не понятно к какому привязывать');
+            $this->log("Более одного платежа подходит под транзакцию банка. Не понятно к какому привязывать. [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
             return;
         }
 
@@ -97,34 +97,34 @@ class FindPaymentByTransaction implements ShouldQueue
         $exactPayments->first()->updateOrFail(['paid_at' => now(), 'status' => PaymentStatus::processed]);
         event(new PaymentReceived($exactPayments->first()));
 
-        Log::channel('bank')->info("Обработан платеж сумма +{$this->transaction->amount->amount}. {$this->transaction->paymentPurpose}");
+        Log::channel('bank')->info("Обработан платеж сумма +{$this->transaction->amount}. {$this->transaction->description}");
     }
 
-    private function handleCreditPayment()
+    private function handleOutcomePayment()
     {
         $payments = Payment::query()
             ->select($this->columns())
             ->leftJoin('accounts', 'payments.account_id', 'accounts.id')
             ->where('type', PaymentType::credit)
-            ->where('accounts.bik', $this->transaction->rurTransfer->payeeBankBic)
-            ->where('accounts.payment_account', $this->transaction->rurTransfer->payeeAccount)
+            ->where('accounts.bik', $this->transaction->contrAgentBic)
+            ->where('accounts.payment_account', $this->transaction->contrAgentAccount)
             ->get();
         
         if ($payments->isEmpty()) {
-            $this->log("Неопознанный исходящий платеж на [{$this->transaction->rurTransfer->payeeName}]");
+            $this->log("Неопознанный исходящий платеж на [{$this->transaction->contrAgentTitle}]");
             return;
         }
 
-        $exactPayments = $payments->where('amount.raw', $this->transaction->amount->amount * 100)
-            ->where('description', $this->transaction->paymentPurpose);
+        $exactPayments = $payments->where('amount.raw', $this->transaction->amount->raw())
+            ->where('description', $this->transaction->description);
 
         if ($exactPayments->isEmpty()) {
-            $this->log('Не удалось привязать входящий платеж от нашего клиента');
+            $this->log("Не удалось привязать исходящий платеж нашему клиенту [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
             return;
         }
 
         if ($exactPayments->count() > 1) {
-            $this->log('Более одного платежа подходит под транзакцию банка. Не понятно к какому привязывать');
+            $this->log("Более одного платежа подходит под транзакцию банка. Не понятно к какому привязывать [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
             return;
         }
 
@@ -135,31 +135,34 @@ class FindPaymentByTransaction implements ShouldQueue
         $exactPayments->first()->updateOrFail(['paid_at' => now(), 'status' => PaymentStatus::processed]);
         event(new PaymentSent($exactPayments->first()));
 
-        Log::channel('bank')->info("Обработан платеж сумма -{$this->transaction->amount->amount}. {$this->transaction->paymentPurpose}");
+        Log::channel('bank')->info("Обработан платеж сумма -{$this->transaction->amount}. {$this->transaction->description}");
     }
 
     private function saveTransactionToDb()
     {
+        
         Transaction::create([
-            'operation_id' => $this->transaction->operationId,
-            'direction' => $this->transaction->direction,
-            'purpose' => $this->transaction->paymentPurpose,
-            'amount' => $this->transaction->amount->amount * 100,
-            'currency' => $this->transaction->amount->currencyName,
-            'payer_account' => $this->transaction->rurTransfer->payerAccount,
-            'payer_name' => $this->transaction->rurTransfer->payerName,
-            'payer_inn' => $this->transaction->rurTransfer->payerInn,
-            'payer_kpp' => $this->transaction->rurTransfer->payerKpp,
-            'payer_bank_name' => $this->transaction->rurTransfer->payerBankName,
-            'payer_bank_bic' => $this->transaction->rurTransfer->payerBankBic,
-            'payer_bank_corr_account' => $this->transaction->rurTransfer->payerBankCorrAccount,
-            'payee_account' => $this->transaction->rurTransfer->payeeAccount,
-            'payee_name' => $this->transaction->rurTransfer->payeeName,
-            'payee_inn' => $this->transaction->rurTransfer->payeeInn,
-            'payee_kpp' => $this->transaction->rurTransfer->payeeKpp,
-            'payee_bank_name' => $this->transaction->rurTransfer->payeeBankName,
-            'payee_bank_bic' => $this->transaction->rurTransfer->payeeBankBic,
-            'payee_bank_corr_account' => $this->transaction->rurTransfer->payeeBankCorrAccount,
+            'operation_id' => $this->transaction->id,
+            'direction' => $this->transaction->type->value,
+            'purpose' => $this->transaction->description,
+            'amount' => $this->transaction->amount->raw(),
+            'currency' => $this->transaction->amount->currency(),
+
+            'payer_account' => $this->transaction->isCredit() ? $this->transaction->contrAgentAccount : settings()->payment_account,
+            'payer_name' => $this->transaction->isCredit() ? $this->transaction->contrAgentTitle : settings()->organization_title,
+            'payer_inn' => $this->transaction->isCredit() ? $this->transaction->contrAgentInn : settings()->inn,
+            'payer_kpp' => $this->transaction->isCredit() ? $this->transaction->contrAgentKpp : settings()->kpp,
+            'payer_bank_name' => $this->transaction->isCredit() ? $this->transaction->contrAgentBank : settings()->bank,
+            'payer_bank_bic' => $this->transaction->isCredit() ? $this->transaction->contrAgentBic : settings()->bik,
+            'payer_bank_corr_account' => $this->transaction->isCredit() ? $this->transaction->contrAgentCorrespondent : settings()->correspondent_account,
+
+            'payee_account' => $this->transaction->isDebet() ? $this->transaction->contrAgentAccount : settings()->payment_account,
+            'payee_name' => $this->transaction->isDebet() ? $this->transaction->contrAgentTitle : settings()->organization_title,
+            'payee_inn' => $this->transaction->isDebet() ? $this->transaction->contrAgentInn : settings()->inn,
+            'payee_kpp' => $this->transaction->isDebet() ? $this->transaction->contrAgentKpp : settings()->kpp,
+            'payee_bank_name' => $this->transaction->isDebet() ? $this->transaction->contrAgentBank : settings()->bank,
+            'payee_bank_bic' => $this->transaction->isDebet() ? $this->transaction->contrAgentBic : settings()->bik,
+            'payee_bank_corr_account' => $this->transaction->isDebet() ? $this->transaction->contrAgentCorrespondent : settings()->correspondent_account,
         ]);
     }
 
@@ -187,12 +190,12 @@ class FindPaymentByTransaction implements ShouldQueue
     private function log(string $message): void
     {
         Log::channel('bankerr')->alert($message, [
-            'description' => $this->transaction->paymentPurpose,
-            'name' => $this->transaction->rurTransfer->payerName,
-            'bic' => $this->transaction->rurTransfer->payerBankBic,
-            'account' => $this->transaction->rurTransfer->payerAccount,
-            'amount' => $this->transaction->amount->amount,
+            'description' => $this->transaction->description,
+            'name' => $this->transaction->contrAgentTitle,
+            'bic' => $this->transaction->contrAgentBic,
+            'account' => $this->transaction->contrAgentAccount,
+            'amount' => $this->transaction->amount->amount(),
         ]);
-        Log::channel('telegram')->alert($message, [$this->transaction->paymentPurpose]);
+        Log::channel('telegram')->alert($message, [$this->transaction->description]);
     }
 }

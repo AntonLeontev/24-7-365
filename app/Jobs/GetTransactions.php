@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Exceptions\Sber\TransactionsNotReadyException;
 use App\Support\Services\Sber\SberBusinessApiService;
+use App\Support\Services\TochkaBank\TochkaBankService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -17,10 +18,8 @@ class GetTransactions implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-
     public $tries = 3;
     public $timeout = 30;
-
 
     public function __construct(private ?string $query = null)
     {
@@ -36,28 +35,8 @@ class GetTransactions implements ShouldQueue
         return [5, 25];
     }
 
-    public function handle(SberBusinessApiService $service): void
+    public function handle(TochkaBankService $service): void
     {
-        try {
-            $response = $service->transactions($this->query);
-        } catch (TransactionsNotReadyException $e) {
-            $this->release(30);
-        }
-
-        if (isset($response->_links)) {
-            foreach ($response->_links as $link) {
-                if ($link->rel === 'next') {
-                    dispatch(new GetTransactions(ltrim($link->href, '?')));
-                }
-            }
-        }
-
-        if (!isset($response->transactions)) {
-            return;
-        }
-
-        foreach ($response->transactions as $transaction) {
-            dispatch(new FindPaymentByTransaction($transaction));
-        }
+		$service->getTransactions();
     }
 }

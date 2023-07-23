@@ -40,6 +40,9 @@ return [
     'tochka' => [
         'token' => env('TOCHKA_BANK_TOKEN'),
         'mode' => env('TOCHKA_BANK_WORK_MODE'),
+		'jwt' => env('TOCHKA_BANK_JWT'),
+		'client_id' => env('TOCHKA_BANK_CLIENT_ID'),
+		'account_id' => env('TOCHKA_BANK_ACCOUNT_ID'),
     ],
 
     'planfact' => [

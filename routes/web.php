@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\PaymentType;
+use App\Enums\TransactionType;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\ContractController;
@@ -13,14 +15,15 @@ use App\Http\Controllers\SberController;
 use App\Http\Controllers\SmscodeController;
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\SuggestionsController;
+use App\Http\Controllers\TochkaBankController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
-use App\Support\Services\Planfact\PlanfactApi;
-use App\Support\Services\StreamTelecom\StreamTelecomService;
+use App\Models\Payment;
+use App\Support\Services\TochkaBank\TochkaBankService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +43,8 @@ Route::view('/', 'welcome')->withoutMiddleware(CheckBlockedUser::class)
 Route::view('/policy', 'policy')->withoutMiddleware(CheckBlockedUser::class)
     ->middleware('guest')
     ->name('policy');
+
+Route::post('/webhooks/tochka/incoming-payment', [TochkaBankController::class, 'incomingPayment']);
 
 if (app()->isLocal()) {
     Route::get('24-pay-in/{contract_id}', function ($id) {
@@ -79,9 +84,13 @@ if (app()->isLocal()) {
         return back();
     })->name('reset-contract');
     
-    Route::get('test', function (StreamTelecomService $service) {
-		return $service->balance();
-        dd(PlanfactApi::getOperationCategories()->json());
+    Route::get('test', function (TochkaBankService $service) {
+        // $statement = TochkaBankApi::initStatement()->json('Data.Statement.statementId');
+        // dd(TochkaBankApi::getWebhooks()->json());
+            // dd(PlanfactApi::getOperationCategories()->json());
+
+			$payment = Payment::where('type', PaymentType::credit)->first();
+			dd($service->createPayment($payment)->json());
     });
 }
 

@@ -45,5 +45,27 @@ class HttpServiceProvider extends ServiceProvider
                 ->retry(3, 200)
                 ->baseUrl('https://gateway.api.sc/get/');
         });
+
+        Http::macro('tochka', function () {
+            return Http::withHeaders(['Authorization' => 'Bearer ' . config('services.tochka.jwt')])
+                ->timeout(20)
+                ->asJson()
+                ->acceptJson()
+                ->baseUrl('https://enter.tochka.com/uapi');
+                // ->throw(function (Response $response) {
+                //     throw new PlanfactBadRequestException($response);
+                // });
+        });
+
+        Http::macro('tochkatest', function () {
+            return Http::withHeaders(['Authorization' => 'Bearer working_token'])
+                ->timeout(20)
+                ->asJson()
+                ->acceptJson()
+                ->baseUrl('https://enter.tochka.com/sandbox/v2');
+                // ->throw(function (Response $response) {
+                //     throw new PlanfactBadRequestException($response);
+                // });
+        });
     }
 }
