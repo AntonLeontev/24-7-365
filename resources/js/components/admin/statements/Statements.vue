@@ -1,14 +1,26 @@
 <template>
   <div class="d-flex justify-between mb-12">
-	
-		<div v-for="statement in statements" class="btn btn-outline-primary">{{ statement.date }}</div>
+		<div 
+			class="btn btn-outline-primary" 
+			v-for="statement in statements"
+			:data-id="statement.id"
+			@click="activate"
+		>
+			{{ formatDate(statement.date) }}
+		</div>
 	</div>
 
 	<div class="card">
 		<div class="card-header">
-			Выписка
+			Выписка {{ formatDate(activeStatement?.date) }}
+			<div v-show="activeStatement">
+				Страниц {{ response?.Meta?.totalPages }}, начальный баланс {{ formatNumber(transactions?.startDateBalance) }}, конечный баланс {{ formatNumber(transactions?.endDateBalance) }}
+			</div>
 		</div>
-		<div class="card-body"></div>
+		<div class="card-body" v-show="activeStatement">
+			<div v-if="transactions?.Transaction?.length === 0">Транзакций нет</div>
+			<div v-else>Всего транзакций: {{ transactions?.Transaction?.length }}</div>
+		</div>
 	</div>
 </template>
 
@@ -19,7 +31,10 @@ export default {
   },
   data() {
     return {
-		statements: []
+		statements: [],
+		response: null,
+		transactions: {},
+		activeStatement: null,
 	};
   },
   props: {},
@@ -29,9 +44,37 @@ export default {
 			.get('/admin/statements')
 			.then(response => {
 				this.statements = response.data.data;
-				console.log(response);
+				this.activeStatement = this.statements[0];
 			})
 	},
+	activate(event) {
+		this.activeStatement = this.statements.find(el => {
+			return el.id == event.target.dataset.id;
+		})
+	},
+	formatDate(date) {
+		if (date === undefined) return '';
+
+		date = new Date(date);
+
+		return date.toLocaleDateString('ru')
+	},
+	formatNumber(number) {
+		if (number === undefined) return '';
+		if (number === null) return '';
+
+		return number.toLocaleString('ru')
+	},
+  },
+  watch: {
+	activeStatement(val, oldVal) {
+		axios
+			.get(`/admin/statements/${val.id}`)
+			.then(response => {
+				this.response = response.data
+				this.transactions = response.data.Data.Statement[0]
+			})
+	}
   },
 };
 </script>

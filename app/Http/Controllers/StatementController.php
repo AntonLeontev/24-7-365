@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\StatementResource;
 use App\Models\Statement;
+use App\Support\Services\TochkaBank\TochkaBankService;
 
 class StatementController extends Controller
 {
@@ -16,10 +17,13 @@ class StatementController extends Controller
     {
         $statements = Statement::orderByDesc('date')->take(7)->get();
 
-		return new StatementResource($statements);
+        return new StatementResource($statements);
     }
 
-    public function show()
+    public function show(Statement $statement, TochkaBankService $service)
     {
+        $transactions = $service->api->getStatement(config('services.tochka.account_id'), $statement->external_id)->json();
+
+        return response()->json($transactions);
     }
 }

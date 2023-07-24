@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\PaymentType;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CallbackFormController;
@@ -23,7 +22,7 @@ use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
-use App\Models\Payment;
+use App\Models\Statement;
 use App\Support\Services\TochkaBank\TochkaBankService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -86,12 +85,15 @@ if (app()->isLocal()) {
     })->name('reset-contract');
     
     Route::get('test', function (TochkaBankService $service) {
-        // $statement = TochkaBankApi::initStatement()->json('Data.Statement.statementId');
+		$statement = Statement::first();
+        dd($service->api->getStatement(config('services.tochka.account_id'), $statement->external_id)->json());
+
+
         // dd(TochkaBankApi::getWebhooks()->json());
             // dd(PlanfactApi::getOperationCategories()->json());
 
-            $payment = Payment::where('type', PaymentType::credit)->first();
-            dd($service->createPayment($payment)->json());
+            // $payment = Payment::where('type', PaymentType::credit)->first();
+            // dd($service->createPayment($payment)->json());
         // dd(PlanfactApi::getAccounts()->json());
     });
 }
@@ -253,7 +255,7 @@ Route::prefix('admin')
     Route::get('statements', [StatementController::class, 'index'])
         ->middleware('can:change settings')
         ->name('statements.index');
-    Route::get('statements/{id}', [StatementController::class, 'show'])
+    Route::get('statements/{statement}', [StatementController::class, 'show'])
         ->middleware('can:change settings')
         ->name('statements.show');
 
