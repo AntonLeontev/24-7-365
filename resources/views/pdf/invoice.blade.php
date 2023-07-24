@@ -103,7 +103,7 @@
 		<tbody>
 			<tr>
 				<td align="center">1</td>
-				<td align="left">Наименование услуги</td>
+				<td align="left">Платеж на закупку товара</td>
 				<td align="right">1</td>
 				<td align="left">шт</td>
 				<td align="right">{{ $payment->amount }}</td>

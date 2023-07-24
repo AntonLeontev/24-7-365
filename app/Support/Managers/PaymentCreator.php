@@ -10,13 +10,13 @@ use Carbon\Carbon;
 class PaymentCreator
 {
     public function createProfitOutcomePayment(
-		int $amount, 
-		Contract $contract, 
-		Carbon $payDay, 
-		?Carbon $periodStart = null, 
-		?Carbon $periodEnd = null
-	): Payment {
-        $description = "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
+        int $amount,
+        Contract $contract,
+        Carbon $payDay,
+        ?Carbon $periodStart = null,
+        ?Carbon $periodEnd = null
+    ): Payment {
+        $description = "Выплата ожидаемой прибыли по Договору (Оферта) №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
 
         if (!is_null($periodStart) && !is_null($periodEnd)) {
             $description .= " за период {$periodStart->format('d.m.Y')} - {$periodEnd->format('d.m.Y')}";
@@ -27,7 +27,7 @@ class PaymentCreator
 
     public function createBodyOutcomePayment(int $amount, Contract $contract, Carbon $payDay): Payment
     {
-        $description = "Возврат тела по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
+        $description = "Возврат платежа на закупку товара по Договору (Оферта) №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
 
         return $this->createPayment($amount, $contract, $payDay, $description, true);
     }
@@ -41,7 +41,7 @@ class PaymentCreator
             'type' => PaymentType::credit,
             'planned_at' => $payDay,
             'description' => $description,
-			'is_body' => $isBody,
+            'is_body' => $isBody,
         ]);
     }
 }
