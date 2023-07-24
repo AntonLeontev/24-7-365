@@ -27,17 +27,17 @@ class Kernel extends ConsoleKernel
 			}
 		);
 
-		// $schedule->command(CheckPayments::class)->hourly()
-		// 	->after(function () {
-		// 		Log::channel('schedule')->info('Выполнена проверка транзакций в банке');
-		// 	}
-		// );
+		$schedule->command(CheckPayments::class)->hourly()
+			->after(function () {
+				Log::channel('schedule')->info('Выполнена проверка транзакций в банке');
+			}
+		);
 
-		// $schedule->command(SendPaymentsToBank::class)->dailyAt('1:30')
-		// 	->after(function () {
-		// 		Log::channel('schedule')->info('Выполнена отправка исходящих платежей');
-		// 	}
-		// );
+		$schedule->command(SendPaymentsToBank::class)->dailyAt('1:30')
+			->after(function () {
+				Log::channel('schedule')->info('Выполнена отправка исходящих платежей');
+			}
+		);
 
 		$schedule->command(CalcPurchaseAmount::class)->dailyAt('8:00')
 			->evenInMaintenanceMode()
