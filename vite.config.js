@@ -16,6 +16,7 @@ export default defineConfig({
                 "resources/js/editContract.js",
                 "resources/js/newContract.js",
                 "resources/js/settings.js",
+                "resources/js/statements.js",
                 "resources/js/users.js",
                 "resources/js/invoices.js",
                 "resources/js/auth.js",

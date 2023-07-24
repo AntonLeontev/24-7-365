@@ -14,6 +14,7 @@ use App\Http\Controllers\RegisterCompanyController;
 use App\Http\Controllers\SberController;
 use App\Http\Controllers\SmscodeController;
 use App\Http\Controllers\SocialsController;
+use App\Http\Controllers\StatementController;
 use App\Http\Controllers\SuggestionsController;
 use App\Http\Controllers\TochkaBankController;
 use App\Http\Controllers\UserController;
@@ -23,8 +24,6 @@ use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
 use App\Models\Payment;
-use App\Support\Services\Planfact\PlanfactApi;
-use App\Support\Services\StreamTelecom\StreamTelecomService;
 use App\Support\Services\TochkaBank\TochkaBankService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -93,7 +92,7 @@ if (app()->isLocal()) {
 
             $payment = Payment::where('type', PaymentType::credit)->first();
             dd($service->createPayment($payment)->json());
-		// dd(PlanfactApi::getAccounts()->json());
+        // dd(PlanfactApi::getAccounts()->json());
     });
 }
 
@@ -247,6 +246,16 @@ Route::prefix('admin')
     Route::get('users', [UserController::class, 'index'])
         ->middleware('can:see other profiles')
         ->name('users.index');
+
+    Route::get('statement', [StatementController::class, 'page'])
+        ->middleware('can:change settings')
+        ->name('statements.page');
+    Route::get('statements', [StatementController::class, 'index'])
+        ->middleware('can:change settings')
+        ->name('statements.index');
+    Route::get('statements/{id}', [StatementController::class, 'show'])
+        ->middleware('can:change settings')
+        ->name('statements.show');
 
     Route::post('settings/update', [ApplicationSettingsController::class, 'update'])
         ->middleware('can:change settings')

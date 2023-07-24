@@ -8,6 +8,7 @@ use App\Exceptions\TochkaBank\TochkaBankException;
 use App\Jobs\FindPaymentByTransaction;
 use App\Jobs\ProcessTransactionsFromStatement;
 use App\Models\Payment;
+use App\Models\Statement;
 use App\Support\Services\TransactionFactory;
 
 class TochkaBankService
@@ -21,7 +22,7 @@ class TochkaBankService
         if ($payment->type === PaymentType::debet) {
             throw new TochkaBankException("Создание платежного поручения по входящему платежу", 1);
         }
-		
+        
         return $this->api->createPaymentForSign(
             settings()->payment_account,
             settings()->bik,
@@ -48,6 +49,11 @@ class TochkaBankService
             $status = $response->json('Data.Statement.status');
             $statementId = $response->json('Data.Statement.statementId');
             $transactions = $response->json('Data.Statement.Transaction');
+
+            Statement::updateOrCreate(
+                ['date' => now()->format('Y-m-d')],
+                ['external_id' => $statementId]
+            );
         } else {
             $response =  $this->api->getStatement(config('services.tochka.account_id'), $statementId);
             $status = $response->json('Data.Statement.0.status');
