@@ -20,31 +20,32 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-		$schedule->command(CheckPeriodEnd::class)->dailyAt('1:00')
+		$schedule->command(CheckPeriodEnd::class)
+			->dailyAt('1:00')
 			->evenInMaintenanceMode()
 			->after(function () {
 				Log::channel('schedule')->info('Выполнен перевод конца периода договоров');
 			}
 		);
 
-		$schedule->command(CheckPayments::class)->hourly()
+		$schedule->command(CheckPayments::class)
+			->hourly()
+			->between('8:00', '23:00')
 			->after(function () {
 				Log::channel('schedule')->info('Выполнена проверка транзакций в банке');
 			}
 		);
 
-		$schedule->command(SendPaymentsToBank::class)->dailyAt('1:30')
+		$schedule->command(SendPaymentsToBank::class)
+			->dailyAt('1:30')
 			->after(function () {
 				Log::channel('schedule')->info('Выполнена отправка исходящих платежей');
 			}
 		);
 
-		$schedule->command(CalcPurchaseAmount::class)->dailyAt('8:00')
-			->evenInMaintenanceMode()
-			->after(function () {
-				Log::channel('schedule')->info('Выполнен расчет свободных денег');
-			}
-		);
+		$schedule->command(CalcPurchaseAmount::class)
+			->dailyAt('8:00')
+			->evenInMaintenanceMode();
     }
 
     /**
