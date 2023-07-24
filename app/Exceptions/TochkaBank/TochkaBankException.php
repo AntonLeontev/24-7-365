@@ -15,7 +15,7 @@ class TochkaBankException extends Exception
             $response->transferStats->getRequest()->getUri(),
             $response->getStatusCode(),
             $response->getReasonPhrase(),
-            $response->json('message'),
+            $response->json('Errors.0.message'),
         );
     }
 }

@@ -91,9 +91,9 @@ if (app()->isLocal()) {
         // dd(TochkaBankApi::getWebhooks()->json());
             // dd(PlanfactApi::getOperationCategories()->json());
 
-            // $payment = Payment::where('type', PaymentType::credit)->first();
-            // dd($service->createPayment($payment)->json());
-		dd(PlanfactApi::getAccounts()->json());
+            $payment = Payment::where('type', PaymentType::credit)->first();
+            dd($service->createPayment($payment)->json());
+		// dd(PlanfactApi::getAccounts()->json());
     });
 }
 

@@ -1121,17 +1121,23 @@
 						<div class="text-primary fs-4">Илья А. Дмитров</div>
 						<div class="fs-7">Генеральный директор</div>
 						<div class="fs-7">(Общее управление)</div>
+						<div class="fs-6 mt-4 text-center px-3">
+							<p>Предприниматель, инвестор</p>
+							<p>Младший партнёр SMPL</p>
+							<p>В продажах и операционном управлении проектами с 2008</p>
+							<p>Ранее управляющий партнёр в четырёх бизнесах, два из них работают и сегодня</p>
+						</div>
 					</div>
 					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
 						<img src="/images/team/02.webp" alt="Олег Лозовой" class="image-fluid">
 						<div class="text-primary fs-4">Олег И. Лозовой</div>
 						<div class="fs-7">Партнер</div>
 						<div class="fs-7">(Стратегия развития)</div>
-						<div class="fs-6 mt-4 text-center">
+						<div class="fs-6 mt-4 text-center px-3">
 							<p>Предприниматель, инвестор</p>
 							<p>Основатель, управляющий партнёр SMPL</p>
-							<p>Основатель и управляющий бизнес-инкубатора R&D Capital.</p>
-							<p>Активный участник разработки закона «О страховании частных инвестиций в приоритетный список предприятий РФ».</p>
+							<p>Основатель и управляющий бизнес-инкубатора R&D Capital</p>
+							<p>Активный участник разработки закона «О страховании частных инвестиций в приоритетный список предприятий РФ»</p>
 						</div>
 					</div>
 					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
@@ -1139,6 +1145,11 @@
 						<div class="text-primary fs-4">Павел С. Водянкин</div>
 						<div class="fs-7">Партнер</div>
 						<div class="fs-7">(Операционное управление)</div>
+						<div class="fs-6 mt-4 text-center px-3">
+							<p>Предприниматель</p>
+							<p>Основатель, CEO Tesla Experience</p>
+							<p>Член ассоциации участников рынка электронной коммерции (АУРЭК)</p>
+						</div>
 					</div>
 				</div>
 			</div>
