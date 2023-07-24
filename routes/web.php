@@ -23,6 +23,7 @@ use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
 use App\Models\Payment;
+use App\Support\Services\Planfact\PlanfactApi;
 use App\Support\Services\StreamTelecom\StreamTelecomService;
 use App\Support\Services\TochkaBank\TochkaBankService;
 use Illuminate\Support\Facades\Artisan;
@@ -92,10 +93,7 @@ if (app()->isLocal()) {
 
             // $payment = Payment::where('type', PaymentType::credit)->first();
             // dd($service->createPayment($payment)->json());
-
-			$t = new StreamTelecomService;
-			return $t->sendSms('79126510464', 'Код: 2351');
-			// return $t->balance();
+		dd(PlanfactApi::getAccounts()->json());
     });
 }
 

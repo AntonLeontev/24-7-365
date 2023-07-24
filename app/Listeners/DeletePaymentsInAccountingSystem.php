@@ -19,8 +19,10 @@ class DeletePaymentsInAccountingSystem
      */
     public function handle(PaymentsDeleted $event): void
     {
-        foreach ($event->payments as $payment) {
-            $this->service->deletePayment($payment);
-        }
+		if (app()->isProduction()) {
+			foreach ($event->payments as $payment) {
+				$this->service->deletePayment($payment);
+			}
+		}
     }
 }

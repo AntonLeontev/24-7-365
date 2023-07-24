@@ -31,7 +31,6 @@ use App\Listeners\FinishContract;
 use App\Listeners\GenerateCreditPayments;
 use App\Listeners\GenerateProfitabilities;
 use App\Listeners\IncreaseContractChangeDuration;
-use App\Listeners\MarkOutcomePaymentPaidInAccountingSystem;
 use App\Listeners\MarkPaymentSentToBank;
 use App\Listeners\Prolongate;
 use App\Listeners\SendAutoprolongationRemind;
@@ -132,16 +131,6 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $subscribe = [];
-
-
-    /**
-     * Register any events for your application.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-    }
 
     /**
      * Determine if events and listeners should be automatically discovered.

@@ -19,6 +19,8 @@ class SyncPayment
      */
     public function handle(PaymentReceived $event): void
     {
-		$this->service->syncPayment($event->payment);
+		if (app()->isProduction()) {
+			$this->service->syncPayment($event->payment);
+		}
     }
 }
