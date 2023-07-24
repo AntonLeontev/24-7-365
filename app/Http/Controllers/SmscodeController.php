@@ -44,7 +44,7 @@ class SmscodeController extends Controller
 
         auth()->user()->notify(new SmsCodeNotification($code->code, $request->phone));
 
-        return response()->json(['ok' => true, 'code' => $code->code]);
+        return response()->json(['ok' => true]);
     }
 
     protected function generateCode(): int

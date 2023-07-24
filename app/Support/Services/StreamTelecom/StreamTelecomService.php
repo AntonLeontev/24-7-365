@@ -5,6 +5,7 @@ namespace App\Support\Services\StreamTelecom;
 use App\Contracts\SmsService;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class StreamTelecomService implements SmsService
 {
@@ -12,7 +13,7 @@ class StreamTelecomService implements SmsService
 
     public function sendSms(string $phone, string $message): Response
     {
-        return Http::streamTelecom()
+        $response =  Http::streamTelecom()
             ->get('', [
                 'user' => config('services.stream-telecom.login'),
                 'pwd' => config('services.stream-telecom.password'),
@@ -20,6 +21,12 @@ class StreamTelecomService implements SmsService
                 'dadr' => $phone,
                 'text' => $message,
             ]);
+
+        if (!is_numeric($response->body())) {
+		 	Log::channel('telegram')->alert($response->body(), [$phone, $message]);
+        }
+
+        return $response;
     }
 
     public function balance(): string
