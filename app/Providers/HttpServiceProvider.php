@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Exceptions\TochkaBank\TochkaBankException;
 use App\Support\Services\Planfact\Exceptions\PlanfactBadRequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -51,10 +52,10 @@ class HttpServiceProvider extends ServiceProvider
                 ->timeout(20)
                 ->asJson()
                 ->acceptJson()
-                ->baseUrl('https://enter.tochka.com/uapi');
-                // ->throw(function (Response $response) {
-                //     throw new PlanfactBadRequestException($response);
-                // });
+                ->baseUrl('https://enter.tochka.com/uapi')
+                ->throw(function (Response $response) {
+                    throw new TochkaBankException($response);
+                });
         });
 
         Http::macro('tochkatest', function () {
