@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-between mb-12">
+  <div class="d-flex gap-2 mb-12">
 		<div 
 			class="btn btn-outline-primary" 
 			v-for="statement in statements"
@@ -20,6 +20,24 @@
 		<div class="card-body" v-show="activeStatement">
 			<div v-if="transactions?.Transaction?.length === 0">Транзакций нет</div>
 			<div v-else>Всего транзакций: {{ transactions?.Transaction?.length }}</div>
+
+			<div
+				class="row py-3 border-bottom border-light"
+				v-for="transaction in transactions?.Transaction"
+			>
+				<div class="col-2 d-flex align-items-center">
+					<span :class="{'text-success': transaction.creditDebitIndicator == 'Credit', 'text-danger': transaction.creditDebitIndicator == 'Debet'}">
+						<span v-if="transaction.creditDebitIndicator == 'Credit'">+</span>
+						<span v-else>-</span>
+						{{ formatNumber(transaction.Amount.amount) }} р
+					</span>
+				</div>
+				<div class="col d-flex align-items-center">
+					<span v-if="transaction.creditDebitIndicator == 'Credit'">от {{ transaction.DebtorParty.name }}</span>
+					<span v-else>{{ transaction.CreditorParty.name }}</span>
+				</div>
+				<div class="col-7 d-flex align-items-center">{{ transaction.description }}</div>
+			</div>
 		</div>
 	</div>
 </template>
