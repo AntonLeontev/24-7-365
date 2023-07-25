@@ -70,6 +70,7 @@ class FindPaymentByTransaction implements ShouldQueue
             ->where('payments.type', PaymentType::debet)
             ->where('accounts.bik', $this->transaction->contrAgentBic)
             ->where('accounts.payment_account', $this->transaction->contrAgentAccount)
+            ->whereNull('payments.deleted_at')
             ->get();
 
         if ($payments->isEmpty()) {
@@ -112,6 +113,7 @@ class FindPaymentByTransaction implements ShouldQueue
             ->where('payments.type', PaymentType::credit)
             ->where('accounts.bik', $this->transaction->contrAgentBic)
             ->where('accounts.payment_account', $this->transaction->contrAgentAccount)
+            ->whereNull('payments.deleted_at')
             ->get();
         
         if ($payments->isEmpty()) {

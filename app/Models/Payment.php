@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Casts\AmountCast;
-use App\Contracts\AccountingSystemContract;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
+use App\Jobs\SyncPaymentInAccountingSystem;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -69,7 +69,7 @@ class Payment extends Model
             }
 
             if (app()->isProduction()) {
-                app(AccountingSystemContract::class)->syncPayment($payment);
+                dispatch(new SyncPaymentInAccountingSystem($payment));
             }
         });
 
@@ -79,7 +79,7 @@ class Payment extends Model
             }
 
             if (app()->isProduction()) {
-                app(AccountingSystemContract::class)->syncPayment($payment);
+                dispatch(new SyncPaymentInAccountingSystem($payment));
             }
         });
     }

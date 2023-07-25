@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Contracts\AccountingSystemContract;
 use App\Events\PaymentReceived;
+use App\Jobs\SyncPaymentInAccountingSystem;
 
 class SyncPayment
 {
@@ -20,7 +21,7 @@ class SyncPayment
     public function handle(PaymentReceived $event): void
     {
 		if (app()->isProduction()) {
-			$this->service->syncPayment($event->payment);
+			dispatch(new SyncPaymentInAccountingSystem($event->payment));
 		}
     }
 }
