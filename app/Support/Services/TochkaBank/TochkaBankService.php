@@ -42,6 +42,21 @@ class TochkaBankService
         return $this->api->createWebhook(['incomingPayment'], $url);
     }
 
+    public function editIncomePaymentWebhook(string $url)
+    {
+        return $this->api->editWebhook(['incomingPayment'], $url);
+    }
+    
+    public function getWebhooks()
+    {
+        return $this->api->getWebhooks();
+    }
+
+    public function sendIncomingPaymentWebhook()
+    {
+        return $this->api->sendWebhook('incomingPayment');
+    }
+
     public function getTransactions(string | int | null $statementId = null)
     {
         if (is_null($statementId)) {

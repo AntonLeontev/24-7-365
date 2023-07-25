@@ -64,10 +64,10 @@ class FindPaymentByTransaction implements ShouldQueue
 
     private function handleIncomePayment()
     {
-        $payments = Payment::query()
+        $payments = DB::table('payments')
             ->select($this->columns())
             ->leftJoin('accounts', 'payments.account_id', 'accounts.id')
-            ->where('type', PaymentType::debet)
+            ->where('payments.type', PaymentType::debet)
             ->where('accounts.bik', $this->transaction->contrAgentBic)
             ->where('accounts.payment_account', $this->transaction->contrAgentAccount)
             ->get();
@@ -77,7 +77,8 @@ class FindPaymentByTransaction implements ShouldQueue
             return;
         }
 
-        $exactPayments = $payments->where('amount.raw', $this->transaction->amount->raw())
+        $exactPayments = $payments
+            ->where('amount', $this->transaction->amount->raw())
             ->where('description', $this->transaction->description);
 
         if ($exactPayments->isEmpty()) {
@@ -90,22 +91,25 @@ class FindPaymentByTransaction implements ShouldQueue
             return;
         }
 
-        if ($exactPayments->first()->status === PaymentStatus::processed) {
+        if ($exactPayments->first()->status === PaymentStatus::processed->value) {
+            $this->log("Входящий платеж уже в статусе processed. [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
             return;
         }
 
-        $exactPayments->first()->updateOrFail(['paid_at' => now(), 'status' => PaymentStatus::processed]);
-        event(new PaymentReceived($exactPayments->first()));
+        $payment = Payment::find($exactPayments->first()->id);
+
+        $payment->updateOrFail(['paid_at' => now(), 'status' => PaymentStatus::processed]);
+        event(new PaymentReceived($payment));
 
         Log::channel('bank')->info("Обработан платеж сумма +{$this->transaction->amount}. {$this->transaction->description}");
     }
 
     private function handleOutcomePayment()
     {
-        $payments = Payment::query()
+        $payments = DB::table('payments')
             ->select($this->columns())
             ->leftJoin('accounts', 'payments.account_id', 'accounts.id')
-            ->where('type', PaymentType::credit)
+            ->where('payments.type', PaymentType::credit)
             ->where('accounts.bik', $this->transaction->contrAgentBic)
             ->where('accounts.payment_account', $this->transaction->contrAgentAccount)
             ->get();
@@ -115,7 +119,8 @@ class FindPaymentByTransaction implements ShouldQueue
             return;
         }
 
-        $exactPayments = $payments->where('amount.raw', $this->transaction->amount->raw())
+        $exactPayments = $payments
+            ->where('amount', $this->transaction->amount->raw())
             ->where('description', $this->transaction->description);
 
         if ($exactPayments->isEmpty()) {
@@ -128,12 +133,14 @@ class FindPaymentByTransaction implements ShouldQueue
             return;
         }
 
-        if ($exactPayments->first()->status === PaymentStatus::processed) {
+        if ($exactPayments->first()->status === PaymentStatus::processed->value) {
+            $this->log("Исходящий платеж уже в статусе processed. [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
             return;
         }
 
-        $exactPayments->first()->updateOrFail(['paid_at' => now(), 'status' => PaymentStatus::processed]);
-        event(new PaymentSent($exactPayments->first()));
+        $payment = Payment::find($exactPayments->first()->id);
+        $payment->updateOrFail(['paid_at' => now(), 'status' => PaymentStatus::processed]);
+        event(new PaymentSent($payment));
 
         Log::channel('bank')->info("Обработан платеж сумма -{$this->transaction->amount}. {$this->transaction->description}");
     }
@@ -169,6 +176,7 @@ class FindPaymentByTransaction implements ShouldQueue
     private function columns(): array
     {
         return [
+            'payments.id',
             'payments.amount',
             'payments.type',
             'payments.status',

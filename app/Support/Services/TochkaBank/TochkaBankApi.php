@@ -41,6 +41,23 @@ class TochkaBankApi
             ]);
     }
 
+    public static function editWebhook(array $webhooksList, string $url): Response
+    {
+        return Http::tochka()
+            ->post("/webhook/v2.0/" . config('services.tochka.client_id'), [
+                'webhooksList' => $webhooksList,
+                'url' => $url,
+            ]);
+    }
+
+    public static function sendWebhook(string $type): Response
+    {
+        return Http::tochka()
+            ->post("/webhook/v2.0/" . config('services.tochka.client_id') . '/test_send', [
+                'webhookType' => $type,
+            ]);
+    }
+
     public static function initStatement(): Response
     {
         return Http::tochka()

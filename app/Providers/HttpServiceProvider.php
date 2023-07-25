@@ -63,10 +63,10 @@ class HttpServiceProvider extends ServiceProvider
                 ->timeout(20)
                 ->asJson()
                 ->acceptJson()
-                ->baseUrl('https://enter.tochka.com/sandbox/v2');
-                // ->throw(function (Response $response) {
-                //     throw new PlanfactBadRequestException($response);
-                // });
+                ->baseUrl('https://enter.tochka.com/sandbox/v2')
+                ->throw(function (Response $response) {
+                    throw new TochkaBankException($response);
+                });
         });
     }
 }

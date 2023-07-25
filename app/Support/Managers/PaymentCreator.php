@@ -16,7 +16,7 @@ class PaymentCreator
         ?Carbon $periodStart = null,
         ?Carbon $periodEnd = null
     ): Payment {
-        $description = "Выплата ожидаемой прибыли по Договору (Оферта) №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
+        $description = "Выплата ожидаемой прибыли по Договору (Оферта) №{$contract->id} от {$contract->paid_at->format('d.m.Y')}. НДС не облагается";
 
         if (!is_null($periodStart) && !is_null($periodEnd)) {
             $description .= " за период {$periodStart->format('d.m.Y')} - {$periodEnd->format('d.m.Y')}";
@@ -27,7 +27,7 @@ class PaymentCreator
 
     public function createBodyOutcomePayment(int $amount, Contract $contract, Carbon $payDay): Payment
     {
-        $description = "Возврат платежа на закупку товара по Договору (Оферта) №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
+        $description = "Возврат платежа на закупку товара по Договору (Оферта) №{$contract->id} от {$contract->paid_at->format('d.m.Y')}. НДС не облагается";
 
         return $this->createPayment($amount, $contract, $payDay, $description, true);
     }

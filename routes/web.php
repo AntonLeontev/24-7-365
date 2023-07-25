@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\PaymentStatus;
+use App\Enums\PaymentType;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CallbackFormController;
@@ -22,9 +24,10 @@ use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
-use App\Models\Statement;
+use App\Models\Payment;
 use App\Support\Services\TochkaBank\TochkaBankService;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,15 +88,38 @@ if (app()->isLocal()) {
     })->name('reset-contract');
     
     Route::get('test', function (TochkaBankService $service) {
-		$statement = Statement::first();
-        dd($service->api->getStatement(config('services.tochka.account_id'), $statement->external_id)->json());
+        $payments = DB::table('payments')
+            ->select([
+                'payments.id',
+                'payments.amount',
+                'payments.type',
+                'payments.status',
+                'payments.contract_id',
+                'payments.planned_at',
+                'payments.description',
+                DB::raw('accounts.bik AS bic'),
+                DB::raw('accounts.payment_account AS account'),
+            ])
+            ->leftJoin('accounts', 'payments.account_id', 'accounts.id')
+            ->where('payments.type', PaymentType::debet)
+            ->where('accounts.bik', '044525411')
+            ->whereNull('payments.deleted_at')
+            ->where('accounts.payment_account', '40802810245100000454')
+            ->get();
 
+            $exactPayments = $payments
+                ->where('amount', 50000000)
+                ->where('description', 'Оплата договора №12');
 
-        // dd(TochkaBankApi::getWebhooks()->json());
+            dd(Payment::find($exactPayments->first()->id));
+        // dd($service->sendIncomingPaymentWebhook());
+        
+
             // dd(PlanfactApi::getOperationCategories()->json());
 
-            // $payment = Payment::where('type', PaymentType::credit)->first();
-            // dd($service->createPayment($payment)->json());
+            // dd($service->createIncomePaymentWebhook('https://tricky-pots-roll.loca.lt/webhooks/tochka/incoming-payment')->json());
+            // dd($service->editIncomePaymentWebhook('https://tricky-pots-roll.loca.lt/webhooks/tochka/incoming-payment')->json());
+            // dd($service->getWebhooks()->json());
         // dd(PlanfactApi::getAccounts()->json());
     });
 }
