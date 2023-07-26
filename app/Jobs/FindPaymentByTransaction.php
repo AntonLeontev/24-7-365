@@ -78,9 +78,16 @@ class FindPaymentByTransaction implements ShouldQueue
             return;
         }
 
+        preg_match('~договор[^\.,]*?(\d+)~mui', $this->transaction->description, $matches);
+
+        if (empty($matches)) {
+            $this->log("Не удалось распознать договор в платеже от [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
+            return;
+        }
+
         $exactPayments = $payments
             ->where('amount', $this->transaction->amount->raw())
-            ->where('description', $this->transaction->description);
+            ->where('contract_id', $matches[1]);
 
         if ($exactPayments->isEmpty()) {
             $this->log("Не удалось привязать входящий платеж от нашего клиента [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");

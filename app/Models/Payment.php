@@ -61,6 +61,11 @@ class Payment extends Model
             $lastNumber = $payment->latest()->first()?->number;
 
             $payment->number = ($lastNumber ?? 0) + 1;
+
+            if ($payment->type === PaymentType::debet) {
+                $date = now()->format('d.m.Y');
+                $payment->description = "Оплата по счету №{$payment->number} от {$date}. " . $payment->description;
+            }
         });
 
         static::created(function (Payment $payment) {

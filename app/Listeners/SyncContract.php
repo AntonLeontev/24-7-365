@@ -19,6 +19,8 @@ class SyncContract
      */
     public function handle(ContractCreated $event): void
     {
-		$this->service->syncContract($event->contract);
+		if (app()->isProduction()) {
+			$this->service->syncContract($event->contract);
+		}
     }
 }

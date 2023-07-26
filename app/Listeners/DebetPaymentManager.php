@@ -15,14 +15,14 @@ class DebetPaymentManager
 {
     public function createInitialPayment(ContractCreated $event)
     {
-        $description = "Платеж на закупку товара по Договору (Оферта) №{$event->contract->id}";
+        $description = "Платеж на закупку товара по Договору (Оферта) №{$event->contract->id}. НДС не облагается";
 
         $this->createPayment($event->contract, $event->contract->amount, $description);
     }
 
     public function createAdditionalPayment(ContractChangingWithIncreasingAmount $event)
     {
-        $description = "Платеж на закупку товара по Договору (Оферта) №{$event->contract->id} от {$event->contract->paid_at->format('d.m.Y')}";
+        $description = "Платеж на закупку товара по Договору (Оферта) №{$event->contract->id} от {$event->contract->paid_at->format('d.m.Y')}. НДС не облагается";
 
         $this->createPayment($event->contract, $event->amount, $description);
     }

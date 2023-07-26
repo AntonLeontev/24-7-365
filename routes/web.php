@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ArticlesController;
@@ -24,7 +23,6 @@ use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
-use App\Models\Payment;
 use App\Support\Services\TochkaBank\TochkaBankService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -88,6 +86,8 @@ if (app()->isLocal()) {
     })->name('reset-contract');
     
     Route::get('test', function (TochkaBankService $service) {
+        $description = 'Оплата по счету №80 от 26.07.2023. Платеж на закупку товара по Договору (Оферта) №29. НДС не облагается';
+
         $payments = DB::table('payments')
             ->select([
                 'payments.id',
@@ -107,20 +107,13 @@ if (app()->isLocal()) {
             ->where('accounts.payment_account', '40802810245100000454')
             ->get();
 
+            preg_match('~договор[^\.,]*?(\d+)~mui', $description, $matches);
+
             $exactPayments = $payments
                 ->where('amount', 50000000)
-                ->where('description', 'Оплата договора №12');
+                ->where('contract_id', $matches[1]);
 
-            dd(Payment::find($exactPayments->first()->id));
-        // dd($service->sendIncomingPaymentWebhook());
-        
-
-            // dd(PlanfactApi::getOperationCategories()->json());
-
-            // dd($service->createIncomePaymentWebhook('https://tricky-pots-roll.loca.lt/webhooks/tochka/incoming-payment')->json());
-            // dd($service->editIncomePaymentWebhook('https://tricky-pots-roll.loca.lt/webhooks/tochka/incoming-payment')->json());
-            // dd($service->getWebhooks()->json());
-        // dd(PlanfactApi::getAccounts()->json());
+            dd($exactPayments);
     });
 }
 

@@ -16,11 +16,13 @@ class PaymentCreator
         ?Carbon $periodStart = null,
         ?Carbon $periodEnd = null
     ): Payment {
-        $description = "Выплата ожидаемой прибыли по Договору (Оферта) №{$contract->id} от {$contract->paid_at->format('d.m.Y')}. НДС не облагается";
+        $description = "Выплата ожидаемой прибыли по Договору (Оферта) №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
 
         if (!is_null($periodStart) && !is_null($periodEnd)) {
             $description .= " за период {$periodStart->format('d.m.Y')} - {$periodEnd->format('d.m.Y')}";
         }
+
+        $description .= '. НДС не облагается';
 
         return $this->createPayment($amount, $contract, $payDay, $description, false);
     }

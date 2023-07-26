@@ -34,7 +34,7 @@ class TransactionFactory
             $transaction['description'],
             $transaction["{$contrAgent}Party"]['inn'],
             $transaction["{$contrAgent}Party"]['name'],
-            $transaction["{$contrAgent}Party"]['kpp'],
+            $transaction["{$contrAgent}Party"]['kpp'] ?? '',
             $transaction["{$contrAgent}Account"]['identification'],
             $transaction["{$contrAgent}Agent"]['identification'],
             $transaction["{$contrAgent}Agent"]['accountIdentification'],
