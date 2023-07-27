@@ -1229,7 +1229,7 @@
 				<div class="title text-center mb-4 text-primary">Новости</div>
 				<div class="px-md-5">
 					<div class="px-md-5">
-						<script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-discussion="true_trade_group/2" data-comments-limit="3" data-height="500" data-colorful="1" data-color="202022" data-dark="1"></script>
+						<script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-discussion="true_trade_group/2" data-comments-limit="3" data-height="500" data-colorful="1" data-color="#5ebbff" data-dark="1"></script>
 					</div>
 				</div>
 			</div>
