@@ -49,7 +49,7 @@
 				</li>
 				<li>
 					@if ($contract->tariff->getting_profit === $contract->tariff::MONTHLY)
-						Доходность ежемесячно
+						Ожидаемая прибыль ежемесячно
 					@else
 						Доходность в конце срока
 					@endif

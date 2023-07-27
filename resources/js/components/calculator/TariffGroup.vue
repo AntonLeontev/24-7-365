@@ -19,7 +19,7 @@
       <div class="mb-121 mb-13">
         <tariff-properties-table :tariffs="tariffs" :style="style" />
       </div>
-      <div class="d-flex flex-column gap-3 mb-121 mb-md-13">
+      <div class="d-flex flex-column gap-3 mb-121 mb-md-14">
         <tariff-calculation
           label="Срок:"
           :value="selectedTariff.duration"
@@ -27,27 +27,27 @@
         />
         <tariff-calculation label="Сумма:" :value="amountLocal" append=" ₽" />
         <tariff-calculation
-          label="Доходность в год:"
+          label="Прибыль в год:"
           :value="selectedTariff.annual_rate"
           append="%"
         />
         <tariff-calculation
-          label="Доходность в месяц (%):"
+          label="Прибыль в месяц (%):"
           :value="profitPerMonthPersent"
           append="%"
         />
         <tariff-calculation
-          label="Доходность в месяц (₽):"
+          label="Прибыль в месяц (₽):"
           :value="profitPerMonth"
           append=" ₽"
         />
         <tariff-calculation
-          :label="'Доход за ' + selectedTariff.duration + ' мес.'"
+          :label="'Прибыль за ' + selectedTariff.duration + ' мес.'"
           :value="profitPerDuration"
           append=" ₽"
         />
         <tariff-calculation
-          :label="'Коэф. доходности (ROI) за ' + selectedTariff.duration + ' мес.'"
+          :label="'Коэф. прибыли (ROI) за ' + selectedTariff.duration + ' мес.'"
           :value="roiPerDuration"
           append=""
         />
@@ -55,7 +55,7 @@
     </div>
     <div>
       <div class="mb-121 mb-md-13">
-        <p class="mb-121 fs-7">Срок:</p>
+        <p class="mb-121 fs-6 text-primary">Выберите срок:</p>
         <tariff-slider
           :tariffs="tariffs"
           :selectedTariffId="selectedTariffId"

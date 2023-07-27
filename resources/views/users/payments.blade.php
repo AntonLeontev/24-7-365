@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'График платежей')
+@section('title', 'График выплат')
 
 @section('content')
 
-	<x-common.h1 class="">График платежей</x-common.h1>
+	<x-common.h1 class="">График выплат</x-common.h1>
 
 	@foreach ($profitabilities as $date => $monthOperations)
 	<div class="card my-13">
@@ -66,8 +66,8 @@
 				$profitabilitiesSum = new App\ValueObjects\Amount($profitabilitiesSum);
 			@endphp
 			<x-common.tables.total header="Итого за месяц">
-				<x-common.tables.total.row label="Начислено" :value="$profitabilitiesSum" />
-				<x-common.tables.total.row label="Выплачено" :value="$paymentsSum" />
+				<x-common.tables.total.row label="к выплате" :value="$profitabilitiesSum" />
+				<x-common.tables.total.row label="выплачено" :value="$paymentsSum" />
 			</x-common.tables.total>
 		</div>
 	</div>

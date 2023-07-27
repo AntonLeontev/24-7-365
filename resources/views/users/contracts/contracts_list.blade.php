@@ -10,7 +10,7 @@
 			Список договоров
 			<div class="d-none d-lg-flex gap-2">
 				@if($contracts->count() > 0)
-					<a class="btn btn-outline-primary" href="{{ route('payments.for_user') }}">График платежей</a>
+					<a class="btn btn-outline-primary" href="{{ route('payments.for_user') }}">График выплат</a>
 				@endif
 				<a class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
 					href="{{ route('users.add_contract') }}">
@@ -88,7 +88,7 @@
 						fill="#202022" />
 				</svg>
 			</a>
-			<a class="btn btn-outline-primary w-100" href="{{ route('payments.for_user') }}">График платежей</a>
+			<a class="btn btn-outline-primary w-100" href="{{ route('payments.for_user') }}">График выплат</a>
 		</div>
 	</div>
 

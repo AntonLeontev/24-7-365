@@ -4,7 +4,7 @@
     :class="{ 'bg-secondary': style == 'contract', 'bg-body': style == 'calculator' }"
   >
     <div class="property fs-8 fs-md-7">
-      Объем ваших средств от
+      Объем средств от
       <span class="text-nowrap"
         >{{ new Intl.NumberFormat("ru-RU").format(tariffs[0].min_amount.amount) }} ₽</span
       >
@@ -19,7 +19,7 @@
       >
     </div>
     <div class="property fs-8 fs-md-7">
-      Доходность
+      Ожидаемая прибыль
       <span v-if="tariffs[0].getting_profit === 1">ежемесячно</span>
       <span v-else-if="tariffs[0].getting_profit === 2">в конце срока</span>
     </div>
