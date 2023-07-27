@@ -15,7 +15,7 @@ class StatementController extends Controller
 
     public function index()
     {
-        $statements = Statement::orderByDesc('date')->take(7)->get();
+        $statements = Statement::orderByDesc('date')->take(2)->get();
 
         return new StatementResource($statements);
     }

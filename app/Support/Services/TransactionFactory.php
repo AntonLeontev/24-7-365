@@ -12,7 +12,7 @@ class TransactionFactory
 {
     public function fromTochkaTransaction(array $transaction): TransactionDTO
     {
-        $type = $transaction['creditDebitIndicator'] === 'Debet'
+        $type = $transaction['creditDebitIndicator'] === 'Debit'
             ? TransactionType::debet
             : TransactionType::credit;
 

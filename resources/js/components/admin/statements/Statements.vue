@@ -26,7 +26,7 @@
 				v-for="transaction in transactions?.Transaction"
 			>
 				<div class="col-2 d-flex align-items-center">
-					<span :class="{'text-success': transaction.creditDebitIndicator == 'Credit', 'text-danger': transaction.creditDebitIndicator == 'Debet'}">
+					<span :class="{'text-success': transaction.creditDebitIndicator == 'Credit', 'text-danger': transaction.creditDebitIndicator == 'Debit'}">
 						<span v-if="transaction.creditDebitIndicator == 'Credit'">+</span>
 						<span v-else>-</span>
 						{{ formatNumber(transaction.Amount.amount) }} р
