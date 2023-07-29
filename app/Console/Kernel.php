@@ -44,7 +44,7 @@ class Kernel extends ConsoleKernel
 		);
 
 		$schedule->command(CalcPurchaseAmount::class)
-			->dailyAt('8:00')
+			->dailyAt('12:00')
 			->evenInMaintenanceMode();
     }
 
