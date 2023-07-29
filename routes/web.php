@@ -268,6 +268,10 @@ Route::prefix('admin')
         ->middleware('can:see other profiles')
         ->name('users.index');
 
+    Route::get('contracts', [ContractController::class, 'adminIndex'])
+        ->middleware('can:see other profiles')
+        ->name('contracts.index');
+
     Route::get('statement', [StatementController::class, 'page'])
         ->middleware('can:change settings')
         ->name('statements.page');

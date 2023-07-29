@@ -292,7 +292,7 @@
                         @if ($contract->status->value === 'init')
                             <p>
                                 Для активации нужно оплатить <a class="btn-link"
-                                    href="{{ route('invoice.pdf', $contract->payments->first()->id) }}" download>счет</a>
+								href="{{ route('invoice.pdf', $contract->payments->first()->id) }}" download>счет</a>
                             </p>
                         @endif
                     </div>
@@ -300,6 +300,7 @@
             @endif
         </div>
     </div>
+	
 	@if (
 		$contract->status !== contract_status('canceled') && 
 		$contract->status !== contract_status('terminated') &&

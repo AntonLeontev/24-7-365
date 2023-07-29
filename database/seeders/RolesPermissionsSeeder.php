@@ -44,6 +44,8 @@ class RolesPermissionsSeeder extends Seeder
 
 
         $role = Role::create(['name' => 'АСБК']);
+        $role->givePermissionTo('see other profiles');
+        $role->givePermissionTo('see invoices');
 
 
         $role = Role::create(['name' => 'Юрист']);

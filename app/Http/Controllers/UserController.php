@@ -37,6 +37,8 @@ class UserController extends Controller
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')
             ->leftJoin('roles', 'role_id', 'roles.id')
             ->whereNot('email', 'superuser@test.ru')
+            ->whereNot('email', 'admin@test.ru')
+            ->whereNot('email', auth()->user()->email)
             ->when(! request()->has('sort'), function (Builder $query) {
                 $query->orderByDesc('users.created_at');
             })

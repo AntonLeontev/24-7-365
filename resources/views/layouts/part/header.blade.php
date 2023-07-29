@@ -23,10 +23,11 @@
 				@include('layouts.part.logo')
 			</div>
 	
-			
-			<div id="notifications" class="text-end pe-0">
-				<notifications></notifications>
-			</div>
+			@unless (request()->is('admin*'))
+				<div id="notifications" class="text-end pe-0">
+					<notifications></notifications>
+				</div>
+			@endunless
 		</div>
     </div>
 </header>

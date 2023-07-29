@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Enums\PaymentType;
-use App\Models\Payment;
 use Illuminate\Console\Command;
+use Spatie\Permission\Models\Role;
 
 class Update extends Command
 {
@@ -27,5 +26,8 @@ class Update extends Command
      */
     public function handle()
     {
+        $role = Role::where('name', 'АСБК')->first();
+        $role->givePermissionTo('see other profiles');
+        $role->givePermissionTo('see invoices');
     }
 }

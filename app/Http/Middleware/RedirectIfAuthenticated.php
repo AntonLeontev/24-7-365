@@ -36,6 +36,10 @@ class RedirectIfAuthenticated
             if (auth()->user()->hasRole('Админ')) {
                 return to_route('users.index');
             }
+
+            if (auth()->user()->hasRole('АСБК')) {
+                return to_route('users.index');
+            }
         }
 
         return $next($request);

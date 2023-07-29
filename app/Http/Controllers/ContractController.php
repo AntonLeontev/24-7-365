@@ -12,10 +12,13 @@ use App\Events\ContractTariffChanging;
 use App\Http\Requests\CancelContractRequest;
 use App\Http\Requests\ContractUpdateRequest;
 use App\Http\Requests\StoreContractRequest;
+use App\Http\Resources\ContractCollection;
 use App\Models\Contract;
 use App\Models\Profitability;
 use App\ValueObjects\Amount;
 use DomainException;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class ContractController extends Controller
 {
@@ -26,9 +29,58 @@ class ContractController extends Controller
         return view('users.contracts.contracts_list', compact('contracts'));
     }
 
+    public function adminIndex()
+    {
+        if (!request()->ajax()) {
+            return view('contracts.index');
+        }
+
+        $contracts = Contract::query()
+            ->select([
+                'contracts.id',
+                'contracts.organization_id',
+                'contracts.tariff_id',
+                'contracts.amount',
+                'contracts.status',
+                'contracts.paid_at',
+                DB::raw('organizations.title AS organization'),
+                DB::raw('tariffs.title AS tariff_title'),
+                DB::raw('tariffs.duration AS tariff_duration'),
+            ])
+            ->leftJoin('organizations', 'contracts.organization_id', 'organizations.id')
+            ->leftJoin('tariffs', 'contracts.tariff_id', 'tariffs.id')
+            ->when(! request()->has('sort'), function (Builder $query) {
+                $query->orderByDesc('contracts.created_at');
+            })
+            ->when(request()->has(['sort', 'order']), function (Builder $query) {
+                    $query->orderBy(request()->sort, request()->order);
+            })
+            ->when(request()->has('search'), function (Builder $query) {
+                $query->where(function (Builder $query) {
+                    $query->where('contracts.id', request()->search)
+                        ->orWhere('organizations.title', 'like', '%' . request()->search . '%');
+                });
+            })
+            ->when(request()->has(['filter']), function (Builder $query) {
+                if (request()->filter === 'paid') {
+                    $query->where('contracts.paid_at', '>', 0);
+                }
+
+                if (request()->filter === 'pending') {
+                    $query->whereNull('paid_at');
+                }
+            })
+            ->simplePaginate()
+            ->withQueryString();
+
+
+        return (new ContractCollection($contracts))->response()->header('Cache-Control', 'no-store, no-cache, must-revalidate');
+    }
+
     public function show(Contract $contract)
     {
         $contract->load(['tariff', 'contractChanges']);
+        
 
         if (is_null($contract->paid_at)) {
             return view('users.contracts.contract', compact('contract'));
@@ -39,7 +91,7 @@ class ContractController extends Controller
             ->where('contract_id', $contract->id)
             ->orderBy('accrued_at')
             ->get();
-        
+			
         $operations = $profitabilities;
 
         $totalProfitabilities = $contract->profitabilities->reduce(function ($carry, $item) {
