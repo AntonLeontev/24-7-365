@@ -20,6 +20,7 @@ export default defineConfig({
                 "resources/js/users.js",
                 "resources/js/invoices.js",
                 "resources/js/auth.js",
+                "resources/js/adminContracts.js",
             ],
             refresh: true,
         }),
