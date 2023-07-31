@@ -690,7 +690,7 @@
 
 						<div class="question">
 							<div class="question__title">
-								2.Как мы отбираем поставщиков?
+								2. Как мы отбираем поставщиков?
 								<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<path
@@ -1153,25 +1153,52 @@
 				<div class="title text-center mb-4 text-primary">Контакты</div>
 				<div class="mb-17 pt-13 row gy-4">
 					<a href="tel:{{ str_replace('-', '', settings()->phone)  }}" 
-						class="text-reset col-12 col-md-4 d-flex justify-content-center justify-content-md-start align-items-center gap-2 fs-5">
+						class="text-reset col-12 col-lg-3 d-flex justify-content-center justify-content-lg-start align-items-center gap-2 fs-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
 						</svg>
 						{{ settings()->phone }}
 					</a>
-					<a href="mailto:{{ settings()->email }}" class="text-reset col-12 col-md-4 d-flex justify-content-center align-items-center gap-2 fs-5">
+					<a href="mailto:{{ settings()->email }}" class="text-reset col-12 col-lg-3 d-flex justify-content-center align-items-center gap-2 fs-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-at" viewBox="0 0 16 16">
 							<path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914z"/>
 						</svg>
 						{{ settings()->email }}
 					</a>
-					<a href="https://t.me/true_trade_group" target="_blank" class="text-reset col-12 col-md-4 d-flex justify-content-center justify-content-md-end align-items-center gap-2 fs-5">
+					<a href="https://t.me/true_trade_group" target="_blank" class="text-reset col-12 col-lg-3 d-flex justify-content-center justify-content-lg-end align-items-center gap-2 fs-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
 							<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"/>
 						</svg>
 						<span>
 							Чат в телеграм
 						</span>
+					</a>
+					<a href="https://www.ozon.ru/seller/ru-e-treyd-1210889/products/?miniapp=seller_1210889" 
+						target="_blank" 
+						rel="noopener noreferrer"
+						 class="text-reset col-12 col-lg-3 d-flex justify-content-center justify-content-lg-end align-items-center gap-2 fs-5"
+					>
+						<svg width="24" height="24" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_50_1310)">
+							<rect width="200" height="200" fill="#005BFF"/>
+							<mask id="mask0_50_1310" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H200V200H0V0Z" fill="white"/>
+							</mask>
+							<g mask="url(#mask0_50_1310)">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M98.4987 100.274L95.5539 88.8664L114.989 75.8303L138.234 77.4303L141.627 88.5801L247.578 202.558L81.8609 252.776L98.4987 100.274Z" fill="#F91155"/>
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M21.2636 133.703C13.743 136.812 5.34101 131.795 4.18108 123.503C3.39025 117.851 6.49655 112.284 11.6233 110.165C19.1442 107.056 27.5458 112.073 28.7061 120.364C29.4965 126.017 26.3902 131.584 21.2636 133.703ZM12.5843 98.401C-1.95075 100.75 -10.4901 116.054 -5.18447 130.248C-1.25894 140.753 9.54642 147.204 20.3022 145.466C34.8378 143.118 43.3768 127.814 38.0716 113.619C34.1456 103.115 23.3401 96.6635 12.5843 98.401V98.401Z" fill="white"/>
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M45.0759 90.1338C41.8087 91.0092 40.0449 94.7186 41.6454 97.9782C42.8191 100.369 45.61 101.468 48.1437 100.789L62.8568 96.8465L48.1822 133.666C47.7008 134.874 48.7953 136.131 50.0393 135.798L85.9551 126.174C88.4887 125.495 90.356 123.147 90.1772 120.49C89.9335 116.867 86.5515 114.537 83.2843 115.413L65.3583 120.216L80.0215 83.4238C80.5076 82.2042 79.403 80.9359 78.1476 81.2723L45.0759 90.1338" fill="white"/>
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M188.5 51.4713C186.179 52.6532 185.109 55.418 185.789 57.9563L190.566 75.7835L155.704 60.489C154.488 59.9561 153.207 61.0705 153.552 62.3594L163.414 99.1654C164.094 101.703 166.403 103.563 169.004 103.426C172.632 103.235 174.952 99.8023 174.058 96.466L169.241 78.487L204.103 93.7812C205.318 94.3142 206.6 93.2001 206.254 91.9112L196.357 54.9715C195.463 51.6352 191.736 49.8223 188.5 51.4713" fill="white"/>
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M113.63 70.5648C96.1695 75.2434 84.7783 89.3503 88.1876 102.074C91.5967 114.797 108.515 121.319 125.976 116.64C143.436 111.961 154.828 97.8542 151.418 85.1311C148.009 72.4076 131.091 65.8863 113.63 70.5648ZM116.511 81.3174C128.574 78.0852 139.326 82.1559 140.879 87.955C142.433 93.7541 135.158 102.655 123.095 105.887C111.032 109.12 100.28 105.049 98.7263 99.2499C97.1725 93.4508 104.448 84.5498 116.511 81.3174V81.3174Z" fill="white"/>
+							</g>
+							</g>
+							<defs>
+							<clipPath id="clip0_50_1310">
+							<rect width="200" height="200" rx="42.3729" fill="white"/>
+							</clipPath>
+							</defs>
+						</svg>
+						Магазин OZON
 					</a>
 				</div>
 
