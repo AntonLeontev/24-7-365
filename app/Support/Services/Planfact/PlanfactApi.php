@@ -30,7 +30,7 @@ class PlanfactApi
     {
         return Http::planfact()
             ->get('/api/v1/operationcategories', [
-                'filter.operationCategoryType' => 'Liabilities'
+                'filter.operationCategoryType' => 'Income'
             ]);
     }
 
@@ -109,11 +109,11 @@ class PlanfactApi
 
     public static function createIncome(
         string $date,
-        int $contrAgentId,
-        int $projectId,
         float $value,
-        string $externalId,
-		int $categoryId,
+        ?int $contrAgentId = null,
+        ?int $projectId = null,
+        ?string $externalId = null,
+        ?int $categoryId = null,
         ?string $comment = null,
     ): Response {
         return Http::planfact()
@@ -139,11 +139,11 @@ class PlanfactApi
 
     public static function createOutcome(
         string $date,
-        int $contrAgentId,
-        int $projectId,
         float $value,
-        string $externalId,
-        int $categoryId,
+        ?int $contrAgentId = null,
+        ?int $projectId = null,
+        ?string $externalId = null,
+        ?int $categoryId = null,
         ?string $comment = null,
     ): Response {
         return Http::planfact()
@@ -195,6 +195,40 @@ class PlanfactApi
                     ],
                 ],
                 'externalId' => $externalId,
+            ]);
+    }
+
+    public function move(
+        Carbon $debitingDate,
+        Carbon $admissionDate,
+        int $debitingAccountId,
+        int $admissionAccountId,
+        float $amount,
+        string $comment = '',
+        bool $isCommitted = true,
+    ): Response {
+        return Http::planfact()
+            ->post("/api/v1/operations/move", [
+                'debitingDate' => $debitingDate->format('Y-m-d'),
+                'admissionDate' => $admissionDate->format('Y-m-d'),
+                'debitingAccountId' => $debitingAccountId,
+                'admissionAccountId' => $admissionAccountId,
+                'debitingItems' => [
+                    [
+                        'calculationDate' => $admissionDate->format('Y-m-d'),
+                        'isCalculationCommitted' => $isCommitted,
+                        'value' => $amount,
+                    ],
+                ],
+                'admissionItems' => [
+                    [
+                        'calculationDate' => $admissionDate->format('Y-m-d'),
+                        'isCalculationCommitted' => $isCommitted,
+                        'value' => $amount,
+                    ],
+                ],
+                'isCommitted' => $isCommitted,
+                'comment' => $comment,
             ]);
     }
 

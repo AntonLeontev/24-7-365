@@ -6,6 +6,7 @@ use App\DTOs\TransactionDTO;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Enums\TransactionType;
+use App\Events\OzonIncomePayment;
 use App\Events\PaymentReceived;
 use App\Events\PaymentSent;
 use App\Models\Payment;
@@ -53,6 +54,11 @@ class FindPaymentByTransaction implements ShouldQueue
             ) {
                 return;
             }
+        }
+
+        if ($this->checkOzon()) {
+            event(new OzonIncomePayment($this->transaction));
+            return;
         }
 
         if ($this->transaction->type === TransactionType::credit) {
@@ -202,6 +208,21 @@ class FindPaymentByTransaction implements ShouldQueue
         return $direction === 'CREDIT'
             ? PaymentType::debet
             : PaymentType::credit;
+    }
+
+    private function checkOzon()
+    {
+        if ($this->transaction->contrAgentInn === '7704217370') {
+            return true;
+        }
+
+        Log::channel('telegram')->debug(preg_match('/ИНН 7704217370 по реестру /i', $this->transaction->description));
+
+        if (preg_match('/ИНН 7704217370 по реестру /i', $this->transaction->description)) {
+            return true;
+        }
+
+        return false;
     }
 
     private function log(string $message): void

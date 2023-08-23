@@ -4,6 +4,7 @@ namespace App\Support\Services\Planfact;
 
 use App\Contracts\AccountingSystemContract;
 use App\DTOs\PurchaseAmountDTO;
+use App\DTOs\TransactionDTO;
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
 use App\Models\Contract;
@@ -80,9 +81,9 @@ class PlanfactService implements AccountingSystemContract
 
             $response = $this->api->{$createMethod}(
                 $date->format('Y-m-d'),
+                $payment->amount->amount(),
                 $payment->load('contract')->contract->organization->pf_id,
                 $payment->contract->pf_id,
-                $payment->amount->amount(),
                 $payment->id,
                 $categoryId,
                 $payment->description,
@@ -120,6 +121,19 @@ class PlanfactService implements AccountingSystemContract
         $outFact = $cashflow->json('data.outcomeFactValue');
 
         return new PurchaseAmountDTO($date, $balance - $outPlan + $outFact);
+    }
+
+    public function createIncomeFromOzon(TransactionDTO $transaction): void
+    {
+        $response = $this->api->createIncome(
+            $transaction->date,
+            $transaction->amount->amount(),
+            config('services.planfact.ozon_id'),
+            categoryId: config('services.planfact.ozon_income_category_id'),
+            comment: $transaction->description,
+        );
+
+        $this->validateResponse($response);
     }
 
     private function createContrAgent(Organization $organization): int

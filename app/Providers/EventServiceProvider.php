@@ -11,6 +11,7 @@ use App\Events\ContractFinished;
 use App\Events\ContractProlongated;
 use App\Events\ContractTariffChanging;
 use App\Events\ContractTerminated;
+use App\Events\OzonIncomePayment;
 use App\Events\PaymentReceived;
 use App\Events\PaymentsDeleted;
 use App\Events\PaymentSent;
@@ -21,8 +22,7 @@ use App\Listeners\ApplyContractChanges;
 use App\Listeners\CancelContract;
 use App\Listeners\CheckContractStatus;
 use App\Listeners\ContractChangeManager;
-use App\Listeners\SyncOrganization;
-use App\Listeners\SyncContract;
+use App\Listeners\CreateAccountingSystemIncome;
 use App\Listeners\DebetPaymentManager;
 use App\Listeners\DeleteFutureProfitabilities;
 use App\Listeners\DeletePaymentsInAccountingSystem;
@@ -39,6 +39,8 @@ use App\Listeners\SendContractFinishedNotification;
 use App\Listeners\SendPaymentReceivedNotification;
 use App\Listeners\SendPaymentSentNotification;
 use App\Listeners\SendProlongationNotification;
+use App\Listeners\SyncContract;
+use App\Listeners\SyncOrganization;
 use App\Listeners\SyncPayment;
 use App\Listeners\UpdateContract;
 use App\Listeners\UpdateContractChange;
@@ -68,8 +70,8 @@ class EventServiceProvider extends ServiceProvider
             [ContractChangeManager::class, 'createInitContractChange'],
             [DebetPaymentManager::class, 'createInitialPayment'],
             SendContractCreatedNotification::class,
-			SyncOrganization::class,
-			SyncContract::class,
+            SyncOrganization::class,
+            SyncContract::class,
         ],
         ContractCanceled::class => [
             CancelContract::class,
@@ -104,13 +106,13 @@ class EventServiceProvider extends ServiceProvider
             [GenerateCreditPayments::class, 'handle'],
             GenerateProfitabilities::class,
 
-			SyncPayment::class,
+            SyncPayment::class,
 
             SendPaymentReceivedNotification::class,
         ],
-		PaymentsDeleted::class => [
-			DeletePaymentsInAccountingSystem::class,
-		],
+        PaymentsDeleted::class => [
+            DeletePaymentsInAccountingSystem::class,
+        ],
         PaymentSentToBank::class => [
             MarkPaymentSentToBank::class,
         ],
@@ -127,6 +129,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ContractProlongated::class => [
             SendProlongationNotification::class,
+        ],
+        OzonIncomePayment::class => [
+            CreateAccountingSystemIncome::class,
         ],
     ];
 

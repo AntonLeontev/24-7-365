@@ -40,21 +40,24 @@ return [
     'tochka' => [
         'token' => env('TOCHKA_BANK_TOKEN'),
         'mode' => env('TOCHKA_BANK_WORK_MODE'),
-		'jwt' => env('TOCHKA_BANK_JWT'),
-		'client_id' => env('TOCHKA_BANK_CLIENT_ID'),
-		'account_id' => env('TOCHKA_BANK_ACCOUNT_ID'),
+        'jwt' => env('TOCHKA_BANK_JWT'),
+        'client_id' => env('TOCHKA_BANK_CLIENT_ID'),
+        'account_id' => env('TOCHKA_BANK_ACCOUNT_ID'),
     ],
 
     'planfact' => [
         'key' => env('PLANFACT_API_KEY'),
         'account_id' => env('PLANFACT_ACCOUNT_ID'),
+        'ozon_account_id' => env('PLANFACT_OZON_ACCOUNT_ID'),
+        'ozon_id' => 6507583,
+        'ozon_income_category_id' => 5910281,
         'income_category' => env('PLANFACT_INCOME_CATEGORY_ID'),
         'outcome_body_category' => env('PLANFACT_OUTCOME_BODY_CATEGORY_ID'),
         'outcome_profit_category' => env('PLANFACT_OUTCOME_PROFIT_CATEGORY_ID'),
         'contragent_group' => env('PLANFACT_CONTRAGENT_GROUP_ID'),
     ],
-	'telegram' => [
-		'bot' => env('TELEGRAM_TOKEN'),
-		'amount_chat' => env('TELEGRAM_AMOUNT_GROUP_ID'),
-	],
+    'telegram' => [
+        'bot' => env('TELEGRAM_TOKEN'),
+        'amount_chat' => env('TELEGRAM_AMOUNT_GROUP_ID'),
+    ],
 ];

@@ -3,6 +3,7 @@
 namespace App\Contracts;
 
 use App\DTOs\PurchaseAmountDTO;
+use App\DTOs\TransactionDTO;
 use App\Models\Contract;
 use App\Models\Organization;
 use App\Models\Payment;
@@ -16,7 +17,9 @@ interface AccountingSystemContract
 
     public function syncPayment(Payment $payment): void;
 
-	public function getPurchasesAmount(Carbon $date): PurchaseAmountDTO;
+    public function getPurchasesAmount(Carbon $date): PurchaseAmountDTO;
 
-	public function deletePayment(Payment $payment): void;
+    public function deletePayment(Payment $payment): void;
+
+    public function createIncomeFromOzon(TransactionDTO $transaction): void;
 }

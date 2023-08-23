@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\PaymentType;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CallbackFormController;
@@ -23,9 +22,8 @@ use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
-use App\Support\Services\TochkaBank\TochkaBankService;
+use App\Support\Services\Planfact\PlanfactService;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,35 +83,8 @@ if (app()->isLocal()) {
         return back();
     })->name('reset-contract');
     
-    Route::get('test', function (TochkaBankService $service) {
-        $description = 'Оплата по счету №80 от 26.07.2023. Платеж на закупку товара по Договору (Оферта) №29. НДС не облагается';
-
-        $payments = DB::table('payments')
-            ->select([
-                'payments.id',
-                'payments.amount',
-                'payments.type',
-                'payments.status',
-                'payments.contract_id',
-                'payments.planned_at',
-                'payments.description',
-                DB::raw('accounts.bik AS bic'),
-                DB::raw('accounts.payment_account AS account'),
-            ])
-            ->leftJoin('accounts', 'payments.account_id', 'accounts.id')
-            ->where('payments.type', PaymentType::debet)
-            ->where('accounts.bik', '044525411')
-            ->whereNull('payments.deleted_at')
-            ->where('accounts.payment_account', '40802810245100000454')
-            ->get();
-
-            preg_match('~договор[^\.,]*?(\d+)~mui', $description, $matches);
-
-            $exactPayments = $payments
-                ->where('amount', 50000000)
-                ->where('contract_id', $matches[1]);
-
-            dd($exactPayments);
+    Route::get('test', function (PlanfactService $service) {
+        dd($service->api->getOperationCategories()->json());
     });
 }
 
