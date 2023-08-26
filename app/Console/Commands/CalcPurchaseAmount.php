@@ -27,11 +27,12 @@ class CalcPurchaseAmount extends Command
      */
     public function handle(AccountingSystemContract $service, TelegramService $telegram)
     {
+        $today = $service->getPurchasesAmount(now());
         $one = $service->getPurchasesAmount(now()->addMonths(1));
         $two = $service->getPurchasesAmount(now()->addMonths(2));
         $three = $service->getPurchasesAmount(now()->addMonths(3));
 
-        $message = $this->renderMessage($one, $two, $three);
+        $message = $this->renderMessage($today, $one, $two, $three);
 
         $telegram->sendSilentText($message, config('services.telegram.amount_chat'));
     }
@@ -42,6 +43,12 @@ class CalcPurchaseAmount extends Command
 
         foreach ($amounts as $amount) {
             $sum = number_format($amount->amount, 0, ',', ' ');
+
+            if (now()->startOfDay()->eq($amount->date)) {
+                $result .= "Сегодня остаток {$sum} р\n\n";
+                continue;
+            }
+
             $result .= "На {$amount->date->translatedFormat('d F Y')} остаток {$sum} р\n\n";
         }
 
