@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Reports\ProfitReport\ProfitReportMaker;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CallbackFormController;
@@ -23,6 +24,8 @@ use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
 use App\Support\Services\Planfact\PlanfactService;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -83,8 +86,14 @@ if (app()->isLocal()) {
         return back();
     })->name('reset-contract');
     
-    Route::get('test', function (PlanfactService $service) {
-        dd($service->api->getOperationCategories()->json());
+    Route::get('test', function (ProfitReportMaker $maker) {
+		$date = '2023-08-01';
+		$start = Carbon::parse($date)->startOfMonth();
+		$end = Carbon::parse($date)->endOfMonth();
+		$period = CarbonPeriod::since($start)->until($end);
+
+        $report = $maker->make($period);
+		return $report->toHtml();
     });
 }
 

@@ -66,6 +66,12 @@ class Contract extends Model
         return $this->hasMany(ContractChange::class);
     }
 
+    public function realChanges(): HasMany
+    {
+        return $this->hasMany(ContractChange::class)
+			->whereIn('status', [ContractChangeStatus::actual, ContractChangeStatus::past]);
+    }
+
     public function lastChange(): ContractChange
     {
         return $this->contractChanges->last();
@@ -278,7 +284,7 @@ class Contract extends Model
         return $this->amount;
     }
 
-    private function currentTariffChange(): ?ContractChange
+    public function currentTariffChange(): ?ContractChange
     {
         return $this->contractChanges
             ->load('tariff')
