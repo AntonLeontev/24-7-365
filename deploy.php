@@ -8,6 +8,7 @@ require 'recipe/deploy/push.php';
 // Config
 
 set('repository', 'https://github.com/AntonLeontev/24-7-365.git');
+set('keep_releases', 4);
 
 add('shared_files', []);
 add('shared_dirs', []);
