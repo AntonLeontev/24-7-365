@@ -216,8 +216,6 @@ class FindPaymentByTransaction implements ShouldQueue
             return true;
         }
 
-        Log::channel('telegram')->debug(preg_match('/ИНН 7704217370 по реестру /i', $this->transaction->description));
-
         if (preg_match('/ИНН 7704217370 по реестру /i', $this->transaction->description)) {
             return true;
         }

@@ -4,10 +4,6 @@
 	}
 </style>
 
-@php
-	$periodDays = $period->getStartDate()->diffInDays($period->getEndDate()) + 1;
-@endphp
-
 <table>
 	<thead>
 		<tr>
@@ -33,11 +29,17 @@
 				<td>{{ $item->get('period_start')->translatedFormat('d F Y') }}</td>
 				<td>{{ $item->get('period_end')->translatedFormat('d F Y') }}</td>
 				<td>{{ $days }}</td>
-				<td>{{ $item->get('contract_amount') }}</td>
-				<td>{{ $item->get('contract_duration') }}</td>
-				<td>{{ $item->get('contract_amount') / $item->get('contract_duration') / $periodDays * $days }}</td>
-				<td>{{ $item->get('payments_sum') }}</td>
+				<td>{{ $item->get('contract_amount') }} р</td>
+				<td>{{ $item->get('contract_duration') }} мес</td>
+				<td>{{ number_format($item->get('contract_amount') / $item->get('contract_duration') / $periodInDays * $days, 2, ',', ' ') }}</td>
+				<td>{{ number_format($item->get('payments_sum', 2, ',', ' ')) }}</td>
 			</tr>
 		@endforeach
 	</tbody>
 </table>
+<div>
+	<div><span>Income:</span> <span>{{ $income }}</span></div>
+	<div><span>Body sum:</span> <span>{{ $bodySum }}</span></div>
+	<div><span>Outcome:</span> <span>{{ $outcome }}</span></div>
+	<div><span>Profit:</span> <span>{{ $income - $bodySum - $outcome }}</span></div>
+</div>

@@ -23,11 +23,15 @@ use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
+use App\Mail\MonthProfitReport;
+use App\Models\Contract;
 use App\Support\Services\Planfact\PlanfactService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,7 +97,11 @@ if (app()->isLocal()) {
 		$period = CarbonPeriod::since($start)->until($end);
 
         $report = $maker->make($period);
-		return $report->toHtml();
+		$path = $report->toExcel();
+
+		Mail::to(['aner-anton@ya.ru'])->send(new MonthProfitReport($period, $path));
+		
+		Storage::delete($path);
     });
 }
 
