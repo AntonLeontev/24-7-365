@@ -91,17 +91,7 @@ if (app()->isLocal()) {
     })->name('reset-contract');
     
     Route::get('test', function (ProfitReportMaker $maker) {
-		$date = '2023-08-01';
-		$start = Carbon::parse($date)->startOfMonth();
-		$end = Carbon::parse($date)->endOfMonth();
-		$period = CarbonPeriod::since($start)->until($end);
-
-        $report = $maker->make($period);
-		$path = $report->toExcel();
-
-		Mail::to(['aner-anton@ya.ru'])->send(new MonthProfitReport($period, $path));
 		
-		Storage::delete($path);
     });
 }
 

@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\CalcPurchaseAmount;
 use App\Console\Commands\CheckPayments;
 use App\Console\Commands\CheckPeriodEnd;
+use App\Console\Commands\MonthProfitReportCommand;
 use App\Console\Commands\SendPaymentsToBank;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -45,6 +46,10 @@ class Kernel extends ConsoleKernel
 
 		$schedule->command(CalcPurchaseAmount::class)
 			->dailyAt('12:00')
+			->evenInMaintenanceMode();
+
+		$schedule->command(MonthProfitReportCommand::class)
+			->monthlyOn(1, '5:00')
 			->evenInMaintenanceMode();
     }
 
