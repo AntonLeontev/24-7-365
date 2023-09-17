@@ -27,7 +27,7 @@ class ProfitReportMaker
 		$data = $this->prepare($contracts);
 
 		$income = $this->getIncome();
-		
+
 		return new ProfitReport($data, $income, $period);
 	}
 
@@ -169,8 +169,8 @@ class ProfitReportMaker
 		return DB::table('payments')
 			->where('contract_id', $contract->id)
 			->where('type', PaymentType::credit)
-			->where('created_at', '>=', $this->period->getStartDate())
-			->where('created_at', '<=', $this->period->getEndDate())
+			->where('paid_at', '>=', $this->period->getStartDate())
+			->where('paid_at', '<=', $this->period->getEndDate())
 			->sum('amount');
 	}
 
