@@ -220,6 +220,10 @@ class FindPaymentByTransaction implements ShouldQueue
             return true;
         }
 
+        if (preg_match('/ИР-200853/23 от 14.06.2023 /i', $this->transaction->description)) {
+            return true;
+        }
+
         return false;
     }
 
