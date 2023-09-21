@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 
@@ -33,16 +34,16 @@ class ProfitReportMaker
 
 	private function getContracts(): Collection
 	{
-		// TODO canceled and terminated contaracts
+		// TODO canceled and terminated contracts
 		$contracts = Contract::query()
-			->whereIn('status', [ContractStatus::active, ContractStatus::pending, ContractStatus::canceled])
+			->whereIn('status', [ContractStatus::active, ContractStatus::pending])
 			->where('paid_at', '<=', $this->period->getEndDate())
 			->get();
 
 		$finishedContracts = Contract::query()
-			->whereIn('status', [ContractStatus::finished, ContractStatus::terminated])
+			->whereIn('status', [ContractStatus::finished])
+			->where('paid_at', '<=', $this->period->getEndDate())
 			->where('updated_at', '>=', $this->period->getStartDate())
-			->where('updated_at', '<=', $this->period->getEndDate())
 			->get();
 
 		$contracts = $contracts->concat($finishedContracts)->load(['tariff', 'organization', 'realChanges']);
