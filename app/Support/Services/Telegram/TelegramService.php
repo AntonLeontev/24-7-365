@@ -20,10 +20,10 @@ class TelegramService
         $this->bot->sendMessage($chat, $text, disableNotification: true);
     }
 
-	public function sendDocument($chatId, $documentPath, $documentName): void
+	public function sendDocument($chatId, $documentPath, $documentName, $silent = false): void
 	{
 		$document = Storage::get($documentPath);
 
-		$this->bot->sendDocument($chatId, $document, $documentName);
+		$this->bot->sendDocument($chatId, $document, $documentName, disableNotification: $silent);
 	}
 }

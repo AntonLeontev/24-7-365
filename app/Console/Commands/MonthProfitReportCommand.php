@@ -42,7 +42,7 @@ class MonthProfitReportCommand extends Command
 
 		Mail::to(['viktoriasidikova@mail.ru'])->send(new MonthProfitReport($period, $path));
 
-		$telegram->sendDocument(config('services.telegram.amount_chat') , $path, $report->fileName());
+		$telegram->sendDocument(config('services.telegram.amount_chat') , $path, $report->fileName(), true);
 
 		Storage::delete($path);
 
