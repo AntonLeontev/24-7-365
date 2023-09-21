@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Actions\Reports\ProfitReport\ProfitReportMaker;
 use App\Mail\MonthProfitReport;
+use App\Support\Services\Telegram\TelegramService;
 use Carbon\CarbonPeriod;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
@@ -29,7 +30,7 @@ class MonthProfitReportCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(ProfitReportMaker $maker)
+    public function handle(ProfitReportMaker $maker, TelegramService $telegram)
     {
         $date = is_null($this->argument('date')) ? now()->subMonth() : Carbon::parse($this->argument('date'));
 
@@ -39,8 +40,10 @@ class MonthProfitReportCommand extends Command
         $report = $maker->make($period);
 		$path = $report->toExcel();
 
-		Mail::to(['aner-anton@ya.ru'])->send(new MonthProfitReport($period, $path));
-		
+		Mail::to(['viktoriasidikova@mail.ru'])->send(new MonthProfitReport($period, $path));
+
+		$telegram->sendDocument(config('services.telegram.amount_chat') , $path, $report->fileName());
+
 		Storage::delete($path);
 
 		return Command::SUCCESS;

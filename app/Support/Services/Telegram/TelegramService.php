@@ -2,6 +2,8 @@
 
 namespace App\Support\Services\Telegram;
 
+use Illuminate\Support\Facades\Storage;
+
 class TelegramService
 {
     public function __construct(public TelegramBotApi $bot)
@@ -17,4 +19,11 @@ class TelegramService
     {
         $this->bot->sendMessage($chat, $text, disableNotification: true);
     }
+
+	public function sendDocument($chatId, $documentPath, $documentName): void
+	{
+		$document = Storage::get($documentPath);
+
+		$this->bot->sendDocument($chatId, $document, $documentName);
+	}
 }

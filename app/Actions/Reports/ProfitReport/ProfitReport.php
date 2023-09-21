@@ -92,6 +92,22 @@ class ProfitReport
 		return $this->fileName();
 	}
 
+	public function fileName(): string
+	{
+		$start = $this->period->getStartDate();
+		$end = $this->period->getEndDate();
+
+		if (
+			$start->eq($start->startOfMonth()) && 
+			$end->eq($end->endOfMonth()) &&
+			$start->format('m Y') === $end->format('m Y')
+		) {
+			return "Отчет о прибыли за {$start->translatedFormat('F Y')}.xlsx";
+		}
+
+		return "Отчет о прибыли за период с {$start->translatedFormat('d F Y')} по {$end->translatedFormat('d F Y')}.xlsx";
+	}
+
 	private function bodySum(): float
 	{
 		$periodDays = $this->period->getStartDate()->diffInDays($this->period->getEndDate()) + 1;
@@ -113,21 +129,5 @@ class ProfitReport
 	private function periodInDays(): int
 	{
 		return $this->period->getStartDate()->diffInDays($this->period->getEndDate()) + 1;
-	}
-
-	private function fileName(): string
-	{
-		$start = $this->period->getStartDate();
-		$end = $this->period->getEndDate();
-
-		if (
-			$start->eq($start->startOfMonth()) && 
-			$end->eq($end->endOfMonth()) &&
-			$start->format('m Y') === $end->format('m Y')
-		) {
-			return "Отчет о прибыли за {$start->translatedFormat('F Y')}.xlsx";
-		}
-
-		return "Отчет о прибыли за период с {$start->translatedFormat('d F Y')} по {$end->translatedFormat('d F Y')}.xlsx";
 	}
 }

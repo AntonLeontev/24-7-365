@@ -26,6 +26,7 @@ use App\Http\Middleware\SendRegisterCompanyMail;
 use App\Mail\MonthProfitReport;
 use App\Models\Contract;
 use App\Support\Services\Planfact\PlanfactService;
+use App\Support\Services\Telegram\TelegramService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Artisan;
@@ -90,8 +91,19 @@ if (app()->isLocal()) {
         return back();
     })->name('reset-contract');
     
-    Route::get('test', function (ProfitReportMaker $maker) {
+    Route::get('test', function (ProfitReportMaker $maker, TelegramService $telegram) {
+		$date = now()->subMonth();
+
+		$period = CarbonPeriod::since($date->startOfMonth())
+			->until($date->endOfMonth());
+
+        $report = $maker->make($period);
+		$path = $report->toExcel();
+
+
 		
+		
+		Storage::delete($path);
     });
 }
 
