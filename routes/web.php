@@ -99,11 +99,8 @@ if (app()->isLocal()) {
 
         $report = $maker->make($period);
 		$path = $report->toExcel();
-
-
-		
-		
-		Storage::delete($path);
+		return Storage::download($path);
+		// Storage::delete($path);
     });
 }
 

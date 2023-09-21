@@ -37,7 +37,7 @@ class ProfitReport
 				'period' => $this->period,
 				'periodInDays' => $this->periodInDays(),
 				'bodySum' => $this->bodySum(),
-				'outcome' => $this->outcome(),
+				'profit' => $this->profit(),
 			],
 		)->render();
 	}
@@ -62,7 +62,7 @@ class ProfitReport
 				'Сумма договора',
 				'Срок тарифа',
 				'Часть суммы',
-				'Выплаты',
+				'Прибыль',
 			]);
 
 		foreach ($this->data as $item) {
@@ -73,20 +73,20 @@ class ProfitReport
 				$item->get('period_start')->translatedFormat('d F Y'),
 				$item->get('period_end')->translatedFormat('d F Y'),
 				$days,
-				number_format($item->get('contract_amount'), 2, ',', ' ') . ' р',
+				number_format($item->get('contract_amount'), 0, ',', ' ') . ' р',
 				$item->get('contract_duration') . ' мес',
 				number_format($item->get('contract_amount') / $item->get('contract_duration') / $this->periodInDays() * $days, 2, ',', ' '),
-				number_format($item->get('payments_sum', 2, ',', ' '))
+				number_format($item->get('contract_amount') / 12 * $item->get('tariff_rate') / 100 / $this->periodInDays() * $days, 2, ',', ' ')
 			]);
 		}
 
 		$writer->addRows([
 			[''],
 			[''],
-			['','','','','','', 'Поступления', 'Сумма частей тел договоров', 'Сумма выплат'],
-			['','','','','','', $this->income, number_format($this->bodySum(), 2, ',', ' '), $this->outcome()],
+			['','','','','','', 'Поступления', 'Сумма частей тел договоров', 'Сумма прибыли'],
+			['','','','','','', $this->income, number_format($this->bodySum(), 2, ',', ' '), number_format($this->profit(), 2, ',', ' ')],
 			[''],
-			['','','','','','Агентское вознаграждение', number_format($this->income - $this->bodySum() - $this->outcome(), 2, ',', ' ')],
+			['','','','','','Агентское вознаграждение', number_format($this->income - $this->bodySum() - $this->profit(), 2, ',', ' ')],
 		]);
 
 		return $this->fileName();
@@ -110,19 +110,19 @@ class ProfitReport
 
 	private function bodySum(): float
 	{
-		$periodDays = $this->period->getStartDate()->diffInDays($this->period->getEndDate()) + 1;
-		
-		return $this->data->reduce(function($carry, $item) use ($periodDays) {
+		return $this->data->reduce(function($carry, $item) {
 			$days = $item->get('period_start')->diffInDays($item->get('period_end')) + 1;
 
-			return $carry + $item->get('contract_amount') / $item->get('contract_duration') / $periodDays * $days;
+			return $carry + $item->get('contract_amount') / $item->get('contract_duration') / $this->periodInDays() * $days;
 		}, 0);
 	}
 
-	private function outcome(): float
+	private function profit(): float
 	{
 		return $this->data->reduce(function($carry, $item) {
-			return $carry + $item->get('payments_sum');
+			$days = $item->get('period_start')->diffInDays($item->get('period_end')) + 1;
+
+			return $carry + $item->get('contract_amount') / 12 * $item->get('tariff_rate') / 100 / $this->periodInDays() * $days;
 		}, 0);
 	}
 

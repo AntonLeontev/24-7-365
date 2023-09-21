@@ -56,7 +56,6 @@ class ProfitReportMaker
 		$result = [];
 
 		foreach ($contracts as $contract) {
-			$payments = $this->paymentsPerPeriod($contract);
 
 			if ($contract->status === ContractStatus::active && $contract->contractChanges->count() === 1) {
 				$result[] = collect([
@@ -66,7 +65,7 @@ class ProfitReportMaker
 					'period_end' => $this->period->getEndDate(),
 					'contract_amount' => $contract->amount->amount(),
 					'contract_duration' => $contract->tariff->duration,
-					'payments_sum' => $payments / 100,
+					'tariff_rate' => $contract->tariff->annual_rate,
 				]);
 				continue;
 			}
@@ -79,7 +78,7 @@ class ProfitReportMaker
 					'period_end' => $this->earliest($contract->end(), $this->period->getEndDate()),
 					'contract_amount' => $contract->amount->amount(),
 					'contract_duration' => $contract->tariff->duration,
-					'payments_sum' => $payments / 100,
+					'tariff_rate' => $contract->tariff->annual_rate,
 				]);
 				continue;
 			}
@@ -99,7 +98,7 @@ class ProfitReportMaker
 						'period_end' => $changes->last()->starts_at->subDay(),
 						'contract_amount' => $changes->slice(-2, 1)->first()->amount->amount(),
 						'contract_duration' => $changes->slice(-2, 1)->first()->tariff->duration,
-						'payments_sum' => $payments / 100,
+						'tariff_rate' => $contract->tariff->annual_rate,
 					]);
 
 					// Отчет о периоде после изменений
@@ -110,7 +109,7 @@ class ProfitReportMaker
 						'period_end' => $this->period->getEndDate(),
 						'contract_amount' => $contract->amount->amount(),
 						'contract_duration' => $contract->tariff->duration,
-						'payments_sum' => 0,
+						'tariff_rate' => $contract->tariff->annual_rate,
 					]);
 					continue;
 				} else {
@@ -121,7 +120,7 @@ class ProfitReportMaker
 						'period_end' => $this->period->getEndDate(),
 						'contract_amount' => $contract->amount->amount(),
 						'contract_duration' => $contract->tariff->duration,
-						'payments_sum' => $payments / 100,
+						'tariff_rate' => $contract->tariff->annual_rate,
 					]);
 					continue;
 				}
