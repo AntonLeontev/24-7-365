@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Exceptions\Telegram\TelegramException;
 use App\Exceptions\TochkaBank\TochkaBankException;
 use App\Support\Services\Planfact\Exceptions\PlanfactBadRequestException;
 use Illuminate\Http\Client\Response;
@@ -38,7 +39,10 @@ class HttpServiceProvider extends ServiceProvider
 
         Http::macro('telegram', function () {
             return Http::timeout(5)
-                ->baseUrl('https://api.telegram.org/bot' . config('services.telegram.bot'));
+                ->baseUrl('https://api.telegram.org/bot' . config('services.telegram.bot'))
+				->throw(function (Response $response) {
+                    throw new TelegramException($response);
+                });
         });
 
         Http::macro('streamTelecom', function () {
