@@ -187,11 +187,20 @@ class ProfitReportMaker
         // Выбираем только поступления от озона
         $sum = $transactions
             ->filter(function (Transaction $transaction) {
+                // TODO refactor to separate class
                 if ($transaction->payer_inn === '7704217370') {
                     return true;
                 }
 
-                return (bool) preg_match('/ИНН 7704217370 по реестру /i', $transaction->purpose);
+                if (preg_match('/ИНН 7704217370 по реестру/i', $transaction->purpose)) {
+                    return true;
+                }
+
+                if (preg_match('/ИР-200853\/23 от 14\.06\.2023/i', $transaction->purpose)) {
+                    return true;
+                }
+
+                return false;
             })
             ->sum('amount');
 
