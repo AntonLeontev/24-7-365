@@ -13,7 +13,6 @@ class ContractCreatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-
     /**
      * Create a new notification instance.
      */
@@ -37,9 +36,9 @@ class ContractCreatedNotification extends Notification implements ShouldQueue
     public function toMail(User $notifiable): MailMessage
     {
         return (new MailMessage())
-                    ->subject('Создан новый договор')
-                    ->line("Создан новый договор №{$this->contract->id}")
-                    ->action('Посмотреть договор', route('users.contract_show', $this->contract->id));
+            ->subject('Создан новый договор')
+            ->line("Создан новый договор №{$this->contract->id}")
+            ->action('Посмотреть договор', route('users.contract_show', $this->contract->id));
     }
 
     /**
@@ -54,7 +53,7 @@ class ContractCreatedNotification extends Notification implements ShouldQueue
             'text' => "Создан новый договор №{$this->contract->id}",
             'button' => [
                 'href' => route('users.contract_show', $this->contract->id),
-                'text' => 'К договору'
+                'text' => 'К договору',
             ],
         ];
     }

@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class HelperSeeder extends Seeder
 {
@@ -15,8 +14,8 @@ class HelperSeeder extends Seeder
      */
     public function run()
     {
-        $users = User::all(); 
-       
+        $users = User::all();
+
         foreach ($users as $user) {
             $user->assignRole('Клиент');
         }

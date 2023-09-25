@@ -22,7 +22,6 @@ class EndPeriod extends Command
      */
     protected $description = 'Ends billing period for contract';
 
-
     /**
      * Execute the console command.
      *
@@ -32,6 +31,7 @@ class EndPeriod extends Command
     {
         if (app()->isProduction()) {
             $this->error('На проде нельзя');
+
             return Command::FAILURE;
         }
 

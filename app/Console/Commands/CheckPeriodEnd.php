@@ -23,25 +23,24 @@ class CheckPeriodEnd extends Command
      */
     protected $description = 'Проверяет дату конца периода у договоров и переводит на следующий период';
 
-
     /**
      * Execute the console command.
      */
     public function handle()
     {
         $promotedContracts = 0;
-        
+
         $contracts = Contract::whereNotNull('paid_at')->with('user')->lazyById(200, 'id')
             ->each(function ($contract) use (&$promotedContracts) {
                 if ($contract->periodEnd() > now()) {
                     return;
                 }
-                
+
                 event(new BillingPeriodEnded($contract));
-                
+
                 $promotedContracts++;
             });
-        
+
         $message = "Конец периода проверен. Всего контрактов проверено: {$contracts->count()}. Контрактов переведено: {$promotedContracts}";
         Log::channel('schedule')->info($message);
 

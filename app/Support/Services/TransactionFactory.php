@@ -24,7 +24,6 @@ class TransactionFactory
             ? 'Debtor'
             : 'Creditor';
 
-
         return new TransactionDTO(
             $transaction['transactionId'],
             $type,

@@ -25,10 +25,10 @@ class DeleteFutureProfitabilities
      * @param  object  $event
      * @return void
      */
-    public function handle(PaymentReceived | ContractTariffChanging $event)
+    public function handle(PaymentReceived|ContractTariffChanging $event)
     {
         $contract = $event->contract ?? $event->payment->contract;
-		$contract->refresh();
+        $contract->refresh();
 
         if ($contract->status === ContractStatus::init) {
             return;
@@ -39,7 +39,7 @@ class DeleteFutureProfitabilities
                 return $profitability->accrued_at > $contract->periodEnd();
             })
             ->pluck('id');
-        
+
         Profitability::whereIn('id', $profitabilitiesIds)->delete();
     }
 }

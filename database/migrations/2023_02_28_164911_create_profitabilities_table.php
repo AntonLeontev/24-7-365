@@ -20,9 +20,9 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-			$table->foreignUuid('payment_id')
-				->references('id')
-				->on('payments')
+            $table->foreignUuid('payment_id')
+                ->references('id')
+                ->on('payments')
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

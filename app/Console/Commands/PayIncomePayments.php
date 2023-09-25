@@ -24,7 +24,6 @@ class PayIncomePayments extends Command
      */
     protected $description = 'Меняет статус всех неоплаченных платежей на PROCCESSED. Можно передать contract_id и будут оплачены только платежи этого контракта. Если передать опцию --take то будет оплачено столько платежей.';
 
-
     /**
      * Execute the console command.
      *
@@ -34,6 +33,7 @@ class PayIncomePayments extends Command
     {
         if (app()->isProduction()) {
             $this->error('На проде нельзя!');
+
             return Command::FAILURE;
         }
 
@@ -56,9 +56,10 @@ class PayIncomePayments extends Command
                 'status' => PaymentStatus::processed,
                 'paid_at' => now(),
             ]);
-            
+
             event(new PaymentReceived($payment));
         }
+
         return Command::SUCCESS;
     }
 }

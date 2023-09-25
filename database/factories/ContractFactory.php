@@ -20,8 +20,8 @@ class ContractFactory extends Factory
         return [
             // 'user_id' => User::factory(),
             // 'organization_id' => 1,
-            'tariff_id' => rand(1,14),
-            'amount' => rand(500, 8000)* 1000 * 100,
+            'tariff_id' => rand(1, 14),
+            'amount' => rand(500, 8000) * 1000 * 100,
             'status' => ContractStatus::init,
         ];
     }

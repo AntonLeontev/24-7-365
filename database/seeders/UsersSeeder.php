@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Organization;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UsersSeeder extends Seeder
@@ -18,10 +17,10 @@ class UsersSeeder extends Seeder
     {
         $users = User::factory(30)->create();
 
-		foreach ($users as $user) {
-			$user->assignRole('Клиент');
-		}
+        foreach ($users as $user) {
+            $user->assignRole('Клиент');
+        }
 
-		Organization::factory(30)->create();
+        Organization::factory(30)->create();
     }
 }

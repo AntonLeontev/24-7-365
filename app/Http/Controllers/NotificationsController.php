@@ -13,6 +13,6 @@ class NotificationsController extends Controller
     {
         auth()->user()->unreadNotifications->markAsRead();
 
-		return response()->json();
+        return response()->json();
     }
 }

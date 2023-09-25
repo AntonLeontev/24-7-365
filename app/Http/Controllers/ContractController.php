@@ -25,13 +25,13 @@ class ContractController extends Controller
     public function index()
     {
         $contracts = auth()->user()->contracts->load('tariff', 'payments', 'contractChanges')->reverse();
-        
+
         return view('users.contracts.contracts_list', compact('contracts'));
     }
 
     public function adminIndex()
     {
-        if (!request()->ajax()) {
+        if (! request()->ajax()) {
             return view('contracts.index');
         }
 
@@ -53,12 +53,12 @@ class ContractController extends Controller
                 $query->orderByDesc('contracts.created_at');
             })
             ->when(request()->has(['sort', 'order']), function (Builder $query) {
-                    $query->orderBy(request()->sort, request()->order);
+                $query->orderBy(request()->sort, request()->order);
             })
             ->when(request()->has('search'), function (Builder $query) {
                 $query->where(function (Builder $query) {
                     $query->where('contracts.id', request()->search)
-                        ->orWhere('organizations.title', 'like', '%' . request()->search . '%');
+                        ->orWhere('organizations.title', 'like', '%'.request()->search.'%');
                 });
             })
             ->when(request()->has(['filter']), function (Builder $query) {
@@ -73,14 +73,12 @@ class ContractController extends Controller
             ->simplePaginate()
             ->withQueryString();
 
-
         return (new ContractCollection($contracts))->response()->header('Cache-Control', 'no-store, no-cache, must-revalidate');
     }
 
     public function show(Contract $contract)
     {
         $contract->load(['tariff', 'contractChanges']);
-        
 
         if (is_null($contract->paid_at)) {
             return view('users.contracts.contract', compact('contract'));
@@ -91,7 +89,7 @@ class ContractController extends Controller
             ->where('contract_id', $contract->id)
             ->orderBy('accrued_at')
             ->get();
-			
+
         $operations = $profitabilities;
 
         $totalProfitabilities = $contract->profitabilities->reduce(function ($carry, $item) {
@@ -108,12 +106,12 @@ class ContractController extends Controller
     {
         return view('users.contracts.agree');
     }
-    
+
     public function create()
     {
         return view('users.contracts.add_contract');
     }
-    
+
     public function store(StoreContractRequest $request)
     {
         $contract = Contract::create($request->except(['_token']));
@@ -137,7 +135,7 @@ class ContractController extends Controller
     public function edit(Contract $contract)
     {
         $contract->load(['tariff']);
-        
+
         return view('users.contracts.edit', compact('contract'));
     }
 

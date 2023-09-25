@@ -17,7 +17,7 @@ class SmsChannel
         $message = $notification->toSms($notifiable);
 
         $phone = $notification->phone ?: $notifiable->phone;
- 
+
         $this->service->sendSms($phone, $message);
     }
 }

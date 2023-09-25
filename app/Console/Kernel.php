@@ -16,41 +16,40 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-		$schedule->command(CheckPeriodEnd::class)
-			->dailyAt('1:00')
-			->evenInMaintenanceMode()
-			->after(function () {
-				Log::channel('schedule')->info('Выполнен перевод конца периода договоров');
-			}
-		);
+        $schedule->command(CheckPeriodEnd::class)
+            ->dailyAt('1:00')
+            ->evenInMaintenanceMode()
+            ->after(function () {
+                Log::channel('schedule')->info('Выполнен перевод конца периода договоров');
+            }
+            );
 
-		$schedule->command(CheckPayments::class)
-			->hourly()
-			->between('8:00', '23:00')
-			->after(function () {
-				Log::channel('schedule')->info('Выполнена проверка транзакций в банке');
-			}
-		);
+        $schedule->command(CheckPayments::class)
+            ->hourly()
+            ->between('8:00', '23:00')
+            ->after(function () {
+                Log::channel('schedule')->info('Выполнена проверка транзакций в банке');
+            }
+            );
 
-		$schedule->command(SendPaymentsToBank::class)
-			->dailyAt('1:30')
-			->after(function () {
-				Log::channel('schedule')->info('Выполнена отправка исходящих платежей');
-			}
-		);
+        $schedule->command(SendPaymentsToBank::class)
+            ->dailyAt('1:30')
+            ->after(function () {
+                Log::channel('schedule')->info('Выполнена отправка исходящих платежей');
+            }
+            );
 
-		$schedule->command(CalcPurchaseAmount::class)
-			->dailyAt('12:00')
-			->evenInMaintenanceMode();
+        $schedule->command(CalcPurchaseAmount::class)
+            ->dailyAt('12:00')
+            ->evenInMaintenanceMode();
 
-		$schedule->command(MonthProfitReportCommand::class)
-			->monthlyOn(1, '5:00')
-			->evenInMaintenanceMode();
+        $schedule->command(MonthProfitReportCommand::class)
+            ->monthlyOn(1, '5:00')
+            ->evenInMaintenanceMode();
     }
 
     /**

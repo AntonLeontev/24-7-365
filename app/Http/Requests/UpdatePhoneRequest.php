@@ -29,10 +29,10 @@ class UpdatePhoneRequest extends FormRequest
         ];
     }
 
-	public function messages()
-	{
-		return [
-			'phone.unique' => 'Этот номер телефона пренадлежит другому пользователю'
-		];
-	}
+    public function messages()
+    {
+        return [
+            'phone.unique' => 'Этот номер телефона пренадлежит другому пользователю',
+        ];
+    }
 }

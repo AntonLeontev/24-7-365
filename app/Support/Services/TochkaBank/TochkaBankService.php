@@ -20,9 +20,9 @@ class TochkaBankService
     public function createPayment(Payment $payment)
     {
         if ($payment->type === PaymentType::debet) {
-            throw new TochkaBankException("Создание платежного поручения по входящему платежу", 1);
+            throw new TochkaBankException('Создание платежного поручения по входящему платежу', 1);
         }
-        
+
         return $this->api->createPaymentForSign(
             settings()->payment_account,
             settings()->bik,
@@ -46,7 +46,7 @@ class TochkaBankService
     {
         return $this->api->editWebhook(['incomingPayment'], $url);
     }
-    
+
     public function getWebhooks()
     {
         return $this->api->getWebhooks();
@@ -57,7 +57,7 @@ class TochkaBankService
         return $this->api->sendWebhook('incomingPayment');
     }
 
-    public function getTransactions(string | int | null $statementId = null)
+    public function getTransactions(string|int|null $statementId = null)
     {
         if (is_null($statementId)) {
             $response = $this->api->initStatement();
@@ -70,11 +70,10 @@ class TochkaBankService
                 ['external_id' => $statementId]
             );
         } else {
-            $response =  $this->api->getStatement(config('services.tochka.account_id'), $statementId);
+            $response = $this->api->getStatement(config('services.tochka.account_id'), $statementId);
             $status = $response->json('Data.Statement.0.status');
             $transactions = $response->json('Data.Statement.0.Transaction');
         }
-
 
         if ($status === 'Error') {
             throw new StatementCreatingError($statementId);
@@ -86,6 +85,7 @@ class TochkaBankService
 
                 dispatch(new FindPaymentByTransaction($dto));
             }
+
             return;
         }
 

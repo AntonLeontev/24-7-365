@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Tariff;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('tariffs', function (Blueprint $table) {
             $table->id();
-			$table->string('title');
-			$table->unsignedTinyInteger('annual_rate');
-			$table->unsignedSmallInteger('duration');
-			$table->unsignedBigInteger('min_amount');
-			$table->unsignedBigInteger('max_amount')->default(0);
-			$table->unsignedTinyInteger('getting_profit');
-			$table->unsignedTinyInteger('getting_deposit');
-			$table->boolean('is_active')->default(1);
-			$table->softDeletes();
+            $table->string('title');
+            $table->unsignedTinyInteger('annual_rate');
+            $table->unsignedSmallInteger('duration');
+            $table->unsignedBigInteger('min_amount');
+            $table->unsignedBigInteger('max_amount')->default(0);
+            $table->unsignedTinyInteger('getting_profit');
+            $table->unsignedTinyInteger('getting_deposit');
+            $table->boolean('is_active')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

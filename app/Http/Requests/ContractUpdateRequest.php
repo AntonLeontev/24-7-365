@@ -41,13 +41,13 @@ class ContractUpdateRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         if ($this->addedAmount === 0) {
-			$this->merge(['addedAmount' => null]);
-		}
+            $this->merge(['addedAmount' => null]);
+        }
     }
 
     protected function passedValidation(): void
     {
         $amount = $this->addedAmount ?? 0;
-        $this->merge(['addedAmount' => $amount * 100,]);
+        $this->merge(['addedAmount' => $amount * 100]);
     }
 }

@@ -24,7 +24,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     use HasRoles;
     use PasswordsCanResetPassword;
 
-
     protected $fillable = [
         'email',
         'email_verified_at',
@@ -47,7 +46,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'last_visit_at' => 'datetime',
         'is_blocked' => 'boolean',
     ];
-
 
     public function contractsAmount(): Amount
     {

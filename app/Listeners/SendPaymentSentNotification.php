@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\PaymentSent;
 use App\Notifications\PaymentSentNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendPaymentSentNotification
 {
@@ -13,6 +11,6 @@ class SendPaymentSentNotification
     {
         $user = $event->payment->contract->user;
 
-		$user->notify(new PaymentSentNotification($event->payment));
+        $user->notify(new PaymentSentNotification($event->payment));
     }
 }

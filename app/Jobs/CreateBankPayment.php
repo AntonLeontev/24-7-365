@@ -31,7 +31,7 @@ class CreateBankPayment implements ShouldQueue
     public function handle(SberBusinessApiService $service): void
     {
         $service->createPayment($this->payment);
-    
+
         event(new PaymentSentToBank($this->payment));
     }
 }

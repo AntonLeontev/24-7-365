@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use App\Support\Services\Planfact\Exceptions\PlanfactBadRequestException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
@@ -47,6 +46,7 @@ class Handler extends ExceptionHandler
         $this->reportable(function (RuntimeException $e) {
             if (str_starts_with($e->getMessage(), 'Telegram API error')) {
                 Log::error($e->getMessage());
+
                 return;
             }
         });

@@ -20,7 +20,7 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)
-            	->constrained()
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Organization::class)
@@ -33,7 +33,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->unsignedBigInteger('amount');
             $table->string('status', 30)->default(ContractStatus::init->value);
-			$table->boolean('prolongate')->nullable();
+            $table->boolean('prolongate')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

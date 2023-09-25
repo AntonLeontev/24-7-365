@@ -60,9 +60,9 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
-            \SocialiteProviders\Yandex\YandexExtendSocialite::class . '@handle',
-            \SocialiteProviders\VKontakte\VKontakteExtendSocialite::class . '@handle',
-            \SocialiteProviders\Google\GoogleExtendSocialite::class . '@handle',
+            \SocialiteProviders\Yandex\YandexExtendSocialite::class.'@handle',
+            \SocialiteProviders\VKontakte\VKontakteExtendSocialite::class.'@handle',
+            \SocialiteProviders\Google\GoogleExtendSocialite::class.'@handle',
         ],
         UserBlocked::class => [],
         UserUnblocked::class => [],
@@ -100,7 +100,7 @@ class EventServiceProvider extends ServiceProvider
         PaymentReceived::class => [
             DeletePendingCreditPayments::class,
             DeleteFutureProfitabilities::class,
-            
+
             UpdateContractChange::class,
             UpdateContract::class,
             [GenerateCreditPayments::class, 'handle'],

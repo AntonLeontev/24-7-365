@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Smscode;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class SmscodeRequest extends FormRequest
 {
@@ -17,7 +16,7 @@ class SmscodeRequest extends FormRequest
     public function authorize(Request $request)
     {
         return auth()->check();
-    }    
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -27,7 +26,7 @@ class SmscodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => ['required', 'numeric', 'digits:' . Smscode::CODE_LENGTH],
+            'code' => ['required', 'numeric', 'digits:'.Smscode::CODE_LENGTH],
         ];
     }
 }

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class AntonSeeder extends Seeder
@@ -15,13 +14,13 @@ class AntonSeeder extends Seeder
      */
     public function run()
     {
-		//TODO сменить пароль на перед продакшеном
+        //TODO сменить пароль на перед продакшеном
         $user = User::create([
-			'first_name' => 'Anton', 
-			'email' => 'aner-anton@yandex.ru',
-			'password' => bcrypt('12345678'),
-		]);
+            'first_name' => 'Anton',
+            'email' => 'aner-anton@yandex.ru',
+            'password' => bcrypt('12345678'),
+        ]);
 
-		$user->assignRole('Клиент');
+        $user->assignRole('Клиент');
     }
 }

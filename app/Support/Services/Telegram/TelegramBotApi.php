@@ -24,22 +24,22 @@ class TelegramBotApi
             ]);
     }
 
-	public static function sendDocument(
-		int|string $chat,
-		string $document,
-		string $documentName,
-		string $caption = '',
-		string $parseMode = 'HTML',
+    public static function sendDocument(
+        int|string $chat,
+        string $document,
+        string $documentName,
+        string $caption = '',
+        string $parseMode = 'HTML',
         bool $disableNotification = false,
-	): Response {
-		return Http::telegram()
-			->asMultipart()
-			->attach('document', $document, $documentName)
-			->post('/sendDocument', [
-				'chat_id' => $chat,
-				'caption' => $caption,
-				'parseMode' => $parseMode,
-				'disableNotification' => $disableNotification,
-			]);
-	}
+    ): Response {
+        return Http::telegram()
+            ->asMultipart()
+            ->attach('document', $document, $documentName)
+            ->post('/sendDocument', [
+                'chat_id' => $chat,
+                'caption' => $caption,
+                'parseMode' => $parseMode,
+                'disableNotification' => $disableNotification,
+            ]);
+    }
 }

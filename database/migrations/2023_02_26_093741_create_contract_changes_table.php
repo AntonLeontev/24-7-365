@@ -18,12 +18,12 @@ return new class extends Migration
         Schema::create('contract_changes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Contract::class)
-				->constrained()
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('type', 20);
             $table->foreignIdFor(Tariff::class)
-				->constrained()
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->unsignedBigInteger('amount');
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
             $table->date('starts_at')->nullable();
-			$table->unsignedSmallInteger('duration')->default(0);
+            $table->unsignedSmallInteger('duration')->default(0);
         });
     }
 

@@ -29,13 +29,13 @@ class TochkaBankApi
     public static function getWebhooks(): Response
     {
         return Http::tochka()
-            ->get("/webhook/v2.0/" . config('services.tochka.client_id'));
+            ->get('/webhook/v2.0/'.config('services.tochka.client_id'));
     }
 
     public static function createWebhook(array $webhooksList, string $url): Response
     {
         return Http::tochka()
-            ->put("/webhook/v2.0/" . config('services.tochka.client_id'), [
+            ->put('/webhook/v2.0/'.config('services.tochka.client_id'), [
                 'webhooksList' => $webhooksList,
                 'url' => $url,
             ]);
@@ -44,7 +44,7 @@ class TochkaBankApi
     public static function editWebhook(array $webhooksList, string $url): Response
     {
         return Http::tochka()
-            ->post("/webhook/v2.0/" . config('services.tochka.client_id'), [
+            ->post('/webhook/v2.0/'.config('services.tochka.client_id'), [
                 'webhooksList' => $webhooksList,
                 'url' => $url,
             ]);
@@ -53,7 +53,7 @@ class TochkaBankApi
     public static function sendWebhook(string $type): Response
     {
         return Http::tochka()
-            ->post("/webhook/v2.0/" . config('services.tochka.client_id') . '/test_send', [
+            ->post('/webhook/v2.0/'.config('services.tochka.client_id').'/test_send', [
                 'webhookType' => $type,
             ]);
     }
@@ -67,8 +67,8 @@ class TochkaBankApi
                         'accountId' => config('services.tochka.account_id'),
                         'startDateTime' => now()->format('Y-m-d'),
                         'endDateTime' => now()->format('Y-m-d'),
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 
@@ -77,7 +77,7 @@ class TochkaBankApi
         return Http::tochka()
             ->get('/open-banking/v2.0/statements');
     }
-    
+
     public static function getStatement(string $accountId, string $statementId): Response
     {
         return Http::tochka()
@@ -91,9 +91,9 @@ class TochkaBankApi
         string $counterpartyAccountNumber,
         string $counterpartyINN,
         string $counterpartyName,
-        int | float $paymentAmount,
+        int|float $paymentAmount,
         Carbon $paymentDate,
-        string | int $paymentNumber,
+        string|int $paymentNumber,
         string $paymentPurpose,
     ): Response {
         return Http::tochka()
@@ -109,7 +109,7 @@ class TochkaBankApi
                     'paymentDate' => $paymentDate->format('Y-m-d'),
                     'paymentNumber' => $paymentNumber,
                     'paymentPurpose' => $paymentPurpose,
-                ]
+                ],
             ]);
     }
 }

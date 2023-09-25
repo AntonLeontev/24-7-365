@@ -19,8 +19,8 @@ class MarkOutcomePaymentPaidInAccountingSystem
      */
     public function handle(PaymentSent $event): void
     {
-		$payment = $event->payment;
+        $payment = $event->payment;
 
-		$service->
+        $this->service->syncPayment($payment);
     }
 }

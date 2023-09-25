@@ -9,7 +9,6 @@ class SberToken extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'id',
         'access_token',

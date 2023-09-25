@@ -55,12 +55,12 @@ class Prolongate
         //Delete body payment
         $lastPayment = $contract->payments
             ->where('type', PaymentType::credit)
-			->where('is_body', true)
+            ->where('is_body', true)
             ->last();
 
         $lastPayment->delete();
 
-		event(new PaymentsDeleted(collect([$lastPayment])));
+        event(new PaymentsDeleted(collect([$lastPayment])));
 
         //Create new payments
         if ($contract->tariff->getting_profit === Tariff::MONTHLY) {

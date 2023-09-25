@@ -21,7 +21,7 @@ class SberBusinessApi
     {
         $response = $this->client->get($this->authUrl(), [
             'query' => $this->getAuthQuery(),
-            'allow_redirects' => false
+            'allow_redirects' => false,
         ]);
 
         return $response->getHeader('location')[0];
@@ -56,7 +56,7 @@ class SberBusinessApi
         if ($response->getStatusCode() === 202 && $response->getReasonPhrase() === 'STATEMENT_RESPONSE_PROCESSING') {
             throw new TransactionsNotReadyException();
         }
-        
+
         $response = json_decode($response->getBody()->getContents());
 
         return $response;
@@ -65,7 +65,7 @@ class SberBusinessApi
     public function createPayment(string $accessToken, Payment $payment): bool
     {
         if ($payment->type === PaymentType::debet) {
-            throw new SberApiException("Создание платежного поручения по входящему платежу", 1);
+            throw new SberApiException('Создание платежного поручения по входящему платежу', 1);
         }
 
         try {
@@ -77,17 +77,17 @@ class SberBusinessApi
                 'cert' => [config('services.sber.cert_path'), config('services.sber.cert_pass')],
                 'json' => $this->paymentsQuery($payment),
                 'timeout' => 10.0,
-				'http_errors' => false,
+                'http_errors' => false,
             ]);
         } catch (TransferException $e) {
             throw new SberApiException($e->getMessage(), 1);
         }
 
-		if ($response->getStatusCode() >= 400) {
-			throw new SberApiException($response->getBody()->getContents());
-		}
+        if ($response->getStatusCode() >= 400) {
+            throw new SberApiException($response->getBody()->getContents());
+        }
 
-		return true;
+        return true;
     }
 
     private function requestTokens(array $query): SberTokensDTO
@@ -101,7 +101,7 @@ class SberBusinessApi
                 'cert' => [config('services.sber.cert_path'), config('services.sber.cert_pass')],
                 'query' => $query,
                 'timeout' => 10.0,
-                'allow_redirects' => false
+                'allow_redirects' => false,
             ]);
         } catch (TransferException $e) {
             throw new SberApiException($e->getMessage(), 1);
@@ -184,27 +184,27 @@ class SberBusinessApi
                 'type' => 'NO_VAT',
                 'rate' => '0',
                 'amount' => 0,
-			],
+            ],
         ];
     }
 
     private function authUrl(): string
     {
-        return config('services.sber.auth_host') . '/ic/sso/api/v2/oauth/authorize';
+        return config('services.sber.auth_host').'/ic/sso/api/v2/oauth/authorize';
     }
 
     private function tokenUrl(): string
     {
-        return config('services.sber.api_host') . '/ic/sso/api/v2/oauth/token';
+        return config('services.sber.api_host').'/ic/sso/api/v2/oauth/token';
     }
 
     private function transactionsUrl(): string
     {
-        return config('services.sber.api_host') . '/fintech/api/v2/statement/transactions';
+        return config('services.sber.api_host').'/fintech/api/v2/statement/transactions';
     }
 
     private function paymentsUrl(): string
     {
-        return config('services.sber.api_host') . '/fintech/api/v1/payments';
+        return config('services.sber.api_host').'/fintech/api/v1/payments';
     }
 }

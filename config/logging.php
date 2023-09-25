@@ -59,7 +59,7 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path("logs/" . now()->format('Y-m-d') . ".log"),
+            'path' => storage_path('logs/'.now()->format('Y-m-d').'.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
@@ -100,11 +100,11 @@ return [
         ],
 
         'telegram' => [
-            'driver'  => 'monolog',
+            'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
             'handler' => Monolog\Handler\TelegramBotHandler::class,
             'with' => [
-                'apiKey' => env("TELEGRAM_LOG_BOT_API_KEY", ''),
+                'apiKey' => env('TELEGRAM_LOG_BOT_API_KEY', ''),
                 'channel' => env('TELEGRAM_LOG_BOT_CHANNEL', ''),
                 'splitLongMessages' => true,
                 'delayBetweenMessages' => true,
@@ -115,19 +115,19 @@ return [
 
         'bank' => [
             'driver' => 'single',
-            'path' => storage_path("logs/bank.log"),
+            'path' => storage_path('logs/bank.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'bankerr' => [
             'driver' => 'single',
-            'path' => storage_path("logs/bankerr.log"),
+            'path' => storage_path('logs/bankerr.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'schedule' => [
             'driver' => 'single',
-            'path' => storage_path("logs/schedule.log"),
+            'path' => storage_path('logs/schedule.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
     ],

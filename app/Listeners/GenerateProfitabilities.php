@@ -14,7 +14,7 @@ class GenerateProfitabilities
     {
     }
 
-    public function handle(PaymentReceived | ContractTariffChanging $event): void
+    public function handle(PaymentReceived|ContractTariffChanging $event): void
     {
         $contract = $event->contract ?? $event->payment->contract;
         $contract->refresh()->load(['payments']);
@@ -24,6 +24,7 @@ class GenerateProfitabilities
             $contract->lastChange()->type === ContractChangeType::prolongation
         ) {
             $this->manager->createInitialProfitabilities($contract);
+
             return;
         }
 
@@ -32,6 +33,7 @@ class GenerateProfitabilities
             $contract->tariff_id !== $contract->lastChange()->tariff_id
         ) {
             $this->manager->updateEndToEndTariffProfitabilities($contract);
+
             return;
         }
 

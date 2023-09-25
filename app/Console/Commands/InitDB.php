@@ -20,7 +20,6 @@ class InitDB extends Command
      */
     protected $description = 'Fills DB with init data';
 
-
     /**
      * Execute the console command.
      *
@@ -29,7 +28,8 @@ class InitDB extends Command
     public function handle()
     {
         if (app()->isProduction()) {
-            echo 'На проде нельзя!' . PHP_EOL;
+            echo 'На проде нельзя!'.PHP_EOL;
+
             return Command::FAILURE;
         }
 
@@ -40,7 +40,7 @@ class InitDB extends Command
         $this->call('db:seed', ['--class' => 'SuperUserSeeder']);
         $this->call('db:seed', ['--class' => 'AdminSeeder']);
         $this->call('db:seed', ['--class' => 'AntonSeeder']);
-        
+
         $this->call('cache:clear');
 
         return Command::SUCCESS;

@@ -56,7 +56,6 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
-
         'log' => [
             'transport' => 'log',
             'channel' => env('MAIL_LOG_CHANNEL'),

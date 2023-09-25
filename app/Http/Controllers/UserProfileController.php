@@ -12,18 +12,17 @@ class UserProfileController extends Controller
 {
     use ResetsPasswords;
 
-    
     public function profile()
     {
         $user = auth()->user();
-        
+
         return view('users.profile', compact('user'));
     }
-    
+
     public function storeProfile(ProfileSaveRequest $request)
     {
         $user = Auth::user();
-       
+
         $user->first_name = $request->first_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
@@ -43,7 +42,7 @@ class UserProfileController extends Controller
                     'directors_post' => $request->directors_post,
                 ]
             )->id;
-    
+
             Account::updateOrCreate(
                 ['organization_id' => $id],
                 [

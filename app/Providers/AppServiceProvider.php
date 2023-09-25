@@ -25,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(SuggestionsContract::class, DadataService::class);
-		$this->app->bind(SmsService::class, StreamTelecomService::class);
-		$this->app->bind(AccountingSystemContract::class, PlanfactService::class);
+        $this->app->bind(SmsService::class, StreamTelecomService::class);
+        $this->app->bind(AccountingSystemContract::class, PlanfactService::class);
     }
 
     /**
@@ -40,18 +40,18 @@ class AppServiceProvider extends ServiceProvider
 
         //Для индексов Laravel-Permission
         Schema::defaultStringLength(125);
-        
+
         Paginator::defaultView('vendor.pagination.bootstrap-5');
         Paginator::defaultSimpleView('vendor.pagination.simple-bootstrap-5');
 
         Password::defaults(function () {
             $rule = Password::min(8);
- 
+
             return $this->app->isProduction()
                     ? $rule->mixedCase()
                     : $rule;
         });
-        
-		Carbon::setLocale('ru');
+
+        Carbon::setLocale('ru');
     }
 }

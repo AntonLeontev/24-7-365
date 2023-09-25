@@ -11,12 +11,11 @@ class Profitability extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'contract_id',
         'payment_id',
         'amount',
-        'accrued_at'
+        'accrued_at',
     ];
 
     protected $casts = [
@@ -24,7 +23,6 @@ class Profitability extends Model
         'accrued_at' => 'datetime',
     ];
 
-	
     public function contract(): BelongsTo
     {
         return $this->belongsTo(Contract::class);

@@ -25,15 +25,15 @@ class UpdateRoleRequest extends FormRequest
     {
         return [
             'roles' => ['required', 'array', 'size:1'],
-            'roles.*' => ['exists:roles,name', 'not_in:Superuser,superuser']
+            'roles.*' => ['exists:roles,name', 'not_in:Superuser,superuser'],
         ];
     }
 
     public function attributes()
     {
         return [
-        	'roles' => 'Роль',
-        	'roles.*' => 'Роль',
+            'roles' => 'Роль',
+            'roles.*' => 'Роль',
         ];
     }
 }

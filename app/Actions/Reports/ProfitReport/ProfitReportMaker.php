@@ -2,197 +2,199 @@
 
 namespace App\Actions\Reports\ProfitReport;
 
-use App\Enums\ContractChangeStatus;
 use App\Enums\ContractStatus;
 use App\Enums\PaymentType;
 use App\Models\Contract;
-use App\Models\Payment;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 
 class ProfitReportMaker
 {
-	private CarbonPeriod $period;
+    private CarbonPeriod $period;
 
-	public function make(CarbonPeriod $period): ProfitReport
-	{
-		$this->period = $period;
+    public function make(CarbonPeriod $period): ProfitReport
+    {
+        $this->period = $period;
 
-		$contracts = $this->getContracts();
+        $contracts = $this->getContracts();
 
-		$data = $this->prepare($contracts);
+        $data = $this->prepare($contracts);
 
-		$income = $this->getIncome();
+        $income = $this->getIncome();
 
-		return new ProfitReport($data, $income, $period);
-	}
+        return new ProfitReport($data, $income, $period);
+    }
 
-	private function getContracts(): Collection
-	{
-		// TODO canceled and terminated contracts
-		$contracts = Contract::query()
-			->whereIn('status', [ContractStatus::active, ContractStatus::pending])
-			->where('paid_at', '<=', $this->period->getEndDate())
-			->get();
+    private function getContracts(): Collection
+    {
+        // TODO canceled and terminated contracts
+        $contracts = Contract::query()
+            ->whereIn('status', [ContractStatus::active, ContractStatus::pending])
+            ->where('paid_at', '<=', $this->period->getEndDate())
+            ->get();
 
-		$finishedContracts = Contract::query()
-			->whereIn('status', [ContractStatus::finished])
-			->where('paid_at', '<=', $this->period->getEndDate())
-			->where('updated_at', '>=', $this->period->getStartDate())
-			->get();
+        $finishedContracts = Contract::query()
+            ->whereIn('status', [ContractStatus::finished])
+            ->where('paid_at', '<=', $this->period->getEndDate())
+            ->where('updated_at', '>=', $this->period->getStartDate())
+            ->get();
 
-		$contracts = $contracts->concat($finishedContracts)->load(['tariff', 'organization', 'realChanges']);
+        $contracts = $contracts->concat($finishedContracts)->load(['tariff', 'organization', 'realChanges']);
 
-		return $contracts;
-	}
+        return $contracts;
+    }
 
-	private function prepare(Collection $contracts): SupportCollection
-	{
-		$result = [];
+    private function prepare(Collection $contracts): SupportCollection
+    {
+        $result = [];
 
-		foreach ($contracts as $contract) {
+        foreach ($contracts as $contract) {
 
-			if ($contract->status === ContractStatus::active && $contract->contractChanges->count() === 1) {
-				$result[] = collect([
-					'contract_number' => $contract->id,
-					'organization' => $contract->organization->title,
-					'period_start' => $this->latest($contract->paid_at, $this->period->getStartDate()),
-					'period_end' => $this->period->getEndDate(),
-					'contract_amount' => $contract->amount->amount(),
-					'contract_duration' => $contract->tariff->duration,
-					'tariff_rate' => $contract->tariff->annual_rate,
-				]);
-				continue;
-			}
+            if ($contract->status === ContractStatus::active && $contract->contractChanges->count() === 1) {
+                $result[] = collect([
+                    'contract_number' => $contract->id,
+                    'organization' => $contract->organization->title,
+                    'period_start' => $this->latest($contract->paid_at, $this->period->getStartDate()),
+                    'period_end' => $this->period->getEndDate(),
+                    'contract_amount' => $contract->amount->amount(),
+                    'contract_duration' => $contract->tariff->duration,
+                    'tariff_rate' => $contract->tariff->annual_rate,
+                ]);
 
-			if ($contract->status === ContractStatus::finished && $contract->contractChanges->count() === 1) {
-				$result[] = collect([
-					'contract_number' => $contract->id,
-					'organization' => $contract->organization->title,
-					'period_start' => $this->latest($contract->paid_at, $this->period->getStartDate()),
-					'period_end' => $this->earliest($contract->end(), $this->period->getEndDate()),
-					'contract_amount' => $contract->amount->amount(),
-					'contract_duration' => $contract->tariff->duration,
-					'tariff_rate' => $contract->tariff->annual_rate,
-				]);
-				continue;
-			}
+                continue;
+            }
 
-			if ($contract->realChanges->count() > 1) {
-				$changes = $contract->realChanges->load('tariff');
+            if ($contract->status === ContractStatus::finished && $contract->contractChanges->count() === 1) {
+                $result[] = collect([
+                    'contract_number' => $contract->id,
+                    'organization' => $contract->organization->title,
+                    'period_start' => $this->latest($contract->paid_at, $this->period->getStartDate()),
+                    'period_end' => $this->earliest($contract->end(), $this->period->getEndDate()),
+                    'contract_amount' => $contract->amount->amount(),
+                    'contract_duration' => $contract->tariff->duration,
+                    'tariff_rate' => $contract->tariff->annual_rate,
+                ]);
 
-				if (
-					$changes->last()->starts_at >= $this->period->getStartDate() 
-					&& $changes->last()->starts_at <= $this->period->getEndDate()
-				) {
-					// Отчет о периоде до изменений
-					$result[] = collect([
-						'contract_number' => $contract->id,
-						'organization' => $contract->organization->title,
-						'period_start' => $this->period->getStartDate(),
-						'period_end' => $changes->last()->starts_at->subDay(),
-						'contract_amount' => $changes->slice(-2, 1)->first()->amount->amount(),
-						'contract_duration' => $changes->slice(-2, 1)->first()->tariff->duration,
-						'tariff_rate' => $contract->tariff->annual_rate,
-					]);
+                continue;
+            }
 
-					// Отчет о периоде после изменений
-					$result[] = collect([
-						'contract_number' => $contract->id,
-						'organization' => $contract->organization->title,
-						'period_start' => $changes->last()->starts_at,
-						'period_end' => $this->period->getEndDate(),
-						'contract_amount' => $contract->amount->amount(),
-						'contract_duration' => $contract->tariff->duration,
-						'tariff_rate' => $contract->tariff->annual_rate,
-					]);
-					continue;
-				} else {
-					$result[] = collect([
-						'contract_number' => $contract->id,
-						'organization' => $contract->organization->title,
-						'period_start' => $this->latest($contract->paid_at, $this->period->getStartDate()),
-						'period_end' => $this->period->getEndDate(),
-						'contract_amount' => $contract->amount->amount(),
-						'contract_duration' => $contract->tariff->duration,
-						'tariff_rate' => $contract->tariff->annual_rate,
-					]);
-					continue;
-				}
-			}
+            if ($contract->realChanges->count() > 1) {
+                $changes = $contract->realChanges->load('tariff');
 
+                if (
+                    $changes->last()->starts_at >= $this->period->getStartDate()
+                    && $changes->last()->starts_at <= $this->period->getEndDate()
+                ) {
+                    // Отчет о периоде до изменений
+                    $result[] = collect([
+                        'contract_number' => $contract->id,
+                        'organization' => $contract->organization->title,
+                        'period_start' => $this->period->getStartDate(),
+                        'period_end' => $changes->last()->starts_at->subDay(),
+                        'contract_amount' => $changes->slice(-2, 1)->first()->amount->amount(),
+                        'contract_duration' => $changes->slice(-2, 1)->first()->tariff->duration,
+                        'tariff_rate' => $contract->tariff->annual_rate,
+                    ]);
 
-		}
+                    // Отчет о периоде после изменений
+                    $result[] = collect([
+                        'contract_number' => $contract->id,
+                        'organization' => $contract->organization->title,
+                        'period_start' => $changes->last()->starts_at,
+                        'period_end' => $this->period->getEndDate(),
+                        'contract_amount' => $contract->amount->amount(),
+                        'contract_duration' => $contract->tariff->duration,
+                        'tariff_rate' => $contract->tariff->annual_rate,
+                    ]);
 
-		return collect($result);
-	}
+                    continue;
+                } else {
+                    $result[] = collect([
+                        'contract_number' => $contract->id,
+                        'organization' => $contract->organization->title,
+                        'period_start' => $this->latest($contract->paid_at, $this->period->getStartDate()),
+                        'period_end' => $this->period->getEndDate(),
+                        'contract_amount' => $contract->amount->amount(),
+                        'contract_duration' => $contract->tariff->duration,
+                        'tariff_rate' => $contract->tariff->annual_rate,
+                    ]);
 
-	private function latest(Carbon ...$dates): Carbon
-	{
-		$result = null;
+                    continue;
+                }
+            }
 
-		foreach ($dates as $date) {
-			if (is_null($result)) {
-				$result = $date;
-				continue;
-			}
+        }
 
-			$result = $result > $date ? $result : $date;
-		}
+        return collect($result);
+    }
 
-		return $result;
-	}
+    private function latest(Carbon ...$dates): Carbon
+    {
+        $result = null;
 
-	private function earliest(Carbon ...$dates): Carbon
-	{
-		$result = null;
+        foreach ($dates as $date) {
+            if (is_null($result)) {
+                $result = $date;
 
-		foreach ($dates as $date) {
-			if (is_null($result)) {
-				$result = $date;
-				continue;
-			}
+                continue;
+            }
 
-			$result = $result < $date ? $result : $date;
-		}
+            $result = $result > $date ? $result : $date;
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
-	private function paymentsPerPeriod(Contract $contract): int
-	{
-		return DB::table('payments')
-			->where('contract_id', $contract->id)
-			->where('type', PaymentType::credit)
-			->where('paid_at', '>=', $this->period->getStartDate())
-			->where('paid_at', '<=', $this->period->getEndDate())
-			->sum('amount');
-	}
+    private function earliest(Carbon ...$dates): Carbon
+    {
+        $result = null;
 
-	private function getIncome(): float
-	{
-		$transactions = Transaction::query()
-			->where('direction', 'credit')
-			->where('created_at', '>=', $this->period->getStartDate())
-			->where('created_at', '<=', $this->period->getEndDate())
-			->get();
+        foreach ($dates as $date) {
+            if (is_null($result)) {
+                $result = $date;
 
-		// Выбираем только поступления от озона
-		$sum = $transactions
-			->filter(function(Transaction $transaction) {
-				if ($transaction->payer_inn === '7704217370') {
-					return true;
-				}
+                continue;
+            }
 
-				return (bool) preg_match('/ИНН 7704217370 по реестру /i', $transaction->purpose);
-			})
-			->sum('amount');
-		
-		return $sum / 100;
-	}
+            $result = $result < $date ? $result : $date;
+        }
+
+        return $result;
+    }
+
+    private function paymentsPerPeriod(Contract $contract): int
+    {
+        return DB::table('payments')
+            ->where('contract_id', $contract->id)
+            ->where('type', PaymentType::credit)
+            ->where('paid_at', '>=', $this->period->getStartDate())
+            ->where('paid_at', '<=', $this->period->getEndDate())
+            ->sum('amount');
+    }
+
+    private function getIncome(): float
+    {
+        $transactions = Transaction::query()
+            ->where('direction', 'credit')
+            ->where('created_at', '>=', $this->period->getStartDate())
+            ->where('created_at', '<=', $this->period->getEndDate())
+            ->get();
+
+        // Выбираем только поступления от озона
+        $sum = $transactions
+            ->filter(function (Transaction $transaction) {
+                if ($transaction->payer_inn === '7704217370') {
+                    return true;
+                }
+
+                return (bool) preg_match('/ИНН 7704217370 по реестру /i', $transaction->purpose);
+            })
+            ->sum('amount');
+
+        return $sum / 100;
+    }
 }

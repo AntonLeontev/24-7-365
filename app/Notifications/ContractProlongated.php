@@ -12,7 +12,6 @@ class ContractProlongated extends Notification implements ShouldQueue
 {
     use Queueable;
 
-
     /**
      * Create a new notification instance.
      *
@@ -42,9 +41,9 @@ class ContractProlongated extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage())
-                    ->subject('Договор продлен')
-                    ->line("Договор №{$this->contract->id} от {$this->contract->paid_at->format('d.m.y')} г. атоматически продлен на тех же условиях")
-                    ->action('Перейти к договору', route('users.contract_show', $this->contract->id));
+            ->subject('Договор продлен')
+            ->line("Договор №{$this->contract->id} от {$this->contract->paid_at->format('d.m.y')} г. атоматически продлен на тех же условиях")
+            ->action('Перейти к договору', route('users.contract_show', $this->contract->id));
     }
 
     /**
@@ -60,7 +59,7 @@ class ContractProlongated extends Notification implements ShouldQueue
             'text' => "Договор №{$this->contract->id} от {$this->contract->paid_at->format('d.m.y')} г. атоматически продлен на тех же условиях",
             'button' => [
                 'href' => route('users.contract_show', $this->contract->id),
-                'text' => 'К договору'
+                'text' => 'К договору',
             ],
         ];
     }

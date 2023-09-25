@@ -19,10 +19,10 @@ class SyncOrganization
      */
     public function handle(ContractCreated $event): void
     {
-		if (app()->isProduction()) {
-			$organization = $event->contract->organization;
-	
-			$this->service->syncOrganization($organization);
-		}
+        if (app()->isProduction()) {
+            $organization = $event->contract->organization;
+
+            $this->service->syncOrganization($organization);
+        }
     }
 }

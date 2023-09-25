@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Support\Services\TochkaBank\TochkaBankService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -17,7 +16,7 @@ class ProcessTransactionsFromStatement implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private string | int $id)
+    public function __construct(private string|int $id)
     {
     }
 

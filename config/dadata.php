@@ -19,14 +19,14 @@ return [
     |
     */
 
-    'token'     => env('DADATA_TOKEN', null),
+    'token' => env('DADATA_TOKEN', null),
 
     /*
      |--------------------------------------------------------------------------
      | Secret key for standardization
      |--------------------------------------------------------------------------
      */
-    'secret'    => env('DADATA_SECRET', null),
+    'secret' => env('DADATA_SECRET', null),
 
     /*
      |--------------------------------------------------------------------------
@@ -34,6 +34,6 @@ return [
      |--------------------------------------------------------------------------
      | The maximum number of seconds to wait for a response
      */
-    'timeout'   => env('DADATA_TIMEOUT', 10),
+    'timeout' => env('DADATA_TIMEOUT', 10),
 
 ];

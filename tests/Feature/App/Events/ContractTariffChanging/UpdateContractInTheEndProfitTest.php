@@ -24,98 +24,98 @@ use Tests\TestCase;
 
 class UpdateContractInTheEndProfitTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
+    public User $user;
 
-	public User $user;
-	public Organization $organization;
-	public Contract $contract;
+    public Organization $organization;
 
+    public Contract $contract;
 
-	public function setUp(): void
-	{
-		parent::setUp();
+    public function setUp(): void
+    {
+        parent::setUp();
 
-		$this->artisan('db:seed', ['--class' => 'RolesPermissionsSeeder']);
+        $this->artisan('db:seed', ['--class' => 'RolesPermissionsSeeder']);
         $this->artisan('db:seed', ['--class' => 'TariffsSeeder']);
 
-		$this->user = UserFactory::new()->create();
-		$this->user->assignRole('Клиент');
-		auth()->login($this->user);
-	
-		$this->organization = OrganizationFactory::new()->create(['user_id' => $this->user->id]);
+        $this->user = UserFactory::new()->create();
+        $this->user->assignRole('Клиент');
+        auth()->login($this->user);
 
-		AccountFactory::new()->create(['organization_id' => $this->organization->id]);
+        $this->organization = OrganizationFactory::new()->create(['user_id' => $this->user->id]);
 
-		$this->contract = ContractFactory::new()->create([
-			'user_id' => $this->user->id,
-			'organization_id' => $this->organization->id,
-			'tariff_id' => Tariff::where('title', 'Platinum 1')->first()->id,
-			'amount' => 65000000,
-			'paid_at' => now(),
-			'status' => ContractStatus::active,
-		]);
+        AccountFactory::new()->create(['organization_id' => $this->organization->id]);
 
-		ContractChangeFactory::new()->create([
-			'contract_id' => $this->contract->id,
-			'type' => ContractChangeType::init,
-			'status' => ContractChangeStatus::actual,
-			'tariff_id' => $this->contract->tariff->id,
-			'amount' => $this->contract->amount,
-			'starts_at' => now(),
-		]);
+        $this->contract = ContractFactory::new()->create([
+            'user_id' => $this->user->id,
+            'organization_id' => $this->organization->id,
+            'tariff_id' => Tariff::where('title', 'Platinum 1')->first()->id,
+            'amount' => 65000000,
+            'paid_at' => now(),
+            'status' => ContractStatus::active,
+        ]);
 
-		$payment = Payment::create([
-			'account_id' => $this->organization->accounts->first()->id,
-			'contract_id' => $this->contract->id,
-			'amount' => $this->contract->amount,
-			'type' => PaymentType::credit,
-			'status' => PaymentStatus::pending,
-			'planned_at' => now()->addMonths($this->contract->tariff->duration),
-			'paid_at' => null,
-			'description' => 'test',
-		]);
+        ContractChangeFactory::new()->create([
+            'contract_id' => $this->contract->id,
+            'type' => ContractChangeType::init,
+            'status' => ContractChangeStatus::actual,
+            'tariff_id' => $this->contract->tariff->id,
+            'amount' => $this->contract->amount,
+            'starts_at' => now(),
+        ]);
 
-		ProfitabilityFactory::new()->count(random_int(1, 5))->create(['payment_id' => $payment->id]);
-	}
+        $payment = Payment::create([
+            'account_id' => $this->organization->accounts->first()->id,
+            'contract_id' => $this->contract->id,
+            'amount' => $this->contract->amount,
+            'type' => PaymentType::credit,
+            'status' => PaymentStatus::pending,
+            'planned_at' => now()->addMonths($this->contract->tariff->duration),
+            'paid_at' => null,
+            'description' => 'test',
+        ]);
 
-	public function test_at_the_end_to_at_the_end_tariff_change()
-	{
-		$this->withoutExceptionHandling();
+        ProfitabilityFactory::new()->count(random_int(1, 5))->create(['payment_id' => $payment->id]);
+    }
 
-		$newTariff = Tariff::where('title', 'Platinum 1')->get()->last();
-		
-		event(new ContractTariffChanging($this->contract, $newTariff->id));
+    public function test_at_the_end_to_at_the_end_tariff_change()
+    {
+        $this->withoutExceptionHandling();
 
-		$this->assertDatabaseHas('contract_changes', [
-			'contract_id' => $this->contract->id,
-			'type' => ContractChangeType::change,
-			'tariff_id' => $newTariff->id,
-			'status' => ContractChangeStatus::waitingPeriodEnd,
-			'amount' => $this->contract->amount->raw(),
-			'starts_at' => null,
-			'duration' => 0,
-			'deleted_at' => null,
-		]);
+        $newTariff = Tariff::where('title', 'Platinum 1')->get()->last();
 
-		$newAmount = $this->contract->amount->raw() * (1 + $newTariff->annual_rate / 100 / 12 * $newTariff->duration);
+        event(new ContractTariffChanging($this->contract, $newTariff->id));
 
-		$this->assertDatabaseHas('payments', [
-			'account_id' => $this->organization->accounts->first()->id,
-			'contract_id' => $this->contract->id,
-			'amount' => $newAmount,
-			'type' => PaymentType::credit,
-			'status' => PaymentStatus::pending,
-			'planned_at' => now()->addMonths($newTariff->duration)->format('Y-m-d'),
-			'paid_at' => null,
-			'deleted_at' => null,
-		]);
+        $this->assertDatabaseHas('contract_changes', [
+            'contract_id' => $this->contract->id,
+            'type' => ContractChangeType::change,
+            'tariff_id' => $newTariff->id,
+            'status' => ContractChangeStatus::waitingPeriodEnd,
+            'amount' => $this->contract->amount->raw(),
+            'starts_at' => null,
+            'duration' => 0,
+            'deleted_at' => null,
+        ]);
 
-		$payment = Payment::where('contract_id', $this->contract->id)->where('type', PaymentType::credit)->get()->last();
+        $newAmount = $this->contract->amount->raw() * (1 + $newTariff->annual_rate / 100 / 12 * $newTariff->duration);
 
-		$paymentIds = $this->contract->refresh()->profitabilities->pluck('payment_id')->unique();
+        $this->assertDatabaseHas('payments', [
+            'account_id' => $this->organization->accounts->first()->id,
+            'contract_id' => $this->contract->id,
+            'amount' => $newAmount,
+            'type' => PaymentType::credit,
+            'status' => PaymentStatus::pending,
+            'planned_at' => now()->addMonths($newTariff->duration)->format('Y-m-d'),
+            'paid_at' => null,
+            'deleted_at' => null,
+        ]);
 
-		$this->assertCount(1, $paymentIds);
-		$this->assertSame($payment->id, $paymentIds->first());
-	}
+        $payment = Payment::where('contract_id', $this->contract->id)->where('type', PaymentType::credit)->get()->last();
+
+        $paymentIds = $this->contract->refresh()->profitabilities->pluck('payment_id')->unique();
+
+        $this->assertCount(1, $paymentIds);
+        $this->assertSame($payment->id, $paymentIds->first());
+    }
 }

@@ -30,9 +30,10 @@ class CreateCreditPaymentsManager
             } else {
                 if ($month < settings()->payments_start) {
                     $paymentAmount += $profitPerMonth;
+
                     continue;
                 }
-                
+
                 $firstPaymentScheduled = true;
                 $periodStart = $contract->paid_at;
                 $periodEnd = $contract->paid_at->addMonths(settings()->payments_start);
@@ -67,7 +68,7 @@ class CreateCreditPaymentsManager
     {
         $description = "Выплата доходности по договору №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
 
-        if (!is_null($periodStart) && !is_null($periodEnd)) {
+        if (! is_null($periodStart) && ! is_null($periodEnd)) {
             $description .= " за период {$periodStart->format('d.m.Y')} - {$periodEnd->format('d.m.Y')}";
         }
 

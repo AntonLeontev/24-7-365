@@ -27,6 +27,7 @@ class FindPaymentByTransaction implements ShouldQueue
     use SerializesModels;
 
     public $tries = 2;
+
     public $timeout = 30;
 
     public function __construct(private TransactionDTO $transaction)
@@ -58,6 +59,7 @@ class FindPaymentByTransaction implements ShouldQueue
 
         if ($this->checkOzon()) {
             event(new OzonIncomePayment($this->transaction));
+
             return;
         }
 
@@ -81,6 +83,7 @@ class FindPaymentByTransaction implements ShouldQueue
 
         if ($payments->isEmpty()) {
             $this->log("Неопознанный входящий платеж от [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
+
             return;
         }
 
@@ -88,6 +91,7 @@ class FindPaymentByTransaction implements ShouldQueue
 
         if (empty($matches)) {
             $this->log("Не удалось распознать договор в платеже от [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
+
             return;
         }
 
@@ -97,16 +101,19 @@ class FindPaymentByTransaction implements ShouldQueue
 
         if ($exactPayments->isEmpty()) {
             $this->log("Не удалось привязать входящий платеж от нашего клиента [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
+
             return;
         }
 
         if ($exactPayments->count() > 1) {
             $this->log("Более одного платежа подходит под транзакцию банка. Не понятно к какому привязывать. [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
+
             return;
         }
 
         if ($exactPayments->first()->status === PaymentStatus::processed->value) {
             $this->log("Входящий платеж уже в статусе processed. [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
+
             return;
         }
 
@@ -128,9 +135,10 @@ class FindPaymentByTransaction implements ShouldQueue
             ->where('accounts.payment_account', $this->transaction->contrAgentAccount)
             ->whereNull('payments.deleted_at')
             ->get();
-        
+
         if ($payments->isEmpty()) {
             $this->log("Неопознанный исходящий платеж на [{$this->transaction->contrAgentTitle}]");
+
             return;
         }
 
@@ -140,16 +148,19 @@ class FindPaymentByTransaction implements ShouldQueue
 
         if ($exactPayments->isEmpty()) {
             $this->log("Не удалось привязать исходящий платеж нашему клиенту [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
+
             return;
         }
 
         if ($exactPayments->count() > 1) {
             $this->log("Более одного платежа подходит под транзакцию банка. Не понятно к какому привязывать [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
+
             return;
         }
 
         if ($exactPayments->first()->status === PaymentStatus::processed->value) {
             $this->log("Исходящий платеж уже в статусе processed. [{$this->transaction->contrAgentTitle} | {$this->transaction->amount}]");
+
             return;
         }
 
@@ -162,7 +173,7 @@ class FindPaymentByTransaction implements ShouldQueue
 
     private function saveTransactionToDb()
     {
-        
+
         Transaction::create([
             'operation_id' => $this->transaction->id,
             'direction' => $this->transaction->type->value,
@@ -216,11 +227,11 @@ class FindPaymentByTransaction implements ShouldQueue
             return true;
         }
 
-        if (preg_match('/ИНН 7704217370 по реестру /i', $this->transaction->description)) {
+        if (preg_match('/ИНН 7704217370 по реестру/i', $this->transaction->description)) {
             return true;
         }
 
-        if (preg_match('/ИР-200853/23 от 14.06.2023 /i', $this->transaction->description)) {
+        if (preg_match('/ИР-200853\/23 от 14\.06\.2023/i', $this->transaction->description)) {
             return true;
         }
 

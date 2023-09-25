@@ -68,7 +68,7 @@ class ProfitabilityManager
 
         $lastChange = $contract->contractChanges->last()->load('tariff');
         $tariff = $lastChange->tariff;
-        
+
         $lastEndTariffStart = $contract->lastEndTariffChange()->starts_at;
 
         $profitabilities = $contract->profitabilities
@@ -79,7 +79,7 @@ class ProfitabilityManager
         foreach ($profitabilities as $profitability) {
             $payment = $this->findPayment($profitability->accrued_at, $contract);
             $amount = $this->monthlyProfit($contract->amountOnDate($profitability->accrued_at->subDay()), $tariff->annual_rate);
-            
+
             $profitability->update([
                 'amount' => $amount,
                 'payment_id' => $payment->id,
@@ -114,22 +114,22 @@ class ProfitabilityManager
     private function findPayment(Carbon $date, Contract $contract): Payment
     {
         $paymentKey = $contract->payments
-                ->sortBy('planned_at')
-                ->search(function ($payment) use ($date) {
-                    if ($payment->type === PaymentType::debet) {
-                        return false;
-                    }
+            ->sortBy('planned_at')
+            ->search(function ($payment) use ($date) {
+                if ($payment->type === PaymentType::debet) {
+                    return false;
+                }
 
-                    if ($payment->status === PaymentStatus::processed) {
-                        return false;
-                    }
+                if ($payment->status === PaymentStatus::processed) {
+                    return false;
+                }
 
-                    if ($payment->planned_at >= $date) {
-                        return true;
-                    }
-                });
+                if ($payment->planned_at >= $date) {
+                    return true;
+                }
+            });
 
-        if (!$paymentKey) {
+        if (! $paymentKey) {
             throw new DomainException("Not found payment for profitability on {$date}", 1);
         }
 

@@ -30,7 +30,7 @@ class PlanfactApi
     {
         return Http::planfact()
             ->get('/api/v1/operationcategories', [
-                'filter.operationCategoryType' => 'Income'
+                'filter.operationCategoryType' => 'Income',
             ]);
     }
 
@@ -208,7 +208,7 @@ class PlanfactApi
         bool $isCommitted = true,
     ): Response {
         return Http::planfact()
-            ->post("/api/v1/operations/move", [
+            ->post('/api/v1/operations/move', [
                 'debitingDate' => $debitingDate->format('Y-m-d'),
                 'admissionDate' => $admissionDate->format('Y-m-d'),
                 'debitingAccountId' => $debitingAccountId,
@@ -241,7 +241,7 @@ class PlanfactApi
     public static function getAccountBalance(Carbon $date): Response
     {
         return Http::planfact()
-            ->get("/api/v1/businessmetrics/accountbalance", [
+            ->get('/api/v1/businessmetrics/accountbalance', [
                 'filter.currentDate' => $date->format('Y-m-d'),
                 'filter.accountIds' => config('services.planfact.account_id'),
             ]);
@@ -250,7 +250,7 @@ class PlanfactApi
     public static function getCashflow(Carbon $dateStart, Carbon $dateEnd): Response
     {
         return Http::planfact()
-            ->get("/api/v1/businessmetrics/cashflow", [
+            ->get('/api/v1/businessmetrics/cashflow', [
                 'filter.periodStartDate' => $dateStart->format('Y-m-d'),
                 'filter.periodEndDate' => $dateEnd->format('Y-m-d'),
                 'filter.accountId' => config('services.planfact.account_id'),

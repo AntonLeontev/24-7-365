@@ -18,10 +18,10 @@ class ApplicationSettingsController extends Controller
 
         cache()->forget('settings');
 
-		if ($request->ajax()) {
-			return response()->json(['ok' => true]);
-		}
+        if ($request->ajax()) {
+            return response()->json(['ok' => true]);
+        }
 
-		return to_route('settings.index');
+        return to_route('settings.index');
     }
 }

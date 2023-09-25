@@ -33,8 +33,8 @@ class ArticlesController extends Controller
 
     public function destroy(string $id)
     {
-		Article::find($id)->delete();
+        Article::find($id)->delete();
 
-		return back();
+        return back();
     }
 }

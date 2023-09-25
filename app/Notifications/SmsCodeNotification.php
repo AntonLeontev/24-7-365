@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Notifications\Channels\SmsChannel;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
 class SmsCodeNotification extends Notification
@@ -20,8 +19,6 @@ class SmsCodeNotification extends Notification
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @return string
      */
     public function via(object $notifiable): string
     {

@@ -27,7 +27,6 @@ class ResetContract extends Command
      */
     protected $description = 'Делает контракт свежесозданным';
 
-
     /**
      * Execute the console command.
      *
@@ -37,12 +36,13 @@ class ResetContract extends Command
     {
         if (app()->isProduction()) {
             $this->error('На проде нельзя!');
+
             return Command::FAILURE;
         }
 
         $payments = Payment::where('contract_id', $this->argument('contract'))
-			->get()
-			->skip(1)
+            ->get()
+            ->skip(1)
             ->pluck('id');
 
         Payment::whereIn('id', $payments)->delete();
@@ -51,7 +51,7 @@ class ResetContract extends Command
         Profitability::where('contract_id', $this->argument('contract'))->delete();
 
         $changes = ContractChange::where('contract_id', $this->argument('contract'))
-			->get()
+            ->get()
             ->skip(1)
             ->pluck('id');
 
@@ -64,14 +64,14 @@ class ResetContract extends Command
             'duration' => 0,
             'status' => ContractChangeStatus::pending,
         ]);
-        
+
         Contract::find($this->argument('contract'))
             ->update([
                 'tariff_id' => $initChange->tariff_id,
                 'amount' => $initChange->amount,
                 'status' => ContractStatus::init,
-				'paid_at' => null,
-				'prolongate' => 1,
+                'paid_at' => null,
+                'prolongate' => 1,
             ]);
 
         return Command::SUCCESS;

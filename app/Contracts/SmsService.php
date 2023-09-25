@@ -6,5 +6,5 @@ use Illuminate\Http\Client\Response;
 
 interface SmsService
 {
-	public function sendSms(string $phone, string $message): Response;
+    public function sendSms(string $phone, string $message): Response;
 }

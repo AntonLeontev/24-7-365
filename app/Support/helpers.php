@@ -26,16 +26,17 @@ if (! function_exists('settings')) {
 }
 
 if (! function_exists('mb_ucfirst')) {
-    function mb_ucfirst($string, $encoding = "UTF-8")
+    function mb_ucfirst($string, $encoding = 'UTF-8')
     {
         $firstChar = mb_substr($string, 0, 1, $encoding);
         $then = mb_substr($string, 1, null, $encoding);
-        return mb_strtoupper($firstChar, $encoding) . $then;
+
+        return mb_strtoupper($firstChar, $encoding).$then;
     }
 }
 
 if (! function_exists('amount_to_string')) {
-    function amount_to_string(float | int $number)
+    function amount_to_string(float|int $number)
     {
         return mb_ucfirst(app(AmountToString::class)->do($number));
     }

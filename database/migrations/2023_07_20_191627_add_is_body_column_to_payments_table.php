@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('payments', function (Blueprint $table) {
             $table->boolean('is_body')
-				->default(0)
-				->before('deleted_at');
+                ->default(0)
+                ->before('deleted_at');
         });
     }
 

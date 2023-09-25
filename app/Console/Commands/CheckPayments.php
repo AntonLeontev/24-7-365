@@ -10,12 +10,11 @@ class CheckPayments extends Command
     protected $signature = '24:check-payments';
 
     protected $description = 'Запускает проверку новых транзакций в банке';
-	
 
     public function handle()
     {
         dispatch(new GetTransactions());
 
-		return Command::SUCCESS;
+        return Command::SUCCESS;
     }
 }

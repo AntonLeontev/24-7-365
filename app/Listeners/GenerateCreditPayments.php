@@ -22,16 +22,17 @@ class GenerateCreditPayments
     ) {
     }
 
-    public function handle(PaymentReceived | ContractTariffChanging $event)
+    public function handle(PaymentReceived|ContractTariffChanging $event)
     {
         $this->contract = $event->contract ?? $event->payment->contract;
         $this->contract->refresh();
-        
+
         if ($this->contract->contractChanges->count() === 1) {
             $this->create($this->contract);
+
             return;
         }
-        
+
         $this->update($this->contract);
     }
 
@@ -49,7 +50,8 @@ class GenerateCreditPayments
     public function update(Contract $contract): void
     {
         if ($contract->isLastPeriod()) {
-			Log::channel('telegram')->alert('Обновление договора в последний период', ['Contract' => $contract->id]);
+            Log::channel('telegram')->alert('Обновление договора в последний период', ['Contract' => $contract->id]);
+
             return;
         }
 
@@ -68,6 +70,7 @@ class GenerateCreditPayments
             if (! is_null($profitPayment)) {
                 $this->bindNewPaymentToProfitability($contract, $profitPayment);
             }
+
             return;
         }
 

@@ -17,7 +17,7 @@ class NewContractController extends Controller
 
         Account::updateOrCreate(
             ['organization_id' => $organization->id],
-			$request->safe(['bik', 'bank', 'payment_account', 'correspondent_account'])
+            $request->safe(['bik', 'bank', 'payment_account', 'correspondent_account'])
         );
 
         return response()->json(['ok' => true]);

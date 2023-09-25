@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function index(User $user, Request $request)
     {
-        if (!request()->ajax()) {
+        if (! request()->ajax()) {
             return view('users.index');
         }
 
@@ -31,7 +31,7 @@ class UserController extends Controller
                 DB::raw('organizations.title AS organization'),
                 'role_id',
                 DB::raw('roles.name AS role'),
-                DB::raw('(SELECT SUM(amount) FROM contracts WHERE user_id = users.id AND (status = "active" OR status = "canceled")) AS contracts_sum')
+                DB::raw('(SELECT SUM(amount) FROM contracts WHERE user_id = users.id AND (status = "active" OR status = "canceled")) AS contracts_sum'),
             ])
             ->leftJoin('organizations', 'users.id', 'organizations.user_id')
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')
@@ -43,12 +43,12 @@ class UserController extends Controller
                 $query->orderByDesc('users.created_at');
             })
             ->when(request()->has(['sort', 'order']), function (Builder $query) {
-                    $query->orderBy(request()->sort, request()->order);
+                $query->orderBy(request()->sort, request()->order);
             })
             ->when(request()->has('search'), function (Builder $query) {
                 $query->where(function (Builder $query) {
-                    $query->where('first_name', 'like', '%' . request()->search . '%')
-                        ->orWhere('organizations.title', 'like', '%' . request()->search . '%');
+                    $query->where('first_name', 'like', '%'.request()->search.'%')
+                        ->orWhere('organizations.title', 'like', '%'.request()->search.'%');
                 });
             })
             ->when(request()->has(['filter']), function (Builder $query) {
@@ -58,8 +58,8 @@ class UserController extends Controller
             })
             ->simplePaginate()
             ->withQueryString()
-			->through(function ($item) {
-                if (!is_null($item->contracts_sum)) {
+            ->through(function ($item) {
+                if (! is_null($item->contracts_sum)) {
                     $item->contracts_sum = new Amount($item->contracts_sum);
                 }
 
@@ -77,6 +77,7 @@ class UserController extends Controller
     public function updateRole(User $user, UpdateRoleRequest $request)
     {
         $user->syncRoles($request->validated());
+
         return back();
     }
 

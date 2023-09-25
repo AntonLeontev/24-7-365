@@ -24,7 +24,6 @@ enum ContractChangeStatus: string
      */
     case past = 'past';
 
-
     public function getName()
     {
         return match ($this) {

@@ -20,8 +20,8 @@ class SyncPayment
      */
     public function handle(PaymentReceived $event): void
     {
-		if (app()->isProduction()) {
-			dispatch(new SyncPaymentInAccountingSystem($event->payment));
-		}
+        if (app()->isProduction()) {
+            dispatch(new SyncPaymentInAccountingSystem($event->payment));
+        }
     }
 }

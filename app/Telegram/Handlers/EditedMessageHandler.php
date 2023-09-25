@@ -12,7 +12,7 @@ class EditedMessageHandler
         Article::query()
             ->where([
                 'chat_id' => $bot->message()->chat->id,
-                'message_id' => $bot->message()->message_id
+                'message_id' => $bot->message()->message_id,
             ])
             ->firstOrCreate()
             ->update(['text' => $bot->message()->text]);

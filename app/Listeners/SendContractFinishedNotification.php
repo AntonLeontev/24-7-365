@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\ContractFinished;
 use App\Notifications\ContractFinishedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendContractFinishedNotification
 {
@@ -13,6 +11,6 @@ class SendContractFinishedNotification
     {
         $user = $event->contract->user;
 
-		$user->notify(new ContractFinishedNotification($event->contract));
+        $user->notify(new ContractFinishedNotification($event->contract));
     }
 }

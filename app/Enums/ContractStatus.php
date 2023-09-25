@@ -6,10 +6,8 @@ use App\Traits\GivesEnum;
 
 enum ContractStatus: string
 {
-	use GivesEnum;
+    use GivesEnum;
 
-
-	
     /**
      * Прерван клиентом
      */
@@ -34,21 +32,21 @@ enum ContractStatus: string
      * Успешно выполнен
      */
     case finished = 'finished';
-    
+
     /**
      * Ожидает первой оплаты (еще не был в работе)
      */
     case init = 'init';
 
-	public function getName(): string
-	{
-		return match ($this) {
-			self::terminated => 'Прерван', 
-			self::active => 'В работе', 
-			self::canceled => 'Отменен', 
-			self::pending => 'Ожидает доплаты', 
-			self::finished => 'Успешно завершен', 
-			self::init => 'Ожидает оплаты', 
-		};
-	}
+    public function getName(): string
+    {
+        return match ($this) {
+            self::terminated => 'Прерван',
+            self::active => 'В работе',
+            self::canceled => 'Отменен',
+            self::pending => 'Ожидает доплаты',
+            self::finished => 'Успешно завершен',
+            self::init => 'Ожидает оплаты',
+        };
+    }
 }

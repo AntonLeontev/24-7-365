@@ -18,7 +18,7 @@ class PaymentCreator
     ): Payment {
         $description = "Выплата ожидаемой прибыли по Договору (Оферта) №{$contract->id} от {$contract->paid_at->format('d.m.Y')}";
 
-        if (!is_null($periodStart) && !is_null($periodEnd)) {
+        if (! is_null($periodStart) && ! is_null($periodEnd)) {
             $description .= " за период {$periodStart->format('d.m.Y')} - {$periodEnd->format('d.m.Y')}";
         }
 

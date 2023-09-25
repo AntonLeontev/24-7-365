@@ -8,7 +8,6 @@ enum PaymentStatus: string
 {
     use GivesEnum;
 
-
     /**
      * Платеж ожидается
      */

@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
@@ -19,10 +18,10 @@ class MonthProfitReport extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-		public CarbonPeriod $period, 
-		public string $reportPath
-	)
-    { }
+        public CarbonPeriod $period,
+        public string $reportPath
+    ) {
+    }
 
     /**
      * Get the message envelope.
@@ -52,8 +51,8 @@ class MonthProfitReport extends Mailable
     public function attachments(): array
     {
         return [
-			Attachment::fromStorage($this->reportPath)
-				->withMime('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
-		];
+            Attachment::fromStorage($this->reportPath)
+                ->withMime('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+        ];
     }
 }

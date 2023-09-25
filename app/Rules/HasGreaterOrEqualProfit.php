@@ -18,10 +18,10 @@ class HasGreaterOrEqualProfit implements InvokableRule
     public function __invoke($attribute, $value, $fail)
     {
         $newProfit = Tariff::find($value)->annual_rate;
-		$oldProfit = Tariff::find(request()->route('contract')->tariff_id)->annual_rate;
+        $oldProfit = Tariff::find(request()->route('contract')->tariff_id)->annual_rate;
 
-		if ($oldProfit > $newProfit) {
-			$fail('Переход на менее доходный тариф запрещен');
-		}
+        if ($oldProfit > $newProfit) {
+            $fail('Переход на менее доходный тариф запрещен');
+        }
     }
 }

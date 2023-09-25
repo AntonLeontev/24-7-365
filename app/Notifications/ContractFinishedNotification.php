@@ -12,7 +12,6 @@ class ContractFinishedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-
     /**
      * Create a new notification instance.
      */
@@ -36,9 +35,9 @@ class ContractFinishedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage())
-                    ->subject('Договор успешно завершен')
-                    ->line("Завершен договор №{$this->contract->id} от {$this->contract->paid_at->format('d.m.Y')}")
-                    ->action('Посмотреть договор', route('users.contract_show', $this->contract->id));
+            ->subject('Договор успешно завершен')
+            ->line("Завершен договор №{$this->contract->id} от {$this->contract->paid_at->format('d.m.Y')}")
+            ->action('Посмотреть договор', route('users.contract_show', $this->contract->id));
     }
 
     /**
@@ -53,7 +52,7 @@ class ContractFinishedNotification extends Notification implements ShouldQueue
             'text' => "Завершен договор №{$this->contract->id} от {$this->contract->paid_at->format('d.m.Y')}",
             'button' => [
                 'href' => route('users.contract_show', $this->contract->id),
-                'text' => 'К договору'
+                'text' => 'К договору',
             ],
         ];
     }

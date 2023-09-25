@@ -28,25 +28,23 @@ class NewRefreshCommand extends Command
     public function handle()
     {
         if (app()->isProduction()) {
-            echo 'На проде нельзя!' . PHP_EOL;
+            echo 'На проде нельзя!'.PHP_EOL;
+
             return Command::FAILURE;
         }
-        
+
         $this->call('migrate:fresh');
         $this->call('db:seed', ['--class' => 'RolesPermissionsSeeder']);
         $this->call('db:seed', ['--class' => 'TariffsSeeder']);
-        
+
         $this->call('db:seed', ['--class' => 'NewDbSeeder']);
         $this->call('db:seed', ['--class' => 'SuperUserSeeder']);
         $this->call('db:seed', ['--class' => 'TestUsersWithRolesSeeder']);
 
- 
         $this->call('db:seed', ['--class' => 'ApplicationSettingsSeeder']);
-        
-        
-  
+
         $this->call('cache:clear');
-        
+
         return Command::SUCCESS;
     }
 }

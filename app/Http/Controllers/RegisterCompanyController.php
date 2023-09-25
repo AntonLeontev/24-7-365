@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterCompanyRequest;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Mail;
 
 class RegisterCompanyController extends Controller
 {

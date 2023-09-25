@@ -70,7 +70,7 @@ class RegisterCompanyRequest extends FormRequest
 
         if (is_null($this->number)) {
             $this->merge([
-                'typeDoc' => null
+                'typeDoc' => null,
             ]);
         }
     }

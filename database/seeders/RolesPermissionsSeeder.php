@@ -16,7 +16,7 @@ class RolesPermissionsSeeder extends Seeder
     public function run()
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-        
+
         Permission::create(['name' => 'see other profiles']);
         Permission::create(['name' => 'assign roles']);
         Permission::create(['name' => 'see own profile']);
@@ -27,10 +27,8 @@ class RolesPermissionsSeeder extends Seeder
         Permission::create(['name' => 'see invoices']);
         Permission::create(['name' => 'create news']);
 
-        
         $role = Role::create(['name' => 'Клиент']);
         $role->givePermissionTo('see own profile');
-
 
         $role = Role::create(['name' => 'Админ']);
         $role->givePermissionTo('see other profiles');
@@ -42,11 +40,9 @@ class RolesPermissionsSeeder extends Seeder
         $role->givePermissionTo('see invoices');
         $role->givePermissionTo('create news');
 
-
         $role = Role::create(['name' => 'АСБК']);
         $role->givePermissionTo('see other profiles');
         $role->givePermissionTo('see invoices');
-
 
         $role = Role::create(['name' => 'Юрист']);
     }

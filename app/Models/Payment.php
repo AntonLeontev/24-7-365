@@ -64,7 +64,7 @@ class Payment extends Model
 
             if ($payment->type === PaymentType::debet) {
                 $date = now()->format('d.m.Y');
-                $payment->description = "Оплата по счету №{$payment->number} от {$date}. " . $payment->description;
+                $payment->description = "Оплата по счету №{$payment->number} от {$date}. ".$payment->description;
             }
         });
 

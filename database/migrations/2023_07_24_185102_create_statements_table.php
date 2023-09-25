@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('statements', function (Blueprint $table) {
             $table->id();
-			$table->string('external_id');
-			$table->date('date');
+            $table->string('external_id');
+            $table->date('date');
         });
     }
 

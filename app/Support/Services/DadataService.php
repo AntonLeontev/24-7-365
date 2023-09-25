@@ -14,7 +14,7 @@ class DadataService implements SuggestionsContract
 {
     public function company(string $query): array
     {
-        $result =  DaDataCompany::prompt(
+        $result = DaDataCompany::prompt(
             $query,
             20,
             [CompanyStatus::ACTIVE],
@@ -30,7 +30,7 @@ class DadataService implements SuggestionsContract
             );
         }
 
-		return $result;
+        return $result;
     }
 
     public function bank(string $query): array

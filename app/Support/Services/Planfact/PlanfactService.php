@@ -25,8 +25,9 @@ class PlanfactService implements AccountingSystemContract
 
     public function syncOrganization(Organization $organization): void
     {
-        if (!empty($organization->pf_id)) {
+        if (! empty($organization->pf_id)) {
             $this->updateContrAgent($organization);
+
             return;
         }
 
@@ -34,6 +35,7 @@ class PlanfactService implements AccountingSystemContract
             $pfId = $this->createContrAgent($organization);
         } catch (Exception $e) {
             Log::channel('telegram')->error($e->getMessage(), ["Organization ID: {$organization->id}"]);
+
             return;
         }
 
@@ -43,7 +45,7 @@ class PlanfactService implements AccountingSystemContract
 
     public function syncContract(Contract $contract): void
     {
-        if (!empty($contract->pf_id)) {
+        if (! empty($contract->pf_id)) {
             return;
         }
 
@@ -51,9 +53,9 @@ class PlanfactService implements AccountingSystemContract
             $pfId = $this->createProject($contract);
         } catch (Exception $e) {
             Log::channel('telegram')->error($e->getMessage(), ["Contract ID: {$contract->id}"]);
+
             return;
         }
-
 
         $contract->pf_id = $pfId;
         $contract->saveQuietly();
@@ -62,8 +64,9 @@ class PlanfactService implements AccountingSystemContract
     public function syncPayment(Payment $payment): void
     {
         try {
-            if (!empty($payment->pf_id)) {
+            if (! empty($payment->pf_id)) {
                 $this->updatePayment($payment);
+
                 return;
             }
 
@@ -92,9 +95,9 @@ class PlanfactService implements AccountingSystemContract
             $this->validateResponse($response);
         } catch (Exception $e) {
             Log::channel('telegram')->error($e->getMessage(), ["Payment ID: {$payment->id}"]);
+
             return;
         }
-        
 
         $payment->pf_id = $response->json('data.operationId');
         $payment->saveQuietly();
@@ -108,6 +111,7 @@ class PlanfactService implements AccountingSystemContract
             $this->validateResponse($response);
         } catch (Exception $e) {
             Log::channel('telegram')->error($e->getMessage(), ["Payment ID: {$payment->id}"]);
+
             return;
         }
     }
@@ -188,7 +192,7 @@ class PlanfactService implements AccountingSystemContract
     private function updatePayment(Payment $payment): void
     {
         if ($payment->type === PaymentType::debet) {
-            throw new PlanfactException('Try to update incoming payment with id ' . $payment->id);
+            throw new PlanfactException('Try to update incoming payment with id '.$payment->id);
         }
 
         $date = $payment->paid_at ?? $payment->planned_at;

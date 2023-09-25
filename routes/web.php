@@ -23,14 +23,9 @@ use App\Http\Middleware\CanSeeContract;
 use App\Http\Middleware\CheckBlockedUser;
 use App\Http\Middleware\ContractTextAccepted;
 use App\Http\Middleware\SendRegisterCompanyMail;
-use App\Mail\MonthProfitReport;
-use App\Models\Contract;
-use App\Support\Services\Planfact\PlanfactService;
 use App\Support\Services\Telegram\TelegramService;
-use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -55,63 +50,61 @@ Route::post('/webhooks/tochka/incoming-payment', [TochkaBankController::class, '
 
 if (app()->isLocal()) {
     Route::get('24-pay-in/{contract_id}', function ($id) {
-        Artisan::call("24:pay-in", ['contract' => $id, '--take' => 1]);
-    
+        Artisan::call('24:pay-in', ['contract' => $id, '--take' => 1]);
+
         return back();
     })->name('pay-in');
-    
+
     Route::get('24-pay-out/{contract_id}', function ($id) {
-        Artisan::call("24:pay-out", ['contract' => $id, '--take' => 1]);
-    
+        Artisan::call('24:pay-out', ['contract' => $id, '--take' => 1]);
+
         return back();
     })->name('pay-out');
-    
+
     Route::get('24-period/{contract_id}', function ($id) {
-        Artisan::call("24:period", ['contract' => $id]);
-    
+        Artisan::call('24:period', ['contract' => $id]);
+
         return back();
     })->name('period');
-    
+
     Route::get('24-period-2/{contract_id}', function (int $id) {
-        Artisan::call("24:period", ['contract' => $id, '--number' => 2]);
-    
+        Artisan::call('24:period', ['contract' => $id, '--number' => 2]);
+
         return back();
     })->name('period2');
-    
+
     Route::get('24-period-5/{contract_id}', function (int $id) {
-        Artisan::call("24:period", ['contract' => $id, '--number' => 5]);
-    
+        Artisan::call('24:period', ['contract' => $id, '--number' => 5]);
+
         return back();
     })->name('period5');
-    
+
     Route::get('24-rescon/{contract_id}', function ($id) {
-        Artisan::call("24:rescon", ['contract' => $id]);
-        Artisan::call("24:pay-in", ['contract' => $id, '--take' => 1]);
-    
+        Artisan::call('24:rescon', ['contract' => $id]);
+        Artisan::call('24:pay-in', ['contract' => $id, '--take' => 1]);
+
         return back();
     })->name('reset-contract');
-    
-    Route::get('test', function (ProfitReportMaker $maker, TelegramService $telegram) {
-		$date = now()->subMonth();
 
-		$period = CarbonPeriod::since($date->startOfMonth())
-			->until($date->endOfMonth());
+    Route::get('test', function (ProfitReportMaker $maker, TelegramService $telegram) {
+        $date = now()->subMonth();
+
+        $period = CarbonPeriod::since($date->startOfMonth())
+            ->until($date->endOfMonth());
 
         $report = $maker->make($period);
-		$path = $report->toExcel();
-		return Storage::download($path);
-		// Storage::delete($path);
+        $path = $report->toExcel();
+
+        return Storage::download($path);
+        // Storage::delete($path);
     });
 }
 
-
-
-
 /*------------------------------------------*/
 
-Route::post('suggestions/company', [SuggestionsController::class,'company'])
+Route::post('suggestions/company', [SuggestionsController::class, 'company'])
     ->name('suggestions.company');
-Route::post('suggestions/bank', [SuggestionsController::class,'bank'])
+Route::post('suggestions/bank', [SuggestionsController::class, 'bank'])
     ->name('suggestions.bank');
 
 Route::post('register-company', RegisterCompanyController::class)
@@ -132,164 +125,160 @@ Route::middleware('guest')->group(function () {
         ->where('driver', 'yandex|vkontakte|google');
 });
 
-
 Route::prefix('personal')
-->middleware('auth')->group(function () {
-    Route::get('profile', [UserProfileController::class, 'profile'])
-        ->name('users.profile');
-    Route::post('profile/save', [UserProfileController::class, 'storeProfile'])
-        ->middleware('phone')
-        ->name('users.profile.save');
-    Route::post('profile/validate', [UserProfileController::class, 'checkProfileInput'])
-        ->middleware('phone')
-        ->name('users.profile.validate');
-    Route::post('user/update_phone', [UserController::class, 'updatePhone'])
-        ->middleware('phone')
-        ->name('users.updatePhone');
-    Route::post('user/validate_phone', [UserController::class, 'validatePhone'])
-        ->middleware('phone')
-        ->name('users.validatePhone');
-    
-    Route::get('contracts', [ContractController::class, 'index'])
-        ->middleware('can:see own profile')
-        ->name('users.contracts');
-    
-    Route::get('contracts/{contract}/show', [ContractController::class, 'show'])
-        ->middleware(CanSeeContract::class)
-        ->name('users.contract_show');
+    ->middleware('auth')->group(function () {
+        Route::get('profile', [UserProfileController::class, 'profile'])
+            ->name('users.profile');
+        Route::post('profile/save', [UserProfileController::class, 'storeProfile'])
+            ->middleware('phone')
+            ->name('users.profile.save');
+        Route::post('profile/validate', [UserProfileController::class, 'checkProfileInput'])
+            ->middleware('phone')
+            ->name('users.profile.validate');
+        Route::post('user/update_phone', [UserController::class, 'updatePhone'])
+            ->middleware('phone')
+            ->name('users.updatePhone');
+        Route::post('user/validate_phone', [UserController::class, 'validatePhone'])
+            ->middleware('phone')
+            ->name('users.validatePhone');
 
-    Route::get('contracts/pdf', [PdfController::class, 'contract'])
-        ->middleware('can:see own profile')
-        ->name('users.contract.pdf');
-    
-    Route::get('contracts/create/text', [ContractController::class, 'agree'])
-        ->middleware('can:see own profile')
-        ->name('contracts.agree');
-    Route::any('contracts/create', [ContractController::class, 'create'])
-        ->middleware(['can:see own profile', ContractTextAccepted::class])
-        ->name('users.add_contract');
+        Route::get('contracts', [ContractController::class, 'index'])
+            ->middleware('can:see own profile')
+            ->name('users.contracts');
 
+        Route::get('contracts/{contract}/show', [ContractController::class, 'show'])
+            ->middleware(CanSeeContract::class)
+            ->name('users.contract_show');
 
-    Route::post('contracts/store', [ContractController::class, 'store'])
-        ->middleware('can:see own profile')
-        ->name('contracts.store');
+        Route::get('contracts/pdf', [PdfController::class, 'contract'])
+            ->middleware('can:see own profile')
+            ->name('users.contract.pdf');
 
-    Route::get('contracts/{contract}/cancel', [ContractController::class, 'cancel'])
-        ->middleware('can:see own profile')
-        ->name('contracts.cancel');
-    
-    Route::get('contracts/{contract}/cancel_prolongation', [ContractController::class, 'cancelProlongation'])
-        ->middleware('can:see own profile')
-        ->name('contracts.cancel.prolongation');
+        Route::get('contracts/create/text', [ContractController::class, 'agree'])
+            ->middleware('can:see own profile')
+            ->name('contracts.agree');
+        Route::any('contracts/create', [ContractController::class, 'create'])
+            ->middleware(['can:see own profile', ContractTextAccepted::class])
+            ->name('users.add_contract');
 
-    Route::get('contracts/{contract}/edit', [ContractController::class, 'edit'])
-        ->middleware('can:see own profile')
-        ->name('contracts.edit');
+        Route::post('contracts/store', [ContractController::class, 'store'])
+            ->middleware('can:see own profile')
+            ->name('contracts.store');
 
-    Route::post('contracts/{contract}/update', [ContractController::class, 'update'])
-        ->middleware('can:see own profile')
-        ->name('contracts.update');
+        Route::get('contracts/{contract}/cancel', [ContractController::class, 'cancel'])
+            ->middleware('can:see own profile')
+            ->name('contracts.cancel');
 
-    Route::get('contracts/{contract}/cancel_change', [ContractController::class, 'cancelChange'])
-        ->middleware('can:see own profile')
-        ->name('contracts.cancel_change');
+        Route::get('contracts/{contract}/cancel_prolongation', [ContractController::class, 'cancelProlongation'])
+            ->middleware('can:see own profile')
+            ->name('contracts.cancel.prolongation');
 
-    Route::get('calculator', [IncomeCalculatorController::class, 'show'])
-        ->name('income_calculator');
+        Route::get('contracts/{contract}/edit', [ContractController::class, 'edit'])
+            ->middleware('can:see own profile')
+            ->name('contracts.edit');
 
-    Route::post('organization/save', [NewContractController::class, 'saveRequesites'])
-        ->name('organization.save');
-    
-        
-    Route::get('payments', [PaymentController::class, 'indexForUser'])
-        ->middleware('can:see own profile')
-        ->name('payments.for_user');
+        Route::post('contracts/{contract}/update', [ContractController::class, 'update'])
+            ->middleware('can:see own profile')
+            ->name('contracts.update');
 
-    Route::get('payments/{payment}/send-invoice', [PaymentController::class, 'sendInvoice'])
-        ->middleware('can:see own profile')
-        ->name('payments.send-invoice');
+        Route::get('contracts/{contract}/cancel_change', [ContractController::class, 'cancelChange'])
+            ->middleware('can:see own profile')
+            ->name('contracts.cancel_change');
 
-    Route::get('invoices/{payment}/pdf', [PdfController::class, 'invoice'])->name('invoice.pdf');
-    
-    Route::post('smscode/check/{type}', [SmscodeController::class,'checkCode'])
-        ->where('type', 'phone_confirmation|contract_creating')
-        ->middleware(['can:see own profile', 'throttle:20'])
-        ->name('smscode.check');
-    
-    Route::post('smscode/create/{type}', [SmscodeController::class,'createCode'])
-        ->where('type', 'phone_confirmation|contract_creating')
-        ->middleware(['can:see own profile', 'throttle:4', 'phone'])
-        ->name('smscode.create');
+        Route::get('calculator', [IncomeCalculatorController::class, 'show'])
+            ->name('income_calculator');
 
-    Route::post('notifications/unread', [NotificationsController::class, 'unread'])
-        ->name('notifications.unread');
+        Route::post('organization/save', [NewContractController::class, 'saveRequesites'])
+            ->name('organization.save');
 
-    Route::get('notifications/read-all', [NotificationsController::class, 'readAll'])
-        ->name('notifications.read_all');
-});
+        Route::get('payments', [PaymentController::class, 'indexForUser'])
+            ->middleware('can:see own profile')
+            ->name('payments.for_user');
 
+        Route::get('payments/{payment}/send-invoice', [PaymentController::class, 'sendInvoice'])
+            ->middleware('can:see own profile')
+            ->name('payments.send-invoice');
+
+        Route::get('invoices/{payment}/pdf', [PdfController::class, 'invoice'])->name('invoice.pdf');
+
+        Route::post('smscode/check/{type}', [SmscodeController::class, 'checkCode'])
+            ->where('type', 'phone_confirmation|contract_creating')
+            ->middleware(['can:see own profile', 'throttle:20'])
+            ->name('smscode.check');
+
+        Route::post('smscode/create/{type}', [SmscodeController::class, 'createCode'])
+            ->where('type', 'phone_confirmation|contract_creating')
+            ->middleware(['can:see own profile', 'throttle:4', 'phone'])
+            ->name('smscode.create');
+
+        Route::post('notifications/unread', [NotificationsController::class, 'unread'])
+            ->name('notifications.unread');
+
+        Route::get('notifications/read-all', [NotificationsController::class, 'readAll'])
+            ->name('notifications.read_all');
+    });
 
 Route::prefix('admin')
-->middleware('auth')->group(function () {
-    Route::post('users/{user}/role', [UserController::class, 'updateRole'])
-        ->middleware('can:assign roles')
-        ->name('users.update-role');
+    ->middleware('auth')->group(function () {
+        Route::post('users/{user}/role', [UserController::class, 'updateRole'])
+            ->middleware('can:assign roles')
+            ->name('users.update-role');
 
-    Route::post('users/{user}/block', [UserController::class, 'blockUser'])
-        ->middleware('can:block users')
-        ->name('users.block');
+        Route::post('users/{user}/block', [UserController::class, 'blockUser'])
+            ->middleware('can:block users')
+            ->name('users.block');
 
-    Route::post('users/{user}/unblock', [UserController::class, 'unblockUser'])
-        ->middleware('can:block users')
-        ->name('users.unblock');
+        Route::post('users/{user}/unblock', [UserController::class, 'unblockUser'])
+            ->middleware('can:block users')
+            ->name('users.unblock');
 
-    Route::post('users/create', [UserController::class, 'create'])
-        ->middleware('can:create users')
-        ->name('users.create');
-        
-    Route::get('users/{user}', [UserController::class, 'show'])
-        ->middleware('can:see other profiles')
-        ->name('users.show');
+        Route::post('users/create', [UserController::class, 'create'])
+            ->middleware('can:create users')
+            ->name('users.create');
 
-    Route::get('users', [UserController::class, 'index'])
-        ->middleware('can:see other profiles')
-        ->name('users.index');
+        Route::get('users/{user}', [UserController::class, 'show'])
+            ->middleware('can:see other profiles')
+            ->name('users.show');
 
-    Route::get('contracts', [ContractController::class, 'adminIndex'])
-        ->middleware('can:see other profiles')
-        ->name('contracts.index');
+        Route::get('users', [UserController::class, 'index'])
+            ->middleware('can:see other profiles')
+            ->name('users.index');
 
-    Route::get('statement', [StatementController::class, 'page'])
-        ->middleware('can:change settings')
-        ->name('statements.page');
-    Route::get('statements', [StatementController::class, 'index'])
-        ->middleware('can:change settings')
-        ->name('statements.index');
-    Route::get('statements/{statement}', [StatementController::class, 'show'])
-        ->middleware('can:change settings')
-        ->name('statements.show');
+        Route::get('contracts', [ContractController::class, 'adminIndex'])
+            ->middleware('can:see other profiles')
+            ->name('contracts.index');
 
-    Route::post('settings/update', [ApplicationSettingsController::class, 'update'])
-        ->middleware('can:change settings')
-        ->name('settings.update');
+        Route::get('statement', [StatementController::class, 'page'])
+            ->middleware('can:change settings')
+            ->name('statements.page');
+        Route::get('statements', [StatementController::class, 'index'])
+            ->middleware('can:change settings')
+            ->name('statements.index');
+        Route::get('statements/{statement}', [StatementController::class, 'show'])
+            ->middleware('can:change settings')
+            ->name('statements.show');
 
-    Route::get('settings', [ApplicationSettingsController::class, 'index'])
-        ->middleware('can:change settings')
-        ->name('settings.index');
-        
-    Route::get('invoices', [PaymentController::class, 'invoicesIndex'])
-        ->middleware('can:see invoices')
-        ->name('invoices.index');
+        Route::post('settings/update', [ApplicationSettingsController::class, 'update'])
+            ->middleware('can:change settings')
+            ->name('settings.update');
 
-    Route::resource('articles', ArticlesController::class)->except(['show']);
-});
+        Route::get('settings', [ApplicationSettingsController::class, 'index'])
+            ->middleware('can:change settings')
+            ->name('settings.index');
+
+        Route::get('invoices', [PaymentController::class, 'invoicesIndex'])
+            ->middleware('can:see invoices')
+            ->name('invoices.index');
+
+        Route::resource('articles', ArticlesController::class)->except(['show']);
+    });
 
 Route::prefix('sber')
     ->group(function () {
         Route::get('auth', [SberController::class, 'auth'])
             ->middleware(['auth', 'can:update sber token'])
             ->name('sber.auth');
-        
+
         Route::get('auth-code', [SberController::class, 'authCodeRedirect'])
             ->name('sber.auth-code');
 

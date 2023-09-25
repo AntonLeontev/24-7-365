@@ -20,8 +20,8 @@ class AccountFactory extends Factory
             //'user_id' => User::factory(),
             //'organization_id' => User::with('organization')->find($user_id)->organization->id,
             //'organization_id'=> Organization::factory(),
-            'payment_account' => (string) $this->faker->unique()->numberBetween(111111111111111111, 999999999999999999) . '00',
-            'correspondent_account' => (string) $this->faker->unique()->numberBetween(111111111111111111, 999999999999999999) . '00',
+            'payment_account' => (string) $this->faker->unique()->numberBetween(111111111111111111, 999999999999999999).'00',
+            'correspondent_account' => (string) $this->faker->unique()->numberBetween(111111111111111111, 999999999999999999).'00',
             'bik' => (string) $this->faker->unique()->numberBetween(111111111, 999999999),
             'bank' => $this->faker->unique()->company(),
         ];

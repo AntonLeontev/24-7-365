@@ -12,15 +12,15 @@ class SendAutoprolongationRemind
     public function handle(BillingPeriodEnded $event): void
     {
         $contract = $event->contract->refresh();
-        
+
         if ($contract->prolongate === false) {
             return;
         }
-        
+
         if ($contract->end()->subMonths(2)->gt(now())) {
             return;
         }
-        
+
         if ($contract->status === ContractStatus::finished) {
             return;
         }

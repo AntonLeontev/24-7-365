@@ -34,18 +34,18 @@ class MonthProfitReportCommand extends Command
     {
         $date = is_null($this->argument('date')) ? now()->subMonth() : Carbon::parse($this->argument('date'));
 
-		$period = CarbonPeriod::since($date->startOfMonth())
-			->until($date->endOfMonth());
+        $period = CarbonPeriod::since($date->startOfMonth())
+            ->until($date->endOfMonth());
 
         $report = $maker->make($period);
-		$path = $report->toExcel();
+        $path = $report->toExcel();
 
-		Mail::to(['viktoriasidikova@mail.ru'])->send(new MonthProfitReport($period, $path));
+        Mail::to(['viktoriasidikova@mail.ru'])->send(new MonthProfitReport($period, $path));
 
-		$telegram->sendDocument(config('services.telegram.amount_chat') , $path, $report->fileName(), true);
+        $telegram->sendDocument(config('services.telegram.amount_chat'), $path, $report->fileName(), true);
 
-		Storage::delete($path);
+        Storage::delete($path);
 
-		return Command::SUCCESS;
+        return Command::SUCCESS;
     }
 }

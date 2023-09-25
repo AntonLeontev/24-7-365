@@ -14,9 +14,7 @@ class NewInvoice extends Notification implements ShouldQueue
 {
     use Queueable;
 
-
     private Contract $contract;
-
 
     public function __construct(private Payment $payment)
     {
@@ -46,10 +44,10 @@ class NewInvoice extends Notification implements ShouldQueue
         $name = "Счет №{$this->payment->number} от {$this->payment->created_at->format('d.m.Y')}.pdf";
 
         return (new MailMessage())
-                    ->subject("Счет на оплату")
-                    ->line("Сгенерирован счет по договору {$this->contract->id}.")
-                    ->line("Счет во вложении, также его можно скачать:")
-                    ->action('Скачать', route('invoice.pdf', $this->payment->id))
-                    ->attachData($pdf, $name, ['mime' => 'application/pdf']);
+            ->subject('Счет на оплату')
+            ->line("Сгенерирован счет по договору {$this->contract->id}.")
+            ->line('Счет во вложении, также его можно скачать:')
+            ->action('Скачать', route('invoice.pdf', $this->payment->id))
+            ->attachData($pdf, $name, ['mime' => 'application/pdf']);
     }
 }

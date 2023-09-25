@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Enums\ContractChangeStatus;
 use App\Events\BillingPeriodEnded;
-use Illuminate\Support\Facades\Log;
 
 class ApplyContractChanges
 {
@@ -15,7 +14,7 @@ class ApplyContractChanges
     {
         $contract = $event->contract->refresh();
         $changes = $contract->contractChanges->load('tariff');
-        
+
         $waiting = $changes->where('status', ContractChangeStatus::waitingPeriodEnd);
 
         if ($waiting->isEmpty()) {

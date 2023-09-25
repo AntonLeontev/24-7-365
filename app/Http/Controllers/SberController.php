@@ -22,7 +22,7 @@ class SberController extends Controller
         try {
             $tokens = $api->tokensViaAuthCode(request('code'));
         } catch (SberApiException $e) {
-            return 'ERROR:<br>' . $e->getMessage();
+            return 'ERROR:<br>'.$e->getMessage();
         }
 
         SberToken::updateOrCreate(

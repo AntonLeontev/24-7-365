@@ -11,14 +11,12 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
-
 
     /**
      * Create a new controller instance.
@@ -42,7 +40,7 @@ class LoginController extends Controller
 
             return $this->sendLockoutResponse($request);
         }
-        
+
         if ($this->attemptLogin($request)) {
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());

@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Enums\PaymentStatus;
 use App\Events\PaymentSentToBank;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class MarkPaymentSentToBank
 {

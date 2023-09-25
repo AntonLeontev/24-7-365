@@ -29,7 +29,7 @@ class StoreContractRequest extends FormRequest
         $maxAmount = $tariff->max_amount->raw() === 0 ?
             PHP_INT_MAX :
             $tariff->max_amount->amount();
-            
+
         return [
             'tariff_id' => ['required', 'exists:tariffs,id'],
             'amount' => [
@@ -44,16 +44,16 @@ class StoreContractRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'amount' => 'Сумма закупа'
+            'amount' => 'Сумма закупа',
         ];
     }
 
     protected function passedValidation(): void
     {
-		$this->merge([
-			'amount' => (int) $this->amount * 100,
-			'user_id' => auth()->id(),
-			'organization_id' => auth()->user()->organization->id,
-		]);
+        $this->merge([
+            'amount' => (int) $this->amount * 100,
+            'user_id' => auth()->id(),
+            'organization_id' => auth()->user()->organization->id,
+        ]);
     }
 }

@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View ;
-use Illuminate\Support\Facades\Auth;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -15,11 +14,10 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        View::composer('layouts.part.header', function($view) {
+        View::composer('layouts.part.header', function ($view) {
             $view->with(['notifications' => 'test']);
         });
-        
-           
+
     }
 
     /**

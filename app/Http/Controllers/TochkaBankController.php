@@ -13,10 +13,10 @@ class TochkaBankController extends Controller
     {
         $arr = explode('.', $request->getContent());
         $str = json_decode(base64_decode($arr[1]));
-        
+
         $amount = number_format((float) $str->SidePayer->amount, 0, ',', ' ');
         $message = "Поступила оплата {$amount} р. от {$str->SidePayer->name}";
-        
+
         Log::channel('telegram')->debug($message);
         $telegram->sendSilentText($message, config('services.telegram.amount_chat'));
 

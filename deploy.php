@@ -33,8 +33,8 @@ task('config:clear', function () {
     run('php artisan config:clear');
     run('php artisan config:cache');
 });
-    
-    // Hooks
+
+// Hooks
 
 after('deploy:publish', 'build');
 

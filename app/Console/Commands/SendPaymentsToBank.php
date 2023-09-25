@@ -32,14 +32,14 @@ class SendPaymentsToBank extends Command
     {
         $payments = Payment::query()
             ->where('type', PaymentType::credit)
-			->where('status', PaymentStatus::pending)
+            ->where('status', PaymentStatus::pending)
             ->where('planned_at', '<=', now())
             ->get();
 
-		foreach ($payments as $payment) {
-			dispatch(new CreateBankPayment($payment));
-		}
+        foreach ($payments as $payment) {
+            dispatch(new CreateBankPayment($payment));
+        }
 
-		Log::channel('schedule')->info("В банк отправлено {$payments->count()} платежей");
+        Log::channel('schedule')->info("В банк отправлено {$payments->count()} платежей");
     }
 }

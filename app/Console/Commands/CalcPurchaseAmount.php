@@ -46,6 +46,7 @@ class CalcPurchaseAmount extends Command
 
             if (now()->startOfDay()->eq($amount->date)) {
                 $result .= "Сегодня остаток {$sum} р\n\n";
+
                 continue;
             }
 

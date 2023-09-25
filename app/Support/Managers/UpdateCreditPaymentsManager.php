@@ -69,7 +69,6 @@ class UpdateCreditPaymentsManager
         // Платежи по новому тарифу начнутся со второго периода от текущего
         $delay = $contract->currentTariffDuration() + 1;
 
-
         // Но если продление договора, то платежи начнутся с 1 месяца
         if ($contract->contractChanges->last()->type === ContractChangeType::prolongation) {
             $delay = 0;
@@ -157,7 +156,7 @@ class UpdateCreditPaymentsManager
     {
         $newTariff = Tariff::find($contract->refresh()->contractChanges->last()->tariff_id);
         $newAmount = $contract->contractChanges->last()->amount;
-        
+
         // find start atTheEnd contract change
         $lastEndTariffChange = $contract->lastEndTariffChange();
 
@@ -190,7 +189,7 @@ class UpdateCreditPaymentsManager
         $this->creator
             ->createBodyOutcomePayment($newAmount->raw(), $contract, $payDay);
 
-		return $payment;
+        return $payment;
     }
 
     /**
@@ -203,7 +202,7 @@ class UpdateCreditPaymentsManager
         $oldProfitPerMonth = $contract->amount->raw() * $contract->tariff->annual_rate / 100 / 12;
         $newProfitPerMonth = $newAmount->raw() * $contract->tariff->annual_rate / 100 / 12;
 
-        # Create new credit payment
+        // Create new credit payment
         if ($contract->duration() + 1 < settings()->payments_start) {
             $firstPaymentAmount = ($contract->duration() + 1) * $oldProfitPerMonth +
                 (settings()->payments_start - $contract->duration() - 1) * $newProfitPerMonth;
@@ -250,7 +249,7 @@ class UpdateCreditPaymentsManager
     public function increaseAmountEndToEndTariff(Contract $contract): Payment
     {
         $newAmount = $contract->contractChanges->last()->amount;
-        
+
         //Доходность за прошедшие месяцы считается по новому тарифу, но по старой сумме
         // find start atTheEnd contract change
         $lastEndTariffChange = $contract->lastEndTariffChange();

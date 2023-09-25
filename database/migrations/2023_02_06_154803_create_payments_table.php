@@ -18,7 +18,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-			$table->unsignedInteger('number')->index();
+            $table->unsignedInteger('number')->index();
             $table->foreignIdFor(Account::class)
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();

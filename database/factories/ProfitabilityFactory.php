@@ -21,9 +21,9 @@ class ProfitabilityFactory extends Factory
     {
         return [
             'contract_id' => Contract::inRandomOrder()->first()->id,
-			'payment_id' => Payment::where('type', PaymentType::credit)->inRandomOrder()->first()->id,
-			'amount' => random_int(1000, 150000),
-			'accrued_at' => now(),
+            'payment_id' => Payment::where('type', PaymentType::credit)->inRandomOrder()->first()->id,
+            'amount' => random_int(1000, 150000),
+            'accrued_at' => now(),
         ];
     }
 }

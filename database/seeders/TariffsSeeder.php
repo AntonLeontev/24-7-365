@@ -23,7 +23,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 500_000_00,
                 'max_amount' => 0,
                 'getting_profit' => Tariff::MONTHLY,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Standart',
@@ -32,7 +32,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 500_000_00,
                 'max_amount' => 0,
                 'getting_profit' => Tariff::MONTHLY,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Standart',
@@ -41,7 +41,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 500_000_00,
                 'max_amount' => 0,
                 'getting_profit' => Tariff::MONTHLY,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
 
             //------------------------ Gold 1 ---------------------------
@@ -53,7 +53,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 500_000_00,
                 'max_amount' => 5_000_000_00,
                 'getting_profit' => Tariff::MONTHLY,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Gold 1',
@@ -62,7 +62,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 500_000_00,
                 'max_amount' => 5_000_000_00,
                 'getting_profit' => Tariff::MONTHLY,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Gold 1',
@@ -71,7 +71,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 500_000_00,
                 'max_amount' => 5_000_000_00,
                 'getting_profit' => Tariff::MONTHLY,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
 
             //------------------------ Gold 2 ---------------------------
@@ -83,7 +83,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 5_000_000_00,
                 'max_amount' => 0,
                 'getting_profit' => Tariff::MONTHLY,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Gold 2',
@@ -92,7 +92,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 5_000_000_00,
                 'max_amount' => 0,
                 'getting_profit' => Tariff::MONTHLY,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Gold 2',
@@ -101,7 +101,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 5_000_000_00,
                 'max_amount' => 0,
                 'getting_profit' => Tariff::MONTHLY,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
 
             //------------------------ Platinum 1 ---------------------------
@@ -113,7 +113,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 500_000_00,
                 'max_amount' => 5_000_000_00,
                 'getting_profit' => Tariff::AT_THE_END,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Platinum 1',
@@ -122,7 +122,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 500_000_00,
                 'max_amount' => 5_000_000_00,
                 'getting_profit' => Tariff::AT_THE_END,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Platinum 1',
@@ -131,7 +131,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 500_000_00,
                 'max_amount' => 5_000_000_00,
                 'getting_profit' => Tariff::AT_THE_END,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
 
             //------------------------ Platinum 2 ---------------------------
@@ -143,7 +143,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 5_000_000_00,
                 'max_amount' => 0,
                 'getting_profit' => Tariff::AT_THE_END,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Platinum 2',
@@ -152,7 +152,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 5_000_000_00,
                 'max_amount' => 0,
                 'getting_profit' => Tariff::AT_THE_END,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
             [
                 'title' => 'Platinum 2',
@@ -161,7 +161,7 @@ class TariffsSeeder extends Seeder
                 'min_amount' => 5_000_000_00,
                 'max_amount' => 0,
                 'getting_profit' => Tariff::AT_THE_END,
-                'getting_deposit' => Tariff::AT_THE_END
+                'getting_deposit' => Tariff::AT_THE_END,
             ],
         ];
 

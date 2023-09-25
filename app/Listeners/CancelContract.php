@@ -35,6 +35,7 @@ class CancelContract
         // Если договор не был оплачен
         if ($contract->income() === 0) {
             $this->terminate($contract);
+
             return;
         }
 
@@ -68,14 +69,15 @@ class CancelContract
         // Если выплачено больше тела договора, то сразу закрыть договор
         if ($outgoingPaymentsSum >= $receivedMoney) {
             $this->terminate($contract);
+
             return;
         }
 
         $payment = $this->creator->createBodyOutcomePayment(
-			$receivedMoney - $outgoingPaymentsSum, 
-			$contract, 
-			$contract->paid_at->addMonths($contract->duration() + 2)
-		);
+            $receivedMoney - $outgoingPaymentsSum,
+            $contract,
+            $contract->paid_at->addMonths($contract->duration() + 2)
+        );
 
         Profitability::create([
             'payment_id' => $payment->id,

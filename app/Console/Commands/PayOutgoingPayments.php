@@ -24,7 +24,6 @@ class PayOutgoingPayments extends Command
      */
     protected $description = 'Имитирует оплату по банку всех исходящих платежей. Выставляет им статус PROCESSED и запускает событие оплаты. Можно передать contract_id и будут оплачены только платежи этого контракта. Если передать опцию --take то будет оплачено столько платежей.';
 
-
     /**
      * Execute the console command.
      *
@@ -34,6 +33,7 @@ class PayOutgoingPayments extends Command
     {
         if (app()->isProduction()) {
             $this->error('На проде нельзя!');
+
             return Command::FAILURE;
         }
 
@@ -56,7 +56,7 @@ class PayOutgoingPayments extends Command
                 'status' => PaymentStatus::processed,
                 'paid_at' => now(),
             ]);
-            
+
             event(new PaymentSent($payment));
         }
 

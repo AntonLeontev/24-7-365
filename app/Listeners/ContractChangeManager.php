@@ -55,7 +55,7 @@ class ContractChangeManager
     private function createContractChange(
         Contract $contract,
         ContractChangeType $type,
-        Amount | int $amount,
+        Amount|int $amount,
         int $tariffId,
     ): void {
         ContractChange::create([

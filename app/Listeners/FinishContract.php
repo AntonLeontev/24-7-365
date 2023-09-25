@@ -20,7 +20,6 @@ class FinishContract
      * Handle the event.
      *
      * @param  object  $event
-     * @return void
      */
     public function handle(BillingPeriodEnded $event): void
     {
@@ -35,6 +34,6 @@ class FinishContract
             return;
         }
 
-		$contract->update(['status' => ContractStatus::finished]);
+        $contract->update(['status' => ContractStatus::finished]);
     }
 }

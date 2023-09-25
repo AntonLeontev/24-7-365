@@ -57,7 +57,7 @@ class PaymentController extends Controller
             ->orderByDesc('created_at')
             ->simplePaginate(10)
             ->withQueryString();
-        
+
         return (new PaymentCollection($payments))->response()->header('Cache-Control', 'no-store, no-cache, must-revalidate');
     }
 }

@@ -25,7 +25,7 @@ class HttpServiceProvider extends ServiceProvider
     {
         Http::macro('planfact', function () {
             return Http::withHeaders(['X-ApiKey' => config('services.planfact.key')])
-                ->when(!app()->isProduction(), function ($request) {
+                ->when(! app()->isProduction(), function ($request) {
                     return $request->withOptions(['verify' => false]);
                 })
                 ->timeout(8)
@@ -39,8 +39,8 @@ class HttpServiceProvider extends ServiceProvider
 
         Http::macro('telegram', function () {
             return Http::timeout(5)
-                ->baseUrl('https://api.telegram.org/bot' . config('services.telegram.bot'))
-				->throw(function (Response $response) {
+                ->baseUrl('https://api.telegram.org/bot'.config('services.telegram.bot'))
+                ->throw(function (Response $response) {
                     throw new TelegramException($response);
                 });
         });
@@ -52,7 +52,7 @@ class HttpServiceProvider extends ServiceProvider
         });
 
         Http::macro('tochka', function () {
-            return Http::withHeaders(['Authorization' => 'Bearer ' . config('services.tochka.jwt')])
+            return Http::withHeaders(['Authorization' => 'Bearer '.config('services.tochka.jwt')])
                 ->timeout(20)
                 ->asJson()
                 ->acceptJson()

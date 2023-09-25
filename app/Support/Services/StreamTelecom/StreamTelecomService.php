@@ -13,7 +13,7 @@ class StreamTelecomService implements SmsService
 
     public function sendSms(string $phone, string $message): Response
     {
-        $response =  Http::streamTelecom()
+        $response = Http::streamTelecom()
             ->get('', [
                 'user' => config('services.stream-telecom.login'),
                 'pwd' => config('services.stream-telecom.password'),
@@ -22,8 +22,8 @@ class StreamTelecomService implements SmsService
                 'text' => $message,
             ]);
 
-        if (!is_numeric($response->body())) {
-		 	Log::channel('telegram')->alert($response->body(), [$phone, $message]);
+        if (! is_numeric($response->body())) {
+            Log::channel('telegram')->alert($response->body(), [$phone, $message]);
         }
 
         return $response;

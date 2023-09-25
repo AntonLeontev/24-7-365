@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\ContractCreated;
 use App\Notifications\ContractCreatedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendContractCreatedNotification
 {
@@ -23,7 +21,7 @@ class SendContractCreatedNotification
     public function handle(ContractCreated $event): void
     {
         $user = $event->contract->user;
-		
-		$user->notify(new ContractCreatedNotification($event->contract));
+
+        $user->notify(new ContractCreatedNotification($event->contract));
     }
 }

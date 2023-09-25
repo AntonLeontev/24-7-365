@@ -43,9 +43,9 @@ class TelegramFormatter extends NormalizerFormatter
             $message = $message->replace("{{$key}}", $value);
         }
 
-        if (!empty($record->context)) {
+        if (! empty($record->context)) {
             $context = htmlspecialchars(print_r($record->context, true));
-    
+
             if (strlen($context) > 4000) {
                 return $message->append("\n", $context);
             }

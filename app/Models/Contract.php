@@ -29,7 +29,7 @@ class Contract extends Model
         'amount',
         'status',
         'paid_at',
-        'prolongate'
+        'prolongate',
     ];
 
     protected $casts = [
@@ -69,7 +69,7 @@ class Contract extends Model
     public function realChanges(): HasMany
     {
         return $this->hasMany(ContractChange::class)
-			->whereIn('status', [ContractChangeStatus::actual, ContractChangeStatus::past]);
+            ->whereIn('status', [ContractChangeStatus::actual, ContractChangeStatus::past]);
     }
 
     public function lastChange(): ContractChange
@@ -85,7 +85,7 @@ class Contract extends Model
     public function periodEnd(): Carbon
     {
         if (is_null($this->paid_at)) {
-            throw new DomainException("Попытка определить конец периода у неоплаченного договора", 1);
+            throw new DomainException('Попытка определить конец периода у неоплаченного договора', 1);
         }
 
         return $this->paid_at->addMonths($this->duration() + 1)
@@ -138,11 +138,11 @@ class Contract extends Model
     {
         return $this->contractChanges->reduce(function ($carry, $change) {
             if ($change->type === ContractChangeType::init) {
-                    return $change->duration;
+                return $change->duration;
             }
 
             if ($change->type === ContractChangeType::prolongation) {
-                    return $change->duration;
+                return $change->duration;
             }
 
             return $change->duration + $carry;
@@ -167,7 +167,7 @@ class Contract extends Model
 
         $this->contractChanges
             ->sortBy('starts_at')
-			->load('tariff')
+            ->load('tariff')
             ->whereIn('status', [ContractChangeStatus::past, ContractChangeStatus::actual])
             ->reduce(function ($carry, ContractChange $change) use (&$duration) {
                 if ($change->type === ContractChangeType::init) {
@@ -177,11 +177,13 @@ class Contract extends Model
                 if ($change->type === ContractChangeType::change) {
                     if ($carry?->tariff_id === $change->tariff_id) {
                         $duration += $change->duration;
+
                         return $change;
                     }
 
                     if ($change->tariff->getting_profit === Tariff::MONTHLY) {
                         $duration = $change->duration;
+
                         return $change;
                     }
 
@@ -190,10 +192,12 @@ class Contract extends Model
                         $change->tariff->getting_profit === Tariff::AT_THE_END
                     ) {
                         $duration = $change->duration;
+
                         return $change;
                     }
 
                     $duration += $change->duration;
+
                     return $carry;
                 }
 
@@ -203,7 +207,7 @@ class Contract extends Model
 
                 return $change;
             },
-            null);
+                null);
 
         return $duration;
     }
@@ -237,7 +241,7 @@ class Contract extends Model
             }, null);
 
         if (is_null($endChange)) {
-            throw new DomainException("Нет перехода на тариф с оплатой в конце срока", 1);
+            throw new DomainException('Нет перехода на тариф с оплатой в конце срока', 1);
         }
 
         return $endChange;
@@ -248,7 +252,7 @@ class Contract extends Model
         if ($this->status !== ContractStatus::active) {
             return false;
         }
-        
+
         return $this->contractChanges->last()->status === ContractChangeStatus::pending ||
             $this->contractChanges->last()->status === ContractChangeStatus::waitingPeriodEnd;
     }
@@ -280,7 +284,7 @@ class Contract extends Model
         if ($this->contractChanges->last()->status === ContractChangeStatus::waitingPeriodEnd) {
             return $this->contractChanges->last()->amount;
         }
-        
+
         return $this->amount;
     }
 
@@ -320,7 +324,7 @@ class Contract extends Model
 
                 return $carry;
             },
-            null);
+                null);
     }
 
     private function paymentsSum(PaymentType $type): int

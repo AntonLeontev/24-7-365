@@ -22,6 +22,6 @@ class CreateAccountingSystemIncome
     {
         $this->service->createIncomeFromOzon($event->transaction);
 
-        Log::channel('telegram')->debug('Платеж от Озона', [$event->transaction->amount->format(2) ,$event->transaction->description]);
+        Log::channel('telegram')->debug('Платеж от Озона', [$event->transaction->amount->format(2), $event->transaction->description]);
     }
 }

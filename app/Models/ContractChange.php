@@ -15,12 +15,11 @@ class ContractChange extends Model
     use HasFactory;
     use SoftDeletes;
 
-	
     protected $casts = [
         'amount' => AmountCast::class,
         'status' => ContractChangeStatus::class,
         'type' => ContractChangeType::class,
-        'starts_at' => 'datetime'
+        'starts_at' => 'datetime',
     ];
 
     protected $fillable = [
@@ -32,7 +31,6 @@ class ContractChange extends Model
         'starts_at',
         'duration',
     ];
-
 
     public function contract(): BelongsTo
     {

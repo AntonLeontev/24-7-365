@@ -40,6 +40,7 @@ class CheckContractStatus
         ) {
             $contract->updateOrFail(['status' => ContractStatus::terminated]);
             event(new ContractTerminated($contract));
+
             return;
         }
 
@@ -47,6 +48,7 @@ class CheckContractStatus
         if ($pendingCreditPayments->isEmpty()) {
             $contract->updateOrFail(['status' => ContractStatus::finished]);
             event(new ContractFinished($contract));
+
             return;
         }
     }

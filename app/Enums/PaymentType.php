@@ -6,9 +6,7 @@ use App\Traits\GivesEnum;
 
 enum PaymentType: string
 {
-	use GivesEnum;
-
-
+    use GivesEnum;
 
     /**
      * Входящий платеж

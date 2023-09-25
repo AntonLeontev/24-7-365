@@ -22,6 +22,7 @@ class UpdateContractChange
                 'status' => ContractChangeStatus::actual,
                 'starts_at' => now(),
             ]);
+
             return;
         }
 

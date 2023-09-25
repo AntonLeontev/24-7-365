@@ -10,7 +10,7 @@ class TextMessageHandler
     public function __invoke(Nutgram $bot): void
     {
         $service = app(TelegramService::class);
-        
+
         $service->storeMessage($bot->message());
     }
 }

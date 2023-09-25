@@ -12,7 +12,6 @@ class PaymentReceivedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-
     /**
      * Create a new notification instance.
      */
@@ -36,9 +35,9 @@ class PaymentReceivedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage())
-                    ->subject('Поступила оплата по договору')
-                    ->line("Поступила оплата по договору №{$this->payment->contract->id} на сумму {$this->payment->amount}")
-                    ->action('Посмотреть договор', route('users.contract_show', $this->payment->contract->id));
+            ->subject('Поступила оплата по договору')
+            ->line("Поступила оплата по договору №{$this->payment->contract->id} на сумму {$this->payment->amount}")
+            ->action('Посмотреть договор', route('users.contract_show', $this->payment->contract->id));
     }
 
     /**
@@ -53,7 +52,7 @@ class PaymentReceivedNotification extends Notification implements ShouldQueue
             'text' => "Поступила оплата по договору №{$this->payment->contract->id}. Сумма {$this->payment->amount}",
             'button' => [
                 'href' => route('users.contract_show', $this->payment->contract->id),
-                'text' => 'К договору'
+                'text' => 'К договору',
             ],
         ];
     }
