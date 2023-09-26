@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Events\PaymentSentToBank;
 use App\Models\Payment;
-use App\Support\Services\Sber\SberBusinessApiService;
+use App\Support\Services\TochkaBank\TochkaBankService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -28,7 +28,7 @@ class CreateBankPayment implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(SberBusinessApiService $service): void
+    public function handle(TochkaBankService $service): void
     {
         $service->createPayment($this->payment);
 
