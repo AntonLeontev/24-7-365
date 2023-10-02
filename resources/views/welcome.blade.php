@@ -1108,7 +1108,7 @@
 			<div class="anchor" id="contacts"></div>
 			<div class="container-xxl">
 				<div class="title text-center mb-4 text-primary">Наша Команда</div>
-				<div class="row pt-14 mb-17 gx-1">
+				<div class="d-lg-flex justify-content-evenly pt-14 mb-17 gx-1">
 					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
 						<img src="/images/team/01.webp" alt="Илья Дмитров" class="image-fluid">
 						<div class="text-primary fs-4">Илья А. Дмитров</div>
@@ -1133,7 +1133,7 @@
 							<p>Активный участник разработки закона «О страховании частных инвестиций в приоритетный список предприятий РФ»</p>
 						</div>
 					</div>
-					<div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
+					{{-- <div class="col-12 col-lg-4 d-flex flex-column align-items-center gap-1 mb-14">
 						<img src="/images/team/03.webp" alt="Павел Водянкин" class="image-fluid">
 						<div class="text-primary fs-4">Павел С. Водянкин</div>
 						<div class="fs-7">Партнер</div>
@@ -1143,7 +1143,7 @@
 							<p>Основатель, CEO Tesla Experience</p>
 							<p>Член ассоциации участников рынка электронной коммерции (АУРЭК)</p>
 						</div>
-					</div>
+					</div> --}}
 				</div>
 			</div>
 		</section>
